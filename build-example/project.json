@@ -1,0 +1,21 @@
+{
+	"project":
+	[	
+		{
+			"build":
+			{
+				"export":"game.qsp",
+				"top_location":"[start]",
+				"folders":
+				[
+					{
+						"path": "."
+					}
+				]
+			}
+		},
+		{
+			"start":"game.qsp"
+		}
+	]
+}
