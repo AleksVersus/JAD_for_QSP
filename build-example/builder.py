@@ -13,9 +13,8 @@ with open("project.json","r",encoding="utf-8") as project_file:
             # если инструкция должна собирать файлы
             # значит она представляет собой словарь
             build=instruction["build"]
-            # Получаем список ключей
-            build_list=list(build)
             # проверяем, существует ли ключ "folders"
-            if "folders" in build_list:
+            if "folders" in build:
                 # если ключ существует, значит мы снова имеем дело со списком:
                 print (build["folders"])
+                
