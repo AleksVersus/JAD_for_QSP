@@ -19,4 +19,3 @@ with open("project.json","r",encoding="utf-8") as project_file:
             if "folders" in build_list:
                 # если ключ существует, значит мы снова имеем дело со списком:
                 print (build["folders"])
-            
