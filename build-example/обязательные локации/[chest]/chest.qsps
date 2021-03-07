@@ -1,0 +1,155 @@
+# [chest]
+! локация всех сундуков
+
+! --------------------------------------- Обязательная конструкция -------------------------------------------
+
+$args[0]=$args[0]	&	!	передаёт ай-ди сундука
+$args[1]=$args[1]	&	!	передаёт управляющее слово
+$args[2]=$args[2]	&	!	передаёт ай-ди исходной локации
+
+$cvar['chest']=$args[0]
+if $cvar[$cvar['chest']]='':
+! $cvar удаляется только когда закрывается первый открытый сундук
+	$cvar[$cvar['chest']]	=	$args[0]
+	$cvar['back'+$cvar['chest']]	=	$args[2]
+	$cvar['loc_id'+$cvar['chest']]	=	$args[0]
+	$cvar['manage'+$cvar['chest']]	=	$args[1]
+end
+! ---------------------------------------- Обязательная конструкция -------------------------------------------
+
+! Необязательная, но относительно жёсткая конструкция по определению заголовков сундуков
+if $cvar['manage'+$cvar['chest']]='':
+! Если игрок "посещает" хранилище
+	if здесь_смотрел[$cvar['loc_id'+$cvar['chest']]]=0:
+	! если игрок посещает хранилище в первый раз
+		! ------------------------------------------Стандартные заголовки для стандартных хранилищ--------------------------------------
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_ларец')!"": gosub 'add.new.obj','<заголовок> [name:Шкатулка для драгоценностей:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_полка_для_шапок')!"": gosub 'add.new.obj','<заголовок> [name:Полка для шапок, перчаток, наплечней:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_вешалка_для_рубах')!"": gosub 'add.new.obj','<заголовок> [name:Вешалка для рубах:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_вешалка_для_штанов')!"": gosub 'add.new.obj','<заголовок> [name:Вешалка для штанов, брюк и юбок:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_полка_для_обуви')!"": gosub 'add.new.obj','<заголовок> [name:Полка для обуви:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_ящик_для_оружия')!"": gosub 'add.new.obj','<заголовок> [name:Ящик для оружия:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_ящик_для_стрел')!"": gosub 'add.new.obj','<заголовок> [name:Навесные ящички для стрел, болтов, магазинов и патронов:name]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_стандартный_шкаф_для_вещей')!"": gosub 'add.new.obj','<заголовок> [name:Шкаф для вещей со множеством секций:name] [put.stop]','',$cvar['loc_id'+$cvar['chest']]
+			if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_стойка_для_посохов')!"": gosub 'add.new.obj','<заголовок> [name:Очень длинная стойка для посохов:name] [target:[посох]:target]','',$cvar['loc_id'+$cvar['chest']]
+		! ------------------------------------------Стандартные заголовки для стандартных хранилищ--------------------------------------
+		if $cvar['loc_id'+$cvar['chest']]='сундук;1010_простая_кузница':
+			gosub 'add.new.obj','<заголовок> [name:Кузница в доме, который построил Джек:name] [spec:[smithing]:spec] [respawn.stop] [target:[материал] [ингредиент]:target]','',$cvar['loc_id'+$cvar['chest']]
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;1_гардеробная':
+			! обратите внимание на эту строку. У сундука, как и у локации места, или локации торговли не указывается место расположения. Все сунуки становятся дочерними объектами у объекта RESPAWNER
+			gosub 'add.new.obj','<заголовок> [name:Гардеробная комната, которая находится в доме, который построил Джек:name]','',$cvar['loc_id'+$cvar['chest']]
+			gosub 'base.new.obj','[:ружьё_самопальное:]','',$cvar['loc_id'+$cvar['chest']],6
+			gosub 'base.new.obj','[:ружьё_револьвер:]','',$cvar['loc_id'+$cvar['chest']]
+			gosub 'base.new.obj','[:патроны_револьверные:]','',$cvar['loc_id'+$cvar['chest']],34
+			gosub 'base.new.obj','[:патроны_револьверные_патронтаж_2:]','',$cvar['loc_id'+$cvar['chest']],34
+			gosub 'base.new.obj','[:патроны_револьверные_патронтаж_6:]','',$cvar['loc_id'+$cvar['chest']],34
+			gosub 'base.new.obj','[:патроны_самопальные:]','',$cvar['loc_id'+$cvar['chest']],33
+			gosub 'base.new.obj','[:радужный_меч:]','',$cvar['loc_id'+$cvar['chest']]
+		end
+		! -        -          - предметы -        -          -
+		if $cvar['loc_id'+$cvar['chest']]='сундук;14002_полка_для_шапок':
+			gosub 'base.new.obj','[:деревянный_шлем:]','',$cvar['loc_id'+$cvar['chest']]
+			gosub 'base.new.obj','[:лыковые_наплечни:]','',$cvar['loc_id'+$cvar['chest']]
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;15002_вешалка_для_рубах':
+			gosub 'base.new.obj','[:деревянная_кираса:]','',$cvar['loc_id'+$cvar['chest']],15
+			gosub 'base.new.obj','[:лыковая_кираса:]','',$cvar['loc_id'+$cvar['chest']],4
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;16002_вешалка_для_штанов':
+			gosub 'base.new.obj','[:лыковые_поножи:]','',$cvar['loc_id'+$cvar['chest']]
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;17002_полка_для_обуви':
+			gosub 'base.new.obj','[:деревянные_башмаки:]','',$cvar['loc_id'+$cvar['chest']]
+			gosub 'base.new.obj','[:лыковые_туфли:]','',$cvar['loc_id'+$cvar['chest']]
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;18002_ящик_для_оружия':
+			gosub 'base.new.obj','[:деревянная_булава:]','','',5
+			gosub 'base.new.obj','[:деревянный_меч:]','','',6
+			gosub 'base.new.obj','[:деревянный_клеймор:]'
+			gosub 'base.new.obj','[:деревянный_лук:]'
+			gosub 'base.new.obj','[:клеёный_лук:]'
+			gosub 'base.new.obj','[:деревянный_молот1:]'
+			gosub 'base.new.obj','[:деревянный_щит:]'
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;19002_ящик_для_стрел':
+			gosub 'base.new.obj','[:стрелы_деревянные:]'
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;14003_полка_для_шапок':
+			gosub 'base.new.obj','[:тканевый_плащ:]'
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;18099_ящик_для_оружия':
+			gosub 'base.new.obj','[:титановый_кинжал:]'
+			gosub 'base.new.obj','[:титановый_меч:]'
+			gosub 'base.new.obj','[:титановый_клеймор:]'
+			gosub 'base.new.obj','[:титановый_лук:]'
+			gosub 'base.new.obj','[:титановый_нож:]'
+			gosub 'base.new.obj','[:титановый_молот1:]'
+			gosub 'base.new.obj','[:титановый_молот2:]'
+			gosub 'base.new.obj','[:титановый_топор1:]'
+			gosub 'base.new.obj','[:титановый_топор2:]'
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;98_стойка_для_посохов':
+			
+		end
+		if $cvar['loc_id'+$cvar['chest']]='сундук;14_ларец':
+			gosub 'base.new.obj','[:жемчужина_голубая_большая:]'
+		end
+	end
+	! если игрок посещает хранилище в любое время
+	if $cvar['loc_id'+$cvar['chest']]='сундук;1_гардеробная':
+		$lvar['локация.исходник']={
+<a class="plain" href="exec:goto '[chest]','сундук;14_ларец','','сундук;1_гардеробная'">Шкатулка для драгоценностей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;2_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для деревянных вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;3_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для простой одежды</a>
+<a class="plain" href="exec:goto '[chest]','сундук;4_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для костяных вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;5_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для каменных вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;6_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для ржавых вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;7_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для вещей из старой стали</a>
+<a class="plain" href="exec:goto '[chest]','сундук;8_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для стальных вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;9_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для серебрянных вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;99_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для титановых вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;10_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для золотых вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;11_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для платиновых вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;12_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для дариевых вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;13_стандартный_шкаф_для_вещей','','сундук;1_гардеробная'">Шкаф для мирониевых вещей</a>
+<a class="plain" href="exec:goto '[chest]','сундук;98_стойка_для_посохов','','сундук;1_гардеробная'">Стойка для посохов</a>}
+	end
+	! Стандартные шкафы для одежды
+	if $strfind($cvar['loc_id'+$cvar['chest']],'\сундук;[\d]+\_стандартный_шкаф_для_вещей')!'':
+		cvar['number']=val($strfind($cvar['loc_id'+$cvar['chest']],'\d+'))
+		$lvar['локация.исходник']='<br><a class="plain" href='+'"exec:goto '+"'[chest]','сундук;"+str(14000+cvar['number'])+"_полка_для_шапок','','"+$cvar['chest']+"'"+'"'+'>[chestname]Полка для шапок<did:сундук;'+str(14000+cvar['number'])+'_полка_для_шапок:did>[/chestname]</a><br>'
+		$lvar['локация.исходник']+='<a class="plain" href='+'"exec:goto '+"'[chest]','сундук;"+str(15000+cvar['number'])+"_вешалка_для_рубах','','"+$cvar['chest']+"'"+'"'+'>[chestname]Вешалка для рубах<did:сундук;'+str(15000+cvar['number'])+'_вешалка_для_рубах:did>[/chestname]</a><br>'
+		$lvar['локация.исходник']+='<a class="plain" href='+'"exec:goto '+"'[chest]','сундук;"+str(16000+cvar['number'])+"_вешалка_для_штанов','','"+$cvar['chest']+"'"+'"'+'>[chestname]Вешалка для штанов<did:сундук;'+str(16000+cvar['number'])+'_вешалка_для_штанов:did>[/chestname]</a><br>'
+		$lvar['локация.исходник']+='<a class="plain" href='+'"exec:goto '+"'[chest]','сундук;"+str(17000+cvar['number'])+"_полка_для_обуви','','"+$cvar['chest']+"'"+'"'+'>[chestname]Полка для обуви<did:сундук;'+str(17000+cvar['number'])+'_полка_для_обуви:did>[/chestname]</a><br>'
+		$lvar['локация.исходник']+='<a class="plain" href='+'"exec:goto '+"'[chest]','сундук;"+str(18000+cvar['number'])+"_ящик_для_оружия','','"+$cvar['chest']+"'"+'"'+'>[chestname]Выдвижной ящик для оружия<did:сундук;'+str(18000+cvar['number'])+'_ящик_для_оружия:did>[/chestname]</a><br>'
+		$lvar['локация.исходник']+='<a class="plain" href='+'"exec:goto '+"'[chest]','сундук;"+str(19000+cvar['number'])+"_ящик_для_стрел','','"+$cvar['chest']+"'"+'"'+'>[chestname]Навесные ящички для стрел и болтов<did:сундук;'+str(19000+cvar['number'])+'_ящик_для_стрел:did>[/chestname]</a><br>'
+	end
+	! Заметьте. Создав стандартные шкафы для одежды я зарезервировал все порядковые номера для хранилищ, начиная с 14000 и заканчивая 19999 включительно.
+	
+	! торговцы:
+	if здесь_торговал[$cvar['loc_id'+$cvar['chest']]]=0:
+		if $cvar['loc_id'+$cvar['chest']]='торговец;татиан':
+			gosub 'add.new.obj','<заголовок> [name:Торговец Татиан в доме, который построил Джек:name] [tname:Татиан|Татиана|Татиану|Татиана|Татианом|Татиане:tname] [bank:1300] [respawn:[day:1]:respawn] [np:[чурка]:np]','','торговец;татиан'
+			gosub 'base.new.obj','[:мирониевый_щит:]','','торговец;татиан'
+			gosub 'base.new.obj','[:деревянный_клеймор:]','','',67
+			$args['татиан.диалог']='
+			npc="name:Татиан:name"
+			hero="name:'+$property['hero.heroname']+':name"
+			{:Поговорим!!!:}
+			[:
+				Привет, Татиан!
+			:]
+			[:
+				закрыть диалог
+				closeup
+			:]
+			'
+			gosub 'add.new.obj','<act> [name:Поговорить:name]','торговец;татиан','ACTS',0,0,"gosub 'dialog.int','"+$args['татиан.диалог']+"'"
+		end
+	end
+	if $cvar['loc_id'+$cvar['chest']]='торговец;татиан':
+		if $tvar['приветствие.торговец;татиан']='': $tvar['приветствие.торговец;татиан']+=$func('b.d.s',"приветствие","торговец;татиан")+'<br>'
+	end
+end
+--- [chest] ---------------------------------
