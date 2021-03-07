@@ -1,8 +1,8 @@
 import os, json
 
-build_files=[]
-current_folder=os.getcwd()
-tree=os.walk(current_folder)
+build_files=[] # это будет список файлов для билда
+current_folder=os.getcwd() # получаем абсолютный путь рабочей папки!
+tree=os.walk(current_folder) #
 for abs_path, folders, files in tree:
 	for file in files:
 		sp=os.path.splitext(file)
