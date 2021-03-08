@@ -38,7 +38,8 @@ with open("project.json","r",encoding="utf-8") as project_file:
                 del log
             else:
             # если есть чего собирать, собираем:
-                pass
+                # путь к выходному файлу ставится относительно рабочей папки
+                exit_txt=os.getcwd()+"\\"+os.path.splitext(game_name)[0]+".txt"
+                allpath.constructFile(build_files,exit_txt)
             del path_list
-            print (build_files)
             
