@@ -1,7 +1,8 @@
-import os, json #импортируем нужные модули
+import os, json, subprocess #импортируем нужные модули
 import allpath # импортируем свой модуль
 
 error_log=[] # список ошибок
+txt2gam="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe" # путь к txt2gam
 # открываем файл json через обёртку with
 with open("project.json","r",encoding="utf-8") as project_file:
     root=json.load(project_file) # получаем структуру json-файла
@@ -40,6 +41,11 @@ with open("project.json","r",encoding="utf-8") as project_file:
             # если есть чего собирать, собираем:
                 # путь к выходному файлу ставится относительно рабочей папки
                 exit_txt=os.getcwd()+"\\"+os.path.splitext(game_name)[0]+".txt"
+                # путь к конечному файлу
+                exit_qsp=os.getcwd()+"\\"+game_name
+                # собираем текстовый файл
                 allpath.constructFile(build_files,exit_txt)
+                # теперь нужно конвертировать файл в бинарник
+                subprocess.run([txt2gam,exit_txt,exit_qsp])
             del path_list
             
