@@ -4,7 +4,7 @@
 		{
 			"build":
 			{
-				"export":"game.qsp",
+				"export":"fantastic_battles.qsp",
 				"top_location":"[start]",
 				"folders":
 				[
