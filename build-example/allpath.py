@@ -1,4 +1,4 @@
-import os, json
+import os
 
 def getFilesList(folder):
 	build_files=[] # это будет список файлов для билда
