@@ -20,5 +20,6 @@ def constructFile(build_list,new_file):
 		with open(path,"r",encoding="utf-8") as file:
 			# открываем путь как файл
 			text+=file.read()+"\n\r"
-	with open(new_file,"w",encoding="utf-8") as file:
+	# необходимо записывать файл в кодировке cp1251, txt2gam версии 0.1.1 понимает лишь её
+	with open(new_file,"w",encoding="cp1251") as file:
 		file.write(text)
