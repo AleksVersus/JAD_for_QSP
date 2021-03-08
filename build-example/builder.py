@@ -40,4 +40,5 @@ with open("project.json","r",encoding="utf-8") as project_file:
             # если есть чего собирать, собираем:
                 pass
             del path_list
+            print (build_files)
             
