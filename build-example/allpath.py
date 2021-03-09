@@ -1,5 +1,6 @@
 import os
 
+# данная функция составляет список файлов .qsps .qsp-txt .txt-qsp в указанной папке и вложенных папках
 def getFilesList(folder):
 	build_files=[] # это будет список файлов для билда
 	tree=os.walk(folder) # получаем все вложенные файлы и папки в виде объекта-генератора
@@ -13,6 +14,7 @@ def getFilesList(folder):
 				build_files.append(abs_path+'\\'+file)
 	return build_files
 
+# из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .qsp по указанному пути
 def constructFile(build_list,new_file):
 	# получив список файлов из которых мы собираем выходной файл, делаем следующее
 	text=""
