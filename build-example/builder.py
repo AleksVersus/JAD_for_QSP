@@ -59,5 +59,5 @@ with open("project.json","r",encoding="utf-8") as project_file:
             start_file=work_dir+"\\"+instruction["start"]
             if not start_file in exit_files_list:
                 start_file=exit_files_list[0]
-            print (start_file)
 # после обработки json можно запустить указанный файл в плеере
+subprocess.run([player_exe,start_file])
