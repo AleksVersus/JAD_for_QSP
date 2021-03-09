@@ -37,7 +37,7 @@
 				"files": // или/и перечисляем, какие файлы брать для сборки
 				[
 					{
-						"path":"D\\my\\projects\\01_меню.qsp-txt",
+						"path":"D:\\my\\projects\\01_меню.qsp-txt",
 					},
 					{
 						"path":"game.qsp-txt",
