@@ -2,12 +2,7 @@
 !"--  Волшебство и Сталь. На базе движка  Magicon.FB v 0.2   --"!
 !"-- Стандартная локация для любой игры на движке Magicon.FB --"!
 ! Подключаем движок, базы и необходимые бибилотеки
-addqst	'drive.qsp'
-addqst	'bases.qsp'
-addqst	'intro.qsp'
-addqst	'lib/easy.titles.qsp'
-addqst	'lib/easy.math.qsp'
-addqst	'lib/easy.dialog.qsp'
+
 if $cur[0]='':
 	! Очищаем всё
 	KILLALL
