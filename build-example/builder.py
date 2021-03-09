@@ -29,6 +29,15 @@ with open("project.json","r",encoding="utf-8") as project_file:
                     # перебираем все пути, кидаем их функции getFilesList
                     build_files.extend(allpath.getFilesList(os.path.abspath(path["path"])))
                     path_list.append(path["path"])
+            if "files" in build:
+                # если ключ существует, значит мы снова имеем дело со списком:
+                for path in build["files"]:
+                    # перебираем все файлы
+                    prove_file=os.path.abspath(path["path"])
+                    if os.path.isfile(prove_file):
+                        build_files.append(prove_file) # если файл существует
+                    else:
+                        error_log.append("File '"+prove_file+"'' don't exist")
             # на этом этапе в build_files размещены точные пути ко всем build файлам
             if "export" in build:
                 # если ключ существует, меняем имя на указанное
@@ -61,3 +70,10 @@ with open("project.json","r",encoding="utf-8") as project_file:
                 start_file=exit_files_list[0]
 # после обработки json можно запустить указанный файл в плеере
 subprocess.run([player_exe,start_file])
+# так же собираем файл ошибок
+if len(error_log)>0:
+    error_txt="errors_list >>>\r\n"
+    for i in error_log:
+        error_txt+=i+"\r\n"
+    with open(work_dir+"\\errors.log","w",encoding="utf-8") as file:
+        file.write(error_txt)
