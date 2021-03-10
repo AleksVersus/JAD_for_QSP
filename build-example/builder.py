@@ -21,13 +21,6 @@ for instruction in root["project"]:
         # инструкция типа build представляет собой словарь
         build=instruction["build"]
         # проверяем, существует ли ключ "folders"
-        if "folders" in build:
-            path_list=[]
-            # если ключ существует, значит мы снова имеем дело со списком:
-            for path in build["folders"]:
-                # перебираем все пути, кидаем их функции getFilesList
-                build_files.extend(allpath.getFilesList(os.path.abspath(path["path"])))
-                path_list.append(path["path"])
         if "files" in build:
             # если ключ существует, значит мы снова имеем дело со списком:
             for path in build["files"]:
@@ -37,6 +30,13 @@ for instruction in root["project"]:
                     build_files.append(prove_file) # если файл существует
                 else:
                     error_log.append("File '"+prove_file+"'' don't exist")
+        if "folders" in build:
+            path_list=[]
+            # если ключ существует, значит мы снова имеем дело со списком:
+            for path in build["folders"]:
+                # перебираем все пути, кидаем их функции getFilesList
+                build_files.extend(allpath.getFilesList(os.path.abspath(path["path"])))
+                path_list.append(path["path"])
         # на этом этапе в build_files размещены точные пути ко всем build файлам
         if "export" in build:
             # если ключ существует, меняем имя на указанное
