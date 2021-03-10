@@ -28,9 +28,7 @@
 					}
 				]				
 			}
-		},
-		{
-			"start":"game.qsp"
 		}
-	]
+	],
+	"start":"game.qsp"
 }
