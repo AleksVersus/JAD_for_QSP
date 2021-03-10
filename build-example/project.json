@@ -2,32 +2,29 @@
 	"project":
 	[	
 		{
-			"build":
-			{
-				"export":"fantastic_battles.qsp",
-				"top_location":"[start]",
-				"files":
-				[
-					{
-						"path":"D:\\my\\GameDev\\QuestSoftPlayer\\games\\fantastic battles\\intro.qsps"
-					},
-					{
-						"path":"intro.qsps"
-					},
-					{
-						"path":"..\\forfiles\\base.txt"
-					}
-				],
-				"folders":
-				[
-					{
-						"path": "."
-					},
-					{
-						"path": "..\\drive"
-					}
-				]				
-			}
+			"build":"fantastic_battles.qsp",
+			"top_location":"[start]",
+			"files":
+			[
+				{
+					"path":"D:\\my\\GameDev\\QuestSoftPlayer\\games\\fantastic battles\\intro.qsps"
+				},
+				{
+					"path":"intro.qsps"
+				},
+				{
+					"path":"..\\forfiles\\base.txt"
+				}
+			],
+			"folders":
+			[
+				{
+					"path": "."
+				},
+				{
+					"path": "..\\drive"
+				}
+			]				
 		}
 	],
 	"start":"game.qsp"
