@@ -6,15 +6,6 @@
 			{
 				"export":"fantastic_battles.qsp",
 				"top_location":"[start]",
-				"folders":
-				[
-					{
-						"path": "."
-					},
-					{
-						"path": "..\\drive"
-					}
-				],
 				"files":
 				[
 					{
@@ -26,7 +17,16 @@
 					{
 						"path":"..\\forfiles\\base.txt"
 					}
-				]
+				],
+				"folders":
+				[
+					{
+						"path": "."
+					},
+					{
+						"path": "..\\drive"
+					}
+				]				
 			}
 		},
 		{
