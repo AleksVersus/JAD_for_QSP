@@ -63,7 +63,14 @@ def searchProject(path):
 			for i in error_log:
 				error_file.write(i)
 
-def exitFiles(work_dir,game_name):
-	exit_qsp=work_dir+"\\"+game_name
-	exit_txt=work_dir+"\\"+os.path.splitext(game_name)[0]+".txt"
+# из переданного названия файла
+def exitFiles(game_path):
+	exit_qsp=os.path.abspath(game_path)
+	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
 	return [exit_txt,exit_qsp]
+
+# распечатка на экране списка
+def printList(cur_list):
+	for i in cur_list:
+		print(i)
+	print (":)")
