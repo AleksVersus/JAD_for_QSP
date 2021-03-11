@@ -19,5 +19,20 @@ if work_dir!=None:
 	os.chdir(work_dir)
 	# открываем файл project.json через обёртку with и получаем структуру json-файла
 	with open("project.json","r",encoding="utf-8") as project_file:
-	    root=json.load(project_file)
+		root=json.load(project_file)
+
+	# инициализируем разные данные
 	
+	# получаем список инструкций из элемента "project"
+	for instruction in root["project"]:
+		build_files=[] # этот список будет содержать названия файлов, из которых билдим новый
+		# каждая инструкция снова представляет собой словарь
+		# однако элементы в этом словаре могут как присутствовать, так и отсутствовать, поэтому
+		if "files" in instruction:
+			# если инструкция содержит элемент files
+			build_files.extend(qsp.genFilesPaths(instruction["files"]))
+		if "build" in instruction:
+			# если инструкция содержит элемент "build"
+			exit_qsp, exit_txt = qsp.exitFiles(work_dir,instruction["build"])
+		else:
+			pass
