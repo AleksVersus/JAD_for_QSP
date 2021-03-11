@@ -2,6 +2,7 @@ import os
 
 # данная функция составляет список файлов .qsps .qsp-txt .txt-qsp в указанной папке и вложенных папках
 def getFilesList(folder):
+	error=folder # запоминаем путь для возможных ошибок
 	build_files=[] # это будет список файлов для билда
 	tree=os.walk(folder) # получаем все вложенные файлы и папки в виде объекта-генератора
 	for abs_path, folders, files in tree:
@@ -12,6 +13,9 @@ def getFilesList(folder):
 				# если это наше расширение
 				# добавляем файл в список к билду
 				build_files.append(abs_path+'\\'+file)
+	if len(build_files)==0:
+		with open("errors.log","a",encoding="utf-8") as error_file:
+				error_file.write("function.getFilesList: Folder is empty. Prove path '"+error+"'.\n")
 	return build_files
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .qsp по указанному пути
@@ -28,14 +32,15 @@ def constructFile(build_list,new_file):
 
 # данная функция находит папку проекта или возвращает None
 def searchProject(path):
-	error=path
+	error=path # запоминаем путь для возможных ошибок
+	error_log=[] # список ошибок
 	# если путь является файлом, получаем только путь
 	if os.path.isfile(path)==True:
 		path=os.path.split(path)[0]
 	# пока не найден файл проекта
 	while os.path.isfile(path+"\\project.json")==False:
 		if os.path.ismount(path)==True:
-			error_log.append("searchProject: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
+			error_log.append("function.searchProject: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
 			break
 		path=os.path.split(path)[0]
 	else:
