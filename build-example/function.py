@@ -67,7 +67,7 @@ def searchProject(path):
 def exitFiles(game_path):
 	exit_qsp=os.path.abspath(game_path)
 	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
-	return [exit_txt,exit_qsp]
+	return [exit_qsp,exit_txt]
 
 # распечатка на экране списка
 def printList(cur_list):
