@@ -18,6 +18,19 @@ def getFilesList(folder):
 				error_file.write("function.getFilesList: Folder is empty. Prove path '"+error+"'.\n")
 	return build_files
 
+# функция преобразует список словарей, содержащих пути, в список путей
+def genFilesPaths(files):
+	files_paths=[]
+	for path in files:
+		# перебираем указанные файлы (каждый элемент списка представляет собой словарь)
+		file_path=os.path.abspath(path["path"]) # приводим путь к абсолютному
+		if os.path.isfile(file_path):
+			files_paths.append(file_path) # если файл существует
+		else:
+			with open("errors.log","a",encoding="utf-8") as error_file:
+				error_file.write("genFilesPaths: File don't exist. Prove path '"+file_path+"'.\n")
+	return files_paths
+
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .qsp по указанному пути
 def constructFile(build_list,new_file):
 	# получив список файлов из которых мы собираем выходной файл, делаем следующее
@@ -49,3 +62,8 @@ def searchProject(path):
 		with open("errors.log","a",encoding="utf-8") as error_file:
 			for i in error_log:
 				error_file.write(i)
+
+def exitFiles(work_dir,game_name):
+	exit_qsp=work_dir+"\\"+game_name
+	exit_txt=work_dir+"\\"+os.path.splitext(game_name)[0]+".txt"
+	return [exit_txt,exit_qsp]
