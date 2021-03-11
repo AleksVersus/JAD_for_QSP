@@ -1,12 +1,12 @@
 # файл для тестирования python-скриптов
 
-import os, json, subprocess
+import timeit
 
-error_log=[] # список сообщений об ошибках
+code="import main"
 
-# в аргументе должен быть передан путь к файлу
-argument3="F:\\+++Просмотрено\\Немезиды"
-argument = "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\обязательные локации\\[death]\\death.qsps"
+et=timeit.timeit(code, number=100)/100
+print (et)
+
 
 
 
