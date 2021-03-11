@@ -46,22 +46,19 @@ def constructFile(build_list,new_file):
 # данная функция находит папку проекта или возвращает None
 def searchProject(path):
 	error=path # запоминаем путь для возможных ошибок
-	error_log=[] # список ошибок
 	# если путь является файлом, получаем только путь
 	if os.path.isfile(path)==True:
 		path=os.path.split(path)[0]
 	# пока не найден файл проекта
 	while os.path.isfile(path+"\\project.json")==False:
 		if os.path.ismount(path)==True:
-			error_log.append("function.searchProject: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
+			with open("errors.log","a",encoding="utf-8") as error_file:
+				error_file.write("function.searchProject: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
 			break
 		path=os.path.split(path)[0]
 	else:
 		return path
-	if len(error_log)>0:
-		with open("errors.log","a",encoding="utf-8") as error_file:
-			for i in error_log:
-				error_file.write(i)
+		
 
 # из переданного названия файла
 def exitFiles(game_path):
