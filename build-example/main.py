@@ -31,8 +31,13 @@ if work_dir!=None:
 		if "files" in instruction:
 			# если инструкция содержит элемент files
 			build_files.extend(qsp.genFilesPaths(instruction["files"]))
+		if "folders" in instruction:
+			# если инструкция содержит элемент folders
+			for path in instruction["folders"]:
+				# перебираем все пути, кидаем их функции getFilesList
+				build_files.extend(qsp.getFilesList(os.path.abspath(path["path"])))
 		if "build" in instruction:
 			# если инструкция содержит элемент "build"
-			exit_qsp, exit_txt = qsp.exitFiles(work_dir,instruction["build"])
+			exit_qsp, exit_txt = qsp.exitFiles(instruction["build"])
 		else:
 			pass
