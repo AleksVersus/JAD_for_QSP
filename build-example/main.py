@@ -36,6 +36,10 @@ if work_dir!=None:
 			for path in instruction["folders"]:
 				# перебираем все пути, кидаем их функции getFilesList
 				build_files.extend(qsp.getFilesList(os.path.abspath(path["path"])))
+		if (not "files" in instruction) and (not "folders" in instruction):
+			# если не определены инструкции по сборке, собираем из текущей папки
+			build_files.extend(qsp.getFilesList(os.getcwd()))
+
 		if "build" in instruction:
 			# если инструкция содержит элемент "build"
 			exit_qsp, exit_txt = qsp.exitFiles(instruction["build"])
