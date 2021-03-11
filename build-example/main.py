@@ -22,7 +22,7 @@ if work_dir!=None:
 		root=json.load(project_file)
 
 	# инициализируем разные данные
-	
+	export_files=[] # список файлов, получаемых на выходе
 	# получаем список инструкций из элемента "project"
 	for instruction in root["project"]:
 		build_files=[] # этот список будет содержать названия файлов, из которых билдим новый
@@ -39,9 +39,25 @@ if work_dir!=None:
 		if (not "files" in instruction) and (not "folders" in instruction):
 			# если не определены инструкции по сборке, собираем из текущей папки
 			build_files.extend(qsp.getFilesList(os.getcwd()))
-
+		# if "top_location" in instruction:
+			# данная инструкция пока не поддерживается
+			# pass
 		if "build" in instruction:
 			# если инструкция содержит элемент "build"
 			exit_qsp, exit_txt = qsp.exitFiles(instruction["build"])
 		else:
-			pass
+			# если инструкция не содержит элемент "build"
+			num=root["project"].index(instruction) # получаем номер инструкции в списке project
+			exit_qsp, exit_txt = qsp.exitFiles("game%i.qsp" %num) # генерируем название файла по номеру инструкции
+			with open("errors.log","a",encoding="utf-8") as error_file:
+				error_file.write("main: Key 'build' not found in project-list. Choose export name "+exit_qsp+".\n")
+		# после того, как все данные получены, генерируем выходной файл
+		# собираем текстовый файл
+		qsp.constructFile(build_files,exit_txt)
+		# теперь нужно конвертировать файл в бинарник
+		subprocess.run([txt2gam,exit_txt,exit_qsp])
+		if os.path.isfile(exit_qsp):
+			export_files.append(exit_qsp)
+		# теперь удаляем промежуточный файл
+		os.remove(exit_txt)
+	qsp.printList(export_files)
