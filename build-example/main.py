@@ -23,6 +23,7 @@ if work_dir!=None:
 
 	# инициализируем разные данные
 	export_files=[] # список файлов, получаемых на выходе
+	start_file="" # файл, который мы должны запустить
 	# получаем список инструкций из элемента "project"
 	for instruction in root["project"]:
 		build_files=[] # этот список будет содержать названия файлов, из которых билдим новый
@@ -60,4 +61,18 @@ if work_dir!=None:
 			export_files.append(exit_qsp)
 		# теперь удаляем промежуточный файл
 		os.remove(exit_txt)
-	qsp.printList(export_files)
+	# далее нам нужно запустить или не запустить один из файлов в плеере
+	if "start" in root:
+		# если есть инструкция для запуска файла
+		start_file=os.path.abspath(root["start"])
+	if (not "start" in root) or (not start_file in export_files):
+		start_file=export_files[0]
+		with open("errors.log","a",encoding="utf-8") as error_file:
+			error_file.write("main: Start-file is wrong. Used '"+start_file+"' for start the player.\n")
+	# после обработки json можно запустить указанный файл в плеере
+	if not os.path.isfile(start_file):
+		with open("errors.log","a",encoding="utf-8") as error_file:
+			error_file.write("main: Start-file is wrong. Don't start the player.\n")
+	else:
+		# здесь может быть: иначе если передана команда на запуск!
+		subprocess.run([player_exe,start_file])
