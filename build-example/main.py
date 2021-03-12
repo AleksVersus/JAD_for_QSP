@@ -1,6 +1,7 @@
 # QSP-builder предназначен для сборки отдельных игр формата .qsp
 # из текстовых файлов, написанных в формате TXT2GAM
 
+import sys # импортируем системные файлы
 import os, json, subprocess #импортируем нужные модули
 import function as qsp # импортируем свой модуль с коротким именем qsp
 
@@ -8,8 +9,9 @@ import function as qsp # импортируем свой модуль с кор�
 txt2gam="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe" # путь к txt2gam
 player_exe="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe"
 
-# получать имя файла (или полный путь к нему) мы будем из аргументов к скрипту, пока задаём вручную
-point_file = "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\обязательные локации\\[death]\\death.qsps"
+# получаем набор команд из аргументов
+args=qsp.parseARGS(sys.argv[1:])
+point_file = "D:\\death.qsps"
 
 # теперь нам нужно найти файл проекта, это делаем с помощью searchProject
 # и выполняем весь остальной код только при наличии файла проекта
@@ -73,6 +75,6 @@ if work_dir!=None:
 	if not os.path.isfile(start_file):
 		with open("errors.log","a",encoding="utf-8") as error_file:
 			error_file.write("main: Start-file is wrong. Don't start the player.\n")
-	else:
+	else os.path.isfile(player_exe) and :
 		# здесь может быть: иначе если передана команда на запуск!
 		subprocess.run([player_exe,start_file])

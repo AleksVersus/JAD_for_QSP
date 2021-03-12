@@ -58,9 +58,28 @@ def searchProject(path):
 		path=os.path.split(path)[0]
 	else:
 		return path
-		
 
-# из переданного названия файла
+# функция возвращает словарь команд, в зависимости от полученных от системы аргументов
+def parseARGS(arguments):
+	args={}
+	for a in arguments:
+		if a=="--buildandrun" or a=="--br" or a=="--b":
+			args["build"]=True
+		if a=="--buildandrun" or a=="--br" or a=="--r":
+			args["run"]=True
+		if os.path.isfile(a):
+			args["point_file"]=os.path.abspath(a)
+		if os.path.isdir(a):
+			args["point_dir"]=os.path.abspath(a)
+	if (not "build" in args) and (not "run" in args):
+		args["build"]="build"
+		args["run"]="run"
+	if (not "point_file" in args) and (not "point_dir" in args):
+		args["point_dir"]=os.getcwd()
+	return args
+
+
+# из переданного названия файла получаем пути к промежуточному файлу и конечному
 def exitFiles(game_path):
 	exit_qsp=os.path.abspath(game_path)
 	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
