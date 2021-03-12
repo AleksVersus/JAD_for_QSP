@@ -70,8 +70,12 @@ def parseARGS(arguments):
 		if os.path.isfile(a):
 			args["point_file"]=os.path.abspath(a)
 	if (not "build" in args) and (not "run" in args):
-		args["build"]="build"
-		args["run"]="run"
+		args["build"]=True
+		args["run"]=True
+	if not "build" in args:
+		args["build"]=False
+	if not "run" in args:
+		args["run"]=False
 	if not "point_file" in args:
 		args["point_file"]=os.getcwd()+"\\"+sys.argv[0]
 	return args
