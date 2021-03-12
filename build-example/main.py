@@ -11,7 +11,8 @@ player_exe="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe"
 
 # получаем набор команд из аргументов
 args=qsp.parseARGS(sys.argv[1:])
-point_file = "D:\\death.qsps"
+
+point_file = "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\обязательные локации\\[death]\\death.qsps"
 
 # теперь нам нужно найти файл проекта, это делаем с помощью searchProject
 # и выполняем весь остальной код только при наличии файла проекта

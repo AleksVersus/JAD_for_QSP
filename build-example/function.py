@@ -1,4 +1,4 @@
-import os
+import sys, os
 
 # данная функция составляет список файлов .qsps .qsp-txt .txt-qsp в указанной папке и вложенных папках
 def getFilesList(folder):
@@ -69,13 +69,11 @@ def parseARGS(arguments):
 			args["run"]=True
 		if os.path.isfile(a):
 			args["point_file"]=os.path.abspath(a)
-		if os.path.isdir(a):
-			args["point_dir"]=os.path.abspath(a)
 	if (not "build" in args) and (not "run" in args):
 		args["build"]="build"
 		args["run"]="run"
-	if (not "point_file" in args) and (not "point_dir" in args):
-		args["point_dir"]=os.getcwd()
+	if not "point_file" in args:
+		args["point_file"]=os.getcwd()+"\\"+sys.argv[0]
 	return args
 
 
