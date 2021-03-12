@@ -1,11 +1,10 @@
 # файл для тестирования python-скриптов
 
-import timeit
+import sys
+import function as qsp
 
-code="import main"
-
-et=timeit.timeit(code, number=100)/100
-print (et)
+args=qsp.parseARGS(sys.argv[1:])
+print(args)
 
 
 

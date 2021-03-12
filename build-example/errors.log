@@ -4,3 +4,5 @@ genFilesPaths: File don't exist. Prove path 'D:\my\GameDev\QuestSoftPlayer\proje
 main: Start-file is wrong. Used 'D:\my\GameDev\QuestSoftPlayer\projects\JAD\build-example\fantastic_battles.qsp' for start the player.
 genFilesPaths: File don't exist. Prove path 'D:\my\GameDev\QuestSoftPlayer\projects\JAD\build-example\intro.qsps'.
 main: Start-file is wrong. Used 'D:\my\GameDev\QuestSoftPlayer\projects\JAD\build-example\fantastic_battles.qsp' for start the player.
+genFilesPaths: File don't exist. Prove path 'D:\my\GameDev\QuestSoftPlayer\projects\JAD\build-example\intro.qsps'.
+main: Start-file is wrong. Used 'D:\my\GameDev\QuestSoftPlayer\projects\JAD\build-example\fantastic_battles.qsp' for start the player.
