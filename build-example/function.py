@@ -63,9 +63,9 @@ def searchProject(path):
 def parseARGS(arguments):
 	args={}
 	for a in arguments:
-		if a=="--buildandrun" or a=="--br" or a=="--b":
+		if a=="--buildandrun" or a=="--br" or a=="--b" or a=="--build":
 			args["build"]=True
-		if a=="--buildandrun" or a=="--br" or a=="--r":
+		if a=="--buildandrun" or a=="--br" or a=="--r" or a=="--run":
 			args["run"]=True
 		if os.path.isfile(a):
 			args["point_file"]=os.path.abspath(a)
