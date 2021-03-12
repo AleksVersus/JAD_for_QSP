@@ -16,21 +16,22 @@ args=qsp.parseARGS(sys.argv[1:])
 # args["build"] - указание собирать ли проект
 # args["run"] - указание запускать ли проект
 # -----------------------------------------------------------------------
+
 # теперь нам нужно найти файл проекта, это делаем с помощью searchProject
 # и выполняем весь остальной код только при наличии файла проекта
 work_dir = qsp.searchProject(args["point_file"])
 if work_dir!=None:
-	if args["build"]=True:
-		# только если разрешена сборка файла
-		# итак, если у нас есть рабочая дирректория, выставляем её, как текущую рабочу папку для удобства
-		os.chdir(work_dir)
-		# открываем файл project.json через обёртку with и получаем структуру json-файла
-		with open("project.json","r",encoding="utf-8") as project_file:
-			root=json.load(project_file)
+	# итак, если у нас есть рабочая дирректория, выставляем её, как текущую рабочу папку для удобства
+	os.chdir(work_dir)
+	# открываем файл project.json через обёртку with и получаем структуру json-файла
+	with open("project.json","r",encoding="utf-8") as project_file:
+		root=json.load(project_file)
+	# инициализируем разные данные
+	export_files=[] # список файлов, получаемых на выходе
+	start_file="" # файл, который мы должны запустить
 
-		# инициализируем разные данные
-		export_files=[] # список файлов, получаемых на выходе
-		start_file="" # файл, который мы должны запустить
+	if args["build"]==True:
+		# только если разрешена сборка файла
 		# получаем список инструкций из элемента "project"
 		for instruction in root["project"]:
 			build_files=[] # этот список будет содержать названия файлов, из которых билдим новый
@@ -74,17 +75,19 @@ if work_dir!=None:
 		if "start" in root:
 			# если есть инструкция для запуска файла
 			start_file=os.path.abspath(root["start"])
-		if (not "start" in root) or (not start_file in export_files):
+		if ((not "start" in root) or (not os.path.isfile(start_file))) and len(export_files)>0:
+			# если нет инструкции или указанный файл не существует, но есть список файлов
 			start_file=export_files[0]
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Start-file is wrong. Used '"+start_file+"' for start the player.\n")
+			# если нет ни инструкции, ни списка файлов start_file будет иметь пустое значение
 		# после обработки json можно запустить указанный файл в плеере
 		if not os.path.isfile(player_exe):
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Path at player is wrong. Prove path '"+player_exe+"'.\n")
 		if not os.path.isfile(start_file):
+			# эта строка больше не нужна, хотя оставим её, как защиту от дурака
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Start-file is wrong. Don't start the player.\n")
 		else:
-			# здесь может быть: иначе если передана команда на запуск!
 			subprocess.run([player_exe,start_file])
