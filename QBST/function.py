@@ -28,7 +28,7 @@ def genFilesPaths(files):
 			files_paths.append(file_path) # если файл существует
 		else:
 			with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write("genFilesPaths: File don't exist. Prove path '"+file_path+"'.\n")
+				error_file.write("function.genFilesPaths: File don't exist. Prove path '"+file_path+"'.\n")
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .qsp по указанному пути
