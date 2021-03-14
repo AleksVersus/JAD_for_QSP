@@ -2,7 +2,7 @@
     "cmd":
     [
     	"C:\\Program Files\\Python39\\python.exe", 
-    	"D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\main.py", 
+    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
     	"$file"
     ],
     "selector": "source.QSP",
@@ -13,7 +13,7 @@
     		"cmd":
 		    [
 		    	"C:\\Program Files\\Python39\\python.exe", 
-		    	"D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\main.py", 
+		    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
 		    	"$file","--build"
 		    ]
     	},
@@ -22,7 +22,7 @@
     		"cmd":
 		    [
 		    	"C:\\Program Files\\Python39\\python.exe", 
-		    	"D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\main.py", 
+		    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
 		    	"$file","--run"
 		    ]
     	}
