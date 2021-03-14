@@ -27,5 +27,7 @@
 			]				
 		}
 	],
-	"start":"game.qsp"
+	"start":"game.qsp",
+	"converter":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe",
+	"player":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe"
 }

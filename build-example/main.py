@@ -26,6 +26,13 @@ if work_dir!=None:
 	# открываем файл project.json через обёртку with и получаем структуру json-файла
 	with open("project.json","r",encoding="utf-8") as project_file:
 		root=json.load(project_file)
+	# получаем пути к txt2gam и плееру
+	if "converter" in root:
+		if os.path.isfile(os.path.abspath(root["converter"])):
+			txt2gam=os.path.abspath(root["converter"])
+	if "player" in root:
+		if os.path.isfile(os.path.abspath(root["player"])):
+			player_exe=os.path.abspath(root["player"])
 	# инициализируем разные данные
 	export_files=[] # список файлов, получаемых на выходе
 	start_file="" # файл, который мы должны запустить
