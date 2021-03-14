@@ -81,12 +81,14 @@ if work_dir!=None:
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Start-file is wrong. Used '"+start_file+"' for start the player.\n")
 			# если нет ни инструкции, ни списка файлов start_file будет иметь пустое значение
+		if ((not "start" in root) or (not os.path.isfile(start_file))) and os.path.splitext(args["point_file"])[1]==".qsp":
+			start_file=args["point_file"]
 		# после обработки json можно запустить указанный файл в плеере
 		if not os.path.isfile(player_exe):
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Path at player is wrong. Prove path '"+player_exe+"'.\n")
 		if not os.path.isfile(start_file):
-			# эта строка больше не нужна, хотя оставим её, как защиту от дурака
+			# если указан неправильный файл запуска
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Start-file is wrong. Don't start the player.\n")
 		else:
