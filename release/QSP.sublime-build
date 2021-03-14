@@ -1,0 +1,30 @@
+{
+    "cmd":
+    [
+    	"C:\\Program Files\\Python39\\python.exe", 
+    	"D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\main.py", 
+    	"$file"
+    ],
+    "selector": "source.QSP",
+    "variants":
+    [
+    	{
+    		"name":"qsp-build",
+    		"cmd":
+		    [
+		    	"C:\\Program Files\\Python39\\python.exe", 
+		    	"D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\main.py", 
+		    	"$file","--build"
+		    ]
+    	},
+    	{
+    		"name":"qsp-run",
+    		"cmd":
+		    [
+		    	"C:\\Program Files\\Python39\\python.exe", 
+		    	"D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\build-example\\main.py", 
+		    	"$file","--run"
+		    ]
+    	}
+    ]
+}
