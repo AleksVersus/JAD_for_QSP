@@ -285,4 +285,36 @@ QBST принимает следующие аргументы, записанн�
 
 Пишите обязательно, если у вас есть советы или замечания по работе QBST, по наполнению данного руководства и иные.
 
+
+## P.S.:
+
 [здесь будет вставлена ссылка на видео]
+
+* Канал на YouTube обучающий писать игры на QSP: https://www.youtube.com/c/aleksversus
+
+* Сайт с текстовыми играми и программами для создания игр: http://qsp.su
+* Наша группа в vk: https://vk.com/qsplayer
+* В дискорде https://discord.gg/SMvzEFm
+
+* Обсуждение справочника "Как сделать? Ча.Во." на форуме http://qsp.su/index.php?option=com_agora&task=topic&id=1280&p=1&prc=25&Itemid=57
+* Скачать справочник на mega.nz: https://mega.nz/folder/vG4XzSoZ#gf0jU0FFdWHpgJnN8eAaGA
+* Примеры кода и различные решения: https://mega.nz/folder/rfAllKzR#rssaaJSs4tpGA_tUbaCCQw
+* Программы: https://mega.nz/folder/jXwXlSRJ#TF7P-soOJOWIC8MrBA-L1A
+
+* Обучение HTML и CSS, плюс немного JS https://mega.nz/folder/WXhkWLSI#WmF8uN01JeuIyopuCtGlMw
+
+Новые версии плеера:
+
+* Nex (Quest Navigator): http://qsp.su/index.php?option=com_agora&task=topic&id=633&Itemid=57
+* WereWolf (QSPider): http://qsp.su/index.php?option=com_agora&task=topic&id=1291&Itemid=57
+* Sonnix (Плеер с поддержкой webm): http://qsp.su/index.php?option=com_agora&task=topic&id=1192&p=1&prc=25&Itemid=57#p26813
+* Seedheartha (Quest Player Fork): http://qsp.su/index.php?option=com_agora&task=topic&id=128&p=10&prc=25&Itemid=57#p27855
+
+Поблагодарите отца-основателя платформы Байта: http://qsp.su/index.php?option=com_comprofiler&Itemid=20&user=66
+
+А так же простимулируйте разработку нового QGen от Rrock: http://qsp.su/index.php?option=com_agora&task=topic&id=594&Itemid=57
+
+Анонс шикарнейшей игры от Svartbergа на классическом плеере: http://qsp.su/index.php?option=com_agora&task=topic&id=1235&Itemid=57
+
+* Единоразово задарить меня https://www.donationalerts.com/r/aleksversus
+* Задаривать ежемесячно https://boosty.to/aleksversus
