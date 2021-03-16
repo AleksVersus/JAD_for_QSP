@@ -1,4 +1,4 @@
-# JAD
+# JAD for QSP
 JAD — joint application development
 
 Или по-русски: совместная разработка приложений. В нашем случае *Joint QSP-Games Development*, только аббревиатура выходит некрасивая.)
