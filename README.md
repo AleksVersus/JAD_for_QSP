@@ -103,6 +103,7 @@ JAD — joint application development
 Значением элемента "player" является путь к плееру, в котором необходимо запустить игру (например, после сборки).
 
 Скачать утилиту TXT2GAM можно отсюда: http://qsp.su/index.php?option=com_content&task=view&id=52&Itemid=56
+
 Различные плееры лежат здесь: http://qsp.su/index.php?option=com_content&view=article&id=64&Itemid=87 
 
 #### Пути
