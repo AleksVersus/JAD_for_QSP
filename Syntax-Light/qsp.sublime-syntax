@@ -12,6 +12,10 @@ file_extensions: # расширения файлов
   - txt-qsp
 first_line_match: ^(#)\s?.+$
 scope: source.QSP
+variables:
+  oprt: (?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|\*?clr|\*?clear|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg|\*|&amp;|\*?pl?|\*?nl|\+|=|-|(&gt;|&lt;)=?|=?(&gt;|&lt;)))
+  sv: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize|counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))
+  fnc: (?i:obj|isplay|len|dyneval|input|user_text|usrtxt|iif|rgb|msecscount|desc|maintxt|stattxt|qspver|func|curloc|selobj|no|and|mod|selact|curacts|arrsize|arrpos|countobj|getobj|mid|(u|l)case|trim|replace|instr|isnum|val|str|loc|or|max|min|r(a)?nd|(arr|str)comp|str(find|pos))
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
     - match: ^(#)\s?.+$
@@ -26,18 +30,41 @@ contexts: # теперь необходимо определить "контек
     - include: comments
     - include: operators
     - include: sysvar
+    - include: functions
+    - include: strings
     
   operators:
-    - match: \b(?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|\*?clr|\*?clear|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg|\*|&amp;|\*?pl?|\*?nl|\+|=|-|(&gt;|&lt;)=?|=?(&gt;|&lt;)))\b
+    - match: \b{{oprt}}\b
       scope: support.function.qsp avs.operators
 
   sysvar:
-    - match: \b\$?(?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize)|counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))\b
+    - match: \b{{sv}}\b
+      scope: keyword.qsp avs.sysvar
+    - match: \$(?={{sv})
       scope: keyword.qsp avs.sysvar
 
   functions:
-    - match: \b(?i:obj|isplay|len|dyneval|input|user_text|usrtxt|iif|rgb|msecscount|desc|maintxt|stattxt|qspver|func|curloc|selobj|no|and|mod|selact|curacts|arrsize|arrpos|countobj|getobj|mid|(u|l)case|trim|\$?replace|instr|isnum|val|str|loc|or|max|min|r(a)?nd|(arr|str)comp|str(find|pos))\b
+    - match: \b{{fnc}}\b
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+    - match: \$(?={{fnc}})
+      scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+
+  strings:
+    - match: '"'
+      push:
+        - meta_scope: string.qsp
+        - match: '""'
+          scope: string.qsp
+        - match: '"'
+          pop: true
+    - match: "'"
+      push:
+        - meta_scope: string.qsp
+        - match: "''"
+          scope: string.qsp
+        - match: "'"
+          pop: true
+
 
   comments:
     - match: ^\s*?\!.*?$
