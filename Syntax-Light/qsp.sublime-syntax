@@ -1,0 +1,18 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+#
+# Quest Soft Player Language:
+# http://qsp.su/
+
+name: QSP # название языка
+file_extensions: # расширения файлов
+  - qsps
+  - qsp-txt
+  - txt-qsp
+first_line_match: ^(#)\s?.+$
+scope: source.QSP
+contexts: # теперь необходимо определить "контексты" подсветки
+  main: # обязательный контекст main, с него стартует распознавание синтаксиса
+    - match: ^(#)\s?.+$
+      scope: constant.character.LISP
