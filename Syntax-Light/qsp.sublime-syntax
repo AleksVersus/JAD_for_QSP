@@ -13,18 +13,24 @@ file_extensions: # расширения файлов
 first_line_match: ^(#)\s?.+$
 scope: source.QSP
 variables:
-  oprt: (?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|\*?clr|\*?clear|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg|\*|&amp;|\*?pl?|\*?nl|\+|=|-|(&gt;|&lt;)=?|=?(&gt;|&lt;)))
+  oprt: (?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprttxt: (?i:(pl?|nl|clr|clear))
   sv: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize|counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))
   fnc: (?i:obj|isplay|len|dyneval|input|user_text|usrtxt|iif|rgb|msecscount|desc|maintxt|stattxt|qspver|func|curloc|selobj|no|and|mod|selact|curacts|arrsize|arrpos|countobj|getobj|mid|(u|l)case|trim|replace|instr|isnum|val|str|loc|or|max|min|r(a)?nd|(arr|str)comp|str(find|pos))
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
-    - match: ^(#)\s?.+$
-      scope: constant.character.qsp
-      push:
-        - include: locations
-        - match: ^-{1,2}\S.*?\S-{1,2}$
-          scope: variable.parameter.url.qsp
-          pop: true
+    - match: ""
+      push: 
+        - match: ".*"
+          scope: comment.qsp
+      with_prototype:
+        - match: ^(#)\s?.+$
+          scope: constant.character.qsp avs.locstart
+          push:
+            - match: ^-{1,2}\S.*?\S-{1,2}$
+              pop: true
+              scope: variable.parameter.url.qsp avs.locend
+            - include: locations
     
   locations:
     - include: comments
@@ -44,9 +50,9 @@ contexts: # теперь необходимо определить "контек
       scope: constant.numeric avs.numberic
     
   operators:
-    - match: \b{{oprt}}\b
+    - match: \b({{oprt}}|{{oprttxt}})\b
       scope: support.function.qsp avs.operators
-    - match: (\*)(?={{oprt}}\b)
+    - match: (\*)(?={{oprttxt}}\b)
       scope: support.function.qsp avs.operators
 
   sysvar:
