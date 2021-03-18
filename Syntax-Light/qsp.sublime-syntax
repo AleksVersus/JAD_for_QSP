@@ -14,5 +14,18 @@ first_line_match: ^(#)\s?.+$
 scope: source.QSP
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
+    - include: locations
+    
+  locations:
+    - include: comments
     - match: ^(#)\s?.+$
-      scope: constant.character.LISP
+      scope: constant.character.qsp
+      push:
+        - meta_scope: main
+        - match: ^-{1,2}\S.*?\S-{1,2}$
+          scope: variable.parameter.url.qsp
+          pop: true
+
+  comments:
+    - match: ^\s*?\!.*?$
+      scope: comment.block.qsp
