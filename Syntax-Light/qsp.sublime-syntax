@@ -32,21 +32,33 @@ contexts: # теперь необходимо определить "контек
     - include: sysvar
     - include: functions
     - include: strings
+    - include: operacion
+    - include: numeric
+
+  operacion:
+    - match: '(?i:(,|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
+      scope: support.function.qsp
+
+  numeric:
+    - match: \b[0-9]+\b
+      scope: constant.numeric avs.numberic
     
   operators:
     - match: \b{{oprt}}\b
+      scope: support.function.qsp avs.operators
+    - match: (\*)(?={{oprt}}\b)
       scope: support.function.qsp avs.operators
 
   sysvar:
     - match: \b{{sv}}\b
       scope: keyword.qsp avs.sysvar
-    - match: \$(?={{sv})
+    - match: (\$)(?={{sv}})
       scope: keyword.qsp avs.sysvar
 
   functions:
     - match: \b{{fnc}}\b
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
-    - match: \$(?={{fnc}})
+    - match: (\$)(?={{fnc}})
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
 
   strings:
