@@ -12,11 +12,13 @@ file_extensions: # расширения файлов
   - txt-qsp
 first_line_match: ^(#)\s?.+$
 scope: source.QSP
-variables:
+variables: # назначаем переменные для удобства
   oprt: (?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg))
   oprttxt: (?i:(pl?|nl|clr|clear))
-  sv: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize|counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))
-  fnc: (?i:obj|isplay|len|dyneval|input|user_text|usrtxt|iif|rgb|msecscount|desc|maintxt|stattxt|qspver|func|curloc|selobj|no|and|mod|selact|curacts|arrsize|arrpos|countobj|getobj|mid|(u|l)case|trim|replace|instr|isnum|val|str|loc|or|max|min|r(a)?nd|(arr|str)comp|str(find|pos))
+  sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
+  sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))
+  fncnum: (?i:obj|isplay|len|iif|rgb|msecscount|no|and|mod|arrsize|arrpos|countobj|instr|isnum|val|loc|or|r(a)?nd|(arr|str)comp|strpos)
+  fnctxt: (?i:(input|user_text|usrtxt|dyneval|desc|maintxt|stattxt|qspver|func|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|max|min|strfind))
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
     - match: ""
@@ -54,18 +56,24 @@ contexts: # теперь необходимо определить "контек
       scope: support.function.qsp avs.operators
     - match: (\*)(?={{oprttxt}}\b)
       scope: support.function.qsp avs.operators
+    - match: (\*)(?={{oprt}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   sysvar:
-    - match: \b{{sv}}\b
+    - match: \b({{sysvarnum}}|{{sysvartxt}})\b
       scope: keyword.qsp avs.sysvar
-    - match: (\$)(?={{sv}})
+    - match: (\$)(?={{sysvartxt}})
       scope: keyword.qsp avs.sysvar
+    - match: (\$)(?={{sysvarnum}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   functions:
-    - match: \b{{fnc}}\b
+    - match: \b({{fncnum}}|{{fnctxt}})\b
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
-    - match: (\$)(?={{fnc}})
+    - match: (\$)(?={{fnctxt}})
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+    - match: (\$)(?={{fncnum}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   strings:
     - match: '"'
