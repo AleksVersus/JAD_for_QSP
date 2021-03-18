@@ -42,6 +42,7 @@ contexts: # теперь необходимо определить "контек
     - include: strings
     - include: operacion
     - include: numeric
+    - include: markers
 
   operacion:
     - match: '(?i:(,|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
@@ -74,6 +75,10 @@ contexts: # теперь необходимо определить "контек
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
     - match: (\$)(?={{fncnum}}\b)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
+
+  markers:
+    - match: ^\s*:[^&'"]+
+      scope: entity.name.function entity.name avs.markup
 
   strings:
     - match: '"'
