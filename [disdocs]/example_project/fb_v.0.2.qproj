@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QGen-project version="4.0.0 beta 1">
+  <Structure>
+    <Location name="[start]"/>
+    <Folder name="системное меню">
+      <Location name="[1.0_game_start]"/>
+      <Location name="[0.1_game_info]"/>
+    </Folder>
+    <Folder name="локации места">
+      <Location name="[м:0]_общий_вид_локации_места"/>
+      <Location name="[м:1]_дом"/>
+      <Location name="[м:2]_улица"/>
+      <Location name="место;стандартная_кухня"/>
+    </Folder>
+    <Folder name="обязательные локации">
+      <Location name="[chest]"/>
+      <Location name="[death]"/>
+      <Location name="[help]"/>
+    </Folder>
+  </Structure>
+</QGen-project>
