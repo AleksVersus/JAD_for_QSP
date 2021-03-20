@@ -107,15 +107,28 @@ contexts: # теперь необходимо определить "контек
     - match: ^\s*?![^{{opener}}]*?\"
       scope: comment.qsp
       push:
-        - include: doublein
+        - meta_scope: comment.qsp
+        - match: ^.*?{{quote}}.*?{{quote}}.*?$
+          scope: comment.qsp
         - match: \"[^{{closer}}]*?$
           scope: comment.qsp
           pop: true
     - match: ^\s*?![^{{opener}}]*?\'
       scope: comment.qsp
       push:
-        - include: doublein
+        - meta_scope: comment.qsp
+        - match: ^.*?{{ap}}.*?{{ap}}.*?$
+          scope: comment.qsp
         - match: \'[^{{closer}}]*?$
+          scope: comment.qsp
+          pop: true
+
+    - match: ^\s*?![^{{opener}}]*?\{
+      scope: comment.qsp
+      push:
+        - include: brackin
+        - meta_scope: comment.qsp
+        - match: \}[^{{closer}}]*?$
           scope: comment.qsp
           pop: true
           
@@ -126,8 +139,11 @@ contexts: # теперь необходимо определить "контек
         1: support.function.qsp
         2: comment.qsp
 
-  doublein:
-    - match: ^.*?{{ap}}.*?{{ap}}.*?$
+  brackin:
+    - match: '[^\{]*?\{[^\}\{}]*?'
       scope: comment.qsp
-    - match: ^.*?{{quote}}.*?{{quote}}.*?$
-      scope: comment.qsp
+      push:
+        - include: brackin
+        - match: '[^\{\}]*?\}[^\}]*?'
+          scope: comment.qsp
+          pop: true
