@@ -107,7 +107,17 @@ contexts: # теперь необходимо определить "контек
     - match: ^\s*?![^{{opener}}]*?\"
       scope: comment.qsp
       push:
+        - match: ^.*?{{quote}}.*?{{quote}}.*?$
+          scope: comment.qsp
         - match: \"[^{{closer}}]*?$
+          scope: comment.qsp
+          pop: true
+    - match: ^\s*?![^{{opener}}]*?\'
+      scope: comment.qsp
+      push:
+        - match: ^.*?{{ap}}.*?{{ap}}.*?$
+          scope: comment.qsp
+        - match: \'[^{{closer}}]*?$
           scope: comment.qsp
           pop: true
           
