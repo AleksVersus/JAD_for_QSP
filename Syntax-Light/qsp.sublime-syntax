@@ -19,8 +19,12 @@ variables: # назначаем переменные для удобства
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))
   fncnum: (?i:obj|isplay|len|iif|rgb|msecscount|no|and|mod|arrsize|arrpos|countobj|instr|isnum|val|loc|or|r(a)?nd|(arr|str)comp|strpos)
   fnctxt: (?i:(input|user_text|usrtxt|dyneval|desc|maintxt|stattxt|qspver|func|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|max|min|strfind))
-  fbo: '[^\{]*?\{[^\{]*?'
-  fbc: '[^\}]*?\}[^\}]*?'
+  figop: '\{'
+  figcls: '\}'
+  quote: '"'
+  ap: "'"
+  opener: '{{figop}}{{quote}}{{ap}}'
+  closer: '{{figcls}}{{quote}}{{ap}}'
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -100,46 +104,16 @@ contexts: # теперь необходимо определить "контек
           pop: true
 
   comments:
-    - match: '^\s*?\![^"]*?"[^"]*?' # сложный комментарий с кавычками
-      push:
-        - meta_scope: comment.block.qsp
-        - match: ([^"]*?"[^"]*?\"[^"]*?)+
-          scope: comment.block.qsp
-        - match: '[^"]*?"[^"]*?$'
-          pop: true
-    
-    - match: ^\s*?\![^\{]*?\{[^\}]*? # сложный комментарий с фигурными скобками
-      push:
-        - meta_scope: comment.block.qsp
-        - match: '{{fbo}}'
-          scope: comment.qsp
-          push:
-            - include: comment_brackets
-            - match: '{{fbc}}'
-              scope: comment.qsp
-              pop: true
-        - match: '[^\}]*?\}[^\{]*?$'
-          pop: true
-    - match: ^\s*?\![^\']*?\'[^\']*? # сложный комментарий с фигурными скобками
-      push:
-        - meta_scope: comment.block.qsp
-        - match: ([^\']*?\'[^\']*?\'[^\']*?)+
-          scope: comment.block.qsp
-        - match: "[^\']*?\'[^\']*?$"
-          pop: true
-    - match: ^\s*?\!.*?$ # простой комментарий в начале строки
+    - match: ^\s*?![^{{opener}}]*?\"
       scope: comment.qsp
-    - match: (\&)\s*?(\!.*?$) # простой комментарий после &
+      push:
+        - match: \"[^{{closer}}]*?$
+          scope: comment.qsp
+          pop: true
+          
+    - match: ^\s*?!.*?$ # простой комментарий в начале строки
+      scope: comment.qsp
+    - match: (\&)\s*?(!.*?$) # простой комментарий после &
       captures:
         1: support.function.qsp
         2: comment.qsp
-
-  comment_brackets:
-    - match: '{{fbo}}'
-      scope: comment.qsp
-      push:
-        - include: comment_brackets
-        - meta_scope: comment.qsp
-        - match: '{{fbc}}'
-          scope: comment.qsp
-          pop: true
