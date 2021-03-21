@@ -52,7 +52,7 @@ contexts: # теперь необходимо определить "контек
     - include: markers
 
   operacion:
-    - match: '(?i:(!|,|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
+    - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp
 
   numeric:
@@ -95,6 +95,7 @@ contexts: # теперь необходимо определить "контек
           scope: string.qsp
         - match: '"'
           pop: true
+        - include: subexpression
     - match: "'"
       push:
         - meta_scope: string.qsp
@@ -102,6 +103,26 @@ contexts: # теперь необходимо определить "контек
           scope: string.qsp
         - match: "'"
           pop: true
+        - include: subexpression
+
+  subexpression:
+    - match: '<<'
+      scope: entity.name.function entity.name avs.markup
+      push:
+        - clear_scopes: true
+        - match: '>>'
+          scope: entity.name.function entity.name avs.markup
+          pop: true
+        - include: subex
+
+  subex:
+    - include: operators
+    - include: sysvar
+    - include: functions
+    - include: strings
+    - include: operacion
+    - include: numeric
+
 
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
     - match: ((^\s*?)|(\&\s*?))(!)
