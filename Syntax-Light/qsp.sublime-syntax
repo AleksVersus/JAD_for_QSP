@@ -52,7 +52,6 @@ contexts: # теперь необходимо определить "контек
     - include: markers
 
   operacion:
-    - match: '(?i:(,|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
     - match: '(?i:(!|,|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp
 
@@ -111,7 +110,7 @@ contexts: # теперь необходимо определить "контек
         - meta_scope: comment.qsp
         - match: ^.*?{{quote}}.*?{{quote}}.*?$
           scope: comment.qsp
-        - match: \"[^{{closer}}]*?$
+        - match: \".*?$
           scope: comment.qsp
           pop: true
     - match: ^\s*?![^{{opener}}]*?\'
@@ -120,7 +119,7 @@ contexts: # теперь необходимо определить "контек
         - meta_scope: comment.qsp
         - match: ^.*?{{ap}}.*?{{ap}}.*?$
           scope: comment.qsp
-        - match: \'[^{{closer}}]*?$
+        - match: \'.*?$
           scope: comment.qsp
           pop: true
 
