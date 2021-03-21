@@ -103,9 +103,11 @@ contexts: # теперь необходимо определить "контек
         - match: "'"
           pop: true
 
-  comments:
-    - match: ^\s*?!
-      scope: comment.qsp
+  comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
+    - match: ((^\s*?)|(\&\s*?))(!)
+      captures:
+        3: support.function.qsp
+        4: comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: (\n\r|\r|\r\n|\n)
@@ -164,11 +166,3 @@ contexts: # теперь необходимо определить "контек
         - match: \'
           scope: comment.qsp
           pop: true
-
-  cominstr:     
-    - match: ^\s*?!.*?$ # простой комментарий в начале строки
-      scope: comment.qsp
-    - match: (\&)\s*?(!.*?$) # простой комментарий после &
-      captures:
-        1: support.function.qsp
-        2: comment.qsp
