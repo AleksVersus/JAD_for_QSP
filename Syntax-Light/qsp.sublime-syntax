@@ -104,46 +104,71 @@ contexts: # теперь необходимо определить "контек
           pop: true
 
   comments:
-    - match: ^\s*?![^{{opener}}]*?\"
+    - match: ^\s*?!
+      scope: comment.qsp
+      push:
+        - meta_scope: comment.qsp
+        - match: (\n\r|\r|\r\n|\n)
+          scope: comment.qsp
+          pop: true
+        - include: cominquotes
+        - include: brackin
+
+  brackin: # данная конструкция отвечает за поддержку вложенных скобок в комменте
+    - match: '\{'
+      scope: comment.qsp
+      push:
+        - match: '\}'
+          scope: comment.qsp
+          pop: true
+        - include: brackin
+        - include: quoteinbrack
+        - include: apinbrack
+
+  quoteinbrack: # данная конструкция отвечает за поддержку апострофов и кавычек в комменте
+    - match: '{{quote}}'
+      scope: comment.qsp
+      push:
+        - match: '{{quote}}'
+          scope: comment.qsp
+          pop: true
+    - match: '{{quote}}'
+      scope: invalid.illegal.stray-bracket-end.qsp
+
+  apinbrack:
+    - match: '{{ap}}'
+      scope: comment.qsp
+      push:
+        - match: '{{ap}}'
+          scope: comment.qsp
+          pop: true
+    - match: '{{ap}}'
+      scope: invalid.illegal.stray-bracket-end.qsp
+
+  cominquotes:
+    - match: '[^{{opener}}]*?\"'
       scope: comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: ^.*?{{quote}}.*?{{quote}}.*?$
           scope: comment.qsp
-        - match: \".*?$
+        - match: \"
           scope: comment.qsp
           pop: true
-    - match: ^\s*?![^{{opener}}]*?\'
+    - match: "[^{{opener}}]*?\'"
       scope: comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: ^.*?{{ap}}.*?{{ap}}.*?$
           scope: comment.qsp
-        - match: \'.*?$
+        - match: \'
           scope: comment.qsp
           pop: true
 
-    - match: ^\s*?![^{{opener}}]*?\{
-      scope: comment.qsp
-      push:
-        - include: brackin
-        - meta_scope: comment.qsp
-        - match: \}[^{{closer}}]*?$
-          scope: comment.qsp
-          pop: true
-          
+  cominstr:     
     - match: ^\s*?!.*?$ # простой комментарий в начале строки
       scope: comment.qsp
     - match: (\&)\s*?(!.*?$) # простой комментарий после &
       captures:
         1: support.function.qsp
         2: comment.qsp
-
-  brackin:
-    - match: '[^\{]*?\{[^\}\{}]*?'
-      scope: comment.qsp
-      push:
-        - include: brackin
-        - match: '[^\{\}]*?\}[^\}]*?'
-          scope: comment.qsp
-          pop: true
