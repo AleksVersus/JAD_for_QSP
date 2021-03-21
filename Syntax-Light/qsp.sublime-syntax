@@ -36,9 +36,11 @@ contexts: # теперь необходимо определить "контек
         - match: ^(#)\s?.+$
           scope: constant.character.qsp avs.locstart
           push:
-            - match: ^-{1,2}\S.*?\S-{1,2}$
+            - match: ^(-)(.*?)$
               pop: true
-              scope: variable.parameter.url.qsp avs.locend
+              captures:
+                1: variable.parameter.url.qsp avs.locend
+                2: entity.name.function entity.name avs.locend.comments
             - include: locations
     
   locations:

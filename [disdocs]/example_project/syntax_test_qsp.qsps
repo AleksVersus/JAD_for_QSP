@@ -120,7 +120,10 @@ if $args[1]='':
 		gosub 'add.new.obj','<link> [name:Зайти в кузницу.:name] <goto:[loc:[chest]:loc] [did:сундук;1010_простая_кузница:did] [time:[minute:5]:time] :goto>','','кузница в доме'
 		gosub 'add.new.obj','<link> [name:Алтарь у печки.:name] <goto:[loc:[chest]:loc] [did:сундук;1020_алтарь:did] [time:[minute:5]:time] [spec:set_altar:spec]:goto>','','алтарь в доме'
 		gosub 'add.new.obj','<goto> <goto:[name:<font color=#888800>[говорить с торговцем]</font>:name] [loc:[chest]:loc] [did:торговец;татиан:did]:goto>',$curloc,'GOTO'
-		gosub 'add.new.obj','<goto> <goto:[name:Обычная кухня:name] [loc:место;стандартная_кухня:loc] [did:место;дом_который_построил_джек_стандартная кухня:did] [rule:{name:в доме, который построил Джек:name}:rule]:goto>',$curloc,'GOTO'
+		gosub 'add.new.obj','<goto> <goto:[name:Обычная кухня:name] [loc:место;стандартная_кухня:loc] [did:место;дом
+------
+
+_который_построил_джек_стандартная кухня:did] [rule:{name:в доме, который построил Джек:name}:rule]:goto>',$curloc,'GOTO'
 		gosub 'base.new.obj','[:no_count:] [name:Изумруды:name] [color:008844] [num:изумруд|изумруда|изумрудов:num] ','',$curloc,99
 		gosub 'base.new.obj','[:?:] [name:<font color=#008888>Пустой предмет</font>:name] [number] [color:008844] [text:Описание пустого предмета:text]','',$curloc,1
 		gosub 'base.new.obj','[:посох_файербол:]'
