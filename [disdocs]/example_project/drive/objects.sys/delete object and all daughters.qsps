@@ -1,0 +1,17 @@
+# del.obj
+! Удаляет предмет из игры по ай-дишнику. А так же все унаследованные предметы.
+! $args[0] - айдишник
+$args[0] = $args[0]
+$args[1] = $args[1]	&	!	'not parent' - удалятся все объекты, кроме родительского
+gs 'get.daughter.obj.all',$args[0],'','$temp_id'
+if $args[1]!'not parent': $temp_id[arrsize('$temp_id')]=$args[0]
+args['i']=0
+:while
+if args['i']<arrsize('$temp_id'):
+	gs 'del.obj.id',$temp_id[args['i']]
+	gs 'clr.parent.obj',$temp_id[args['i']]
+	args['i']+=1
+	jump 'while'
+end
+killvar '$temp_id'
+--- del.obj ---------------------------------

@@ -1,0 +1,75 @@
+# gen.act.obj
+! генерирует действие для поднятия предмета
+$args[0] = $args[0]	&	!	ай-ди предмета
+$args[1] = $args[1]	&	!	ай-ди локации
+$args[2] = $args[2]	&	!	режим: acts - получаем действия в виде динамического кода href - получаем гиперссылки пустое значение - действия добавляются напрямую
+$args[3] = $args[3]	&	!	различные надстройки. Т.е. какую инфу нам хотелось бы видеть при отображении предмета:
+!	[count] - количество
+!	[weight] - только при наличии count - вес
+!	[take: ] - содержимое тега. Указанное слово или слово по-умолчанию из базы.
+!	[cost] - стоимость
+!	[spirit] - духовная ценность
+if $light_array[$args[1]]='темно': jump 'fin'	&	!	в темноте нельзя разглядеть предметов, завершаем
+! ------------------ различные свойства предметов ----------
+	$args['obj']=$func('get.obj.id',$args[0])
+	args['pos']=arrpos('$id_array',$args[0])
+	$args['name']=$func('get.tag.cont',$args['obj'],'name')
+	$args['name']=$func('get.word.padez',$args['name'],'В')
+	args['weight']=func('get.tag.num',$args['obj'],'weight')
+	if kolvo_array[args['pos']]!0 and instr($args[3],'[count]')<>0: $args['kolvo']=' ('+str(kolvo_array[args['pos']])+' штук'+$func('get.word.end',kolvo_array[args['pos']],'а|и|')
+	if args['weight']!0 and instr($args[3],'[weight]')<>0: $args['kolvo']+=' x '+$func('#indiv#',args['weight'],100,10)+')' else $args['kolvo']+=')'
+! ------------------ различные свойства предметов ----------
+! слово подъёма
+$args['[take]']=$func('get.tag.num',$args[3],'take')
+if $args['[take]']='' or $args['[take]']='take':
+	$args['поднять']+=$func('b.d.t','take')
+elseif $args['[take]']='lift':
+	$args['поднять']+=$func('b.d.t','lift')
+elseif $args['[take]']='buy':
+	$args['поднять']+=$func('b.d.t','buy')
+else
+	$args['поднять']+=$args['[take]']
+end
+! стоимость cost:
+if instr($args[3],'[cost]')<>0:
+	args['stoim']=func('get.tag.num',$args['obj'],"stoim")
+	$args['stoimost']=$func('#indiv#',func('obj.purc.cost',args['stoim'],$args[1]),100,1)
+	!	заменить на обращение к базе
+	$args['купить за']=" по "+$args['stoimost']+' дублон'+$func('get.word.end',val($args['stoimost']),'|а|ов')+"."
+end
+! духовная ценность:
+if instr($args[3],'[spirit]')<>0:
+	args['духовная ценность']=func('get.spirit',$args[0],$args[1])
+	$args['дух']=" ("+$func('#indiv#',args['духовная ценность'],100,10)+" ед. кармы) "
+else
+	$args['дух']=""
+end
+! формируем название действия из всего вышеперечисленного
+$args['actions.text']=$args['поднять']+$args['name']+$args['kolvo']+$args['купить за']+$args['дух']
+
+if $args[2]='href' or $args[2]='':
+	if instr($args['obj'],'[lock-obj]')=0:
+		$args['res.021213']+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="plain" href="exec:'+"gs 'take.obj','<<$args[0]>>' & GS 'true.goto.curloc','"+$curloc+"'"+'"><font color=#880088>'+$args['actions.text']+'</font></a><br>'
+	else
+		$args['res.021213']+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="plain" href="exec:'+"$print['take.obj']+=$func('b.w.s','loc-obj') & GS 'true.goto.curloc','"+$curloc+"'"+'"><font color=#888888>'+$args['actions.text']+'</a></font><br>'
+	end
+elseif $args[2]='acts':
+	if instr($args['obj'],'[lock-obj]')=0:
+$args['res.021213']="
+act '<font color=#880088><<$args['actions.text']>><oid:<<$args[0]>>:oid></font>':
+	$args['oid']=$func('get.tag.cont',$selact,'oid')
+	gs 'take.obj',$args['oid']
+	GS 'true.goto.curloc',$curloc
+end
+"
+	else
+$args['res.021213']="
+act '<font color=#888888><<$args['actions.text']>></font>':
+	$print['take.obj']+=$func('b.w.s','loc-obj')
+	GS 'true.goto.curloc',$curloc
+end"
+	end
+end
+:fin
+$result=$args['res.021213']
+--- gen.act.obj ---------------------------------

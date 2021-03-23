@@ -1,0 +1,28 @@
+# get.similar.obj
+! Функция получает позицию объекта, которому идентичен другой объект
+! $args[0] - ай-ди исходного объекта
+! $args[1] - ай-ди искомого местоположения. если пустое значение, ищет вообще по всем объектам в игре.
+$args[0] = $args[0]
+$args[1] = $args[1]
+args['obj'] = arrpos('$id_array',$args[0])	&	!	получаем номер объекта в базе по его ай-ди
+args['get.similar.obj']=-1	&	!	результат по умолчанию
+args['pos']=-1	&	!	позиция исключаемая из поиска
+:for
+args['pos']=arrpos(args['pos']+1,'$object_array',$object_array[args['obj']])	&	!	находим позицию объекта идентичного исходному
+if no args['pos']<0:
+! Если позиция не -1
+	if args['pos']=args['obj']: jump 'for'
+	if $position_array[args['pos']]!$args[1] and $args[1]!'': jump 'for'	&	!	если родительский объект искомого объекта не соответствует исходному повторяем поиск
+	if charge_array[args['pos']]!charge_array[args['obj']]: jump 'for'	&	!	если у объектов разные заряды, повторяем поиск
+	$args['daughters']=$func('get.daughter.obj',$id_array[args['pos']],'','$id_temp')
+	if $args['daughters']!'false': killvar '$id_temp' & jump 'for'
+	if $respawn_array[args['pos']]!$respawn_array[args['obj']]:  jump 'for'	&	!	если у объектов разное время респаунинга, повторяем поиск
+	if $run_array[args['pos']]!$run_array[args['obj']]:  jump 'for'	&	!	если у объектов различаются динамические коды
+	args['get.similar.obj']=args['pos']
+	result=args['get.similar.obj']
+	exit
+else
+	result=args['get.similar.obj']
+	exit
+end
+--- get.similar.obj ---------------------------------

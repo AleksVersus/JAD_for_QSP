@@ -1,0 +1,245 @@
+
+# onObjSel
+killvar '$menu_OOS'
+killvar '$tempOOS_id'
+killvar 'OOS'
+killvar '$OOS'
+$OOS['oid']=$func('get.tag.cont',$selobj,'oid')	&	!	получаем ай-ди выделенного объекта. Айди хранится в виде html тега <oid: :oid>
+OOS['pos']=arrpos('$id_array',$OOS['oid'])	&	!	получаем его позицию в базе
+$OOS['obj']=$object_array[OOS['pos']]	&	!	получаем его тело
+$OOS['np']=$func('get.tag.cont',$OOS['obj'],'np')	&	!	набор признаков
+$OOS['short_word']=$func('get.tag.cont',$OOS['obj'])	&	!	ключевое слово, ай-ди вида
+! В зависимости от класса, производим операции
+if instr($OOS['obj'],'[nocount]')!0:
+! неисчислимый предмет, помещённый в панель инвентаря!!!
+	!заменяем данные на данные кошелька.
+	if $func('get.daughter.obj','INVENTORY','<money>','$tempOOS_id')='true': $OOS['oid']=$tempOOS_id[]
+	killvar '$tempOOS_id'
+	OOS['pos']=arrpos('$id_array',$OOS['oid'])	&	!	получаем его позицию в базе
+	$OOS['obj']=$object_array[OOS['pos']]
+	! отправляемся к выводу содержимого кошелька. {Заменить на подпрограмму.}
+	jump 'money_print'
+elseif instr($OOS['obj'],'<body>')!0:
+! если объект является "частью тела" в дополнительное окно описания выводятся все имеющиеся "предметы",
+! которые можно надеть на указанную часть тела.
+	! Вычисляем часть тела:
+	$OOS['pos_list']=$func('get.tag.cont',$OOS['obj'])
+	!	1	производим поиск дочерних объектов в инвентаре по классу <bag> и <obj>
+	killvar '$tempOOS_id'
+	gs 'get.daughter.obj.all','INVENTORY','(<bag>|<obj>)+','$tempOOS_id'
+	! Теперь у нас есть все предметы, какие только возможны. Из них мы отсеиваем все, которые невозможно одеть на нашу часть тела.
+		OOS['p']=arrsize('$tempOOS_id')-1
+		:while1
+		if OOS['p']>-1:
+			killvar '$array_body_part'
+			if $func('prv.pos.inObj',$tempOOS_id[OOS['p']])='empty':
+				OOS['t']=0
+				:mass
+				$array_body_part_pos[OOS['t']]=$func('get.tag.cont',$object_array[arrpos('$id_array',$array_body_part[OOS['t']])])
+				OOS['t']+=1
+				if OOS['t']<arrsize('$array_body_part'):jump 'mass'
+				if arrcomp('$array_body_part_pos','[\s\S]*'+$OOS['pos_list']+'[\s\S]*')!-1: $print['obj_in_pos']+=$func('gen.ahref.actObj',$tempOOS_id[OOS['p']])+'<br>'
+			end
+			killvar '$array_body_part_pos'
+			killvar '$array_body_part'
+			OOS['p']-=1
+			jump 'while1'
+		end
+	killvar '$tempOOS_id'
+	!	1	список дочерних объектов уничтожается
+	if $print['obj_in_pos']!'': $print['obj_in_pos']=$func('b.w.s','obj.inPos')+'<br>'+$print['obj_in_pos'] else $print['obj_in_pos']=$func('b.w.s','none.obj.inPos')
+elseif instr($OOS['obj'],'<obj>')!0:
+! если объект является "предметом"
+	$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.property')+':menu.obj.property'
+	$menu_OOS[arrsize('$menu_OOS')]='-:-'
+	! действия над типовыми объектами:
+	if instr($OOS['np'],'[книга]')!0: $menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.read')+':menu.obj.read'
+	if instr($OOS['np'],'[огнестрельное]')!0:
+		$args['daughters.arm']=$func('get.daughter.obj',$OOS['oid'],'','$id_arm_temp')
+		if $args['daughters.arm']='true': $menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.disCharge')+':menu.obj.disCharge'
+		killvar '$id_arm_temp'
+	end
+	if instr($OOS['np'],'[еда]')!0: $menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.eat')+':menu.obj.eat'
+	if instr($OOS['np'],'[свиток]')!0:
+		$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.spell.read')+':menu.obj.spell.read'
+		$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.spell.teach')+':menu.obj.spell.teach'
+	end
+	if $strfind($func('get.loc.id'),'(\[с:[\d]+\]_[\S\s]+|сундук;|chest;)')<>'':
+		$args['loc.id.13']=$func('get.obj.id',$cvar['loc_id'+$cvar['chest']])
+		$args['spec.head']=$func('get.tag.cont',$args['loc.id.13'],'spec')
+		if instr($args['spec.head'],'[smithing]')!0 and instr($object_array[arrpos('$id_array',$position_array[OOS['pos']])],'<body>')=0:
+			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.unmount')+':menu.obj.unmount'
+		end
+		if instr($args['spec.head'],'[altar]')!0 and instr($OOS['np'],'[посох]')!0:
+		! специальные качества локации - алтарь, и предмет заряжаемый
+			! получаем дочерние объекты алтаря
+			$args['onAltar']=$func('get.daughter.obj',$cvar['loc_id'+$cvar['chest']],'','$id_obj_onaltar','!<onALTAR>[\s\S]*!</onALTAR>')
+			killvar '$id_obj_onaltar'
+			if $args['onAltar']<>'true': $menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put.onAltar')+':menu.obj.put.onAltar'
+		end
+	end
+	if instr($OOS['np'],'[патроны]')!0: $menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.inCharge')+':menu.obj.inCharge'
+	! действия над типовыми объектами
+	gs 'int.menu.obj',$OOS['obj']	&	!	вытаскивает  меню из тегов menu::menu
+	$OOS['bdy']=$func('prv.str.inObj',$position_array[OOS['pos']],'<body>')
+	$OOS['inv']=$func('prv.str.inObj',$position_array[OOS['pos']],'<inventory>')
+	$OOS['bag']=$func('prv.str.inObj',$position_array[OOS['pos']],'<bag>')
+	if $OOS['bdy']='true' or $OOS['inv']='true':
+	! если предмет находится в позиции части тела или инвентаре, действие меню "убрать в сумку"
+		killvar '$tempOOS_id'
+		if $func('get.daughter.obj','INVENTORY','<bag>','$tempOOS_id')='true': $menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.in.bag')+':menu.in.bag'
+		killvar '$tempOOS_id'
+	end
+	if ($OOS['bag']='true' or $OOS['inv']='true') and (instr($OOS['obj'],'[оружие]')!0 or instr($OOS['obj'],'[доспех]')!0 or instr($OOS['obj'],'[стрелы]')!0 or instr($OOS['obj'],'[болты]')!0):
+	! если предмет находится непосредственно в инвентаре, или сумке, действие "использовать" (одеть)
+		$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.in.body')+':menu.in.body'
+	end
+	if $OOS['bag']='true' or $OOS['bdy']='true':
+	! если предмет находится непосредственно на теле, или сумке, действие "убрать в инвентарь"
+		$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.in.inventory')+':menu.in.inventory'
+	end
+	OOS['heading_n']=arrpos('$id_array',$func('get.loc.id'))
+	if $strfind($object_array[OOS['heading_n']],'\[put.stop\]')='':
+		$menu_OOS[arrsize('$menu_OOS')]='-:-'
+		if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
+			args['stoim']=func('get.tag.num',$OOS['obj'],"stoim")
+			$args['stoimost']=$func('#indiv#',func('obj.sale.cost',args['stoim'],$func('get.loc.id')),100,1)
+			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','sale',$args['stoimost'])+':menu.obj.put'
+		elseif $strfind($func('get.loc.id'),'(\[м:[\d]+\]_[\S\s]+|place;|место;)')!'':
+			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','put')+':menu.obj.put'
+		elseif instr($args['spec.head'],'[smithing]')!0:
+			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','smithing')+':menu.obj.put'
+		elseif instr($args['spec.head'],'[altar]')!0:
+			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','altar')+':menu.obj.put'
+		else
+			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','chest')+':menu.obj.put'
+		end
+	end
+elseif instr($OOS['obj'],'<money>')!0:
+! если выделенным объектом является кошелёк
+	:money_print
+	$args['color']=$func('get.tag.num',$OOS['obj'],'color')
+	$args['name']=$func('get.tag.cont',$OOS['obj'],'name')
+	$args['name']=$func('get.word.padez',$args['name'],'И')
+	$print['money']+='<font color=#'+$args['color']+' face="CyrillicOld" size=+1><b>'+$args['name']+':</b></font><br>'
+	$args['gdo.money']=$func('get.daughter.obj',$OOS['oid'],'','$tempOOS_id')
+	if $args['gdo.money']='true':
+		! находим все объекты в кошельке и выводим информацию:
+		:for2
+		if arrsize('$tempOOS_id')>0:
+			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
+			$args['name_obj']=$func('get.tag.cont',$object_array[OOS['pos1']],'name')
+			$args['name_obj']=$func('get.word.padez',$args['name_obj'],'И')
+			$print['money']+='<font color=#'+$func('get.tag.num',$object_array[OOS['pos1']],'color')+'><b>'+$args['name_obj']+':</b></font> <font color=#666600><b>'+str(kolvo_array[OOS['pos1']])+'</b></font><br>'
+			killvar '$tempOOS_id',0
+			jump 'for2'
+		end
+	end
+elseif instr($OOS['obj'],'<keys>')!0:
+! если выделенным объектом является связка ключей
+	$args['color']=$func('get.tag.num',$OOS['obj'],'color')
+	$args['name']=$func('get.tag.cont',$OOS['obj'],'name')
+	$args['name']=$func('get.word.padez',$args['name'],'И')
+	$print['key.table']+='<font color=#'+$args['color']+' face="CyrillicOld" size=+1><b>'+$args['name']+':</b></font><br>'
+	if $func('get.daughter.obj',$OOS['oid'],'<key>','$tempOOS_id')='true':
+		$print['key.table']+= '<table cellspacing=0 cellpadding=5 bgcolor=#ffff88><tr><td align=left bgcolor=#bbbb44><font size=-3>'+$func('b.d.t','table.key')+':</font></td><td align=center bgcolor=#cccc55><font size=-3>'+$func('b.d.t','table.iner')+':</font></td><td align=center bgcolor=#bbbb44><font size=-3>'+$func('b.d.t','table.open')+':</font></td><td align=center bgcolor=#cccc55><font size=-3>'+$func('b.d.t','table.level')+':</font></td></tr>'
+		:new
+		if arrsize('$tempOOS_id')>0:
+			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
+			$OOS['key'] = $func('get.tag.cont',$object_array[OOS['pos1']],'name')
+			$OOS['key'] = $func('get.word.padez',$OOS['key'],'И')
+			if $OOS['key']='': $OOS['key'] = $func('b.d.t','table.noname')
+			if $func('get.tag.num',$object_array[OOS['pos1']],'open')!'':	$OOS['open']	=	$func('get.tag.num',$object_array[OOS['pos1']],'open')
+			if kolvo_array[OOS['pos1']]!0:	$OOS['count']	=	str(kolvo_array[OOS['pos1']])
+			if $func('get.tag.num',$object_array[OOS['pos1']],'breake')!'':	$OOS['breake']=	$func('get.tag.num',$object_array[OOS['pos1']],'breake')
+			$print['key.table']+= '<tr><td align=left bgcolor=#dddd66><font size=-3>'+$OOS['key']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['count']+'</font></td><td align=center bgcolor=#dddd66><font size=-3>'+$OOS['open']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['breake']+'</font></td></tr>'
+			killvar '$tempOOS_id',0
+			jump 'new'
+		end
+		$print['key.table']+='</table>'
+	end
+elseif instr($OOS['obj'],'<diary>')!0:
+! если выделенным объектом является дневник
+	gs 'int.diary',$OOS['oid']
+	killvar '$result'
+	killvar '$menu_OOS'
+	killvar '$tempOOS_id'
+	killvar 'OOS'
+	killvar '$OOS'
+	unselect
+	exit
+	! Выведение записей дневника, в т.ч. подзаданий, стадий задания и пр.
+elseif instr($OOS['obj'],'<hero>')!0:
+! если выделенным объектом является герой
+	! Выводятся свойства героя
+	killvar '$tempOOS_id'
+	! выводит все свойства героя, кроме скрытых
+	if $func('get.daughter.obj',$OOS['oid'],'<property>','$tempOOS_id')='true':
+		:property
+		if arrsize('$tempOOS_id')>0:
+			if $func('prv.str.inObj',$tempOOS_id[0],'\[hide\]')='false': $print['hero.property']+=$func('int.hero.property',$tempOOS_id[0])
+			killvar '$tempOOS_id',0
+			jump 'property'
+		end
+		killvar '$tempOOS_id'
+	end
+	! происходит вход в тело героя.
+	$GAME_VALUE['inventory.floor'] = $OOS['oid']
+	
+	! Возможно организовать через меню было бы интереснее.
+elseif instr($OOS['obj'],'<bag>')!0:
+! если выделенным объектом является рюкзак
+	! Производится выведение всех дочерних объектов рюкзака.
+	$GAME_VALUE['inventory.floor'] = $OOS['oid']
+	
+	if $GAME_INTERFACE['подсказки']='show': $print['help']+=$func('game.help','предметы')+$func('b.w.s','help')
+elseif instr($OOS['obj'],'<magic>')!0:
+! если выделенным объектом является книга магии
+	$GAME_VALUE['inventory.floor'] = $OOS['oid']
+	
+	if $GAME_INTERFACE['подсказки']='show': $print['help']+=$func('game.help','магия')+$func('b.w.s','help')
+elseif instr($OOS['obj'],'<gate-stone>')!0:
+! если выделенным объектом является ожерелье гроз
+	$print['gs.table']+='<font color=#'+$func('get.tag.num',$object_array[OOS['pos']],'color')+' face="CyrillicOld" size=+1><b>'+$func('b.d.t','gate-stone')+':</b></font><br>'
+	if $func('get.daughter.obj',$OOS['oid'],'<g-s>','$tempOOS_id')='true':
+		$print['gs'] = '<table cellspacing=0 cellpadding=5 bgcolor=#ffff88><tr><td align=left bgcolor=#bbbb44><font size=-3>'+$func('b.d.t','target-point')+':</font></td><td align=center bgcolor=#cccc55><font size=-3>'+$func('b.d.t','table.iner')+':</font></td><td align=center bgcolor=#bbbb44><font size=-3>'+$func('b.d.t','table.charge')+':</font></td><td align=center bgcolor=#cccc55><font size=-3>'+$func('b.d.t','table.move')+':</font></td></tr>'
+		:new1
+		if arrsize('$tempOOS_id')>0:
+			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
+			$OOS['key'] = $func('get.tag.cont',$object_array[OOS['pos1']],'name')
+			if $OOS['key']='': $OOS['key'] = $func('b.d.t','g-s.neverland')
+			if instr($object_array[OOS['pos1']],'[charge:')!0:	$OOS['open']	=	str(charge_array[OOS['pos1']])+'/'+$func('get.tag.num',$object_array[OOS['pos1']],'charge') else $OOS['open']=''
+			if kolvo_array[OOS['pos1']]!0: $OOS['count']	=	str(kolvo_array[OOS['pos1']])
+			if ($OOS['open']!'' and charge_array[OOS['pos1']]!0) or $OOS['open']='': $OOS['breake']='<a href="exec:gs '+"'int.act.goto','"+$tempOOS_id[0]+"','"+$OOS['oid']+"'"+'">&#8594;</a>' else $OOS['breake']='<font color=#ff0000>'+$func('b.d.t','g-s.imposible')+'</font>'
+			$print['gs.table'] += '<tr><td align=left bgcolor=#dddd66><font size=-3>'+$OOS['key']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['count']+'</font></td><td align=center bgcolor=#dddd66><font size=-3>'+$OOS['open']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['breake']+'</font></td></tr>'
+			killvar '$tempOOS_id',0
+			jump 'new1'
+		end
+		$print['gs.table']+='</table>'
+	end
+elseif instr($OOS['obj'],'<property>')!0:
+! если выделенным объектом является свойство
+	! Производится интерпретация свойства. В т.ч. если предусмотрено ссылка для прокачки.
+	$print['hero.property']+=$func('int.hero.property',$OOS['oid'])
+elseif instr($OOS['obj'],'<spell>')!0:
+! если выделенным объектом является заклинание
+	$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.spell.read')+':menu.obj.spell.read'
+	$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.read')+':menu.obj.read'
+	gs 'int.menu.obj',$OOS['obj']
+elseif $OOS['oid']='back':
+! если выделенным объектом является возвратный объект
+	$GAME_VALUE['inventory.floor'] = $func('get.tag.cont',$selobj,'back')
+end
+! скрипт, выполняемый при выделении объекта. Можно добить, например, меню, или что ещё
+if $strfind($run_array[OOS['pos']],'!onObjSel!')!'': $args['doc']=$func('run.dynamic.script','!onObjSel!',$OOS['oid'])
+! если присутствует скрипт
+if arrsize('$menu_OOS')>0 and instr($OOS['obj'],'[lock.obj]')=0: menu "$menu_OOS"
+killvar '$result'
+killvar '$menu_OOS'
+killvar '$tempOOS_id'
+killvar 'OOS'
+killvar '$OOS'
+unselect
+gs 'int.inventory'
+gs 'true.goto.curloc',$curloc
+--- onObjSel ---------------------------------

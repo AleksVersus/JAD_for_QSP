@@ -1,0 +1,9 @@
+# menu.obj.eat
+! локация съедания предмета
+if $args[0]='': $args[0]=$OOS['oid']
+! Выполняем инструкцию
+args['pit']=arrpos('$id_array',$args[0])
+if $strfind($run_array[args['pit']],'!eat!')!'': $args['func']=$func('run.dynamic.script','!eat!',$args[0])
+gs 'minus.obj',$args[0],1
+gs 'int.inventory'
+--- menu.obj.eat ---------------------------------

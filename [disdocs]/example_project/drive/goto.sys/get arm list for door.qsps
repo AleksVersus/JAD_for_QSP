@@ -1,0 +1,28 @@
+# get.arm.inOpen
+! Подпрограмма сравнивает все предметы в руках с возможными уронами.
+! Если нужное сочетание найдено, оружие вписывается в $arm_iag
+! $args[0] - список уронов
+$args[0] = $args[0]
+args['pos']=-1
+:for
+args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*<body>[\s\S]*\[c:arm:c\][\s\S]*')	&	! находим в массиве позицию элемента "часть тела, предназначенная для оружия"
+if no args['pos']<0:
+	if $func('prv.str.inObj',$include_array[args['pos']],'\[type:оружие:type\]')='false':	jump 'for'
+	if $args[0]='' or ($args[0]!'' and $func('get.similar.Uron',$args[0],$func('get.tag.cont',$include_array[args['pos']],'uron'))!''):
+	! если урон можно нанести любыми видами атак, или конкретным и он присутствует в списке оружия
+		if arrpos('$arm_iag',$include_array[args['pos']])!-1: $arm_iag[arrsize('$arm_iag')]=$include_array[args['pos']]
+		! если такого предмета ещё нет в базе предметов, наносящих урон
+	end
+	jump 'for'
+else
+	exit
+end
+--- get.arm.inOpen ---------------------------------
+
+# use.shell.inDoor
+
+--- use.shell.inDoor ---------------------------------
+
+# use.arm.inDoor
+
+--- use.arm.inDoor ---------------------------------

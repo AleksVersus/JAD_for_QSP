@@ -1,0 +1,9 @@
+# minus.obj
+! уменьшение количества предметов.
+$args[0] = $args[0]	&	!	id-объекта.
+args[1]	=	args[1]	&	!	сколько предметов надо удалить
+
+args['pit']	=	arrpos('$id_array',$args[0])
+kolvo_array[args['pit']]-=args[1]
+if kolvo_array[args['pit']]<1:	gs 'del.obj',$args[0]
+--- minus.obj ---------------------------------

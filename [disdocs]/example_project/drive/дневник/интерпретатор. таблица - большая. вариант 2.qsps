@@ -1,0 +1,213 @@
+# int.diary.big1
+! "Construct of the diary's table. The Big Table"
+	$args[0] = $args[0] 	&	!	ай-ди дневника
+	$args[1] = $args[1]		&	!	выводимый текст
+	$args[2]='info'
+	$args[3]='next'
+	$args[4]='last'
+	$args[5]='eror'
+	$args[6]='note'
+	$args[7]='sets'
+	args['pos']=arrpos('$args',$diary['tab'])
+! цвета
+	$args['cur.info_color']='bce7f1'
+	$args['cur.next_color']='bce7f1'
+	$args['cur.last_color']='bce7f1'
+	$args['cur.eror_color']='bce7f1'
+	$args['cur.note_color']='bce7f1'
+	$args['cur.sets_color']='bce7f1'
+! верхняя полоска
+! изменяем расцветку активной вкладки
+	$args['cur.'+$diary['tab']+'_color']='99d9ea'
+! ссылки вкладок
+	$args['href.sets']="<center><a href=""exec:$diary['tab']='sets' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.sets')+"</a></center>"
+	$args['href.info']="<center><a href=""exec:$diary['tab']='info' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.info')+"</a></center>"
+	$args['href.next']="<center><a href=""exec:$diary['tab']='next' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.next')+"</a></center>"
+	$args['href.last']="<center><a href=""exec:$diary['tab']='last' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.last')+"</a></center>"
+	$args['href.eror']="<center><a href=""exec:$diary['tab']='eror' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.eror')+"</a></center>"
+	$args['href.note']="<center><a href=""exec:$diary['tab']='note' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.note')+"</a></center>"
+
+	$args['close.link']={<a href="exec:*clr & *pl $diary['maintxt'] & gs 'setScreen',$diary['setScreen'] & $diary['maintxt']='' & $diary['setScreen']=''">}
+	$args['close.table']='<table width=100% height=15 cellpadding=0 cellspacing=0 border=0><tr><td height=15>'+$args['close.link']+'<src="'+$func('base.img','sclb')+'" height=15 width=100%></a></td><td height=15 width=200>'+$args['close.link']+'<src="'+$func('base.img','cls2')+'"></a></td><td height=15>'+$args['close.link']+'<src="'+$func('base.img','sclb')+'" height=15 width=100%></a></td></tr></table>'
+	$args['int.diary.big']+=$args['close.table']+'<br>'
+	$args['int.diary.big']+="<table width=100% height=90% valign=top cellpadding=0 cellspacing=0 border=0><tr>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+"><src='"+$args['cur.top_info_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+"><src='"+$args['cur.top_next_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+"><src='"+$args['cur.top_last_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+"><src='"+$args['cur.top_eror_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+"><src='"+$args['cur.top_note_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+"><src='"+$args['cur.top_sets_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.top_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.thd_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+">"+$args['href.info']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.thd_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.thd_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+">"+$args['href.next']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.thd_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.thd_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+">"+$args['href.last']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.thd_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.thd_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+">"+$args['href.eror']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.thd_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.thd_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+">"+$args['href.note']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.thd_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.thd_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+">"+$args['href.sets']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.thd_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.thr_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+"><src='"+$args['cur.thr_info_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.thr_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.thr_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+"><src='"+$args['cur.thr_next_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.thr_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.thr_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+"><src='"+$args['cur.thr_last_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.thr_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.thr_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+"><src='"+$args['cur.thr_eror_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.thr_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.thr_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+"><src='"+$args['cur.thr_note_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.thr_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.thr_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+"><src='"+$args['cur.thr_sets_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.thr_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.tvs_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+"><src='"+$args['cur.tvs_info_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.tvs_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.tvs_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+"><src='"+$args['cur.tvs_next_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.tvs_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.tvs_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+"><src='"+$args['cur.tvs_last_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.tvs_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.tvs_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+"><src='"+$args['cur.tvs_eror_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.tvs_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.tvs_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+"><src='"+$args['cur.tvs_note_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.tvs_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.tvs_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+"><src='"+$args['cur.tvs_sets_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.tvs_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr colspan=16>"
+$args['int.diary.big']+="<td width=15 bgcolor=#99d9ea><src='"+$args['cur.cntr_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#99d9ea colspan=16>"+$args[1]+"</td>"
+$args['int.diary.big']+="<td width=15 bgcolor=#99d9ea><src='"+$args['cur.cntr_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.bvs_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+"><src='"+$args['cur.bvs_info_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.bvs_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.bvs_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+"><src='"+$args['cur.bvs_next_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.bvs_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.bvs_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+"><src='"+$args['cur.bvs_last_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.bvs_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.bvs_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+"><src='"+$args['cur.bvs_eror_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.bvs_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.bvs_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+"><src='"+$args['cur.bvs_note_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.bvs_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.bvs_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+"><src='"+$args['cur.bvs_sets_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.bvs_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.bhr_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+"><src='"+$args['cur.bhr_info_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.bhr_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.bhr_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+"><src='"+$args['cur.bhr_next_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.bhr_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.bhr_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+"><src='"+$args['cur.bhr_last_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.bhr_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.bhr_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+"><src='"+$args['cur.bhr_eror_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.bhr_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.bhr_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+"><src='"+$args['cur.bhr_note_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.bhr_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.bhr_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+"><src='"+$args['cur.bhr_sets_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.bhr_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.thd_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+">"+$args['href.info']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+" width=15 height=15><src='"+$args['cur.thd_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.thd_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+">"+$args['href.next']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+" width=15 height=15><src='"+$args['cur.thd_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.thd_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+">"+$args['href.last']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+" width=15 height=15><src='"+$args['cur.thd_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.thd_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+">"+$args['href.eror']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+" width=15 height=15><src='"+$args['cur.thd_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.thd_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+">"+$args['href.note']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+" width=15 height=15><src='"+$args['cur.thd_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.thd_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+">"+$args['href.sets']+"</td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+" width=15 height=15><src='"+$args['cur.thd_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr><tr>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_info_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.info_color']+"><src='"+$args['cur.btm_info_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_info_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_next_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.next_color']+"><src='"+$args['cur.btm_next_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_next_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_last_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.last_color']+"><src='"+$args['cur.btm_last_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_last_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_eror_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.eror_color']+"><src='"+$args['cur.btm_eror_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_eror_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_note_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.note_color']+"><src='"+$args['cur.btm_note_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_note_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_sets_left']+"' width=15 height=15></td>"
+$args['int.diary.big']+="<td bgcolor=#"+$args['cur.sets_color']+"><src='"+$args['cur.btm_sets_cntr']+"' width=100% height=15></td>"
+$args['int.diary.big']+="<td width=15 height=15><src='"+$args['cur.btm_sets_rght']+"' width=15 height=15></td>"
+$args['int.diary.big']+="</tr></table>"
+$args['int.diary.big']+='<br><br><table width=100% cellpadding=0 cellspacing=0 border=1><tr>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aalt')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td height=15><src="'+$func('base.img','abrd')+'" width=100% height=15></td>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aart')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aplt')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td height=15><src="'+$func('base.img','pbrd')+'" height=15 width=100%></td>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aprt')+'" width=15 height=15></td>'
+$args['int.diary.big']+='</tr><tr><td bgcolor=#99d9ea width=15><src="'+$func('base.img','abrd')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td bgcolor=#99d9ea width=80% align=center valign=top>Интересная информация о персонаже</td>'
+$args['int.diary.big']+='<td bgcolor=#99d9ea width=15><src="'+$func('base.img','abrd')+'" width=15></td>'
+$args['int.diary.big']+='<td bgcolor=#bce7f1 width=15><src="'+$func('base.img','pbrd')+'" width=15></td>'
+$args['int.diary.big']+="<td bgcolor=#bce7f1><center><font size=7><<time['hour']>>:<<time['minute']>></font></center></td>"
+$args['int.diary.big']+='<td bgcolor=#bce7f1 width=15><src="'+$func('base.img','pbrd')+'" width=15></td></tr><tr>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aalb')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td height=15><src="'+$func('base.img','abrd')+'" width=100% height=15></td>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aarb')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aplb')+'" width=15 height=15></td>'
+$args['int.diary.big']+='<td height=15><src="'+$func('base.img','pbrd')+'" height=15 width=100%></td>'
+$args['int.diary.big']+='<td width=15 height=15><src="'+$func('base.img','aprb')+'" width=15 height=15></td>'
+$args['int.diary.big']+='</tr></table>'
+$args['int.diary.big']+='<br>'+$args['close.table']
+$result=$args['int.diary.big']
+killvar '$cur'
+--- int.diary.big1 ---------------------------------

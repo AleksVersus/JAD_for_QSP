@@ -1,0 +1,17 @@
+# int.menu.obj
+! интерпретатор создаёт дополнительные пункты меню для предметов
+! $args[0] - строка из которой извлекаются пункты
+$args[0] = $args[0]
+if $func ('get.tag.cont',$args[0],'menu')!'':
+	$args['menu'] = $func ('get.tag.cont',$args[0],'menu')
+	args['i'] = 1
+	:menu
+	if $func('get.tag.cont',$args['menu'],'m'+str(args['i']))!'':
+		$menu_OOS[arrsize('$menu_OOS')] = $func('get.tag.cont',$args['menu'],'m'+str(args['i']))
+		$args['menu']=TRIM($replace($args['menu'],'m'+str(args['i'])+':'+$menu_OOS[arrsize('$menu_OOS')]+':m'+str(args['i'])))
+		args['i']+=1
+		if len($args['menu'])>0: jump 'menu'
+	end
+	$menu_OOS[arrsize('$menu_OOS')] ='-:-'
+end
+--- int.menu.obj ---------------------------------

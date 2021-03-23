@@ -1,0 +1,30 @@
+# add.new.obj
+! Подпрограмма создаёт новый объект в игре и присваивает ему айдишник
+! Если используется в качестве функции, в результат возвращается ай-дишник
+$args[0] = $args[0]	&	!	 - тело объекта, исходник объекта
+$args[1] = $args[1]	&	!	 - положение, где находится объект
+$args[2] = $args[2]	&	!	 - Ключевое слово (короткое слово, идентификатор вида)
+args[3] = args[3]	&	!	 - количество одинаковых предметов
+args[4] = args[4]	&	!	 - заряд предмета
+$args[5] = $args[5]	&	!	 - динамический код, выполняемый во время действий с предметом.
+args[6] = args[6]	&	!	 - позиция в которую нужно добавить предмет в базе !!!! ВНИМАНИЕ. Если в этой позиции в базе уже есть предмет, он будет затёрт.
+if args[6]!0: args['num']=args[6] else args['num'] = arrsize('$id_array')
+$object_array[args['num']]=$args[0]	&	!	создаём объекту тело
+! если объект является заголовком или инвентарём или респавнером, его ай-ди 
+if $strfind($args[0],'<заголовок>')!'' or $args[2] = 'INVENTORY' or $args[2]='RESPAWNER':
+	$id_array[args['num']]=$args[2]
+elseif $strfind($args[0],'<link>')!'':
+	$id_array[args['num']]='link.'+TRIM($args[2])
+else
+	$id_array[args['num']]=$args[2]+'.'+$func('#rndstr#',8,'буквы и цифры')
+end
+if $strfind($args[0],'<заголовок>')!'' and instr($args[0],'[respawn.stop]')=0:
+	$position_array[args['num']]='RESPAWNER'
+else
+	$position_array[args['num']]=$args[1]
+end
+kolvo_array[args['num']]=args[3]
+charge_array[args['num']]=args[4]
+$run_array[args['num']]=$args[5]
+$result = $id_array[args['num']]
+--- add.new.obj ---------------------------------

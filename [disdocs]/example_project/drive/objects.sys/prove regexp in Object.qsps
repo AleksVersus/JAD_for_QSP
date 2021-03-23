@@ -1,0 +1,10 @@
+# prv.str.inObj
+! Функция проверяет объект на совпадение с искомой информацией
+! Результатом является true или false
+! $args[0] - ай-ди объекта
+! $args[1] - регулярное выражение
+$args[0] = $args[0]
+$args[1] = $args[1]
+args['pos']=arrpos('$id_array',$args[0])
+if $strfind($object_array[args['pos']],$args[1])!'': $result='true' else $result='false'
+--- prv.str.inObj ---------------------------------

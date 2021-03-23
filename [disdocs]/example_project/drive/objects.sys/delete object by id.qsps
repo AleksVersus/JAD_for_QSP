@@ -1,0 +1,13 @@
+# del.obj.id
+! Удаляет предмет по ай-дишнику
+$args[0] = $args[0]
+args['pos']=arrpos('$id_array',$args[0])
+killvar '$id_array',args['pos']
+killvar '$object_array',args['pos']
+killvar '$position_array',args['pos']
+killvar '$include_array',args['pos']
+killvar 'kolvo_array',args['pos']
+killvar 'charge_array',args['pos']
+killvar '$respawn_array',args['pos']
+killvar '$run_array',args['pos']
+--- del.obj.id ---------------------------------

@@ -1,0 +1,8 @@
+# edit.note
+$args[0] = $args[0]	&	!	id заметки
+$args[1] = $args[1]	&	!	v или sn
+if $args[1]='v': $args['t']=$func('b.d.t','a') else $args['t']=$func('b.d.t','b')
+$args['input']=$input($args['t']+$func('b.d.t','c'))
+args['pos']=arrpos('$id_array',$args[0])
+$object_array[args['pos']]=$replace($object_array[args['pos']],$strfind($object_array[args['pos']],'\['+$args[1]+':[\s\S]*:'+$args[1]+'\]'),'['+$args[1]+':'+$args['input']+':'+$args[1]+']')
+--- edit.note ---------------------------------

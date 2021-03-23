@@ -1,0 +1,141 @@
+# inputText
+! читкоды ! ОТЛАДЧИК!
+$args[0] = $args[0]
+if $args[0]!'':
+	$args['user_text'] = $args[0]
+	$args['use']='func'
+else
+	$args['user_text'] = $user_text
+	$args['use']='print'
+end
+
+! ------------------------------------- парсер строки ввода ----------------------------------
+	killvar '$input_text_word'
+	$args['string']=$args['user_text']
+	:BALOON
+	if len($args['string'])>0:
+		$input_text_word[]=$TRIM($strfind($args['string'],'\s*\S+\s*'))
+		$args['string']=$TRIM($replace($args['string'],$strfind($args['string'],'\s*\S+\s*')))
+		jump 'BALOON'
+	end
+! ------------------------------------- парсер строки ввода ----------------------------------
+
+if $input_text_word[0] = 'run':
+	$args['res.021213']=dyneval($mid($args['user_text'],5))
+	jump 'end_keep'
+end
+if $input_text_word[0] = 'arr':
+! выводит содержимое массивов
+	$args['res.021213']=$func('#array.prnt#',$input_text_word[1])
+	jump 'end_keep'
+end
+if $input_text_word[0] = 'obj':
+! выводит содержимое предмета по числу или ай-ди
+	if isnum($input_text_word[1])=-1:
+		$args['res.021213']+=$func('inputText.obj',val($input_text_word[1]))
+	elseif $input_text_word[1]!'':
+		$args['res.021213']+=$func('inputText.obj',arrpos('$id_array',$input_text_word[1]))
+	end
+end
+if $input_text_word[0]='all':
+	if $input_text_word[1]='objects':
+		if $input_text_word[2]='table':
+			args['moment1']=MSECSCOUNT
+			$args['res.021213']='<table width=100% cellpadding=0 cellspacing=2 border=1><tr><td>№П.П.</td><td>ID</td><td>Тело объекта</td><td>расположение</td><td>Дочерний:</td><td>кол-во</td><td>заряд</td></tr>'
+			args['i_inputText'] = 0
+			:new2
+			$args['res.021213']=$args['res.021213']+'<tr><td>['+str(args['i_inputText'])+']</td><td>'+$id_array[args['i_inputText']]+'</td><td>'+$replace($replace($object_array[args['i_inputText']],'<','&lt;'),'>','&gt;')+'</td><td>{'+$position_array[args['i_inputText']]+'}</td><td>^'+$include_array[args['i_inputText']]+'^</td><td>'+str(kolvo_array[args['i_inputText']])+'</td><td>'+str(charge_array[args['i_inputText']])+'</td></tr>'
+			args['i_inputText']+=1
+			if arrsize('$id_array')>args['i_inputText']: jump 'new2'
+			$args['res.021213']+='<tr><td>№П.П.</td><td>ID</td><td>Тело объекта</td><td>расположение</td><td>Дочерний:</td><td>кол-во</td><td>заряд</td></tr></table>'
+		elseif $input_text_word[2]='dialog':
+			$args['res.021213']=$func('#array.prnt.few#','$easy_dialog_base_ID','$easy_dialog_base_SC','$easy_dialog_base_ST','$easy_dialog_base_PS','easy_dialog_base_KOL')
+			jump 'end_keep'
+		elseif $input_text_word[2]='':
+			args['i_inputText'] = 0
+			:new1
+			$args['res.021213']+='<br>['+str(args['i_inputText'])+'] '+$id_array[args['i_inputText']]+' '+$object_array[args['i_inputText']]+' {'+$position_array[args['i_inputText']]+'} количество:'+str(kolvo_array[args['i_inputText']])+' заряд:'+str(charge_array[args['i_inputText']])
+			args['i_inputText']+=1
+			if arrsize('$id_array')>args['i_inputText']: jump 'new1'
+		end
+	end
+end
+if $input_text_word[0] = 'daughters':
+	if isnum($input_text_word[1])=-1:
+		$input_text_word[1]=$id_array[val($input_text_word[1])]
+	end
+	if $func('get.daughter.obj',$input_text_word[1],'','$temp_id_input_text')='true':
+		args['i_inputText'] = 0
+		$args['res.021213']+='<br><b>Объект:</b> '+$func('inputText.obj',arrpos('$id_array',$input_text_word[1]))
+		$args['res.021213']+='<br><b>Список id дочерних объектов:</b> '
+		:new3
+		if arrsize('$temp_id_input_text')>0: 
+			$args['res.021213']+='<br>['+str(arrpos('$id_array',$temp_id_input_text[0]))+']'+$temp_id_input_text[0]
+			args['i_inputText']+=1
+			killvar '$temp_id_input_text',0
+			jump 'new3'
+		end
+	else
+		$args['res.021213']+='<br><b>Дочерних объектов нет.</b>'
+	end
+	killvar '$temp_id_input_text'
+end
+if $input_text_word[0]='goto':
+	$args['location']=$TRIM($replace($args['user_text'],'goto '))
+	if $strfind($args['location'],'(\[м:[\d]+\]_[\s\S]+|место;|place;)')<>'' and loc $args['location']:
+		$lvar['локация.дополнительные тексты']+="<br><br><b>Ты премести(лся/лась) на локацию '<<$args['location']>>'</b><br>"
+		goto $args['location']
+	elseif $strfind($args['location'],'(\[с:[\d]+\]_[\s\S]+|сундук;|chest;)')<>'' or $strfind($args['location'],'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'':
+		$lvar['локация.дополнительные тексты']+="<br><br><b>Ты премести(лся/лась) на локацию '<<$args['location']>>'</b><br>"
+		goto '[chest]',$args['location'],'',$func('get.loc.id')
+	else
+		$args['res.021213']='Сообщение отладчика: локация с id "'+$args['location']+'" не существует, или является служебной.'
+	end
+end
+if $args['user_text']='main html':
+	$args['res.021213'] = $replace($maintxt,'<','&lt;')
+	$args['res.021213'] = $replace($args['res.021213'],'>','&gt;')
+end
+if $input_text_word[0]='logs':
+	if $input_text_word[1]<>'error':
+		$args['res.021213']+='Лог дополнительного описания (последние сто записей):<br>'
+		$args['res.021213']+=$func('#array.prnt#','$log_print')+'<br>'
+	end
+	$args['res.021213']+='Лог движка:<br>'
+	args['i']=0
+	:error_log_m
+	if args['i']<arrsize('$error_log'):
+		$args['res.021213']+=$error_log[args['i']]+'<br>'
+		args['i']+=1
+		jump 'error_log_m'
+	end
+	$args['res.021213']+='<br>'
+	$args['res.021213']+='Лог ошибок движка:<br>'
+	$args['res.021213']+=$func('#array.prnt#','$log_error','')+'<br>'
+end
+:end_keep
+args['moment2']=MSECSCOUNT
+if	$args['use']='func':	$result=$args['res.021213']+'<br>Вывод таблицы объектов занял мсек: '+str(args['moment2']-args['moment1'])
+if	$args['use']='print' and $input_text_word[0]!'run': *pl $args['res.021213']
+killvar '$input_text_word'
+--- inputText ---------------------------------
+
+# inputText.obj
+args[0] = args[0]
+$result = ''
+$result  +='
+Предмет номер <<args[0]>>:'
+$result  +='<font color=#888888>
+ID[<<args[0]>>]	=	'+$id_array[args[0]]
+$result  +='</font>
+OBJ[<<args[0]>>]	=	'+$replace($object_array[args[0]],'<','&lt;')
+$result  +='<font color=#888888>
+POS[<<args[0]>>]	=	'+$position_array[args[0]]
+$result  +='</font>
+количество: <<kolvo_array[args[0]]>>, заряд: <<charge_array[args[0]]>>'
+$result  +='<font color=#888888>
+респавнится в <<$respawn_array[args[0]]>>'
+$result += '</font>
+RUN:
+'+$replace($run_array[args[0]],'<','&lt;')
+--- inputText.obj ---------------------------------

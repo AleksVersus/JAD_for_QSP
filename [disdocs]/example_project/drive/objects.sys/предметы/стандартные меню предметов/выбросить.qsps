@@ -1,0 +1,84 @@
+# menu.obj.put
+! локация сбрасывает предмет на локации или в сундуке
+if $args[0]='': $args[0]=$OOS['oid']
+args[1] = args[1]	&	!	задаётся количество сбрасываемых предметов. Внимательно!
+$args[2] = $args[2]	&	!	управление
+$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
+if $strfind($args['obj'],'\[quest\]')='':
+	args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	вес одного предмета
+	$args['short_name']=$func('get.tag.cont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
+	$args['inPut']=$func('get.loc.id')	&	!	получаем айди места, в которое собираемся переместить предмет (id текущей локации)
+	$args['loc.targets']=TRIM($func('get.tag.cont',$object_array[arrpos('$id_array',$args['inPut'])],'target'))
+	$args['obj.targets']=$func('get.tag.cont',$args['obj'],'np')
+	$args['target']=$func('prv.onTarget',$args['loc.targets'],$args['obj.targets'],'one')
+	if $args['target'] = 'false' and $args['loc.targets']!'':
+		! невозможно сбросить предмет сюда
+		$print['take.obj']+=$func('b.w.s','nih','loc')
+		jump 'print'
+	end
+	args['pos']=arrpos('$id_array',$args[0])	&	!	вычислем позицию предмета в базе
+	args['bag']=arrpos('$id_array',$position_array[args['pos']])	&	!	вычисляем позицию сумки в базе
+	! перемещаем предмет. Если предметов меньше шести, то по-одному. Если больше шести, то спрашиваем, сколько хочешь переместить.
+	if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
+		$args['выбросить']='продать'
+		$args['#']='011.2'
+	else
+		$args['выбросить']='выбросить'
+		$args['#']='011.1'
+	end
+	if args[1]>0:
+		args['переместить_штук']=args[1]
+	elseif kolvo_array[args['pos']]>5:
+		args['переместить_штук']=$input($func('b.d.t','hmayw',$args['выбросить'],kolvo_array[args['pos']]))
+	else
+		args['переместить_штук']=1
+	end
+	if args['переместить_штук']<1 or args['переместить_штук']>kolvo_array[args['pos']]:
+		$print['take.obj']+=$func('base.word.screen','013')
+	else
+		if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
+			! Если происходит торговля
+			$args['pay']=$func('prv.obj.pay',$args[0],args['переместить_штук'],'sale')
+			if $args['pay']='false': jump 'print'
+		end
+		$args['last_id']=$func('replace.obj',$args[0],$args['inPut'],$args['short_name'],args['переместить_штук'])
+		$args['menu.obj.put']=$func('prv.obj.id',$args[0],$args['last_id'])
+		if $strfind($object_array[args['bag']],'<bag>|<inventory>')!'':
+			! предмет выложен из рюкзака
+			property['hero.power.all']-=args['переместить_штук']*args['weight']
+			$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
+			$args['put.from']='bag'
+		else
+			! предмет выложен из части тела
+			$args['short_body_part']='[:'+$func('get.tag.cont',$object_array[args['bag']])+':]'
+			$args['put.from']='body'
+			$print['take.obj']+=$func('base.new.bodypart',$args['short_body_part'],'put.obj:'+$args['last_id']+':put.obj')
+		end
+		$print['use.obj.actObj']+=$func('base.word.screen',$args['#'],$args['obj']+'[колво:'+str(args['переместить_штук'])+']')
+		args['pos_lid']=arrpos('$id_array',$args['last_id'])
+		if $run_array[args['pos_lid']]!'':
+			if $strfind($run_array[args['pos_lid']],'!passed!')!'':
+				$args['run_array']=$func('run.dynamic.script','!passed!',$args['last_id'],$args[0])
+			end
+			if $args['pay']='true' and $strfind($run_array[args['pos_lid']],'!sale!')!'':
+				$args['run_array.purc']=$func('run.dynamic.script','!sale!',$args['last_id'],$args[0])
+			end
+			if $args['put.from']='body' and $strfind($run_array[args['pos_lid']],'!deused!')!'':
+				$args['run_array.purc']=$func('run.dynamic.script','!deused!',$args['last_id'],$args[0])
+			elseif $args['put.from']='bag' and $strfind($run_array[args['pos_lid']],'!outbag!')!'':
+				$args['run_array.purc']=$func('run.dynamic.script','!outbag!',$args['last_id'],$args[0])
+			end
+		end
+	end
+else
+	$print['take.obj']+=$func('base.word.screen','010')
+end
+:print
+if $strfind($args[2],'no GOTO')='':
+	$result=$args['menu.obj.put']
+	gs 'int.inventory'
+	gs 'true.goto.curloc',$curloc
+else
+	$result=$args['last_id']
+end
+--- menu.obj.put ---------------------------------

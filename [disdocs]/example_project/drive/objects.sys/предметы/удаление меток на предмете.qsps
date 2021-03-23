@@ -1,0 +1,11 @@
+# del.markers.obj
+!Удаляет лишние метки на предметах при поднятии и пр
+$args[0] = $args[0]	&	!	id предмета
+$args[1] = $args[1]	&	!	управление
+args['pit']=arrpos('$id_array',$args[0])
+$log_error+='last_id^'+$args[0]
+if $args[1]='take':
+	$object_array[args['pit']]=$replace($object_array[args['pit']],'[on Altar]')
+	$object_array[args['pit']]=$replace($object_array[args['pit']],'[lock-obj]')
+end
+--- del.markers.obj ---------------------------------

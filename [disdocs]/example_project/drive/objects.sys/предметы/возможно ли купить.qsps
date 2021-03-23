@@ -1,0 +1,94 @@
+# prv.obj.pay
+! Локация вычисляет стоимость предметов и имеется ли требуемое количество денег
+$args[0]= $args[0]	&	!	ай-ди предмета
+args[1]	= args[1]	&	!	количество, которое покупаем или продаём
+$args[2]= $args[2]	&	!	sale - продажа purchase - покупка
+
+$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
+args['stoim.nominal']=$func('get.tag.num',$args['obj'],'stoim')	&	!	получаем номинальную стоимость предмета
+args['tid']=arrpos('$id_array',$func('get.loc.id'))	&	!	получаем позицию торговца в базе
+$args['prv.obj.pay']='false'
+args['did']=-1
+if $func('get.daughter.obj','INVENTORY','<money>',"$temp_id_costbag")='true':
+! Вычисляем позицию кошелька (пока кошелёк может быть только один. Теоретически больше и не нужно)
+	$args['id_money']=$temp_id_costbag[]
+	killvar '$temp_id_costbag'
+	if $func('get.daughter.obj',$args['id_money'],'\[name:Дублоны:name\]',"$temp_id_costbag")='true':
+	! Вычисляем позицию денег в кошельке (пока это только дублоны, позже можно сделать гораздо более гибкий выбор)
+		$args['id_money']=$temp_id_costbag[]
+		args['did']=arrpos('$id_array',$args['id_money'])
+		killvar '$temp_id_costbag'
+	elseif $args[2]='purchase':
+	! Если дублонов в кошельке нет и совершается покупка товара, действие признаётся невозможным.
+		$args['<money>']='no valute'
+		jump 'нет денег'
+	end
+	killvar '$temp_id_costbag'
+elseif $args[2]='purchase':
+! Если кошелька нет, значит фактически не существует и денег
+	$args['<money>']='no'
+	! -------------------- "нет денег" --------------------
+		:нет денег
+		killvar '$temp_id_costbag'
+		$print['take.money']+=$func('base.word.screen','014')
+		$dvar[]=$func('b.d.s','noMoney',$id_array[args['tid']])
+		if args['не хватает']>0:
+			$print['take.money']+=' '+$func('base.word.screen','008.3',$object_array[args['did']]+'[колво:'+str(args['не хватает'])+']')
+		end
+		if $args['<money>']='no':
+			$print['take.money']+='<br>'+$func('b.w.s','noMoneyBag')
+		elseif $args['<money>']='no valute':
+			$print['take.money']+='<br>'+$func('b.w.s','noValute')
+		end
+		$result=$args['prv.obj.pay']
+		exit
+	! -------------------- "нет денег" --------------------
+end
+if $args[2]='sale':
+! Если товар продаётся, то стоимость на 20 % меньше номинальной
+	args['stoim.exit']=func('obj.sale.cost',args['stoim.nominal'],$func('get.loc.id'))
+	args['bank']=charge_array[args['tid']]	&	!	в банк помещаются деньги торговца
+elseif $args[2]='purchase':
+! Если товар покупается, то стоимость на 20 % больше номинальной
+	args['stoim.exit']=func('obj.purc.cost',args['stoim.nominal'],$func('get.loc.id'))
+	args['bank']=kolvo_array[args['did']]	&	!	в банк помещаются "деньги" из кошелька
+end
+! Теперь предстоит сравнить стоимость продаваемых предметов с деньгами в банке
+! Для этого вычисляем общую стоимость предметов в целом количестве монет
+args['stoim.coin']=val($func('#indiv#',args['stoim.exit']*args[1],100,1))
+if args['stoim.coin']>args['bank']:
+! Если общая стоимость предметов превышает количество денег в банке, покупка/продажа невозможны.
+	if $args[2]='purchase':
+		args['не хватает']=args['stoim.coin']-args['bank']
+		jump 'нет денег'
+	else
+		$print['take.money']+=$func('base.word.screen','015')+' '
+		$print['take.money']+=$func('base.word.screen','008.3',$object_array[args['did']]+'[колво:'+str(args['stoim.coin']-args['bank'])+']')
+		$result=$args['prv.obj.pay']
+		exit
+	end
+else
+! Если общая стоимость предметов не превышает количество денег в банке
+! Отнимаем из банка сумму и возвращаем true
+	if $args[2]='sale':
+	! ты продаёшь. при этом:
+		charge_array[args['tid']]	-=	args['stoim.coin']	&	!	уменьшается количество денег у торговца
+		if args['did']!-1:
+			kolvo_array[args['did']]	+=	args['stoim.coin']	&	!	увеличивается количество денег у тебя
+		else
+			$args['f_b_id']=$func('base.new.obj','[:дублоны:]',"","SPACE",args['stoim.coin'])
+			$args['prv.obj.pay']=$func('add.obj.nocount',$args['f_b_id'])
+			args['did']=arrpos('$id_array',$infop['last_id.on.prv.obj.pay'])
+			gosub 'kill.var.olegus','$infop','last_id.on.prv.obj.pay'
+		end
+		$print['take.money']+=$func('base.word.screen','008.1',$object_array[args['did']]+'[колво:'+str(args['stoim.coin'])+']')
+	elseif $args[2]='purchase':
+	! ты покупаешь. при этом:
+		kolvo_array[args['did']]	-=	args['stoim.coin']	&	!	уменьшается количество денег у тебя
+		charge_array[args['tid']]	+=	args['stoim.coin']	&	!	увеличивается количество денег у торговца
+		$print['take.money']+=$func('base.word.screen','008.2',$object_array[args['did']]+'[колво:'+str(args['stoim.coin'])+']')
+	end
+	$args['prv.obj.pay']='true'
+end
+$result=$args['prv.obj.pay']
+--- prv.obj.pay ---------------------------------

@@ -1,0 +1,38 @@
+# int.diary
+! Интерпретатор дневника.
+! Сохраняем данные из основного окна
+$args[0] = $args[0]	&	!	ай-ди дневника
+if $args[1]='':
+	if $diary['view']='': $args[1]='small' else $args[1]=$diary['view']
+end
+$diary['view']=$args[1]
+if $diary['tab']='': $diary['tab']='next'
+if instr($setScreen,'diary.')=0: $diary['setScreen']=$setScreen
+gs 'setScreen','diary.'+$args[1]
+if $diary['maintxt']='': $diary['maintxt']=MAINTXT
+! В дневнике несколько вкладок. Активная выделена. Неактивные - нет
+! Вкладки
+!	info - информация о времени в мире и других важных вещах
+!	next - задания, которые нужно выполнить
+!	last - выполненные задания
+!	eror - проваленные задания
+!	note - заметки
+!	sets - настройки
+
+! создаём выводимый текст:
+if $diary['tab']='info':
+	$args['text']=$func('int.diary.info')
+elseif $diary['tab']='next' or $diary['tab']='last' or $diary['tab']='eror':
+	$args['text']=$func('int.diary.task',$args[0],$diary['tab'])
+elseif $diary['tab']='note':
+	$args['text']=$func('int.diary.note',$args[0])
+elseif $diary['tab']='sets':
+	$args['text']=$func('int.diary.sets',$args[0])
+end
+if $GAME_INTERFACE['подсказки']="show": $args['text']=$func('game.help',$diary['tab'])+$func('b.w.s','help')+'<br>'+$args['text']
+! рисуем таблицу
+$args['diary.table']=''
+$args['diary.table']+=$func('int.diary.'+$args[1],$args[0],$args['text'])
+*CLEAR
+*pl $args['diary.table']
+--- int.diary ---------------------------------

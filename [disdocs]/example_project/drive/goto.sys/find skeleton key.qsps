@@ -1,0 +1,31 @@
+# get.key.inBreake
+! Функция получает ай-ди наиболее подходящей отмычки.
+args[0] = args[0]
+args['pos']=-1
+args['key']=0
+:for
+args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*<key>[\s\S]*\[breake:[\d]+\][\s\S]*')
+if no args['pos']<0:
+	if $func('prv.str.inObj',$position_array[args['pos']],'<keys>')='false':	jump 'for'
+	if kolvo_array[args['pos']]=0: gs 'del.obj',$id_array[args['pos']] & jump 'for'	&	! если ключ уже не существует, удаляем его
+	if $func('get.tag.num',$object_array[args['pos']],'open')!0 and charge_array[args['pos']]=0: jump 'for'	&	! проверяем может ли ключ открывать двери
+	! если ключ есть и он может открывать двери, сверяется свойство
+	args['breake-1']=func('get.tag.num',$object_array[args['pos-1']],'breake')
+	args['breake']=func('get.tag.num',$object_array[args['pos']],'breake')
+	if args['breake']!args[0]:
+		if (args['breake']>args[0] and ((args['breake-1']<args[0]) or (func('#-#',args['breake-1'],args[0])>func('#-#',args['breake'],args[0])))) or  _
+		((no args['breake-1']>args[0]) and (func('#-#',args['breake-1'],args[0])>func('#-#',args['breake'],args[0]))):
+				$args['get.key.inBreake']=$id_array[args['pos']]
+				args['pos-1']=args['pos']
+		end
+	else
+		$args['get.key.inBreake'] = $id_array[args['pos']]
+		$result = $args['get.key.inBreake']
+		exit
+	end
+	jump 'for'
+else
+	$result = $args['get.key.inBreake']
+	exit
+end
+--- get.key.inBreake ---------------------------------

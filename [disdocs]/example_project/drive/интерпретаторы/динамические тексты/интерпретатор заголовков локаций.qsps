@@ -1,0 +1,73 @@
+# int.loc.head
+! интерпретатор заголовков по исходному содержимому заголовков
+$args[0] = $args[0]	&	!	ай-ди локации
+$args[1] = $args[1]	&	!	управляющее слово
+$args['obj']=$func('get.obj.id',$args[0])
+$args['name'] = $func('get.tag.cont',$args['obj'],'name')
+$args['spec'] = $func('get.tag.cont',$args['obj'],'spec')
+if $args['name'] = '':
+	if $args[1]='location': $args['name'] = $func('b.d.t','place.neverland')
+	if $args[1]='chest':
+		if TRIM($args['spec'])='[smithing]':
+			$args['name'] = $func('b.d.t','place.smithing')
+		elseif TRIM($args['spec'])='[altar]':
+			$args['name'] = $func('b.d.t','place.altar')
+		elseif TRIM($args['spec'])='[alchemic]':
+			$args['name'] = $func('b.d.t','place.alchemic')
+		elseif $strfind($args['spec'],'(\[altar\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[altar\])+')!'':
+			$args['name'] = $func('b.d.t','place.smithal')
+		elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[alchemic\])+')!'':
+			$args['name'] = $func('b.d.t','place.alsmith')
+		elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[altar\]|\[smithing\][\s\S]*\[altar\])+')!'':
+			$args['name'] = $func('b.d.t','place.alal')
+		else
+			$args['name'] = $func('b.d.t','place.chest')
+		end
+	end
+	if $args[1]='seller': $args['name'] = $func('b.d.t','place.seller')
+end
+$args['type'] = $func('get.tag.cont',$args['obj'],'type')
+if $func('get.tag.num',$args['obj'],'color')!'':
+	$args['color'] = $func('get.tag.num',$args['obj'],'color')
+	if $args[1]='seller': $cvar['seller.color']=$args['color']
+elseif $args[1]='location':
+	if $args['type']='строение':	
+		$args['color']='994099' & ! здания вне городов
+	elseif $args['type']='принадлежит игроку':
+		$args['color']='880055'	&	!	любое помещение, которое стало собственностью героя
+	elseif $args['type']='город':
+		$args['color']='004477' & ! открытая местность в городе
+	elseif $args['type']='здание':
+		$args['color']='550088' & ! здания в городах
+	elseif $args['type']='просторы':
+		$args['color']='007799' & ! открытая местность вне городов
+	else
+		$args['color']='007799'
+	end
+elseif $args[1]='chest':
+	if TRIM($args['spec'])='[smithing]':
+		$args['color']='dd6600' & ! кузница
+	elseif TRIM($args['spec'])='[altar]':
+		$args['color']='ff4400' & ! алтарь
+	elseif TRIM($args['spec'])='[alchemic]':
+		$args['color']='667733' & ! алхимический стол
+	elseif $strfind($args['spec'],'(\[altar\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[altar\])+')!'':
+		$args['color']='ff4466' & ! волшебная кузница
+	elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[alchemic\])+')!'':
+		$args['color']='663377' & ! алхимическая кузница
+	elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[altar\]|\[smithing\][\s\S]*\[altar\])+')!'':
+		$args['color']='336677' & ! алхимический алтарь
+	else
+		$args['color']='663300' & ! прочие хранилища
+	end
+elseif $args[1]='seller':
+	$args['color']	=	'006600' & ! локации торговли
+	$cvar['seller.color']	=	'006600'
+	args['колво']	=	charge_array[arrpos('$id_array',$args[0])]
+	$args['bank']	=	$func('b.d.t','place.bank',$args['color'],args['колво'])
+else
+	$args['color']='007799'
+end
+$args['time']=$func('b.d.t','time.calendar',time['date'],time['year'],$time['hour.onClock'],$time['minute.onClock'])
+$result = '<table width=90% border=0 cellpadding=2 cellspacing=0><tr><td align=left><font color=#' +$args['color']+ ' face="CyrillicOld" size=6>' + $args['name'] + '</font>' +$args['bank'] + '</td><td align=right><font color=#' + $args['color'] + ' face="CyrillicOld" size=6>' + $args['time'] + ':' + $func('int.time.days') +'</font></td></tr></table>'
+--- int.loc.head ---------------------------------

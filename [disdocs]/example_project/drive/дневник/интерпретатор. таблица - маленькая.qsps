@@ -1,0 +1,43 @@
+# int.diary.small
+! "Construct of the diary's table. The Small Table"
+$args[0] = $args[0]
+if $args[1] = '': $args[1]='&nbsp;'	&	!	The Text in a Central Cell.
+! цвета
+$args['info_color']='bbbb44'
+$args['next_color']='bbbb44'
+$args['last_color']='bbbb44'
+$args['eror_color']='bbbb44'
+$args['note_color']='bbbb44'
+$args['sets_color']='bbbb44'
+$args[$diary['tab']+'_color']='dddd66'
+! ссылки вкладок
+	$args['href.sets']="<center><a href=""exec:$diary['tab']='sets' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.sets')+"</a></center>"
+	$args['href.info']="<center><a href=""exec:$diary['tab']='info' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.info')+"</a></center>"
+	$args['href.next']="<center><a href=""exec:$diary['tab']='next' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.next')+"</a></center>"
+	$args['href.last']="<center><a href=""exec:$diary['tab']='last' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.last')+"</a></center>"
+	$args['href.eror']="<center><a href=""exec:$diary['tab']='eror' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.eror')+"</a></center>"
+	$args['href.note']="<center><a href=""exec:$diary['tab']='note' & gs 'int.diary','<<$args[0]>>'"">"+$func('b.d.t','diary.note')+"</a></center>"
+! строка ссылок
+	$args['str.href'] ="<td bgcolor=#"+$args['info_color']+">"+$args['href.info']+"</td>"
+	$args['str.href']+="<td bgcolor=#"+$args['next_color']+">"+$args['href.next']+"</td>"
+	$args['str.href']+="<td bgcolor=#"+$args['last_color']+">"+$args['href.last']+"</td>"
+	$args['str.href']+="<td bgcolor=#"+$args['eror_color']+">"+$args['href.eror']+"</td>"
+	$args['str.href']+="<td bgcolor=#"+$args['note_color']+">"+$args['href.note']+"</td>"
+	$args['str.href']+="<td bgcolor=#"+$args['sets_color']+">"+$args['href.sets']+"</td>"
+$args['close.link']={<font size=1><a class="plain" href="exec:*clr & *pl $diary['maintxt'] & gs 'setScreen',$diary['setScreen'] & $diary['maintxt']='' & $diary['setScreen']=''">Закрыть</a></font>}
+$args['time']="<<time['date']>> "+$func('int.time.month','Января|Февраля|Марта|Апреля|Мая|Июня|Июля|Августа|Сентября|Октября|Ноября|Декабря')+" <<time['year']>> года<br>[<<$time['hour.onClock']>>:<<$time['minute.onClock']>>]"
+$args['info']=$replace($replace($func('get.scale.hero'),'<center>'),'</center>')
+$args['res.061213']+="<table bgcolor=#aaaa33 width=100% cellcpacing=0 cellpadding=5 border=0><tr><td width=5%>"+$args['close.link']+"</td><td><font size=1>&nbsp;</font></td><td width=5%>"+$args['close.link']+"</td></tr></table><br>"
+$args['res.061213']+='<center><table width=90% valign=top cellpadding=15 cellspacing=0 border=0>'
+$args['res.061213']+='<tr>'
+$args['res.061213']+=$args['str.href']
+$args['res.061213']+="</tr><tr>"
+$args['res.061213']+="<td bgcolor=#dddd66 colspan=6>"+$args[1]+"</td>"
+$args['res.061213']+="</tr><tr>"
+$args['res.061213']+=$args['str.href']
+$args['res.061213']+='</tr>'
+$args['res.061213']+='</table></center><br><br><br>'
+$args['res.061213']+='<center><table cellpadding=25 cellspacing=0 border=0 width=90%><tr><td width=80% bgcolor=#ffff88>'+$args['info']+'</td><td bgcolor=#bbbb44>'+$args['time']+'</td></tr></table></center><br>'
+$args['res.061213']+="<table bgcolor=#aaaa33 width=100% cellcpacing=0 cellpadding=5 border=0><tr><td width=5%>"+$args['close.link']+"</td><td width=90%><font size=1>&nbsp;</font></td><td width=5%>"+$args['close.link']+"</td></tr></table>"
+$result=$args['res.061213']
+--- int.diary.small ---------------------------------

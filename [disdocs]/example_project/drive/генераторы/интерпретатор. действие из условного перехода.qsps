@@ -1,0 +1,36 @@
+# gen.act.goto
+! Локация воссоздаёт действие из тела условного перехода
+$args[0] = $args[0]	&	!	ай-ди условного перехода
+$args[1] = $args[1]	&	!	ай-ди локации
+$args[2] = $args[2]	&	!	href acts - вид действия
+$args[3] = $args[3]	&	!	дополнительные команды
+! получаем некоторую инфу о переходе
+$args['obj']=$object_array[arrpos('$id_array',$args[0])]	&	!	тело объекта "переход"
+$args['loc']=$func('get.tag.cont',$args['obj'],'loc')		&	!	направление перехода ай-ди локации, на которую нужно попасть
+$args['name']=$func('get.tag.cont',$args['obj'],'name')		&	!	название перехода
+if $light_array[$args[1]]='темно':
+! если на локации темно, вид переходов несколько меняется
+	$args['name']=$func('b.d.t','dark.goto')	&	!	название во тьме
+	! блок текста, выводимый, если в тёмном помещении не виден торговец или сундук
+	if $args['loc']='[chest]' and $SQUARE['SQUARE.location.indark.chest']='': $SQUARE['SQUARE.location.indark.chest']=$func('b.w.s','dark.chest')
+end
+if $strfind($args['obj'],'\[key:[\s\S]*:key\]')<>'': $args['key']='need' &	!	необходимость ключа
+
+if ($light_array[$args[1]]='темно' and $args['loc']<>"[chest]" and $args['key']<>'need') or $light_array[$args[1]]<>'темно':
+! если переход на локацию места и для него не нужен ключ
+	if $args[2]='href' or $args[2]='':
+	! если формируется ссылка
+		$args['res.021213']="<a class=""plain"" href=""exec:gs 'int.act.goto','<<$args[0]>>'""><<$args['name']>></a><br>"
+	elseif $args[2]='acts':
+	! если формируется действие
+$args['acts']+="
+act '<<$args['name']>><oid:<<$args[0]>>:oid>':
+	$args['oid']=$func('get.tag.cont',$selact,'oid')
+	gs 'int.act.goto',$args['oid']
+end
+"
+	$args['res.021213']=$args['acts']
+	end
+end
+$result=$args['res.021213']
+--- gen.act.goto ---------------------------------

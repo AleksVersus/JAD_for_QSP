@@ -1,0 +1,17 @@
+# add.new.task
+! Добавление задания.
+! производим поиск дневника. Если указать заранее, можно не проводить такой поиск.
+! например внести ай.ди дневника в значение переменной.
+if $args[0]='':
+	if $func('get.daughter.obj','INVENTORY','<diary>','$id_diary')='true':
+		$args[0] = $id_diary[0]
+		killvar '$id_diary'
+	else
+		exit
+	end
+end
+$args[1] = $args[1]	&	!	краткое имя задания
+$args[2] = $args[2]	&	!	первая стадия
+gs 'add.new.obj','<note> [:'+$args[1]+':] [np:[task]:np] [v:next:v] ',$args[0],'NOTE'
+if $args[2]!'': gs 'add.new.stady',$args[0],$args[1],$args[2]
+--- add.new.task ---------------------------------

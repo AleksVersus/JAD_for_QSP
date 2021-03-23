@@ -1,0 +1,6 @@
+# get.obj.id
+! Функция получает содержимое объекта из ай-дишника
+! $args[0] - айди
+$args[0] = $args[0]
+$result=$object_array[arrpos('$id_array',$args[0])]
+--- get.obj.id ---------------------------------

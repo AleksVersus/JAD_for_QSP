@@ -1,0 +1,22 @@
+# menu.obj.read
+$args[0] = $OOS['oid']
+args['pit']=arrpos('$id_array',$args[0])
+$args['obj']=$object_array[args['pit']]
+$args['book']=$func('get.tag.cont',$args['obj'])
+if instr($args['obj'],'<spell>')!0 and книга_прочитана[$args['book']]=0:
+	$print['read.book']+='Ты не знаешь, как действует это заклинание.'
+	$args['ras']='!book.cant.read!'
+	jump 'end_keep'
+end
+if $light_array[$func('get.loc.id')]='темно' and instr($args['obj'],'<spell>')=0:
+	$print['read.book']+='Нельзя читать книги в полной темноте.'
+	$args['ras']='!book.cant.read!'
+else
+	$print['read.book']+=$func('base.new.obj',$args['obj'],'book')
+	if книга_прочитана[$args['book']]=0: книга_прочитана[$args['book']]+=1
+	if это_прочитано[$args[0]]=0: это_прочитано[$args[0]]+=1
+	$args['ras']='!book.read!'
+end
+:end_keep
+if $run_array[args['pit']]!'': $args['func']=$func('run.dynamic.script',$args['ras'],$args[0])
+--- menu.obj.read ---------------------------------

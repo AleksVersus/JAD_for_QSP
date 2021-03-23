@@ -1,0 +1,34 @@
+# menu.in.bag
+! Локация убирает предмет в наиболее подходящую сумку в инвентаре
+if $args[0]='': $args[0]=$OOS['oid']
+args['pos']=arrpos('$id_array',$args[0]) 	&	!	получаем позицию предмета в базе
+$args['obj']=$func('get.obj.id',$args[0])	&	!	получаем тело предмета
+args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	получаем вес предмета
+args['kolvo']=kolvo_array[args['pos']]	&	! запоминаем текущее количество
+$args['short_name']=$func('get.tag.cont',$args['obj'])
+$args['bag_in']=$func('get.bag',$args[0])
+! Необходимо проверить из какого места перемещается предмет, т.е. проверяем класс родительского объекта <body> или <inventory>
+$args['parent']=$func('get.obj.id',$position_array[args['pos']]) 	&	!	получаем тело родительского объекта
+if instr($args['parent'],'<inventory>')!0:
+	args['w']=0
+	$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['kolvo'])
+	$print['menu.in.bag']+=$func('base.word.screen','006',$args['obj']+'[колво:'+str(args['kolvo'])+']')
+elseif instr($args['parent'],'<body>')!0:
+	args['поднять_штук']=func('prv.obj.weight',$args[0],'inBag')	&	!	получаем сколько можно отправить в сумку
+	if args['поднять_штук']!0:
+		$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['поднять_штук'])
+		args['w']=args['поднять_штук']*args['weight']
+		args['pit']=arrpos('$id_array',$args['last_id'])
+		if $run_array[args['pit']]!'':
+			if $strfind($run_array[args['pos_lid']],'!deused!')!'':	$args['func']=$func('run.dynamic.script','!deused!',$args['last_id'],$args[0])
+			if $strfind($run_array[args['pos_lid']],'!inbag!')!'':	$args['func']=$func('run.dynamic.script','!inbag!',$args['last_id'],$args[0])
+		end
+		$print['menu.in.bag']+=$func('base.word.screen','004',$args['obj']+'[колво:'+str(args['поднять_штук'])+']')
+	else
+		$print['menu.in.bag']+=$func('base.word.screen','005')
+	end
+end
+property['hero.power.all']+=args['w']
+$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
+gs 'int.inventory'
+--- menu.in.bag ---------------------------------

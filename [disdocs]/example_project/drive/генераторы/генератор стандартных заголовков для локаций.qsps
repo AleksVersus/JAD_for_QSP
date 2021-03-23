@@ -1,0 +1,16 @@
+# gen.loc.head
+! генератор стандартных заголовков для локаций хранения
+$args[0]=$args[0]	&	!	передаёт ай-ди сундука
+$args[1]=$args[1]	&	!	передаёт управляющее слово
+
+if instr($args[1],'set_smithing')!0:
+	$args['spec']+='[smithing]'
+end
+if instr($args[1],'set_altar')!0:
+	$args['spec']+='[altar]'
+end
+if instr($args[1],'set_alchemic')!0:
+	$args['spec']+='[alchemic]'
+end
+if $args['spec']!'': gs 'add.new.obj','<заголовок> [spec:'+$args['spec']+':spec]','',$args[0]
+--- gen.loc.head ---------------------------------

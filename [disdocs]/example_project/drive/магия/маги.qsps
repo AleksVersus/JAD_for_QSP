@@ -1,0 +1,74 @@
+# magic.menergy.spell
+! работа с энергией пространства
+$args[0] = $args[0]	&	! ай-ди локации
+$args[1] = $args[1]	&	! характеристики заклинания
+$args[2] = $args[2]	&	! управляющая конструкция
+if $args[2]='respawn' or $args[2]='set':
+	args['loc.it']=arrpos('$id_array',$args[0])
+	$args['obj']=$object_array[args['loc.it']]
+end
+if $args[2]='respawn':
+	if instr($args['obj'],'[menergy:')!0 and instr($args['obj'],'[menergy.stop]')=0:
+	! ВНИМАНИЕ!!! РЕСПАВН МАГИЧЕСКОЙ ЭНЕРГИИ ПРОСТРАНСТВА ОСУЩЕСТВЛЯЕТСЯ ВСЕГДА, независимо от того находится ли локация в респаунере, или нет	
+	! Респавн магической энергии происходит постоянно. Тут работает простая закономерность. Каждая энергия пространства имеет свой предел
+	! этот предел делится на период спавна и вычисляется насколько он должен быть сейчас заполнен
+		$args['respawn.loc']=$func('get.tag.cont',$args['obj'],'respawn')	&	!	получаем время респавна
+		if $args['respawn.loc']='': $args['respawn.loc']='[day:1]'
+		args['respawn.time']=$func('get.tag.num',$func('conv.time',$args['respawn.loc'],'minute'),'minute')	&	!	вычисляем период респавнинга в минутах
+		args['time.last']=$func('get.tag.num',$func('conv.time',$kolvo_array[args['loc.it']],'minute'),'minute')
+		args['time.new']=$func('get.tag.num',$func('conv.time',$time['new.all'],'minute'),'minute')
+		$args['menergy']=$func('get.tag.cont',$args['obj'],'menergy')
+	else
+		$result='false' & exit
+	end
+end
+if $args[2]='prove' or $args[2]='spell':
+	if $args[1]='':
+		$result='false'
+		exit
+	else
+		$args['menergy']=$args[1]
+	end
+end
+if $args[2]='set':
+	$args['menergy']=$func('get.tag.cont',$args['obj'],'menergy')
+	if $args['menergy']='': $result='flase' & exit
+end
+args['i']=1
+:for
+if $strfind($args['menergy'],"u[\d]+:[\s\S]+:u[\d]+")!'':
+	$args['uron']=$func('get.tag.cont',$args['menergy'],"u<<args['i']>>")
+	if $args['uron']!"":
+		args['power']=func('get.tag.num',$args['menergy'],"p<<args['i']>>")
+		if $args[2]='set':
+			menergy[$args[0]+'/'+$args['uron']]=args['power']
+		elseif $args[2]='respawn':
+			if menergy[$args[0]+'/'+$args['uron']]<args['power']:
+				menergy[$args[0]+'/'+$args['uron']]+=(args['time.new']-args['time.last'])*args['power']/args['respawn.time']
+				if menergy[$args[0]+'/'+$args['uron']]>args['power']: menergy[$args[0]+'/'+$args['uron']]=args['power']
+			end
+		elseif $args[2]='prove':
+			if menergy[$args[0]+'/'+$args['uron']]<args['power']: $result='false' & exit
+		elseif $args[2]='spell':
+			menergy[$args[0]+'/'+$args['uron']]-=args['power']
+		end
+		$args['menergy'] = $replace($args['menergy'],"u<<args['i']>>:"+$args['uron']+":u<<args['i']>>")
+		$args['menergy'] = $replace($args['menergy'],"p<<args['i']>>:"+str(args['power']))
+		$args['menergy'] = TRIM($args['menergy'])
+	end
+	args['i']+=1
+	jump 'for'
+end
+$result = 'true'
+--- magic.menergy.spell ---------------------------------
+
+# magic.add.spell
+! Функция позволяет добавить в игру заклинание, прописанное в базе предметов base.new.obj
+$args[0] = $args[0]	&	!	короткое слово внутри тега [::]
+if $args[1] = '': exit	&	!	место, куда помещается заклинание
+$args['get.spell.body']=$replace($func('base.new.obj',$args[0],'get.obj'),'<obj>','<spell>')
+$args['get.spell.body']=$replace($args['get.spell.body'],'[свиток]')
+$args['get.spell.dyncode']=$func('base.new.obj',$args[0],'get.obj get.run_array')
+$args['res.13122013']=$func('add.new.obj',$args['get.spell.body'],$args[1],'SPELL',0,0,$args['get.spell.dyncode'])
+$result=$args['res.13122013']
+--- magic.add.spell ---------------------------------

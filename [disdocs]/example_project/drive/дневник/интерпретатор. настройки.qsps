@@ -1,0 +1,50 @@
+# int.diary.sets
+$args[0] = $args[0]
+$args['res.021213']=''
+if $GAME_INTERFACE['обучение']="show":
+	$args['help.txt']='<a class="plain" href="exec:'+"$GAME_INTERFACE['обучение']='hide' & gs 'int.diary','<<$args[0]>>'"+'">Выключить режим обучения</a>'
+	$args['help.img']='<a class="plain" href="exec:'+"$GAME_INTERFACE['обучение']='hide' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','on')+'" width=25 height=25></a>'
+else
+	$args['help.txt']='<a class="plain" href="exec:'+"$GAME_INTERFACE['обучение']='show' & gs 'int.diary','<<$args[0]>>'"+'">Включить режим обучения</a>'
+	$args['help.img']='<a class="plain" href="exec:'+"$GAME_INTERFACE['обучение']='show' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','off')+'" width=25 height=25></a>'
+end
+if $GAME_INTERFACE['подсказки']="show":
+	$args['подсказки.txt']='<a class="plain" href="exec:'+"$GAME_INTERFACE['подсказки']='hide' & gs 'int.diary','<<$args[0]>>'"+'">Выключить советы по интерфейсу</a>'
+	$args['подсказки.img']='<a class="plain" href="exec:'+"$GAME_INTERFACE['подсказки']='hide' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','on')+'" width=25 height=25></a>'
+else
+	$args['подсказки.txt']='<a class="plain" href="exec:'+"$GAME_INTERFACE['подсказки']='show' & gs 'int.diary','<<$args[0]>>'"+'">Включить советы по интерфейсу</a>'
+	$args['подсказки.img']='<a class="plain" href="exec:'+"$GAME_INTERFACE['подсказки']='show' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','off')+'" width=25 height=25></a>'
+end
+if $GAME_INTERFACE['show.input']='show':
+	showinput 1
+	$args['input.txt']='<a class="plain" href="exec:'+"$GAME_INTERFACE['show.input']='hide' & gs 'int.diary','<<$args[0]>>'"+'">Скрыть строку ввода</a>'
+	if $GAME_INTERFACE['подсказки']="show": $args['input.txt']+=$func('game.help','comcom')+$func('b.w.s','help')
+	$args['input.img']='<a class="plain" href="exec:'+"$GAME_INTERFACE['show.input']='hide' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','on')+'" width=25 height=25></a>'
+else
+	showinput 0
+	$args['input.txt']='<a class="plain" href="exec:'+"$GAME_INTERFACE['show.input']='show' & msg 'внимание!!! неумелое пользование чит-командами может привести к краху игры!' & gs 'int.diary','<<$args[0]>>'"+'">Показать строку ввода</a>'
+	if $GAME_INTERFACE['подсказки']="show": $args['input.txt']+=$func('game.help','commandcom')+$func('b.w.s','help')
+	$args['input.img']='<a class="plain" href="exec:'+"$GAME_INTERFACE['show.input']='show' & msg 'внимание!!! неумелое пользование чит-командами может привести к краху игры!' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','off')+'" width=25 height=25></a>'
+end
+$args['сменить представление.img']='<img src="'+$func('base.img','diary.'+$diary['view'])+'" width=25 height=25>'
+$args['сменить представление.txt']=$func('b.d.t','diary.change')
+if $diary['view']='small':
+	$args['next.view']='big'
+elseif $diary['view']='big':
+	$args['next.view']='big1'
+elseif $diary['view']='big1':
+	$args['next.view']='small'
+end
+$args['сменить представление.href']="<a href=""exec:$diary['view']='"+$args['next.view']+"' & gs 'int.diary','<<$args[0]>>'"" class=""plain"">"
+$args['сменить представление.txt']=$args['сменить представление.href']+$args['сменить представление.txt']+'</a>'
+$args['сменить представление.img']=$args['сменить представление.href']+$args['сменить представление.img']+'</a>'
+$args['res.021213']+='<table width=50% align=left border=0 cellspacing=3>'
+$args['res.021213']+='<tr colspan=2><td align=left colspan=2><u>Помощь:</u></td></tr>'
+$args['res.021213']+='<tr><td align=right width=50 valign=top>'+$args['help.img']+'</td><td align=left>'+$args['help.txt']+'</td></tr>'
+$args['res.021213']+='<tr><td align=right width=50 valign=top>'+$args['подсказки.img']+'</td><td align=left>'+$args['подсказки.txt']+'</td></tr>'
+$args['res.021213']+='<tr colspan=2><td align=left colspan=2>Управление интерфейсом:</td></tr>'
+$args['res.021213']+='<tr><td align=right width=50 valign=top>'+$args['input.img']+'</td><td align=left>'+$args['input.txt']+'</td></tr>'
+$args['res.021213']+='<tr><td align=right width=50 valign=top>'+$args['сменить представление.img']+'</td><td align=left>'+$args['сменить представление.txt']+'</td></tr>'
+$args['res.021213']+='</table>'
+$result=$args['res.021213']
+--- int.diary.sets ---------------------------------

@@ -1,0 +1,40 @@
+# get.daughter.obj
+! Функция получает все дочерние объекты для данного ай-ди.
+! Результатом является true - есть дочерние, false - нет дочерних
+! так же заполняется массив $temp_id
+$args[0] = $args[0] &	! $args[0] - ай-ди родительского объекта
+$args[1] = $args[1]	&	! $args[1] - регулярное выражение по которому производится дополнительная фильтрация
+if $args[2] = '': $args[2] = '$temp_id'	&	!	массив, в который вносятся ай-ди дочерних объектов.
+if instr($args[2],'$')<>1: $args[2]='$'+$args[2]
+$args[3] = $args[3]	&	!	дополнительная проверка.
+if $args[4] = '': $args[4]='position'
+! регулярное выражение по которому производится дополнительная фильтрация. Сортировка идёт по данным в массиве $run_array[]
+args['log.start']=msecscount
+$args['gdo']='false'
+args['pos']=-1
+:for
+args['pos']=arrpos(args['pos']+1,'$<<$args[4]>>_array',$args[0])
+if args['pos']<>-1 and args['i']<>args['pos']:
+	args['i']=args['pos']
+	if $args[1]='' or $strfind($object_array[args['pos']],$args[1])<>'':
+		if $args[3]='' or $strfind($run_array[args['pos']],$args[3])<>'':
+			$args['gdo']='true'
+			pl "&gt;<<$args[2]>>[arrsize('<<$args[2]>>')]=<<$id_array[args['pos']]>>"
+			dynamic "<<$args[2]>>[arrsize('<<$args[2]>>')]=$id_array[args[0]]",args['pos']
+		end
+	end
+	jump 'for'
+end
+args['log.finish']=msecscount
+$error_log[]="<<MSECSCOUNT>> get.daughter.obj
+	curloc:<<$curloc>> 
+	parent:<<$args[0]>> 
+	filtr:<<$args[1]>> 
+	array:<<$args[2]>> 
+	dynamic_script:<<$args[3]>>
+	round:$<<$args[4]>>_array 
+	result:<<$args['gdo']>> 
+	arrsize:<<arrsize($args[2])>> 
+	time:<<args['log.finish']-args['log.start']>>"
+$result=$args['gdo']
+--- get.daughter.obj ---------------------------------

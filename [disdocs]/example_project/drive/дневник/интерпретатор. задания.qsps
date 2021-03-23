@@ -1,0 +1,41 @@
+# int.diary.task
+! выводит список заданий
+! производим поиск дневника
+$args[0] = $args[0]	&	!	ай-ди дневника
+$args[1] = $args[1]	&	!	вид задания например
+$args['regexp']='<note>[\s\S]*(\[task\][\s\S]*\[v:'+$args[1]+':v\]|\[v:'+$args[1]+':v\][\s\S]*\[task\])'
+if $args[1] = 'next': $args['color1']='008888' 	&	$args['color2']='004488'
+if $args[1] = 'last': $args['color1']='008800' 	&	$args['color2']='004400'
+if $args[1] = 'eror': $args['color1']='aa4400' 	&	$args['color2']='880000' 
+$args['gdo']=$func('get.daughter.obj',$args[0],$args['regexp'],'$id_notes')
+if $args['gdo']='true':
+	args['note']=0
+	:tasks
+	if args['note']<arrsize('$id_notes'):
+		$args['int.diary.task']+=$func('int.notes',$id_notes[args['note']],$args['color1'])+'<br>'
+		$args['imitation_gs_dont_use']=$func('get.daughter.obj',$id_notes[args['note']],'\[stady\]','$id_stadies')
+		args['stady']=0
+		args['sn']=1
+		:stadies
+		if args['stady']<arrsize('$id_stadies'):
+			args['stady.pos']=arrpos('$id_array',$id_stadies[args['stady']])
+			$args['np']=$func('get.tag.cont',$object_array[args['stady.pos']],'np')
+			if instr($args['np'],'[hide]')=0:
+				$args['v']=$func('get.tag.cont',$object_array[args['stady.pos']],'v')
+				if $args['v']='next': $args['color']=$args['color2']
+				if $args['v']='last': $args['color']=$func('#+col#',$args['color2'],'-44')
+				if $args['v']='eror': $args['color']='aa4400'
+				$args['int.diary.task']+="<font color=#"+$args['color']+"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Заметка № <<args['sn']>>: </b></font>"+$func('int.notes',$id_stadies[args['stady']])+'<br>'
+				args['sn']+=1
+			end
+			args['stady']+=1
+			jump 'stadies'
+		end
+		args['note']+=1
+		jump 'tasks'
+	end
+end
+$result=$args['int.diary.task']
+killvar '$id_notes'
+killvar '$id_stadies'
+--- int.diary.task ---------------------------------

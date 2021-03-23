@@ -1,0 +1,280 @@
+# int.time.calendar
+! календарь выставляет текущие значения времени. Не влияет на работу других скриптов обсчитывающих время.
+$args[0] = $args[0]	&	!	расходуемое время
+! ------------------------ календарь ------------------------	
+	time['sec']		=	time['sec']		&	!	для удобства в каждой минуте принято по сто секунд. Секунды не используются в игре, как времяопределение 10
+	time['minute']	=	time['minute']	&	!	текущее время в минутах
+	time['hour']	=	time['hour']	&	!	текущее время в часах
+	time['day']		=	time['day']		&	!	текущее время в днях (365/366)
+	time['date']	=	time['date']	&	!	текущая дата 
+	time['weekday']	=	time['weekday']	&	!	текущий день недели
+	time['month']	=	time['month']	&	!	номер текущего месяца
+	time['year']	=	time['year']	&	!	номер текущего года
+	$time['last.all']=$func('get.time.now')
+! Календарь может быть изменён в соответствии с требованиями игры. Для этого следует отредактировать текущую локацию
+! и локацию summ.time
+$args['last.time']=$func('get.time.now')
+$args['new.time']=$func('summ.time',$args['last.time'],$args[0])
+	time['sec']		=	func('get.tag.num',$args['new.time'],'secunde')
+	time['minute']	=	func('get.tag.num',$args['new.time'],'minute')
+	time['hour']	=	func('get.tag.num',$args['new.time'],'hour')
+	time['day']		=	func('get.tag.num',$args['new.time'],'day')
+	args['+weekday']	=	func('get.tag.num',$args['new.time'],'week')
+	time['year']	=	func('get.tag.num',$args['new.time'],'year')
+	if len(str(time['hour']))=1: $time['hour.onClock']='0'+str(time['hour']) else $time['hour.onClock']=str(time['hour'])
+	if len(str(time['minute']))=1: $time['minute.onClock']='0'+str(time['minute']) else $time['minute.onClock']=str(time['minute'])
+! вычисляем день недели
+args['weekday']=time['weekday']+args['+weekday']
+time['weekday']=args['weekday'] mod 7
+! Вычисляем дату. Дата определяется простым способом - по номеру дня в году.
+if time['year'] mod 4 = 0: args['+1']=1
+if time['day']>-1 and time['day']<31:
+	time['month']=1
+	time['date']=time['day']+1
+elseif time['day']>30 and time['day']<59+args['+1']:
+	time['month']=2
+	time['date']=time['day']-30
+elseif time['day']>58+args['+1'] and time['day']<90+args['+1']:
+	time['month']=3
+	time['date']=time['day']-(58+args['+1'])
+elseif time['day']>89+args['+1'] and time['day']<120+args['+1']:
+	time['month']=4
+	time['date']=time['day']-(89+args['+1'])
+elseif time['day']>119+args['+1'] and time['day']<151+args['+1']:
+	time['month']=5
+	time['date']=time['day']-(119+args['+1'])
+elseif time['day']>150+args['+1'] and time['day']<181+args['+1']:
+	time['month']=6
+	time['date']=time['day']-(150+args['+1'])
+elseif time['day']>180+args['+1'] and time['day']<212+args['+1']:
+	time['month']=7
+	time['date']=time['day']-(180+args['+1'])
+elseif time['day']>211+args['+1'] and time['day']<243+args['+1']:
+	time['month']=8
+	time['date']=time['day']-(211+args['+1'])
+elseif time['day']>242+args['+1'] and time['day']<273+args['+1']:
+	time['month']=9
+	time['date']=time['day']-(242+args['+1'])
+elseif time['day']>272+args['+1'] and time['day']<304+args['+1']:
+	time['month']=10
+	time['date']=time['day']-(272+args['+1'])
+elseif time['day']>303+args['+1'] and time['day']<334+args['+1']:
+	time['month']=11
+	time['date']=time['day']-(303+args['+1'])
+elseif time['day']>333+args['+1'] and time['day']<365+args['+1']:
+	time['month']=12
+	time['date']=time['day']-(333+args['+1'])
+end
+$time['new.all']=$func('get.time.now')
+--- int.time.calendar ---------------------------------
+
+# get.time.now
+! получает текущее состояние времени в приемлемом виде
+$result="[year:<<time['year']>>] [day:<<time['day']>>] [hour:<<time['hour']>>] [minute:<<time['minute']>>] [secunde:<<time['sec']>>]"
+--- get.time.now ---------------------------------
+
+# sim.time
+! Сравнение двух временнЫх значений. Используется год, день в году, час, минута секунда
+$args[0] = $args[0]	&	!	первое значение. Как правило отличное от текущего
+$args[1] = $args[1]	&	!	второе значение. Если не указано, сравнивается с текущим временем.
+
+$args[2] = 'year'
+$args[3] = 'day'
+$args[4] = 'hour'
+$args[5] = 'minute'
+$args[6] = 'sec'
+if $args[1] = '':
+	args['sec']		=	time['sec']	&	!	для удобства в каждой минуте принято по сто секунд. Секунды не используются в игре, как времяопределение 10
+	args['minute']	=	time['minute']	&	!	текущее время в минутах
+	args['hour']	=	time['hour']	&	!	текущее время в часах
+	args['day']		=	time['day']	&	!	текущее время в днях (365/366)
+	args['year']	=	time['year']	&	!	номер текущего года
+else
+	args['sec']		=	func('get.tag.num',$args[1],'secunde')
+	args['minute']	=	func('get.tag.num',$args[1],'minute')
+	args['hour']	=	func('get.tag.num',$args[1],'hour')
+	args['day']		=	func('get.tag.num',$args[1],'day')
+	args['year']	=	func('get.tag.num',$args[1],'year')
+end
+args['sec.new']		=	func('get.tag.num',$args[0],'secunde')
+args['minute.new']	=	func('get.tag.num',$args[0],'minute')
+args['hour.new']	=	func('get.tag.num',$args[0],'hour')
+args['day.new']		=	func('get.tag.num',$args[0],'day')
+args['year.new']	=	func('get.tag.num',$args[0],'year')
+! {результатом являются три слова: 
+'first' - больше первое значение
+'second' - больше второе значение
+'similar' - одинаковые значения}
+args['i']=2
+:for
+if args[$args[args['i']]+'.new']<args[$args[args['i']]]:
+	$result='second'
+elseif args[$args[args['i']]+'.new']>args[$args[args['i']]]:
+	$result='first'
+elseif args['i']<7:
+	args['i']+=1
+	jump 'for'
+elseif args['i']>6:
+	$result='similar'
+end
+--- sim.time ---------------------------------
+
+# summ.time
+! локация суммирует время
+! ВНИМАНИЕ!!!
+! Локация производит суммирование времени как числовых величин. Каждое значение является всего лишь специфическим разрядом.
+! поэтому в результате будут не
+! первый день первого года, а 0 дней 0 лет! Когда истечёт 24 часа, будет 0 лет 1 день 00 часов 00 минут. Учитывайте это при использовании.
+! Високосные годы считаются правильно. Ничего не сдивнуто. 0 лет - означает минус первый год отсчёта. 1 год - означает первый год отсчёта, равно как и "с момента отсчёта прошёл один год"
+! $args[0] ... $args[8] - временнЫе промежутки в формате [year:ABC] [day:XYZ] [hour:DE] [minute:FJ] [secunde:NM]
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args[2] = $args[2]
+$args[3] = $args[3]
+$args[4] = $args[4]
+$args[5] = $args[5]
+$args[6] = $args[6]
+$args[7] = $args[7]
+$args[8] = $args[8]
+! результатом работы функции является временной промежуток в формате [year:ABC] [day:XYZ] [hour:DE] [minute:FJ] [secunde:NM]
+! в некотором роде функция дублирует схему работы календаря. Поэтому она, как и календарь должна подгоняться под текущие нужды игры.
+! дополнительный тег, позволяющий вычислить значение до указанного разряда, передаётся в нулевом аргументе
+! <sec> - секунды <min> - минуты <hour> - часы <day> - дни
+args['i']=1
+args['res.year']=func('get.tag.num',$args[0],'year')
+args['res.day']=func('get.tag.num',$args[0],'day')
+args['res.hour']=func('get.tag.num',$args[0],'hour')
+args['res.minute']=func('get.tag.num',$args[0],'minute')
+args['res.secunde']=func('get.tag.num',$args[0],'secunde')
+:for_add_time
+if args['i']<9:
+	args['add.year']+=func('get.tag.num',$args[args['i']],'year')
+	args['add.day']+=func('get.tag.num',$args[args['i']],'day')
+	args['add.hour']+=func('get.tag.num',$args[args['i']],'hour')
+	args['add.minute']+=func('get.tag.num',$args[args['i']],'minute')
+	args['add.secunde']+=func('get.tag.num',$args[args['i']],'secunde')
+	args['i']+=1
+	jump 'for_add_time'
+end
+	args['sec']=args['res.secunde']+args['add.secunde']		&	!	расчётные секунды
+	args['+minute']=args['sec']/100							&	!	добавочные минуты. Добавляются к текущему значению минут
+	args['res.secunde']=args['sec'] mod 100					&	!	значение секунд выставляется остатком от деления
+	! Вычисляем значение минут
+	args['minute']=args['res.minute']+args['add.minute']+args['+minute']	&	!	расчётные минуты
+	args['+hour']=args['minute']/60							&	!	добавочные часы
+	args['res.minute']=args['minute'] mod 60				&	!	минуты в действительное значение
+	! вычисляем значение часов
+	args['hour']=args['res.hour']+args['add.hour']+args['+hour']
+	args['+day']=args['hour']/24
+	args['res.hour']=args['hour'] mod 24
+	
+	! расчёт текущего дня в году.
+	! Дни нумеруются с нулевого по последний (так же как и часы и минуты) Нулевой день - это первое января.
+	! Расчёт можно выполнить циклически с помощью вычитания. Т.е. сколько раз прогнался цикл, столько лет набежало.
+	! подсчитываем количество високосных лет циклом
+	args['+year']=args['add.year']		&	!	просто счётчик, использующийся для подсчёта количества лет
+	args['year.ok']=args['res.year']	&	!	запоминаем текущий год, чтобы не свихнуть календарь раньше срока
+	:for_vc
+	if args['+year']>0:
+		if $func('get.leapYear',args['year.ok'])='true':
+		! если год високосный, добавляем к количеству високосных лет
+			args['year.+day']+=1
+		end
+		args['+year']-=1
+		args['year.ok']+=1
+		jump 'for_vc'
+	end
+	args['past.day']=args['add.year']*365+args['year.+day']
+	! расчётное количество дней после потраченного:
+	args['day']=args['res.day']+args['add.day']+args['+day']+args['past.day']
+	! цикл
+	:for_year
+	! $func('vy',time['year']) - функция, вычисляющая високосность года
+	if $func('get.leapYear',args['res.year'])='true' and args['day']=>366:
+	! если значение дней достигло 366 (т.е. прошло 366 дней) високосного года
+		args['res.year']+=1
+		args['day']-=366
+		jump 'for_year'
+	elseif args['day']=>365:
+	! если значение дней достигло 365
+		args['res.year']+=1
+		args['day']-=365
+		jump 'for_year'
+	end
+	args['res.day']=args['day']
+:end_sel
+if args['res.year']!0: $args['sum.time']+='[year:'+str(args['res.year'])+'] '
+if args['res.day']!0: $args['sum.time']+='[day:'+str(args['res.day'])+'] '
+if args['res.hour']!0: $args['sum.time']+='[hour:'+str(args['res.hour'])+'] '
+if args['res.minute']!0: $args['sum.time']+='[minute:'+str(args['res.minute'])+'] '
+if args['res.secunde']!0: $args['sum.time']+='[secunde:'+str(args['res.secunde'])+']'
+if args['+day']+args['add.day']+args['past.day']!0: $args['sum.time']+=' [week:'+str(args['+day']+args['add.day']+args['past.day'])+']'
+$result=$args['sum.time']
+--- summ.time ---------------------------------
+
+# get.leapYear
+! проверка года на високосность
+args[0] = args[0]	&	!	аргумент, переданный локации, номер года, високосность, которого хотим проверить
+! Если високосность года определяется иным образом, измените эту локацию.
+if ((args[0] mod 4 = 0) and (args[0] mod 100!0)) or (args[0] mod 400=0):
+! если номер года кратен четырем и не кратен 100, или кратен 400, он считается високосным
+	$result='true'
+else
+	$result='false'
+end
+--- get.leapYear ---------------------------------
+
+# conv.time
+! приводит время к наименьшему указанному в строке разряду.
+! внимание, конвертация лет считается от текущего значения времени, если не указано иное
+$args[0] = $args[0]	&	!	приводимое время
+$args[1] = $args[1]	&	!	к чему нужно привести day hour minute secunde
+if args[2] = '':
+! год, от которого считаются добавочные дни (+1 на каждый високосный)
+	args['time.year']=time['year']
+else
+	args['time.year']=args[1]
+end
+args['day']=func('get.tag.num',$args[0],'day')
+args['year']=func('get.tag.num',$args[0],'year')
+args['hour']=func('get.tag.num',$args[0],'hour')
+args['minute']=func('get.tag.num',$args[0],'minute')
+args['secunde']=func('get.tag.num',$args[0],'secunde')
+! вычисляем количество дней 
+args['i']=args['time.year']
+:for_you
+if args['i']<args['time.year']+args['year']:
+	if args['i'] mod 4 = 0:
+		args['+day']+=1
+	end
+	args['i']+=1
+	jump 'for_you'
+end
+args['day.result']=args['year']*365+args['day']+args['+day']
+args['hour.result']=args['day.result']*24+args['hour']
+args['minute.result']=args['hour.result']*60+args['minute']
+! максимальное значение при вычислении минут: 4082 года 283 дня 2 часа 7 минут
+args['secunde.result']=args['minute.result']*100+args['secunde']
+! максимальное значение при вычислении секунд: 40 лет 302 дня 1 час 56 минут 47 секунд
+if $args[1] = 'day':
+	args['day.result']+=args['hour']/24
+	args['minute']+=(args['hour'] mod 24)*60
+	args['day.result']+=args['minute']/1440
+	args['secunde']+=(args['minute'] mod 1440)*100
+	args['day.result']+=args['secunde']/144000
+	args['secunde.result']=(args['secunde'] mod 144000)
+	$args['ct']="[day:<<args['day.result']>>]"
+elseif $args[1] = 'hour':
+	args['hour.result']+=args['minute']/60
+	args['secunde']+=(args['minute'] mod 60)*100
+	args['hour.result']+=args['secunde']/6000
+	args['secunde.result']=(args['secunde'] mod 6000)
+	$args['ct']="[hour:<<args['hour.result']>>]"
+elseif $args[1] = 'minute':
+	args['minute.result']+=args['secunde']/100
+	args['secunde.result']=(args['secunde'] mod 100)
+	$args['ct']="[minute:<<args['minute.result']>>]"
+end
+if args['secunde.result']!0: $args['ct']+="[secunde:<<args['secunde.result']>>]"
+$result=$args['ct']
+--- conv.time ---------------------------------

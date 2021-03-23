@@ -1,0 +1,116 @@
+# [м:1]_моя_комната
+! Действующая локация
+$args[0] = $args[0]	&	!	обязательная строка. Первый аргумент, который должен содержать ай-ди локации. На локациях места не используется
+$args[1] = $args[1]	&	!	обязательная строка. Второй аргумент, который содержит управляющие слова или конструкции. При простом посещении "комнаты" он пустой.
+if $args[1]='':
+	if здесь_был[$curloc]=0:
+		$GAME_VALUE['inventory.floor']='INVENTORY'
+		gosub 'int.inventory'
+		gosub 'add.new.obj','<заголовок> [name:Твоя комната:name] [type:принадлежит игроку:type] [place:[тёмная комната]:place] [menergy:u1:свет:u1 p1:10000:menergy] [respawn.stop]','',$curloc
+		gosub 'base.new.obj','[:money:]','',$curloc
+		$cur['bag']=$func('base.new.obj','[:bag:]','',$curloc)
+		gosub 'base.new.obj','[:яблоко:]','',$cur['bag'],2
+		killvar '$cur'
+		gosub 'add.new.obj','<link> [name:выдвижным ящичком:name] <goto:[loc:[chest]:loc] [did:[с:1]_выдвижной_ящичек:did] :goto>','','моя комната\ящик'
+		gosub 'add.new.obj','<link> [name:шкаф:name] <goto:[loc:[chest]:loc] [did:[с:2]_стандартный_шкаф_для_вещей:did] :goto>','','моя комната\шкаф'
+		$GAME_VALUE['exit.my_room']=$func('add.new.obj','<act> [name:<font color=#888888>Выйти из комнаты</font>:name]','[м:1]_моя_комната','ACTS',0,0,"pl $func('int.din.text','Ты ещё не гото(в/ва) выйти из комнаты.')")
+		help[$curloc]=-1
+	end
+	$help['money']=$func('get.daughter.obj','INVENTORY','<money>')
+	killvar '$array_id'
+	$help['bag']=$func('get.daughter.obj','INVENTORY','<bag>')
+	killvar '$array_id'
+	! Первое задание. Проверка!
+		! проверяем выполнено ли задание:
+		if $func('prv.task.diary','I_выйти_из_комнаты','next')!'false':
+			if help[$curloc]<0:
+				help[$curloc]+=1
+			elseif help[$curloc]=0 and $light_array[$curloc]!'темно':
+			! Свет включен, нужно взять предметы со стола
+				help[$curloc]=1
+			elseif help[$curloc]=1:
+				if $help['bag']='true' and $help['money']='true':
+					help[$curloc]=2
+					!	предметы взяты, нужно осмотреть шкаф
+				end
+			elseif help[$curloc]=2:
+				if help['одет']=5:
+					help[$curloc]=3	&	!	одежда одета, можно выходить
+				end
+			end
+		end
+		! Скрипт обучения.
+		$args['зажечь свет']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_I_зажечь_свет','next')
+		if $args['зажечь свет']!"false":
+			if $light_array[$curloc]!'темно' and здесь_был[$curloc]!0:
+			! условия задания соблюдены
+			! стадия выполнена
+				gs 'rpl.str.inObj.id',$args['зажечь свет'],'\[v:next:v\]','[v:last:v]'
+				gs 'hero.level',35
+				! добавляем две новые стадии
+				gs 'add.new.stady',$diary['id.diary'],'I_выйти_из_комнаты','I_2_взять_рюкзак'
+				gs 'add.new.stady',$diary['id.diary'],'I_выйти_из_комнаты','I_3_одеться'
+			end
+		end
+		$args['взять рюкзак']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_2_взять_рюкзак','next')
+		if $args['взять рюкзак']!'false':
+			if $help['bag']='true' and $help['money']='true':
+				gs 'rpl.str.inObj.id',$args['взять рюкзак'],'\[v:next:v\]','[v:last:v]'
+				gs 'hero.level',35
+			end
+		end
+		$args['одеться']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_3_одеться','next')
+		if $args['одеться']!'false':
+			if help['одет']=5:
+				gs 'rpl.str.inObj.id',$args['одеться'],'\[v:next:v\]','[v:last:v]'
+				gs 'hero.level',35
+			end
+		end
+		$args['взять рюкзак']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_2_взять_рюкзак','last')
+		$args['одеться']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_3_одеться','last')
+		if $args['взять рюкзак']!'false' and $args['одеться']!'false':
+			$args['выйти']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_4_выйти','next')
+			if $args['выйти']='false':
+				gs 'add.new.stady',$diary['id.diary'],'I_выйти_из_комнаты','I_4_выйти'
+			end
+		end
+		$args['выйти']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_4_выйти','next')
+		if $args['выйти']!'false' and $args['выйти']!'':
+			$args['new.act']={
+				$args[0] = $args[0]
+				$args[1] = $args[1]
+				$args[2] = $args[2]
+				help[$curloc]=4
+				$args['выйти']=$func('prv.task.diary','I_выйти_из_комнаты','next','I_4_выйти','next')
+				gs 'rpl.str.inObj.id',$args['выйти'],'\[v:next:v\]','[v:last:v]'
+				point_count['hero.level.point']+=5
+				$args['задание']=$func('prv.task.diary','I_выйти_из_комнаты','next')
+				gs 'rpl.str.inObj.id',$args['задание'],'\[v:next:v\]','[v:last:v]'
+				point_count['hero.level.point']+=5
+				gs '[help]'
+				args['i']=0
+				:for_act
+				if args['i']<3:
+					args['pos']=arrpos('$id_array',$hide[args['i']])
+					$object_array[args['pos']]=$replace($object_array[args['pos']],'[lock-obj]')
+					args['i']+=1
+					jump 'for_act'
+				end
+				killvar '$hide'
+				goto '[1.3_story_next]'
+			}
+			args['pit']=arrpos('$id_array',$GAME_VALUE['exit.my_room'])
+			gs 'add.new.obj','<act> [name:Выйти из комнаты:name]','[м:1]_моя_комната','ACTS',0,0,$args['new.act'],args['pit']
+		end
+		
+	$lvar['локация.исходник']={Это твоя комната. Она очень мала, в ней всего одно окошко, да и то прикрыто ставнями, через которые не проникает [th]свет восходящего солнца|солнечный свет|свет заходящего солнца|лунный свет[/th]. Перед окном стоит письменный стол с маленьким <DIN2:if help[$curloc]<2 and $GAME_INTERFACE['обучение']='show': $result='выдвижным ящичком' else $result='[lnk]моя комната\ящик|выдвижным ящичком[/lnk]':2DIN>, рядом - узкая кровать, в углу возле двери - <DIN4:if help[$curloc]<2 and $GAME_INTERFACE['обучение']='show': $result='шкаф' else $result='[lnk]моя комната\шкаф|шкаф[/lnk]':4DIN>, в котором ты хранишь свою форму и повседневную одежду. В противоположном углу, на расстоянии вытянутой руки, в одиноком кресле сидит Азарулус и ждёт, когда ты подготовишься к побегу.
+
+<DIN7:if $help['bag']!'true' and $help['money']!'true':
+$result='Твои рюкзак и кошелёк лежат на столе'
+elseif $help['bag']!'true' and  $help['money']='true':
+$result='Твой рюкзак лежит на столе.'
+elseif $help['bag']='true' and  $help['money']!'true':
+$result='Твой кошелёк лежит на столе.'
+end:7DIN>	}
+end
+--- [м:1]_моя_комната ---------------------------------

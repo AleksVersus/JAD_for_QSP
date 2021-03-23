@@ -1,0 +1,9 @@
+# rpl.str.inObj.id
+! Заменяет в объекте строку по ай-дишнику
+! $args[0] - fq-дишник
+! $args[1] - динамическая строка
+! $args[2] - статическая строка замены
+args['pos']=arrpos('$id_array',$args[0])
+$args[1]=$strfind($object_array[args['pos']],$args[1])
+$object_array[args['pos']]=$replace($object_array[args['pos']],$args[1],$args[2])
+--- rpl.str.inObj.id ---------------------------------

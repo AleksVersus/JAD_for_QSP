@@ -1,0 +1,40 @@
+# get.daughter.obj.all
+! локация ищет все дочерние объекты и вложенные в них объекты.
+! Если указать регулярное выражение будет произведён поиск лишь тех объектов, к которым применимо регулярное выражение
+$args[0] = $args[0]	&	!	ID местоположения
+$args[1] = $args[1]	&	!	фильтр объектов в виде регулярного выражения
+$args[2] = $args[2]	&	!	имя массива, в который будут помещены ай-ди всех дочерних объектов
+$args['gdoa']='false'
+$args['level.0']=DYNEVAL("$args['dyneval']=$func('get.daughter.obj','<<$args[0]>>','<<$args[1]>>','<<$args[2]>>0')
+$result=$args['dyneval']")
+if $args['level.0']='true':
+	args['i'] = 0
+	:next
+	args['u'] = 0
+	:daughter
+	$args["level.<<args['i']>>"]=DYNEVAL("$args['dyneval']=$func('get.daughter.obj',<<$args[2]>><<args['i']>>[<<args['u']>>],'<<$args[1]>>','<<$args[2]>><<args['i']+1>>')
+$result=$args['dyneval']")
+	args['u']+=1
+	if args['u']<arrsize("<<$args[2]>><<args['i']>>"): jump 'daughter'
+	args['i']+=1
+	if arrsize("<<$args[2]>><<args['i']>>")>0: jump 'next'
+end
+args['r'] = 0
+args['t'] = 0
+:for
+if args['r']<args['i']+1:
+	args['n'] = 0
+	:lu
+	if args['n']<arrsize("<<$args[2]>><<args['r']>>"):
+		DYNAMIC "<<$args[2]>>[<<args['t']>>]=<<$args[2]>><<args['r']>>[<<args['n']>>]"
+		if args['t']=0: $args['gdoa']='true'
+		args['n']+=1
+		args['t']+=1
+		jump 'lu'
+	end
+	killvar "<<$args[2]>><<args['r']>>"
+	args['r']+=1
+	jump 'for'
+end
+$result = $args['gdoa']
+--- get.daughter.obj.all ---------------------------------

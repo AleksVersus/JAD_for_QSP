@@ -1,0 +1,64 @@
+# int.din.text
+! интерпретатор динамических конструкций
+$args[0] = $args[0]	&	!	исходный динамический текст
+$args[1] = $args[1]	&	!	дополнительные данные
+! поддерживаемые теги
+! [th: :th]
+! [tm: :tm]
+! [td: :td]
+! [ty: :ty]
+:next_str
+! проверка на наличие динамических конструкций
+if $strfind($args[0],'<DIN(\d+):[\s\S]*?:\1DIN>')!'':
+	$args['sup']=$args[0]	&	!	запоминаем текущее положение дел
+	:still_DIN
+	! получаем строку, в которой должен присутствовать <DIN1::1DIN>
+	$args['sup']=$strfind($args['sup'],'<DIN(\d+):[\s\S]*?:\1DIN>')
+	if $args['sup']!"":
+		! если подобная строка получена, убираем концы
+		$args['sup.mem'] = $args['sup']	&	!	запоминаем, как выглядела строка до отбрасывания концов
+		$args['sup']=$strfind($args['sup'],'<DIN(\d+):([\s\S]*?):\1DIN>',2)
+		! когда концы убраны, проверяем вновь
+		jump 'still_DIN'
+	else
+		!если подобная строка больше не получена, значит найденная строка - искомая(самый внутренний уровень)
+		$args['sup.new']=$func('int.DIN',$args['sup.mem'])	&	!	выполняем динамический код строки
+		! заменяем в исходном тексте вычлененную строку на результат
+		$args[0] = $replace($args[0],$args['sup.mem'],$args['sup.new'])
+	end
+	jump 'next_str'
+elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')!'':
+	$args['new.text'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')	&	!	получаем тегированную строку
+	$args['tag'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]',1)	&	!	получаем тег
+	$args['string']=$func('get.tag.cont',$args['new.text'],$args['tag'])	&	!	извлекаем строку из тегов
+	! внимание. Далее следует рекурсивное обращение к текущей локации!!!
+	!*pl 'Уровень рекурсии: <<args[1]>>'
+	!*pl 'Строка без тегов: '+$args['string']
+	if $strfind($args['string']+'[/'+$args['tag']+']','\[(\D+)\][\s\S]*?\[\/\1\]')!'':
+		!*pl 'Поскольку текущая строка содержит вложенный тег, вызываем процедуру снова.'
+		$args['new.str']=$replace($args['new.text'],$args['string']+'[/'+$args['tag']+']',$func('int.din.text',$args['string']+'[/'+$args['tag']+']',args[1]))
+		$args[0]=$replace($args[0],$args['new.text'],$args['new.str'])
+		$args['new.text']=$args['new.str']
+		!*pl 'полученная строка: '+$args['new.text']
+	end
+	$args[0] = $replace($args[0],$args['new.text'],$func('int.DIN',$args['new.text']))
+	jump 'next_str'
+elseif $strfind($args[0],'\([^([]*?\/\/[^])]*?\)')!'':
+	$args['new.text']=$strfind($args[0],'\([^([]*?\/\/[^])]*?\)')
+	$args['sex']=$func('get.tag.num',$args[1],'sex')
+	$args[0] = $replace($args[0],$args['new.text'],$func('int.DIN',$args['new.text'],$args['sex']))
+	jump 'next_str'
+elseif $strfind($args[0],'(\+{2,4})[^+]+(\+?[^+]+)*\1')<>'':
+	$args['sup.mem']=$strfind($args[0],'(\+{2,4})[^+]+(\+?[^+]+)*\1')	&	!	запоминаем, как выглядит разбираемая строка
+	$args['new.text']=$func('int.DIN',$args['sup.mem'])
+	$args[0]=$replace($args[0],$args['sup.mem'],$args['new.text'])
+	jump 'next_str'
+elseif $strfind($args[0],'(={2,4})[^=]+(=?[^=]+)*\1')!'':
+	$args['sup.mem']=$strfind($args[0],'(={2,4})[^=]+(=?[^=]+)*\1')	&	!	запоминаем, как выглядит разбираемая строка
+	$args['new.text']=$func('int.DIN',$args['sup.mem'])
+	$args[0]=$replace($args[0],$args['sup.mem'],$args['new.text'])
+	jump 'next_str'
+else
+	$result=$replace($args[0],'--','—')
+end
+--- int.din.text ---------------------------------

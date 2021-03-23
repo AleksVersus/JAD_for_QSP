@@ -1,0 +1,35 @@
+# prv.pos.inObj
+! Функция проверяет, есть ли свободное "место на теле" для "предмета"
+! если есть - заполняет массив $array_body_part[] айдишниками позиций и возвращает 'empty'
+! если нет - возвращает "full"
+$args[0] = $args[0]	&	!	id объекта "предмет"
+$args['obj']=$func('get.obj.id',$args[0])	&	!	тело объекта "предмет"
+$args['pos_list']=$func('get.tag.cont',$args['obj'],'pos')	&	!	список позиций
+if $func('get.tag.cont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
+if $func('get.tag.cont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
+if $func('get.tag.cont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
+args['i']=1
+:newpos
+$args['position']=$func('get.tag.cont',$args['pos_list'],$args['l']+str(args['i']))
+! получаем позицию из тега
+if $args['position']!'':
+	args['count']+=1
+	args['pos']=-1
+	:for
+	args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*<body>[\s\S]*'+$args['position']+'[\s\S]*|[\s\S]*'+$args['position']+'[\s\S]*<body>[\s\S]*')
+	if args['pos']!-1:
+		if $include_array[args['pos']]!'': jump 'for'
+		$array_body_part[arrsize('$array_body_part')]=$id_array[args['pos']]
+		jump 'for'
+	end
+	$args['pos_list']=TRIM($replace($args['pos_list'],$args['l']+str(args['i'])+':'+$args['position']+':'+$args['l']+str(args['i'])))
+end
+args['i']+=1
+if len($args['pos_list'])>0: jump 'newpos'
+if arrsize('$array_body_part')<args['count']:
+	$result='full'
+	killvar '$array_body_part'
+else
+	$result='empty'
+end
+--- prv.pos.inObj ---------------------------------

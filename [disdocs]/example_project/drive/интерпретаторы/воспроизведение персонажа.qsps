@@ -1,0 +1,72 @@
+# int.hero.property
+! получает текст свойства по номеру свойства
+! $args[0] - oid свойства
+$args[0]=$args[0]
+args['pos']=arrpos('$id_array',$args[0])	&	!	позиция в базе
+$args['property']=$object_array[args['pos']]	&	!	тело объекта
+$args['parent']=$object_array[arrpos('$id_array',$position_array[args['pos']])]	&	!	родительский объект
+if instr($args['parent'],'<hero>')!0: $args['prefiks']='hero.'	&	!	префикс свойства
+$args['id'] = $func('get.tag.cont',$args['property'])	&	!	короткое имя свойства
+$args['color'] =  $func('get.tag.num',$args['property'],'color')	&	!	цвет выводимой надписи
+args['size'] =  func('get.tag.num',$args['property'],'size')	&	!	размер выводимой надписи
+$args['name'] = $func('get.tag.cont',$args['property'],'name')	&	!	имя выводимой надписи
+$args['uron']=$func('get.tag.cont',$args['property'],'block')
+if $args['uron']='': $args['uron']=$func('get.tag.cont',$args['property'],'uron')
+if args['size']=0: args['size']=1
+if $strfind($args['property'],'\[txt\]')!'':
+! если свойство текстового свойства, пардон за каламбур.
+	if instr($args['property'],'[hidden.name]')!0:
+	! если имя свойства скрыто
+		$args['res.int.hero.property'] = '<font color=#'+$args['color']+' size='+str(args['size'])+' face="CyrillicOld"> '+$property[$args['prefiks']+$args['id']]+'</font>'+'<br>'
+	else
+	! если имя свойства не скрыто
+		$args['res.int.hero.property'] = '<font color=#'+$args['color']+' size='+str(args['size'])+' face="CyrillicOld"> '+$args['name']+': '+'</font>'+$property[$args['prefiks']+$args['id']]+'<br>'
+	end
+elseif $strfind($args['property'],'\[hide\]')='':
+	if $args['color'] = '': $args['color'] = '000088'
+	args['i']=1
+	:maxxx
+	if $strfind($args['property'],'\[max[\S]*\]')!'':
+		$args['res.int.hero.property']='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+':</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']+'.all'],100,10)+'<font color=#'+$func('#+col#',$args['color'],'-44')+'><b>/'+$func('#indiv#',property[$args['prefiks']+$args['id']+'.max'],100,10)+'</b></font>'
+	else
+		$args['res.int.hero.property']='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+':</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']],100,10)
+	end
+	if $strfind($args['property'],'\[hand[\S]*\]')!'':
+		$args['res.int.hero.property']='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+'(рукопашная):</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']+'.hand'],100,10)
+		if property[$args['prefiks']+$args['id']+'.arm']!0: $args['res.int.hero.property']+='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+'(текущим оружием):</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']+'.arm'],100,10)
+		if property[$args['prefiks']+$args['id']+'.arrow']!0: $args['res.int.hero.property']+='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+'(текущих стрел):</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']+'.arrow'],100,10)
+		if property[$args['prefiks']+$args['id']+'.bolt']!0: $args['res.int.hero.property']+='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+'(текущих болтов):</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']+'.bolt'],100,10)
+		if property[$args['prefiks']+$args['id']+'.pula']!0: $args['res.int.hero.property']+='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+'(текущих снарядов для огнестрельного оружия):</b></font> '+$func('#indiv#',property[$args['prefiks']+$args['id']+'.pula'],100,10)
+	end
+	if $strfind($args['property'],'\[up[\S]*\]')!'':
+		$args['frqs']=$func('get.tag.cont',$args['property'],'frqs')
+		args['year']=func('get.tag.num',$args['frqs'],'year')
+		args['day']=func('get.tag.num',$args['frqs'],'day')
+		args['hour']=func('get.tag.num',$args['frqs'],'hour')
+		args['minute']=func('get.tag.num',$args['frqs'],'minute')
+		args['secunde']=func('get.tag.num',$args['frqs'],'secunde')
+		if args['year']!0: $args['timed.text']=" <<args['year']>> "+$func('get.word.end',args['year'],'год|года|лет')
+		if args['day']!0: $args['timed.text']+=" <<args['day']>> "+$func('get.word.end',args['day'],'день|дня|дней')
+		if args['hour']!0: $args['timed.text']+=" <<args['hour']>> "+$func('get.word.end',args['hour'],'час|часа|часов')
+		if args['minute']!0: $args['timed.text']+=" <<args['minute']>> "+$func('get.word.end',args['minute'],'минуту|минуты|минут')
+		if args['secunde']!0: $args['timed.text']+=" <<args['secunde']>> "+$func('get.word.end',args['secunde'],'секунду|секунды|секунд')
+		$args['res.int.hero.property']+=' <font color=#'+$func('#+col#',$args['color'],'-44')+' size='+str(args['size'])+'><b>(</b></font>+'+$func('#indiv#',property[$args['prefiks']+$args['id']+'.up'],100,10)+'<font color=#'+$func('#+col#',$args['color'],'-44')+'><b> в'+$args['timed.text']+'.)</b></font>'+'<br>'
+	else
+		$args['res.int.hero.property']+='<br>'
+	end
+	$args['res.021213']+=$args['res.int.hero.property']
+	if $args['uron']!'':
+		if args['i']=1: $args['res.021213']=''
+		$args['trefiks']=$func('get.tag.cont',$args['uron'],'u'+str(args['i']))
+		$args['uron']=TRIM($replace($args['uron'],'u'+str(args['i'])+':'+$args['trefiks']+':'+'u'+str(args['i'])))
+		if instr($args['property'],'[block:')!0: $args['key_word']='block'
+		if instr($args['property'],'[uron:')!0: $args['key_word']='uron'
+		$args['name']=$func('get.tag.cont',$args['property'],'name')+' ['+$func('base.word.uron',$args['key_word'],$args['trefiks'])+']'
+		$args['id']= $func('get.tag.cont',$args['property'])+'.'+$args['trefiks']
+		args['i']+=1
+		jump 'maxxx'
+	end
+	if $args['res.021213']!'': $args['res.int.hero.property']=$args['res.021213']
+end
+$result=$args['res.int.hero.property']
+--- int.hero.property ---------------------------------

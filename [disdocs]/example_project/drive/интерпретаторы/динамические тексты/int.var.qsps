@@ -1,0 +1,52 @@
+# int.var
+! Интерпретатор получает строку вида
+! ИМЯ_ПЕРЕМЕННОЙ;;Индекс|строка 1|строка 2|строка 3|строка 4 и т.д.
+! в зависимости от состояния переменной возвращает строку, между ||
+! if ИМЯ_ПЕРЕМЕННОЙ[индекс] = 0: $result ='строка 1' и т.д.
+$args[0] = $args[0]
+! первой частью идут имя и индекс переменной - отделяем их от прочей строки
+$args['var']=TRIM(mid($args[0],1,instr($args[0],'|')-1))
+if $args['var']='': $result ='Ошибка использования динамической записи &#91;var&#93;&#91;/var&#93;!! Не указано  имя переменной' & exit	&	!	pfobnf от дурака
+$args[0]=TRIM(mid($args[0],instr($args[0],'|')))+'|'
+! выделяем переменную и индекс:
+if instr($args['var'],';;')=0:
+	$args['var.name']=$args['var']
+	$args['var.index']='0'
+else
+	$args['var.name']=TRIM(mid($args['var'],1,instr($args['var'],';;')-1))
+	$args['var.index']=TRIM(mid($args['var'],instr($args['var'],';;')+2))
+	! преобразуем индекс в удобоваримый вид.
+	if strcomp($args['var.index'],'("|'+"'"+').*\1')=0 and ISNUM($args['var.index'])=0: $args['var.index']="'"+$replace($args['var.index'],'''','"')+"'" 
+end
+$log_error[]='n:'+$args['var.name']
+$log_error[]='i:'+$args['var.index']
+! получаем результат по-умолчанию. Это первая строка, которой не приписаны значения.
+! Если результат по-умолчанию должен быть пустым, его можно опустить, a не писать ||
+$args['text.null']=$replace($strfind($args[0],'(\|([^;|]+(;|[^|])[^;|]*)+\|)'),'|')
+$log_error[]='0:'+$args['text.null']
+! получаем значение переменной
+$args['var.num']=$DYNEVAL("$result = <<$args['var.name']>>[<<$args['var.index']>>]")
+$log_error[]='v:'+$args['var.num']
+! ищем среди строк ту, которой соответствует наше значение:
+$args['find.str']=$strfind($args[0],'\|([^|]*;;)?\s*(('+"'"+'|")?)\s*'+$args['var.num']+'\s*\2\s*;;[^|]*\|')
+$log_error[]="f:"+$args['find.str']
+if arrsize($args['var.name'])=0:
+	jump 'null'
+elseif $args['find.str']!'':
+! если значение найдено, возвращаем в результат ту строку, которую отыскали
+	$args['result']=$replace($replace($args['find.str'],$mid($args['find.str'],1,instr($args['find.str'],';;')+1)),'|')
+elseif isnum($args['var.num'])=-1 and val($args['var.num'])>=0 and instr($args[0],';;')=0:
+! если прямо указанное значение не найдено, но оно является не отрицательным числом, получаем строку по этому числу:
+	$args['wip']=$func('get.word.inPos',mid($args[0],2,len($args[0])-2),val($args['var.num']))
+	if instr($args['wip'],';;')!0:
+		$args['result']=$replace($strfind($args['wip'],'([^;]+(\|)*)'),'|')
+	else
+		$args['result']=$replace($args['wip'],'|')
+	end
+else
+! если прямо указанное значение не найдено, и оно не является числом, или число меньше нуля, возвращаем значение по-умолчанию
+	:null
+	$args['result']=$args['text.null']
+end
+$result = $args['result']
+--- int.var ---------------------------------

@@ -1,0 +1,12 @@
+# int.time.hours
+! Функция возвращает текущее название времени суток в зависимости от часа, или слова переданные в аргументе
+! $args[0] - сюда передаются слова, необходимые для возврата. Если передано пустое значение, функция возвращает названия времени суток.
+! утро|день|вечер|ночь
+if $args[0]='': $args[0]=$func('b.d.t','time.hd')
+if time['hour']>=22 or (time['hour']>=0 and time['hour']<5): args['i']=4
+if time['hour']>=5 and time['hour']<11: args['i']=1
+if time['hour']>=11 and time['hour']<18: args['i']=2
+if time['hour']>=18 and time['hour']<22: args['i']=3
+$args['gwiP']=$func('get.word.inPos',$args[0],args['i'])
+$result=$args['gwiP']
+--- int.time.hours ---------------------------------

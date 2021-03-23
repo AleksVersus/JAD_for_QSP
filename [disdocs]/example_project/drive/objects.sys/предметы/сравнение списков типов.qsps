@@ -1,0 +1,29 @@
+# prv.onTarget
+! Локация сравнивает списки типов
+$args[0] = TRIM($args[0])	&	!	первый список
+$args[1] = TRIM($args[1])	&	!	второй список
+$args[2] = $args[2]	&	!	ключевое слово
+$args['0'] = $args[1]
+$args['1'] = $args[0]
+$args['res'] = 'false'
+args['u'] = 0
+:for
+if $args[args['u']]!'':
+	args['progon']+=1
+	$args['type'] = mid($args[args['u']],1,instr($args[args['u']],']'))
+	if instr($args["<<args['u']>>"],$args['type'])!0:
+		args['sovp']+=1
+		if	$args[2]	=	'one':	$result	=	'true'	&	exit
+	end
+	$args[args['u']]=TRIM($replace($args[args['u']],$args['type']))
+	jump 'for'
+end
+if args['u']=0:
+	args['u'] = 1
+	jump 'for'
+end
+if $args[2] = 'all':
+	if args['sovp'] = args['progon']: $args['res'] = 'true'
+end
+$result = $args['res']
+--- prv.onTarget ---------------------------------

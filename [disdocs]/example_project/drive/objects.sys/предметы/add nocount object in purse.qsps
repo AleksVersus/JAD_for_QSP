@@ -1,0 +1,25 @@
+# add.obj.nocount
+! программа добавляет неисчислимый предмет в кошелёк
+$args[0] = $args[0]	&	!	ай-ди объекта
+
+$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
+args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
+$args['short_name']=$func('get.tag.cont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
+
+$args['bag_in']=$func('get.bag',$args[0],'<money>')	&	!	находим подходящий кошелёк
+if $args['bag_in']='INVENTORY':
+! {ВНИМАНИЕ. необходимо создать внутреннюю базу oneself-объектов.}
+	$args['bag_in']=$func('add.new.obj','<money> [name:Кошелёк:name] [color:888800] [:money:] [oneself]','INVENTORY','MONEY')
+end
+args['поднять_штук']=kolvo_array[args['pit']]
+$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['поднять_штук'])
+$args['add.obj.nocount']=$func('prv.obj.id',$args[0],$args['last_id'])
+if $args['add.obj.nocount']!'dont take':
+	$print['take.obj']+=$func('b.w.s','take.nocount',$args['obj'],args['поднять_штук'])
+	if $strfind($run_array[args['pit']],'!nocount.take!')!'': $args['run_array']=$func('run.dynamic.script','!nocount.take!',$args['last_id'],$args[0])
+else
+	if $strfind($run_array[args['pit']],'!nocount.dont.take!')!'': $args['run_array']=$func('run.dynamic.script','!nocount.dont.take!',$args['last_id'],$args[0])
+end
+$result=$args['add.obj.nocount']
+$infop['last_id.on.prv.obj.pay']=$args['last_id']
+--- add.obj.nocount ---------------------------------

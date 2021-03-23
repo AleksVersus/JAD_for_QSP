@@ -1,0 +1,231 @@
+Все локации с вводными данными мне было удобнее разместить в одном файле
+
+# !intro!
+'Вводные данные для игры "Волшебство и сталь"'
+--- !intro! ---------------------------------
+
+# hero.intro
+gosub 'add.new.obj','<inventory>','','INVENTORY'
+gosub 'add.new.obj','<respawner>','','RESPAWNER'
+gosub 'add.new.obj','<hero> [name::name] [color:00aaaa]','INVENTORY','HERO'	&	!	создаём объект "герой", исходя из свойств и помещаем его в объект инвентарь.
+!$property['hero.heroname']=input('<b>Введите имя героя:</b>')	&	!	задаём имя героя, зная, что будет свойство "имя героя"
+!if $property['hero.heroname']='': $property['hero.heroname']='Мелон'
+--- hero.intro ---------------------------------
+
+# hero.sex
+! Помимо окончаний здесь могут быть разные обращения, однако они практически не используются
+if $property['hero.sex']='мужской':
+	$ok["л/ла"]='л'
+	$ok["н/на"]='н'
+	$ok["ёл/ла"]='ел'
+	$ok["лся/лась"]='лся'
+	$ok["/ла"]=''
+	$ok["/а"]=''
+	$ok["ый/ая"]='ый'
+	$ok["ой/ая"]='ой'
+	$ok["ым/ой"]='ым'
+	$ok["ий/ая"]='ий'
+	$ok["ен/на"]="ен"
+	$ok["ком/цей"]='ком'
+	$ok["сам/сама"]='сам'
+	$ok["один/одна"]='один'
+	$ok["нёс/несла"]="нёс"
+elseif	$property['hero.sex']='женский':
+	$ok["л/ла"]='ла'
+	$ok["н/на"]='на'
+	$ok["ёл/ла"]='ла'
+	$ok["лся/лась"]='лась'
+	$ok["/ла"]='ла'
+	$ok["/а"]='а'
+	$ok["ый/ая"]='ая'
+	$ok["ой/ая"]='ая'
+	$ok["ым/ой"]='ой'
+	$ok["ий/ая"]='ая'
+	$ok["ен/на"]="на"
+	$ok["ком/цей"]='цей'
+	$ok["сам/сама"]='сама'
+	$ok["один/одна"]='одна'
+	$ok["нёс/несла"]="несла"
+end
+--- hero.sex ---------------------------------
+
+# hero.property
+!Первоначальные навыки и способности 	способность к развитию
+! значение  очков	увеличение не считая бонуса(способность к развитию). Каждое значение при выводе делится на 100,
+
+gosub 'base.new.property','[:heroname:]'	&	!	новое свойство "Имя героя"
+gosub 'base.new.property','[:sex:]'	&	!	новое свойство "пол героя"
+! раса
+!gosub 'base.new.property','[:rassa:]'
+!$property['hero.rassa']='Орк'
+
+! сила
+gosub 'base.new.property','[:power:]'
+property['hero.power.max']=10000		&	! сила - максимум груза в рюкзаке
+property['hero.power.all']=0		&	! сила - текущий вес в рюкзаке
+property['hero.power.bonus']=0		&	! сила - бонус к развитию
+! здоровье
+gosub 'base.new.property','[:health:]'
+property['hero.health.all'] = 14000
+property['hero.health.max'] = 15000
+property['hero.health.max.bonus']=0
+property['hero.health.up']=100
+property['hero.health.up.bonus']=0
+! "мана
+gosub 'base.new.property','[:mana:]'
+property['hero.mana.all']=30000		&	! мана - текущий уровень
+property['hero.mana.max']=30000		&	! мана - максимум здоровья
+property['hero.mana.up']=200		&	! мана - восстанвление в час		1	5
+property['hero.mana.max.bonus']=0	&	! мана - бонус к развитию навыка (повысить здоровье)
+property['hero.mana.up.bonus']=200	&	! мана - бонус к развитию навыка (восстановление здоровья)"
+! удача
+gosub 'base.new.property','[:luck:]'
+property['hero.luck.all']=2000		&	! удача - текущий уровень
+property['hero.luck.max']=2000		&	! удача - максимум здоровья
+property['hero.luck.up']=200		&	! удача - восстанвление в час		1	5
+property['hero.luck.max.bonus']=0	&	! удача - бонус к развитию навыка (повысить здоровье)
+property['hero.luck.up.bonus']=0	&	! удача - бонус к развитию навыка (восстановление здоровья)
+! выносливость
+gosub 'base.new.property','[:force:]'
+property['hero.force.all']=2500		&	! выносливость - текущий уровень
+property['hero.force.max']=2500		&	! выносливость - максимум
+property['hero.force.up']=1000		&	! удача - восстанвление в час		1	5
+property['hero.force.max.bonus']=0	&	! удача - бонус к развитию навыка (повысить здоровье)
+property['hero.force.up.bonus']=0	&	! удача - бонус к развитию навыка (восстановление здоровья)
+! уроны
+gosub 'hero.uron'
+! алхимимя
+gosub 'base.new.property','[:alchemick:]'
+property['hero.alchemick']=1000		&	! алхимия текущий уровень
+property['hero.alchemick.bonus']=1000	&	! алхимия бонус развития
+! использование доспеха
+gosub 'base.new.property','[:usedospeh:]'
+property['hero.usedospeh']=500		&	! использование доспеха текущий уровень
+property['hero.usedospeh.bonus']=0	&	! использование доспеха бонус развития
+! "навык взлома ! здесь не используется
+gosub 'base.new.property','[:breaking:]'
+property['hero.breaking']=0		&	! использование доспеха текущий уровень
+property['hero.breaking.bonus']=0	&	! использование доспеха бонус развития"
+! "нейронная совместимость ! Здесь не используется
+gosub 'base.new.property','[:neiro:]'
+property['hero.neiro']=0			&	! нейронная совместимость текущий уровень
+property['hero.neiro.bonus']=0		&	! нейронная совместимость бонус развития"
+! кузнечный навык
+gosub 'base.new.property','[:kovka:]'
+property['hero.kovka']=0
+property['hero.kovka.bonus']=0
+! обучаемость 
+gosub 'base.new.property','[:teaching:] [hide]'
+property['hero.teaching']=0
+property['hero.teaching.bonus']=5
+! "магия стазиса (защита и ограждения)
+gosub 'base.new.property','[:magic_stat:]'
+property['hero.magic_stat']=500
+property['hero.magic_stat.bonus']=200
+! магия изменения (разрушение и созидание)
+gosub 'base.new.property','[:magic_dyn:]'
+property['hero.magic_dyn']=0
+property['hero.magic_dyn.bonus']=0
+!"
+! скорость
+gosub 'base.new.property','[:fast:]'
+property['hero.fast']=3000				&	! скорость текущий уровень
+property['hero.fast.bonus']=0		&	! скорость бонус развития
+! количество выпитых зелий
+gosub 'base.new.property','[:kvz:]'
+property['hero.kvz.all']=0		&	! выпито зелий
+property['hero.kvz.max']=300	&	! максимум можно выпить
+! дальность удара
+gosub 'base.new.property','[:DU:]'
+property['hero.DU.hand']=100		&	! дальность удара рукой
+property['hero.DU.arm']=0			&	! дальность удара оружием
+property['hero.DU.arrow']=0			&	! дополнительная дальность удара стрелой
+property['hero.DU.bolt']=0			&	! дополнительная дальность удара болтом
+property['hero.DU.pula']=0			&	! дополнительная дальность удара пулей
+! "запрет замерзания ! здесь не используются
+gosub 'base.new.property','[:stop_hold:]'
+property['hero.stop_cold']=0
+! запрет зажаривания
+gosub 'base.new.property','[:stop_raw:]'
+property['hero.stop_raw']=0	&	!	"
+$diary['id.diary']=$func('add.new.obj','<diary> [name:Дневник Странника:name] [color:996600] [:diary:] [oneself]','INVENTORY','DIARY')
+!gosub 'add.new.obj','<skill> [name:Развитие:name] [color:ffaaaa] [:skill:] [oneself]','INVENTORY','SKILL'
+$cur[0]=$func('add.new.obj','<magic> [name:Изученные заклинания:name] [color:9933cc] [:magic:] [oneself]','INVENTORY','MAGIC')
+gosub 'magic.add.spell','[:spell_Перст_Гемеры:]',$cur[0]
+книга_прочитана['spell_Перст_Гемеры']=1
+--- hero.property ---------------------------------
+
+# hero.bodypart
+! части тела героя
+gosub 'base.new.bodypart','[:правая_рука:]'
+gosub 'base.new.bodypart','[:левая_рука:]'
+gosub 'base.new.bodypart','[:голова:]'
+gosub 'base.new.bodypart','[:шея:]'
+gosub 'base.new.bodypart','[:плечи:]'
+gosub 'base.new.bodypart','[:тело:]'
+gosub 'base.new.bodypart','[:штаны:]'
+gosub 'base.new.bodypart','[:обувь:]'
+gosub 'base.new.bodypart','[:перчатки:]'
+--- hero.bodypart ---------------------------------
+
+# hero.uron
+! навык естественной защиты
+gosub 'base.new.property','[:nature:]'
+property['hero.nature.дробящий.all']	= 500
+property['hero.nature.режущий.all']		= 500
+property['hero.nature.стрелковый.all']	= 500
+property['hero.nature.огненный_mgc.all']	= 500
+property['hero.nature.ледяной_mgc.all']	= 500
+property['hero.nature.энергетический_mgc.all'] = 500
+property['hero.nature.кислотный_acid.all'] = 500
+property['hero.nature.ядовитый_psn.all']	= 500
+
+property['hero.nature.дробящий.up']	= 100
+property['hero.nature.режущий.up']		= 100
+property['hero.nature.стрелковый.up']	= 100
+property['hero.nature.огненный_mgc.up']	= 100
+property['hero.nature.ледяной_mgc.up']	= 100
+property['hero.nature.энергетический_mgc.up'] = 100
+property['hero.nature.кислотный_acid.up'] = 100
+property['hero.nature.ядовитый_psn.up']	= 100
+
+property['hero.nature.дробящий.max']	= 500
+property['hero.nature.режущий.max']		= 500
+property['hero.nature.стрелковый.max']	= 500
+property['hero.nature.огненный_mgc.max']	= 500
+property['hero.nature.ледяной_mgc.max']	= 500
+property['hero.nature.энергетический_mgc.max']	= 500
+property['hero.nature.кислотный_acid.max'] = 500
+property['hero.nature.ядовитый_psn.max']	= 500
+
+property['hero.nature.дробящий.max.bonus']	= 0
+property['hero.nature.режущий.max.bonus']	= 200
+property['hero.nature.стрелковый.max.bonus']	= 0
+property['hero.nature.огненный_mgc.max.bonus']	= 200
+property['hero.nature.ледяной_mgc.max.bonus']	= 200
+property['hero.nature.энергетический_mgc.max.bonus']= 200
+property['hero.nature.кислотный_acid.max.bonus'] = 0
+property['hero.nature.ядовитый_psn.max.bonus']= 0
+
+! навык кулачного боя
+gosub 'base.new.property','[:кулачный:] [uron:u1:дробящий:u1:uron]'
+property['hero.кулачный.дробящий']	= 500
+--- hero.uron ---------------------------------
+
+# hero.count
+! счётчики 
+$args['hero.id']=$func('get.id.obj','<hero>')
+! подсчитывающий очки опыта
+$cur['count']=$func('add.new.obj','<counter> [:hero.level:] [name:Опыт:name] [np:[level]:np] [l:уровень|уровня|уровню|уровень|уровнем|уровне:l] [m:|:m][hide]',$args['hero.id'],'COUNTER')
+! на экране должно выводиться примерно следующее:
+! Орк: 1 уровень
+! Опыт: 100|200
+point_count['hero.level.level'] = 0
+point_count['hero.level.point'] = 0
+point_count['hero.level.marker']= 100
+
+gs 'add.new.obj','<counter> [:hero.teaching:] [name:Очки обучения:name] [np:[easy]:np] [up: +:up] [hide]',$args['hero.id'],'COUNTER'
+point_count['hero.teaching.point']=0
+point_count['hero.teaching.up']=5	&	!	значение по умолчанию
+--- hero.count ---------------------------------
+

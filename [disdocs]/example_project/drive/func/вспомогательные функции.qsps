@@ -1,0 +1,80 @@
+# get.word.padez
+! функция получает падеж из строки вида Именительныq|Родительный|Дательный|Винительный|Творительный|Предложный
+$args[0] = $args[0]	&	!	строка
+$args[1] = $args[1]	&	!	падеж
+if $args[1]='И' or $args[1]='':
+	$args['gwp']=$func('get.word.inPos',$args[0],1)
+elseif $args[1]='Р':
+	$args['gwp']=$func('get.word.inPos',$args[0],2)
+elseif $args[1]='Д':
+	$args['gwp']=$func('get.word.inPos',$args[0],3)
+elseif $args[1]='В':
+	$args['gwp']=$func('get.word.inPos',$args[0],4)
+elseif $args[1]='Т':
+	$args['gwp']=$func('get.word.inPos',$args[0],5)
+elseif $args[1]='П':
+	$args['gwp']=$func('get.word.inPos',$args[0],6)
+end
+$result=$args['gwp']
+--- get.word.padez ---------------------------------
+
+# get.word.end
+! вычисляет окончание по числу.
+! args[0] - число
+! $args[1] - окончания в формате a|b|c
+! можно писать окончание для нулевого варианта отдельно! 1 очко|2 очка|0 или 5 очков|ноль
+args[0] = args[0]
+if args[0]<0: args[0] = -args[0]
+$args[1] = $args[1]
+! деньги
+args[2] = args[0] mod 10
+args[3] = args[0] mod 100
+$args['gwenda']='gwe_error'
+if args[2]=1 and args[3]!11:
+	$args['gwenda']=$func('get.word.inPos',$args[1],1)
+end
+if args[2]>1 and args[2]<5 and (args[3]<5 or args[3]>20):
+	$args['gwenda']=$func('get.word.inPos',$args[1],2)
+end
+if args[2]=0 or args[2]>4 or (args[3]>10 and args[3]<21):
+	$args['gwenda']=$func('get.word.inPos',$args[1],3)
+end
+if args[0]=0 and $func('get.word.inPos',$args[1],4)!'' and $func('get.word.inPos',$args[1],4)!$args['gwenda']:
+	$args['gwenda']=$func('get.word.inPos',$args[1],4)
+end
+$result=$args['gwenda']
+--- get.word.end ---------------------------------
+
+# remastering.tag.number
+! Локация склеивает две строки с числовыми тегами.
+$args[0] = $args[0]
+$args[1] = $args[1]
+args['u']=1
+args['a']=0
+:for2
+if args['a']<2:
+	args['i']=1
+	:for1
+	if strfind($args[args['a']],"\[[\d]+:[\s\S]*:[\d]+\]")!'':
+		$args['str']=$replace($replace($strfind($args[args['a']],"\[<<args['i']>>:[\s\S]+:<<args['i']>>\]"),"[<<args['i']>>:"),":<<args['i']>>]")
+		if $args['str']!'':
+			$args['res.021213']+="[<<args['u']>>:"+$args['str']+":<<args['u']>>]"
+			args['u']+=1
+		end
+		$args[args['a']]=TRIM($replace($args[args['a']],"[<<args['i']>>:"+$args['str']+":<<args['i']>>]"))
+		args['i']+=1
+		jump 'for1'
+	end
+	args['a']+=1
+	if args['a']<2: jump 'for2'
+end
+$result=$args['res.021213']
+--- remastering.tag.number ---------------------------------
+
+# get.loc.id
+if $curloc='[chest]' or ($cvar['loc_id'+$cvar['chest']]!'' and $strfind($curloc,'(\[м:[\d]+\]_[\s\S]+|место;|place;)')!''):
+	$result=$cvar['loc_id'+$cvar['chest']]
+else
+	$result=$curloc
+end
+--- get.loc.id ---------------------------------

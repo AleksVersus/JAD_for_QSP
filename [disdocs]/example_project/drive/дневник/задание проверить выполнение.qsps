@@ -1,0 +1,49 @@
+# prv.task.diary
+! Функция проверяет наличие задания и его соответствие условиям
+$args[0] = $args[0]	&	!	краткое имя задания
+$args[1] = $args[1]	&	!	параметр выполнения next last eror
+$args[2] = $args[2]	&	!	краткое имя стадии выполнения
+$args[3] = $args[3]	&	!	параметр выполнения стадии next last eror
+$args['id.task']=$func('get.id.obj','<note>[\s\S]*(\[:'+$args[0]+':\][\s\S]*\[task\]|\[task\][\s\S]*\[:'+$args[0]+':\])')
+args['pos.task']=arrpos('$id_array',$args['id.task'])
+$args['v.task']=$func('get.tag.cont',$object_array[args['pos.task']],'v')
+if $args[0]!'':
+	if $args['id.task']!'false':
+		if $args[1]!'':
+			if $args[1]=$args['v.task']:
+				$args['prv.task.diary']=$args['id.task']
+			else
+				$args['prv.task.diary']='false'
+			end
+		else
+			$args['prv.task.diary']=$args['id.task']
+		end
+	else
+		$result='false'
+		exit
+	end
+end
+$args['id.stady']=$func('get.id.obj','<note>[\s\S]*(\[:'+$args[2]+':\][\s\S]*\[stady\]|\[stady\][\s\S]*\[:'+$args[2]+':\])')
+args['pos.stady']=arrpos('$id_array',$args['id.stady'])
+$args['v.stady']=$func('get.tag.cont',$object_array[args['pos.stady']],'v')
+if $args[2]!'':
+	if $args['id.stady']!'false':
+		if $args[3]!'':
+			if $args[3]=$args['v.stady']:
+				$args['prv.task.diary']=$args['id.stady']
+			else
+				$args['prv.task.diary']='false'
+			end
+		else
+			$args['prv.task.diary']=$args['id.stady']
+		end
+	else
+		$result='false'
+		exit
+	end
+end
+$result	=	$args['prv.task.diary']
+! Внимание!!! Если в качестве условия проверки были указаны стадия и задание, результат false будет выдаваться при отсутствии хотя бы одной составляющей.
+! Чтобы производить поиск только по одному из компонент, не указывайте остальные в качестве аргументов
+! Результатом работы функции является ай-ди стадии, либо ай-ди задания, если не указана стадия.
+--- prv.task.diary ---------------------------------

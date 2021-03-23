@@ -1,0 +1,32 @@
+# menu.in.body
+! локация проверяет возможность поместить предмет в указанную позицию на теле и помещает его туда, если есть такая возможность.
+if $args[0]='': $args[0]=$OOS['oid']
+args['pos']=arrpos('$id_array',$args[0]) 	&	!	получаем позицию предмета в базе
+$args['obj']=$func('get.obj.id',$args[0])	&	!	получаем тело предмета
+args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	получаем вес предмета
+args['kolvo']=kolvo_array[args['pos']]	&	! запоминаем текущее количество
+if instr($args['obj'],'[number]')!0:
+	args['штучек']=1
+elseif  instr($args['obj'],'[count]')!0:
+	args['штучек']=args['kolvo']
+end
+$args['use']=$func('use.obj.actObj',$args[0],'dont.pay',args['штучек'])	&	!	перемещаем объект если это возможно
+if $args['use']='taken':
+! Предмет взят полностью. Значит вес уменьшается на полное число
+	args['w']=args['kolvo']*args['weight']
+elseif $args['use']='dont take':
+	args['w']=0
+	$print['menu.in.body']=$func('base.word.screen','003')
+	$args['pos_list']=$func('get.tag.cont',$args['obj'],'pos')
+	$print['use.obj.actObj']=$func('b.w.s','full.pos',$args['pos_list'])
+else
+! предмет взят, но не полностью, значит возвращён остаток
+	args['w']=args['weight']*(args['kolvo']-func('get.tag.num',$args['use'],'колво'))
+end
+property['hero.power.all']-=args['w']
+$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
+if $strfind($run_array[arrpos('$id_array',$infop['last_id'])],'!outbag!')!'':
+	if $infop['taked']='true': $args['func']=$func('run.dynamic.script','!outbag!',$infop['last_id'],$infop['past_id'])
+end
+gs 'int.inventory'
+--- menu.in.body ---------------------------------

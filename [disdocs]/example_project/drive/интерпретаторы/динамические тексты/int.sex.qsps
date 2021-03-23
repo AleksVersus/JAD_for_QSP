@@ -1,0 +1,11 @@
+# int.word.SEX
+if $mid($args[0],1,1)='[' and $args[1]='': $args[1]=$tvar['personage.sex']
+if $args[1] = '': $args[1] = 'мужской'
+
+if $args[1]='мужской':
+	$args['int.res']=$mid($args[0],2,instr($args[0],'//')-2)
+elseif $args[1]='женский':
+	$args['int.res']=$mid($args[0],instr($args[0],'//')+2,len($args[0])-instr($args[0],'//')-2)
+end
+$result = $args['int.res']
+--- int.word.SEX ---------------------------------

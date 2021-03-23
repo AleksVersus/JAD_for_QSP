@@ -1,0 +1,17 @@
+# int.html.Hn
+! заменяет в строке вида ++++лалалалал++++ плюсы, знаки равенства на теги заголовков
+$args[0] = $args[0]
+if instr($args[0],'+')=1:
+	if instr($args[0],'++')=1: args['h']=6	&	! заголовок шестого уровня
+	if instr($args[0],'+++')=1: args['h']=5	&	! заголовок пятого уровня
+	if instr($args[0],'++++')=1: args['h']=4	&	! заголовок четвёртого уровня	
+elseif instr($args[0],'=')=1:
+	if instr($args[0],'==')=1: args['h']=3	&	! заголовок третьего уровня
+	if instr($args[0],'===')=1: args['h']=2	&	! заголовок второго уровня
+	if instr($args[0],'====')=1: args['h']=1	&	! заголовок первого уровня	
+end
+if args['h']=6 or args['h']=3: args['open']=3 & args['len']=len($args[0])-4
+if args['h']=5 or args['h']=2: args['open']=4 & args['len']=len($args[0])-6
+if args['h']=4 or args['h']=1: args['open']=5 & args['len']=len($args[0])-8
+$result="<H"+str(args['h'])+">"+$mid($args[0],args['open'],args['len'])+"</H"+str(args['h'])+">"
+--- int.html.Hn ---------------------------------

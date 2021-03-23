@@ -1,0 +1,13 @@
+# int.notes
+! интерпретатор заданий
+$args[0] = $args[0]	&	!	ай-ди задания
+$args[1] = $args[1]	&	!	цвет задания
+$args['zadanije.obj']=$object_array[arrpos('$id_array',$args[0])]
+$args['zadanije.p']=$func('get.tag.cont',$args['zadanije.obj'])
+$args['np']=$func('get.tag.cont',$args['zadanije.obj'],'np')
+if instr($args['np'],'[task]')!0:
+	$args['zadanije.name']=$func('get.tag.cont',$args['zadanije.obj'],'name')
+end
+if $args['zadanije.name']!'': $args['int.notes']='<font color=#'+$args[1]+' face="CyrillicOld" size=+2><b>'+$args['zadanije.name']+':</b></font><br>'
+$result=$args['int.notes']+$func('[diary]',$args['zadanije.p'],$args[1])
+--- int.notes ---------------------------------

@@ -1,0 +1,36 @@
+# redo.obj.inCharge
+! локация изменяет таблицы в соответсвии с изменениями зарядов предметов
+$args[0]=$args[0]	&	!	ай-ди исходного предмета
+$args[1]=$args[1]	&	!	id родительского предмета
+args[2]=args[2]	&	!	значение изменяемого заряда
+if $args[3]='' or $args[3]='down' or $args[3]='del' or $args[3]='-': $args[3]='-'
+if $args[3]='up' or $args[3]='add' or $args[3]='+': $args[3]='+'	&	!	если не указано, заряд уменьшается
+$args[4] = $args[4]	&	!	ай-ди патронташа
+args[5] = args[5]	&	!	количество патронташей
+	args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию в таблице
+	args['pit.parent']=arrpos('$id_array',$args[1])	&	!	позиция родительского объекта в таблице
+	$args['WORD']=$mid($args[0],1,instr($args[0],'.')-1)	&	!	получаем ключевое слово
+	! перемещаем объект в несуществующее место
+	if instr($object_array[args['pit.parent']],'<body>')=0:
+		$args['id.newObj']=$func('replace.obj',$args[0],'charge_place',$args['WORD'],1)
+	else
+		$args['id.newObj']=$args[0]
+	end
+	! заряжаем в несуществующем месте
+	if $args[4]!'':
+		$args['patron']=$func('get.tag.cont',$object_array[arrpos('$id_array',$args[4])])
+		$args['charge.new']=$func('replace.obj',$args[4],$args['id.newObj'],$args['patron'],args[5])
+	end
+	args['new.pit']=arrpos('$id_array',$args['id.newObj'])
+	if $args[3]='-': charge_array[args['new.pit']]-=args[2]
+	if $args[3]='+': charge_array[args['new.pit']]+=args[2]
+	! перемещаем этот объект в контейнер родительского объекта
+	if instr($object_array[args['pit.parent']],'<body>')=0:
+		$args['replaced']=$func('replace.obj',$args['id.newObj'],$args[1],$args['WORD'],1)
+	else
+		$args['replaced']=$args[0]
+	end
+	$args['redo.obj.inCharge']=$args['replaced']
+killvar '$result'
+$result=$args['redo.obj.inCharge']
+--- redo.obj.inCharge ---------------------------------

@@ -1,0 +1,35 @@
+# gen.act.act
+! генератор уникальных действий
+$args[0] = $args[0]	&	!	ай-ди действия
+$args[1] = $args[1]	&	!	ай-ди локации
+$args[2] = $args[2]	&	!	acts href - действия или ссылка
+$args[3] = $args[3]	&	!	дополнительные опции
+args['pit']=arrpos('$id_array',$args[0])
+$args['obj']=$object_array[args['pit']]
+$args['name']=$func('get.tag.cont',$args['obj'],'name')
+if instr($args['obj'],'[lock-obj]')<>0: $args['lock']='lock'
+if $light_array[$args[1]]='темно':
+! если на локации темно
+	if instr($args['obj'],'[dark-hide]')<>0: jump 'fin'	&	!	скрывать в темноте. Не выводится
+	$args['dark.name']=$func('get.tag.cont',$args['obj'],'dark-name')	&	!	имя в темноте
+	if $args['dark.name']<>'': $args['name']=$args['dark.name']
+	if instr($args['obj'],'[dark-lock]')<>0: $args['lock']='lock'
+end
+if $args['lock']='lock':
+	$args['name']="<font color=#888888>"+$args['name']+"</font>"
+	$args['acts.code']="$print['take.obj']+=$func('b.w.s','loc-act') & gosub 'true.goto.curloc','<<$args[1]>>'"
+else
+	$args['acts.code']="gosub 'run.dynamic.script','!from.act!','<<$args[0]>>'"
+end
+if $args[2]='href' or $args[2]='':
+	$args['res.021213']='<a class="plain" href="exec:<<$args["acts.code"]>>"><<$args["name"]>></a><br>'
+elseif $args[2]='acts':
+$args['res.021213']="
+act '<<$args['name']>>':
+	<<$args['acts.code']>>
+end
+"
+end
+:fin
+$result=$args['res.021213']
+--- gen.act.act ---------------------------------

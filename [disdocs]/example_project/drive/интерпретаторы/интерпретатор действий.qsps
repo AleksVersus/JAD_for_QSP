@@ -1,0 +1,32 @@
+# int.loc.act
+! восстанавливает действия из массива $avar[]
+! массив $avar[] заполняется следующим образом: "
+$avar[]={! <act:[name:Название действия:name]:act> - закоментированная строка
+Тело действия - весь код, который будет выполняться при выборе действия
+}
+!"
+$args[0]=$args[0]
+killvar '$reserve_acts'
+args['i']=0
+:create_acts
+if arrsize('$avar')>args['i']:
+	$args['obj']=$func('get.tag.cont',$avar[args['i']],'act')
+	$args['name']=$func('get.tag.cont',$args['obj'],'name')
+	if $args[0]='acts':
+		$args['acts']="
+		act '"+$args['name']+"':
+		"
+		$args['acts']+=$avar[args['i']]+"
+		"
+		$args['acts']+="end
+		"
+		$args['res.021213']+=$args['acts']
+	elseif $args[0]='href':
+		$args['res.021213']+='<a href="exec:dynamic $reserve_acts['+str(args['i'])+']">'+$args['name']+'</a><br>'
+		$reserve_acts[args['i']]=$avar[args['i']]
+	end
+	args['i']+=1
+	jump 'create_acts'
+end
+$result=$args['res.021213']
+--- int.loc.act ---------------------------------

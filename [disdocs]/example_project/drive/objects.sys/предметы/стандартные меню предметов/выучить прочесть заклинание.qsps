@@ -1,0 +1,53 @@
+# menu.obj.spell.teach
+
+--- menu.obj.spell.teach ---------------------------------
+
+# menu.obj.spell.read
+! Функция реализует скрипт прочтения заклинания
+! Всем заклинаниям передаются одинаковые наборы аргументов
+if $args[0]='': $args[0] = $OOS['oid']
+$args[1] = $func('get.loc.id')
+$args['spell']='!spell.read!'
+args['spell.pit']=arrpos('$id_array',$args[0])
+$args['spell.obj']	=	$object_array[args['spell.pit']]
+if $args[1] = '[chest]':
+! невозможно прочесть заклинание, находясь в сундуке
+	$print['menu.else'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.chest')
+	$args['spell']='!spell.cant.read! chest'
+else
+	args['loc.pit']=arrpos('$id_array',$args[1])
+	$args['loc.obj']=$object_array[args['loc.pit']]
+	$args['place']=$func('get.tag.cont',$args['loc.obj'],'place')
+	if instr($args['place'],'[молчание]')!0:
+		$args['spell']='!spell.cant.read! silent'
+		$print['menu.in.body'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.location')
+	end
+end
+
+! здесь должна находиться проверка на возможность читать заклинание во время боя
+!	пошаговый бой предполагает одно чтение заклинания за ход
+
+$args['menergy.spell'] = $func('get.tag.cont',$args['spell.obj'],'menergy')
+$args['magic.menergy.spell']=$func('magic.menergy.spell',$args[1],$args['menergy.spell'],'prove')
+if $args['magic.menergy.spell']='false':
+	args['mana']=func('get.tag.num',$args['spell.obj'],'mana')
+	if args['mana']>property['hero.mana.all'] or instr($args['spell.obj'],'[mana:')=0:
+		$args['magic.menergy.spell']='false'
+		$args['spell']='!spell.cant.read! not energy'
+		$print['menu.in.bag'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.magic')
+	else
+		$args['magic.menergy.spell']='mana'
+	end
+else
+	$args['magic.menergy.spell']='menergy'
+end
+if $strfind($run_array[args['spell.pit']],$strfind($args['spell'],'![\s\S]+!'))!'': $args['spell']=$func('run.dynamic.script',$args['spell'],$args[0])
+! В результате имеем два слова: "true" - удалось выполнить заклинание, или "false" - не удалось.
+if $args['spell']='true':
+	if instr($args['spell.obj'],'<obj>')!0:	gosub 'minus.obj',$args[0],1
+	if $args['magic.menergy.spell'] = 'mana': gosub 'hero.mana',args['mana']
+	if $args['magic.menergy.spell'] = 'menergy': gosub 'magic.menergy.spell',$args[1],$args['menergy.spell'],'spell'
+end
+gs 'int.inventory'
+gs 'true.goto.curloc',$curloc
+--- menu.obj.spell.read ---------------------------------

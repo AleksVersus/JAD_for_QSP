@@ -1,0 +1,7 @@
+# gen.ahref.actObj
+! Генератор гиперссылок для одевания предмета! Внимание ссылки предназначены только для одевания предметов, находящихся в рюкзаке
+$args[0] = $args[0]	&	!	id предмета
+$args['name']=$func('get.tag.cont',$object_array[arrpos('$id_array',$args[0])],"name")
+$args['name'] = $func('get.word.padez',$args['name'],'В')
+$result = '<a href="exec:gs '+"'menu.in.body','"+$args[0]+"' & gs 'print.word'"+'">Использовать '+$args['name']+"</a>"
+--- gen.ahref.actObj ---------------------------------

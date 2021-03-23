@@ -1,0 +1,45 @@
+# replace.obj
+! Перемещает часть предмета или весь предмет в указанную позицию
+! Результатом является ай-ди перемещённого предмета
+$args[0] = $args[0]	&	!	ай-ди предмета
+$args[1] = $args[1]	&	!	ай-ди объекта, который должен стать родительским
+if $args[2]='': $args[2]=$mid($args[0],1,instr($args[0],'.')-1) else $args[2] = $args[2]	&	!	ключевое слово
+args[3] = args[3]	&	!	количество перемещаемых предметов. Внимание!!! может быть равно 0
+args[4] = args[4]
+args['pos']=arrpos('$id_array',$args[0])
+! позиция в базе
+args['kolvo']=kolvo_array[args['pos']]
+! количество предметов в позиции
+if args['kolvo']<args[3]: args[3]=args['kolvo']
+! Если в позиции меньше предметов, чем хочется переместить, Количество перемещаемых предметов приравнивается количеству предметов в позиции
+args['posin']=func('get.similar.obj',$args[0],$args[1])	&	!	находит идентичный объект в указанном месте
+if args['kolvo']>args[3]:
+! переносится часть объекта
+	if charge_array[args['pos']]>0: args['charge']=charge_array[args['pos']]
+	if $run_array[args['pos']]!'': $args['runarray']=$run_array[args['pos']]
+	if args[3]>0: args['колво']=args[3]
+	if args['posin']=-1:
+		$args['res.021213']=$func('add.new.obj',$object_array[args['pos']],$args[1],$args[2],args['колво'],args['charge'],$args['runarray'])
+	else
+		kolvo_array[args['posin']]+=args[3]
+		$args['res.021213']=$id_array[args['posin']]
+	end
+	kolvo_array[args['pos']]-=args[3]
+else
+! переносится весь объект
+	if args['posin']=-1:
+		gs 'clr.parent.obj',$args[0]	&	!	удаляются все связи с родительскими объектами
+		$position_array[args['pos']]=$args[1]
+		$args['res.021213']=$args[0]
+	else
+		kolvo_array[args['posin']]+=args[3]
+		$args['res.021213']=$id_array[args['posin']]
+		gs 'del.obj',$args[0]
+	end
+end
+$result=$args['res.021213']
+! Результатом может быть:
+! ай-ди нового объекта - если идентичного объекта в указанном месте нет и переносится часть объекта
+! ай-ди идентичного объекта - если идентичный объект в указанном месте найден
+! ай-ди исходного объекта - если идентичный объект не найден и переносится весь объект
+--- replace.obj ---------------------------------

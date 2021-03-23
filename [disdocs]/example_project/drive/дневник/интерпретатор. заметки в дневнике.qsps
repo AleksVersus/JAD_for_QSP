@@ -1,0 +1,58 @@
+# int.diary.note
+$args[0] = $args[0]	&	!	id - дневника
+if $diary['view']='small':
+	$args['bgc1']='eeee77'
+	$args['bgc2']='cccc55'
+	$args['bgc3']=''
+else
+	$args['bgc1']='88c8d9'
+	$args['bgc2']='a9e9fa'
+	$args['bgc3']=''
+end
+:new
+$args['note']=$func('get.daughter.obj',$args[0],'<note>[\s\S]*\[note\]','$array_note')
+if $args['note']='false':
+	$args['head']=$func('add.new.note',$args[0],"[v:<img src='"+$func('base.img','note')+"'> Содержимое заметки:v]","[name:Название заметки:name]","[sn:<img src='"+$func('base.img','ps')+"'> Примечание:sn]","[np:[note] [lock-button]:np]")
+	$args['adding']=$func('add.new.note',$args[0],"[v::v]","[name::name]","[sn::sn]","[np:[note] [lock-button]:np]")
+	killvar '$array_note'
+	jump 'new'
+elseif $args['note']='true':
+	$args['table.note']='<table width=100% align=left cellspacing=0 cellpadding=5 border=0>'
+	args['i']=0
+	:for
+	if args['i']<arrsize('$array_note'):
+		if args['i'] mod 2 = 0: $args['bgc']=$args['bgc1'] else $args['bgc']=$args['bgc2']
+		if args['i']<2: $args['bgc']=$args['bgc3']
+		$args['table.note']+='<tr bgcolor=#'+$args['bgc']+' valign=middle>'
+		args['pos']=arrpos('$id_array',$array_note[args['i']])
+		$args['obj']=$object_array[args['pos']]
+		$args['содержимое заметки']=$func('get.tag.cont',$args['obj'],'v')
+		$args['название заметки']=$func('get.tag.cont',$args['obj'],'name')
+		$args['примечание к заметке']=$func('get.tag.cont',$args['obj'],'sn')
+		$args['набор признаков']=$func('get.tag.cont',$args['obj'],'np')
+		if args['i']=1: $args['link.add']='<a href="exec:'+"gs 'add.new.note','<<$args[0]>>' & gs 'int.diary','<<$args[0]>>'"+'" title="добавить заметку"><img src="'+$func('base.img','add')+'"></a>' else $args['link.add']=''
+		if instr($args['набор признаков'],'[lock-button]')=0:
+			if args['i']>2: $args['link.up']='<a href="exec:'+"gs 'rtp.obj','"+$array_note[args['i']]+"','"+$array_note[args['i']-1]+"' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','toup')+'"></a>' else  $args['link.up']=''
+			if args['i']+1<arrsize('$array_note'): $args['link.down']='<a href="exec:'+"gs 'rtp.obj','"+$array_note[args['i']]+"','"+$array_note[args['i']+1]+"' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','down')+'"></a>' else $args['link.down']=''
+			$args['link.edit']='<a href="exec:'+"gs 'edit.note','"+$array_note[args['i']]+"','v' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','edit')+'"></a>'
+			$args['link.edtprim']='<a href="exec:'+"gs 'edit.note','"+$array_note[args['i']]+"','sn' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','edtp')+'"></a>'
+			$args['link.del']='<a href="exec:'+"gs 'del.obj.id','"+$array_note[args['i']]+"' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','del')+'"></a>'
+		else
+			$args['link.up']=''
+			$args['link.down']=''
+			$args['link.edit']=''
+			$args['link.del']=''
+		end
+		$args['table.note']+='<td >'+$args['название заметки']+'&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;'+$args['содержимое заметки']+'</td><td>'+$args['примечание к заметке']+'&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;<div align=right>'+$args['link.add']+$args['link.up']+$args['link.down']+$args['link.edit']+$args['link.edtprim']+$args['link.del']+'</div></td>'
+		$args['table.note']+='</tr>'
+		args['i']+=1
+		jump 'for'
+	end
+	$args['table.note']+='<tr bgcolor='+$args['bgc3']+'>'
+	$args['table.note']+='<td align=right colspan=2>'+'<a href="exec:'+"gs 'add.new.note','<<$args[0]>>' & gs 'int.diary','<<$args[0]>>'"+'" title="добавить заметку"><img src="'+$func('base.img','add')+'"></a>'+'</td>'
+	$args['table.note']+='</tr>'
+	$args['table.note']+='</table>'
+end
+killvar '$array_note'
+$result=$args['table.note']
+--- int.diary.note ---------------------------------

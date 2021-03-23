@@ -1,0 +1,24 @@
+# add.new.stady
+! Добавление стадии задания по краткому имени задания.
+$args[0] = $args[0]	&	!	ай-ди дневника
+$args[1] = $args[1]	&	!	краткое имя задания
+$args[2] = $args[2]	&	!	краткое имя стадии
+if $args[0]='':
+	if $func('get.daughter.obj','INVENTORY','<diary>','$id_diary')='true':
+		$args[0] = $id_diary[0]
+		killvar '$id_diary'
+	else
+		killvar '$id_diary'
+		exit
+	end
+end
+if $func('get.daughter.obj',$args[0],'<note>[\s\S]*\[:'+$args[1]+':\]','$id_diary')='true':
+	args['task.pos']=arrpos('$id_array',$id_diary[0])
+	$include_array[args['task.pos']]=$args[1]
+	charge_array[args['task.pos']]+=1
+	gs 'add.new.obj','<note> [:'+$args[2]+':] [np:[stady]:np] [v:next:v] ',$id_diary[0],'NOTE'
+else
+	$error_log+='location name: "add.new.stady" ERROR!:Cant Find Task. Cant add Stady.'
+end
+killvar '$id_diary'
+--- add.new.stady ---------------------------------
