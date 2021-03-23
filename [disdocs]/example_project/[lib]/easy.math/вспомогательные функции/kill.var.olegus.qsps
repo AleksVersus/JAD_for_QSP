@@ -1,0 +1,14 @@
+# kill.var.olegus
+$args[0] = $args[0]
+if instr($args[0],'$')<>1: $args[0]='$'+$args[0]
+$args[9] = $args[9]
+args['i']=1
+:for
+if $args[args['i']]<>'':
+	$args['rnd']=$func('#rndstr#',32)
+	dynamic "<<$args[0]>>['<<$args[args['i']]>>']=$args[0]",$args['rnd']
+	killvar $args[0],arrpos($args[0],$args['rnd'])
+	args['i']+=1
+	jump 'for'
+end
+--- kill.var.olegus ---------------------------------

@@ -1,0 +1,19 @@
+# get.word.inPos
+if $args[2] = '': $args[2]='|'
+$args[0] = $args[0]+$args[2]
+args[1] = args[1]
+:for
+if len($args[0])>0 and args[1]>0:
+	if instr($args[0],$args[2])>0:
+		$args['cs'] = $mid ($args[0],1,instr($args[0],$args[2]))
+		$args[0] = $mid($args[0],instr($args[0],$args[2])+1)
+	else
+		$args['cs']=$args[0]
+		$args[0]=''
+	end
+	! *pl str(args[1])+'^'+$args['1']
+	args[1]-=1
+	if args[1]>0: jump 'for'
+end
+$result=$replace($args['cs'],$args[2])
+--- get.word.inPos ---------------------------------

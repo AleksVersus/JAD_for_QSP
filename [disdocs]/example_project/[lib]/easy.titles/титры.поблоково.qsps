@@ -1,0 +1,137 @@
+# титры.поблоково
+! "
+args[0] - выводимая строка
+args[1] - цвет фона в формате rrggbb
+args[2] - конечный цвет в формате rrggbb
+args[3] - время смены цвета в мс
+args[4] - ширина в процентах
+args[5] - выравнивание по горизонтали
+args[6] - если не указан - не гасить, если указан цвет выполнить, как четвертый цвет
+args[7] - дополнительный цвет
+args[8] - дополнительный цвет 
+"
+if maintxt='': string_titles=0
+string_titles+=1
+j_titles=0
+if args[4]=0: tvar_titles["width"]=50 else tvar_titles["width"]=args[4]
+if $args[5]='': $tvar_titles["align"]="left" else $tvar_titles["align"]=$args[5]
+	! период изменения цвета
+	:следующий_цвет
+	if j_titles=0:
+		! ------------------------------ набор титров ------------------------------------
+			$tvar_titles['string']='<string:<<string_titles>> ><center><table width=<<tvar_titles["width"]>>% cellpadding=0 cellspacing=0 border=0><tr><td><div align='+$tvar_titles['align']+'>'
+			$tvar_titles['string']=$tvar_titles['string']+'<font color=#'+$args[1]+'>'+$args[0]+'</font>'
+			$tvar_titles['string']=$tvar_titles['string']+'</div></td></tr></table></center>< <<string_titles>>:string>'
+		! ------------------------------ набор титров ------------------------------------
+		tvar_titles['r_back']=func('#hex-dec#',mid($args[1],1,2)) & ! составляющие цвета в дексаметрической системе
+		tvar_titles['g_back']=func('#hex-dec#',mid($args[1],3,2))
+		tvar_titles['b_back']=func('#hex-dec#',mid($args[1],5,2))
+		tvar_titles['r_font']=func('#hex-dec#',mid($args[2],1,2))
+		tvar_titles['g_font']=func('#hex-dec#',mid($args[2],3,2))
+		tvar_titles['b_font']=func('#hex-dec#',mid($args[2],5,2))
+		u_titles[0]=1
+	end
+	if j_titles=1:
+		tvar_titles['r_back']=tvar_titles['r_font']
+		tvar_titles['g_back']=tvar_titles['g_font']
+		tvar_titles['b_back']=tvar_titles['b_font']
+		tvar_titles['r_font']=func('#hex-dec#',mid($args[7],1,2))
+		tvar_titles['g_font']=func('#hex-dec#',mid($args[7],3,2))
+		tvar_titles['b_font']=func('#hex-dec#',mid($args[7],5,2))
+		u_titles[1]=1
+	end
+	if j_titles=2:
+		tvar_titles['r_back']=tvar_titles['r_font']
+		tvar_titles['g_back']=tvar_titles['g_font']
+		tvar_titles['b_back']=tvar_titles['b_font']
+		tvar_titles['r_font']=func('#hex-dec#',mid($args[8],1,2))
+		tvar_titles['g_font']=func('#hex-dec#',mid($args[8],3,2))
+		tvar_titles['b_font']=func('#hex-dec#',mid($args[8],5,2))
+		u_titles[2]=1
+	end
+	if j_titles=3:
+		tvar_titles['r_back']=tvar_titles['r_font']
+		tvar_titles['g_back']=tvar_titles['g_font']
+		tvar_titles['b_back']=tvar_titles['b_font']
+		tvar_titles['r_font']=func('#hex-dec#',mid($args[1],1,2)) & ! составляющие цвета в дексаметрической системе
+		tvar_titles['g_font']=func('#hex-dec#',mid($args[1],3,2))
+		tvar_titles['b_font']=func('#hex-dec#',mid($args[1],5,2))
+		u_titles[3]=1
+	end
+	tvar_titles['rr']=tvar_titles['r_back'] & ! изменяемый цвет
+	tvar_titles['gg']=tvar_titles['g_back']
+	tvar_titles['bb']=tvar_titles['b_back']
+	if tvar_titles['r_back']<tvar_titles['r_font']: tvar_titles['r_dif']=tvar_titles['r_font']-tvar_titles['r_back'] else tvar_titles['r_dif']=tvar_titles['r_back']-tvar_titles['r_font']
+	if tvar_titles['g_back']<tvar_titles['g_font']: tvar_titles['g_dif']=tvar_titles['g_font']-tvar_titles['g_back'] else tvar_titles['g_dif']=tvar_titles['g_back']-tvar_titles['g_font']
+	if tvar_titles['b_back']<tvar_titles['b_font']: tvar_titles['b_dif']=tvar_titles['b_font']-tvar_titles['b_back'] else tvar_titles['b_dif']=tvar_titles['b_back']-tvar_titles['b_font']
+	t_titles[0]=tvar_titles['r_dif'] & t_titles[1]=tvar_titles['g_dif'] & t_titles[2]=tvar_titles['b_dif']
+	if t_titles[0]=0: killvar 't_titles',arrpos('t_titles',t_titles[0])
+	if t_titles[1]=0: killvar 't_titles',arrpos('t_titles',t_titles[1])
+	if t_titles[2]=0: killvar 't_titles',arrpos('t_titles',t_titles[2])
+	tvar_titles['z'] = min('t_titles') & ! на сколько частей нужно разделить значение каждой цветовой составляющей
+	if tvar_titles['z']=0: tvar_titles['z']=1
+	tvar_titles['r']=tvar_titles['r_dif']/tvar_titles['z']
+	tvar_titles['g']=tvar_titles['g_dif']/tvar_titles['z']
+	tvar_titles['b']=tvar_titles['b_dif']/tvar_titles['z']
+
+! ------------------------------ вывод титров ------------------------------------
+	i_titles = tvar_titles['z']
+	:next_pulse
+	if i_titles > 0:
+		if strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')='':
+			*p $tvar_titles['string']
+		else
+			$tvar_titles['old_string']=strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
+			$tvar_titles['font']=strfind($tvar_titles['old_string'],'<font color=#[0-9,a-f]+>')
+			!if tvar_titles['rr']<255 and tvar_titles['gg']<255 and tvar_titles['bb']<255:
+				if tvar_titles['r_back']<tvar_titles['r_font']:
+					tvar_titles['rr']+=tvar_titles['r'] 
+				elseif tvar_titles['r_back']>tvar_titles['r_font']:
+					tvar_titles['rr']-=tvar_titles['r']
+				end
+				if tvar_titles['g_back']<tvar_titles['g_font']:
+					tvar_titles['gg']+=tvar_titles['g']
+				elseif tvar_titles['g_back']>tvar_titles['g_font']:
+					tvar_titles['gg']-=tvar_titles['g']
+				end
+				if tvar_titles['b_back']<tvar_titles['b_font']:
+					tvar_titles['bb']+=tvar_titles['b']
+				elseif tvar_titles['b_back']>tvar_titles['b_font']:
+					tvar_titles['bb']-=tvar_titles['b']
+				end
+			!end
+			$tvar_titles['string']=$replace($tvar_titles['old_string'],$tvar_titles['font'],'<font color=#'+$func('#dec-col#',tvar_titles['rr'])+$func('#dec-col#',tvar_titles['gg'])+$func('#dec-col#',tvar_titles['bb'])+'>')
+			$tvar_titles['screen']=$replace(maintxt,strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
+			*clr
+			*p $tvar_titles['screen']
+			! pl $func('#dec-col#',tvar_titles['rr'])+$func('#dec-col#',tvar_titles['gg'])+$func('#dec-col#',tvar_titles['bb'])
+			if args[3]=0: wait 1000/tvar_titles['z'] else wait args[3]/tvar_titles['z']
+			i_titles-=1
+		end
+		if i_titles > 0: jump 'next_pulse'
+	end
+! ------------------------------ вывод титров ------------------------------------
+
+! ------------------------------ дополнительные цвета ------------------------------
+	if $args[7]!'' and u_titles[1]!1:
+		j_titles=1
+		jump 'следующий_цвет'
+	end
+	if $args[8]!'' and u_titles[2]!1:
+		j_titles=2
+		jump 'следующий_цвет'
+	end
+	if $args[6]='погасить' and u_titles[3]!1:
+		j_titles=3
+		jump 'следующий_цвет'
+	elseif $args[6]!'погасить' and $args[6]!'' and u_titles[4]!1:
+		j_titles=4
+		jump 'следующий_цвет'
+	end
+! ------------------------------ дополнительные цвета ------------------------------
+killvar 'i_titles'
+killvar 'tvar_titles'
+killvar 't_titles'
+killvar 's_titles'
+killvar 'u_titles'
+--- титры.поблоково ---------------------------------

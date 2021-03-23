@@ -1,0 +1,64 @@
+! Это первая часть локации base.new.obj. Локация разбита на 4 части для удобства. Только первая часть содержит название локации (см. следующую строку). В первой части нет символа окончания локации -
+# base.new.obj
+! база для выбора и воссоздания предметов по идентификационному слову
+! ------------------------------------------------ первая часть генератора. не подлежит редактированию ----------------------------------------
+$args[0] = $args[0]	&	!	информация о создаваемом предмете
+$args[1] = $args[1]	&	!	управляющее слово
+$args[2] = $args[2]	&	!	сюда передаётся местоположение
+if args[3] = 0: args[3] = 1  & ! количество
+args[4] = args[4]	&	!	необходимый заряд
+$args[5] = $args[5]	&	!	динамический код, выполняемый при манипуляциях с предметом.
+if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj']+='<obj> ' else $args['new_obj']+=''
+$args['short_word']=$replace($replace($strfind($args[0],'\[:[\S]+:\]'),'[:'),':]')
+$args['run_array']+=$args[5]
+! ------------------------------------------------ первая часть генератора. не подлежит редактированию ----------------------------------------
+! {выбор лута по признаку и т.п.
+:случайный_лут
+$args['jump']=$func('base.obj.new.get',$args['jump'])
+jump $args['jump']
+! выбор лута по признаку и т.п.}
+
+!------------------------------------------------------ собственно база лутов -------------------------------------------------------------------
+	:?
+	if $args['short_word']='?':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += $args[0]
+	end
+	! ------------------------------------------------------------ неисчислимые ------------------------------------------------------------------------
+	:дублоны
+	if $args['short_word']='дублоны':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += $args[0]+'[name:Дублоны:name] [nocount] [color:888800] [num:дублон|дублона|дублонов:num]'
+	end
+	:сердца
+	if $args['short_word']='сердца':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += $args[0]+'[name:Сердце:name] [nocount] [num:сердце|сердца|сердец:num]'
+	end
+	:no_count
+	if $args['short_word']='no_count':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += $args[0]+' [nocount]'
+	end
+	! oneself-объекты
+	:ключ
+	if $args['short_word']='ключ':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[name:Безымянный ключ:name] [nocount] [color:0088aa]'
+	end
+	:bag
+	if $args['short_word']='bag':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[name:Рюкзак:name] [color:004488] [:bag:] [oneself]'
+		if $args[1]='text': $args['text'] = 'Сумка для разнообразного груза.'
+	end
+	:magic
+	if $args['short_word']='magic':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[name:Книга Магии:name] [color:9933cc] [:magic:] [oneself]'
+		if $args[1]='text': $args['text'] = 'Книга, в которой содержатся все изученные тобой заклинания.'
+	end
+	:diary
+	if $args['short_word']='diary':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[name:Дневник Странника:name] [color:996600] [:diary:] [oneself]'
+		if $args[1]='text': $args['text'] = 'Книга, в которой содержатся все полученные тобой задания.'
+	end
+	:money
+	if $args['short_word']='money':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[name:Кошелёк:name] [color:888800] [:money:] [oneself]'
+		if $args[1]='text': $args['text'] = 'Сумка для монет и драгоценностей.'
+	end
+	

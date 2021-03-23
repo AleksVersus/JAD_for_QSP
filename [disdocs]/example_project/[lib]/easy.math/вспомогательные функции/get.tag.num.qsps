@@ -1,0 +1,38 @@
+# get.tag.num
+$args[0] = $args[0]
+$args[1] = $args[1]
+if $mid($args[1],len($args[1])-1)='\h': $args[1] = $replace($args[1],'\h') & $args['hex']='hex'
+if $strfind($args[0],'(\[|<|\{|\()'+$args[1]+':'+'([0-9A-Fa-f\-]*?)'+'(\]|>|\}|\))')!'':
+	$args['result.num'] = $strfind($args[0],'(\[|<|\{|\()'+$args[1]+':'+'([0-9A-Fa-f\-]*?)'+'(\]|>|\}|\))',2)
+	jump 'results'
+elseif $strfind($args[0],'\['+$args[1]+':'+'([^][]*?)'+'\]')!'':
+	$args['result.num'] = $strfind($args[0],'\['+$args[1]+':'+'([^][]+?)'+'\]',1)
+	jump 'results'
+elseif $strfind($args[0],'<'+$args[1]+':'+'([^><]*?)'+'>')!'':
+	$args['result.num'] = $strfind($args[0],'<'+$args[1]+':'+'([^><]+?)'+'>',1)
+	jump 'results'
+elseif $strfind($args[0],'\{'+$args[1]+':'+'([^}{]*?)'+'\}')!'':
+	$args['result.num'] = $strfind($args[0],'\{'+$args[1]+':'+'([^}{]+?)'+'\}',1)
+	jump 'results'
+elseif $strfind($args[0],'\('+$args[1]+':'+'([^)(]*?)'+'\)')!'':
+	$args['result.num'] = $strfind($args[0],'\('+$args[1]+':'+'([^)(]+?)'+'\)',1)
+	jump 'results'
+elseif $strfind($args[0],$args[1]+'=("|'+"')([\s\S]*?)\1")!'':
+	$args['result.num'] = $strfind($args[0],$args[1]+'=("|'+"')([\s\S]*?)\1",2)
+	jump 'results'
+elseif $strfind($args[0],$args[1]+'(:|=#)[\S]+')!'':
+	$args['result.num'] = $strfind($args[0],$args[1]+'(:|=#)([\S]+)',2)
+	:results
+	if $args['hex']='hex' and $strfind($args['result.num'],'^([0-9A-Fa-f\-]+)([\S]*)$')='':
+		exit
+	elseif $args['hex']='hex':
+		$args['result.num'] = $strfind($args['result.num'],'^([0-9A-Fa-f\-]+)([\S]*)$',1)
+	end
+	if isnum($args['result.num']) = -1:
+		args['result.num'] = val($args['result.num'])
+	else
+		$args['result.num'] = $args['result.num']
+	end
+end
+$result = $args['result.num']
+--- get.tag.num ---------------------------------

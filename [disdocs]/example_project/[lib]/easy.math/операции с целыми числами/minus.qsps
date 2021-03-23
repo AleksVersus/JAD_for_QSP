@@ -1,0 +1,5 @@
+# #-#
+args[0] = args[0]
+args[1] = args[1]
+result = iif(args[1]-args[0]>0, args[1]-args[0], args[0]-args[1])
+--- #-# ---------------------------------

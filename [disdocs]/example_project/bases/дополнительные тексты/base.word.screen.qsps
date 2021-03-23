@@ -1,0 +1,257 @@
+# base.word.screen
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args['color']=$func('get.tag.num',$args[1],'color')
+$args['name']=$func('get.tag.cont',$args[1],'name')
+args['колво']=func('get.tag.num',$args[1],'колво')
+$args['num']=$func('get.tag.cont',$args[1],'num')
+$args['txt']=$func('get.tag.cont',$args[1],'txt')
+if $args[0]!'': jump $args[0] else jump 'wtf'
+:001
+if $args[0]='001':
+	$result['bws']=$func('int.din.text','<b><font color=#880022>Ты не можешь поднять столько.</font></b>')
+	exit
+end
+:002.1
+if $args[0]='002.1':
+	$result['bws']=$func('int.din.text','<font color=#005588><b>Ты подня(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#005588>.</font></b>')
+	exit
+end
+:002.2
+if $args[0]='002.2':
+	$result['bws']=$func('int.din.text','<font color=#668800><b>Ты купи(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#668800>.</font></b>')
+	exit
+end
+:003
+if $args[0]='003':
+	$result['bws']=$func('int.din.text','<font color=#ff4444><b>Ты не можешь использовать этот предмет подобным образом.</b></font>')
+	exit
+end
+:003.1
+if $args[0]='003.1':
+	$result['bws']=$func('int.din.text','<font color=#ff4444><b>Ты не можешь использовать этот предмет подобным образом. Подходящая ёмкость не найдена.</b></font>')
+	exit
+end
+:004
+if $args[0]='004':
+	$result['bws']=$func('int.din.text','<font color=#880088><b>Ты убра(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#880088> в сумку.</font></b>')
+	exit
+end
+:004.1
+if $args[0]='004.1':
+	$result['bws']=$func('int.din.text','<font color=#880088><b>Ты положи(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#880088> в инвентарь.</font></b>')
+	exit
+end
+:005
+if $args[0]='005':
+	$result['bws']=$func('int.din.text','<font color=#ff4444><b>В рюкзаке больше нет места, ты не можешь убрать этот предмет.</b></font>')
+	exit
+end
+:006
+if $args[0]='006':
+	$result['bws']=$func('int.din.text','<font color=#448844><b>Ты переложи(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#448844> в сумку.</font></b>')
+	exit
+end
+:007
+if $args[0]='007':
+	$result['bws']=$func('int.din.text','<font color=#448844><b>Ты переложи(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#448844> в инвентарь.</font></b>')
+	exit
+end
+:008.1
+if $args[0]='008.1':
+	if args["колво"]=1: $args['получен/о']="Получен" else $args['получен/о']="Получено"
+	$result['bws']=$func('int.din.text','<font color=#005588><b>'+$args['получен/о']+' </b></font><font color=#'+$args['color']+'><b>'+str(args["колво"])+" "+$func('get.word.end',args['колво'],$args['num'])+"</b></font><font color=#005588><b>.</b></font>")
+	exit
+end
+:008.2
+if $args[0]='008.2':
+	if args["колво"]=1: $args['отдан/о']="Отдан" else $args['отдан/о']="Отдано"
+	$result['bws']=$func('int.din.text','<font color=#880055><b>'+$args['отдан/о']+' </b></font><font color=#'+$args['color']+'><b>'+str(args["колво"])+" "+$func('get.word.end',args['колво'],$args['num'])+"</b></font><font color=#880055><b>.</b></font>")
+	exit
+end
+:008.3
+if $args[0]='008.3':
+	$result['bws']=$func('int.din.text','<font color=#880022><b>Не хватает </b></font><font color=#'+$args['color']+'><b>'+str(args["колво"])+" "+$func('get.word.end',args['колво'],$args['num'])+"</b></font><font color=#880022><b>.</b></font>")
+	exit
+end
+:009.1
+if $args[0]='009.1':
+	$result['bws']="<b><font color=#00aabb>Здоровье восстанавливается на "+$func('#indiv#',args['колво'],100,10)+" единиц"+$func('get.word.end',args['колво']/100,'у|ы|')+"</font>.</b>"+$args['txt']+" "
+	exit
+end
+:009.2
+if $args[0]='009.2':
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Жизненные силы увеличиваются</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимуму здоровья)<b>.</b></font><<$args['txt']>> ")
+	exit
+end
+:009.3
+if $args[0]='009.3':
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Здоровье уменьшается на "+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>></font>.</b><<$args['txt']>> ")
+	exit
+end
+:009.4
+if $args[0]='009.4':
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Жизненные силы ослабевают</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимума здоровья)<b>.</b></font><<$args['txt']>> ")
+	exit
+end
+:010
+if $args[0]='010':
+	$result['bws']=$func('int.din.text','<b><font color=#880022>Квестовые предметы нельзя выбросить.</font></b>')
+	exit
+end
+:011.1
+if $args[0]='011.1':
+	$result['bws']=$func('int.din.text','<font color=#880055><b>Ты выброси(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#880055>.</font></b>')
+	exit
+end
+:011.2
+if $args[0]='011.2':
+	$result['bws']=$func('int.din.text','<font color=#886600><b>Ты прода(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><b><font color=#880055>.</font></b>')
+	exit
+end
+:012.1
+if $args[0]='012.1':
+	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Запас маны увеличивается на "+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>></font></b><<$args['txt']>> ")
+	exit
+end
+:012.2
+if $args[0]='012.2':
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Духовные силы увеличиваются</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню маны)<b>.</b></font><<$args['txt']>> ")
+	exit
+end
+:012.3
+if $args[0]='012.3':
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Потрачено "+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> магической энергии.</font></b><<$args['txt']>> ")
+	exit
+end
+:012.4
+if $args[0]='012.4':
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Духовные силы уменьшаются</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня маны)<b>.</b></font><<$args['txt']>> ")
+	exit
+end
+:013
+if $args[0]='013':
+	$result['bws']=$func('int.din.text','<b><font color=#880022>Ты не можешь выбросить столько.</font></b>')
+	exit
+end
+:014
+if $args[0]='014':
+	$result['bws']=$func('int.din.text','<b><font color=#880022>Тебе не хватает средств для покупки товара.</font></b>')
+	exit
+end
+:015
+if $args[0]='015':
+	$result['bws']=$func('int.din.text','<b><font color=#880022>Торговцу не хватает средств.</font></b>')
+	exit
+end
+:017.1
+if $args[0]='017.1':
+	$result['bws']=$func('int.din.text','<font color=#ff0000>Место, куда ты хочешь попасть, уничтожено!</font>')
+	exit
+end
+:017.2
+if $args[0]='017.2':
+	$result['bws']=$func('int.din.text','<font color=#ff0000><b>Локация закрыта.</b></font>')
+	exit
+end
+:017.3
+if $args[0]='017.3':
+	$result['bws']=$func('int.din.text','<font color=#ff0000><b>В темноте ты наткну(лся/лась) на что-то, но так и не поня(л//ла) что это было.</b></font>')
+	exit
+end
+:017.4
+if $args[0]='017.4':
+	$result['bws']=$func('int.din.text','<font color=#ff0000><b>В темноте ты наткну(лся/лась) на запертую дверь. Открыть её не удастся: очень сложно подобрать ключ к замку, когда ничерта не видно.</b></font>')
+	exit
+end
+:017.5
+if $args[0]='017.5':
+	$result['bws']=$func('int.din.text','<font color=#ff0000><b>Заперто. Нужен ключ</b></font>')
+	exit
+end
+:017.6
+if $args[0]='017.6':
+	$result['bws']=$func('int.din.text','<font color=#ff0000><b>Замок невозможно взломать, либо нет подходящей отмычки.</b></font>')
+	exit
+end
+:017.7
+if $args[0]='017.7':
+	$result['bws']=$func('int.din.text','<font color=#ff0000><b>Невозможно сломать. Или попросту нечем.</b></font>')
+	exit
+end
+:018
+if $args[0]='018':
+	$result['bws']=$func('int.din.text','<font color=#'+$args['color']+'><b>Всё твоё тело окутали вспышки золотистых и небесно-голубых молний. Ты оцепене(л//ла) лишь на мгновение. Мир исчез и вновь проявился из светового небытия. Но то было уже совсем иное место.</b></font>')
+	exit
+end
+:019.1
+if $args[0]='019.1':
+	$result['bws']=$func('int.din.text','<font color=#ff4444><b>Невозможно прочесть заклинание. Требуемые условия не выполнены: </b></font>')
+	exit
+end
+:021
+if $args[0]='021':
+	$result['bws']='<font color=#888888><b>Сейчас с этим предметом ничего нельзя сделать.</b></font>'
+	exit
+end
+:022
+if $args[0]='022':
+	$result['bws']='<font color=#880022><b>Ты не можешь разобрать столько.</b></font>'
+	exit
+end
+:023
+if $args[0]='023':
+	$result['bws']='<font color=#880022><b>Этот предмет не разбирается.</b></font>'
+	exit
+end
+:024
+if $args[0]='024':
+	$result['bws']=$func('int.din.text','<font color=#880055><b>Ты разобра(л//ла) </b></font><font color=#'+$args['color']+'><b>'+$func('get.word.padez',$args['name'],'В')+"</b></font> <font color=#"+$args['color']+'>('+str(args['колво'])+' шт.)</font><font color=#880055><b> на составляющие.</b></font>')
+	exit
+end
+:025.1
+if $args[0]='025.1':
+	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Удача восстанавливвается. +"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b><<$args['txt']>> ")
+	exit
+end
+:025.2
+if $args[0]='025.2':
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Везение увеличивается</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню удачи)<b>.</b></font><<$args['txt']>> ")
+	exit
+end
+:025.3
+if $args[0]='025.3':
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Удача теряется. -"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b><<$args['txt']>> ")
+	exit
+end
+:025.4
+if $args[0]='025.4':
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Везение уменьшается</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня удачи)<b>.</b></font>"+$args['txt']+" ")
+	exit
+end
+:026.1
+if $args[0]='026.1':
+	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Запас сил восполняется. +"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b>"+$args['txt']+" ")
+	exit
+end
+:026.2
+if $args[0]='026.2':
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Выносливость увеличивается</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню запаса сил)<b>.</b></font>"+$args['txt']+" ")
+	exit
+end
+:026.3
+if $args[0]='026.3':
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Запас сил уменьшается. -"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b>"+$args['txt']+" ")
+	exit
+end
+:026.4
+if $args[0]='026.4':
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Выносливость уменьшается</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня запаса сил)<b>.</b></font>"+$args['txt']+" ")
+	exit
+end
+:wtf
+if $args[0]='':
+	msg 'Внимание!!! Ошибка интерпретации!!! На локацию base.word.screen была передана пустая метка.'
+	exit
+end
+--- base.word.screen ---------------------------------

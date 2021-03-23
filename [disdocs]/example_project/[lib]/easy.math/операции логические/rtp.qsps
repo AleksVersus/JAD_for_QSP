@@ -1,0 +1,8 @@
+# #rtp#
+$args[0] = $args[0]
+$args[1] = $args[1]
+if instr($args[0],'$')=1: $args[9]='$'
+dynamic "<<$args[9]>>args[0] = <<$args[0]>>
+<<$args[0]>> = <<$args[1]>>
+<<$args[1]>> = <<$args[9]>>args[0]"
+--- #rtp# ---------------------------------

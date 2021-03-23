@@ -1,0 +1,50 @@
+# #str.inArray#
+$args[3] = UCASE($args[3])
+if $args[2] = '':
+$args[2]='
+'
+end
+if $strfind($args[3],'REGULAR')='': $args[0] = $args[0]+$args[2] else $args[0]=$args[0]
+if $args[1]='':
+	exit
+elseif instr($args[1],'$')<>1:
+	$args[1]='$'+$args[1]
+end
+killvar $args[1]
+killvar '$easy_math_copy_array'
+:for
+if len($args[0])>0:
+	if $strfind($args[3],'REGULAR')='':
+		args['div']=instr($args[0],$args[2])
+		$args['div.']=$args[2]
+	else
+		args['div']=strpos($args[0],$args[2])
+		$args['div.']=$strfind($args[0],$args[2])
+	end
+	if args['div']>0:
+		$args['vs']=$mid($args[0],1,args['div']-1)
+		$args[0]=$mid($args[0],args['div']+len($args['div.']))
+	else
+		$args['vs']=$args[0]
+		$args[0]=''
+	end
+	if ($args['vs']<>'' and $strfind($args[3],'NOTSPACE')<>'') or $strfind($args[3],'NOTSPACE')='':
+		if $strfind($args[3],'LEFT')='LEFT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['l']=$args[2]
+		if $strfind($args[3],'RIGHT')='RIGHT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['r']=$args[2]
+		if $strfind($args[3],'LCASE')='LCASE': $args['vs']=LCASE($args['vs'])
+		if $strfind($args[3],'UCASE')='UCASE': $args['vs']=UCASE($args['vs'])
+		$easy_math_copy_array[]=$args['l']+$args['vs']+$args['r']
+	end
+	jump 'for'
+end
+if $strfind($args[3],'TRIM')<>'':
+	if $easy_math_copy_array[0]='' or $easy_math_copy_array[0]=$args[2] or $easy_math_copy_array[0]=$args[2]+$args[2]:
+		killvar '$easy_math_copy_array',0
+	end
+	if $easy_math_copy_array[]='' or $easy_math_copy_array[]=$args[2] or $easy_math_copy_array[]=$args[2]+$args[2]:
+		killvar '$easy_math_copy_array',arrsize('$easy_math_copy_array')-1
+	end
+end
+copyarr $args[1],'$easy_math_copy_array'
+killvar '$easy_math_copy_array'
+--- #str.inArray# ---------------------------------

@@ -1,0 +1,10 @@
+# #zero#
+args[0] = args[0]
+if $args[1]='': $args[1]='0' else $args[1] = $args[1]
+:for
+if args[0]>0:
+	$result+=$args[1]
+	args[0]-=1
+	jump 'for'
+end
+--- #zero# ---------------------------------

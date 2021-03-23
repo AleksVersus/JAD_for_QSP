@@ -1,0 +1,16 @@
+# #array.clr#
+$args[0] = $args[0]
+$args[1] = $args[1]
+args['size']=arrsize($args[0])
+:for
+if instr($args[0],'$')=1:
+	args['pos']=arrpos($args[0],$args[1])
+else
+	args['pos']=arrpos($args[0],args[1])
+end
+if args['pos']!-1 and arrsize($args[0])>0 and args['size']>0:
+	killvar $args[0],args['pos']
+	args['size']-=1
+	jump 'for'
+end
+--- #array.clr# ---------------------------------

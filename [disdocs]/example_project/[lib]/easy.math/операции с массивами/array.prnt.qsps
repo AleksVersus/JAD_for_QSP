@@ -1,0 +1,20 @@
+# #array.prnt#
+$args[0] = $args[0]
+$args[1] = UCASE($args[1])
+if $args[2]='': $args[2]='
+'
+if args[3]<0: args[3]=0
+if args[4]<args[3]: args[4]=0
+:for
+if args[3]<arrsize($args[0]):
+	if instr($args[1],'[ONLY RESULT]')=0: $args['array.prnt'] += $args[0]+"[<<args[3]>>]="
+	if instr($args[1],'[TRIM]')<>0: $args['trim.open']='TRIM(' & $args['trim.close']=')'
+	$args['array.prnt'] += $dyneval("$result = <<$args['trim.open']>><<$args[0]>>[args[0]]<<$args['trim.close']>>",args[3])+$args[2]
+	args[3]+=1
+	if args[3]<=args[4] or args[4]=0: jump 'for'
+end
+if instr($args[1],'[NOT LAST]')<>0: 
+	$args['array.prnt']=$mid($args['array.prnt'],1,len($args['array.prnt'])-len($args[2]))
+end
+$result=$args['array.prnt']
+--- #array.prnt# ---------------------------------

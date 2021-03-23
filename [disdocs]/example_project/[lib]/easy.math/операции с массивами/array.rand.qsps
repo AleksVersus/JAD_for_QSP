@@ -1,0 +1,14 @@
+# #array.rand#
+$args[0] = $args[0]	
+args[1] = args[1]
+args[2] = args[2]
+args[3] = args[3]
+if args[4] = 0: args[4] = 1000
+:for
+if args[1] >0:
+	dynamic $args[0]+'['+str(args[2])+'] = rand('+str(args[3])+','+str(args[4])+')'
+	args[1]-=1
+	args[2]+=1
+	jump 'for'
+end
+--- #array.rand# ---------------------------------

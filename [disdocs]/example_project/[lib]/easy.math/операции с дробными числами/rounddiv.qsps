@@ -1,0 +1,19 @@
+# #rounddiv#
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args[2] = $args[2]
+if args[1]!0: $args[1] = str(args[1])
+if $args[1]='': $args[1]='1'
+$result=$args[0]
+if instr($args[0],'.')=0: exit
+if instr($args[1],'.')!0:
+	if (func('#razdiv#',$args[0])=<func('#razdiv#',$args[1])): exit
+	args['res'] = func('#even#',val($replace($args[0],'.')),func('#razdiv#',$args[0])/func('#razdiv#',$args[1]),$args[2])
+	$result = $func('#indiv#',args['res'],func('#razdiv#',$args[0]))
+	exit
+else
+	args['res'] = func('#even#',val($replace($args[0],'.')),func('#razdiv#',$args[0])*func('#raz#',val($args[1])),$args[2])
+	$result = $func('#indiv#',args['res'],func('#razdiv#',$args[0]))
+	exit
+end
+--- #rounddiv# ---------------------------------

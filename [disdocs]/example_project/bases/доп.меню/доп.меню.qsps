@@ -1,0 +1,33 @@
+# menu.rainbowsword.color.change
+! определяем хватит ли сил на трансформацию
+if $args[0]='': $args[0]=$OOS['oid']
+if property['hero.mana.all']>9999:
+	gs 'hero.mana',10000
+elseif property['hero.health.all']>5599:
+	gs 'hero.health',5600
+else
+	$print['take.obj']='<font color=#ff0000>Нет сил на трансформацию предмета.</font>'
+	exit
+end
+! получаем айдишник предмета и его вид
+args['pit']=arrpos('$id_array',$args[0])
+$args['obj']=$object_array[args['pit']]
+args['menzlot']=func('get.tag.num',$args['obj'],'menzlot')+1
+if args['menzlot']=8: args['menzlot']=1
+$args['func']=$func('base.new.obj','[:радужный_меч:]',"get.obj [menzlot:<<args['menzlot']>>]")
+$object_array[args['pit']]=$replace($object_array[args['pit']],$args['obj'],$args['func'])
+$args['lc']=$func('get.tag.num',$args['obj'],'color')
+$args['nc']=$func('get.tag.num',$args['func'],'color')
+$args['ln']=$func('get.tag.cont',$args['obj'],'name')
+$args['nn']=$func('get.tag.cont',$args['func'],'name')
+$print['take.obj']+='<font color=#'+$args['lc']+'><b>'+$func('get.word.padez',$args['ln'])+'</b></font> <font color=#9933cc><b>превратился в</b></font> <font color=#'+$args['nc']+'><b>'+$func('get.word.padez',$args['nn'])+'</b></font>.'
+gs 'int.inventory'
+--- menu.rainbowsword.color.change ---------------------------------
+
+# menu.backer.back
+![menu:m1:Запись/Запоминание:menu.backer.memory:m1 m2:Возврат/Откат:menu.backer.back:m2:menu]
+--- menu.backer.back ---------------------------------
+
+# menu.backer.memory
+
+--- menu.backer.memory ---------------------------------

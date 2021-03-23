@@ -1,0 +1,17 @@
+# int.influence.scripts
+! Здесь производится запуск и обработка подпрограмм влияний и воздействий
+$args[0] = $args[0]	&	!	управляющая конструкция
+$args[1] = $args[1]	&	!	разные значения
+! свойства и влияния на героя
+$args['hero'] = $func('get.id.obj','<hero>')
+$args['unerror']=$func('get.daughter.obj',$args['hero'],'<property>','$temp_hero')
+:for_me
+if arrsize('$temp_hero')>0:
+	args['pit']=arrpos('$id_array',$temp_hero[0])
+	if $run_array[args['pit']]!'':
+		gs 'run.dynamic.script',$args[0],$temp_hero[0],$temp_hero[0],$args[1]
+	end
+	killvar '$temp_hero',0
+	jump 'for_me'
+end
+--- int.influence.scripts ---------------------------------

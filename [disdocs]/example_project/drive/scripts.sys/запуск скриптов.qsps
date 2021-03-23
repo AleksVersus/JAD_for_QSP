@@ -1,0 +1,11 @@
+# run.dynamic.script
+$args[0] = $args[0]	&	!	управляющая конструкция
+$args[1] = $args[1]	&	!	ай-ди предмета, который обрабатываем, новый предмет
+$args[2] = $args[2]	&	!	ай-ди предмета, который обрабатываем, старый предмет
+$args[3] = $args[3]	&	!	прочая информация
+args['pit']=arrpos('$id_array',$args[1])
+$args['dynamic']='$args[9] = $args[9]	&	!	строка инициализирующая аргументы
+'+$run_array[args['pit']]
+$args['rds']=DYNEVAL($args['dynamic'],$args[0],$args[1],$args[2],$args[3])
+$result=$args['rds']
+--- run.dynamic.script ---------------------------------

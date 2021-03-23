@@ -1,0 +1,24 @@
+# get.obj.pos
+! функция получает позицию из подтипа предмета. Только основные подтипы.
+! $args[0] - подтип
+! $args[1] - дополнительные значения
+$args[0] = $args[0]
+$args[1] = $args[1]
+if	$strfind($args[1],'\[pos:[\s\S]+:pos\]')!'': exit
+if	instr($args[0],'[двуручное]')!0: $result = 'p1:правая_рука:p1 p2:левая_рука:p2'
+if	instr($args[0],'[одноручное]')!0: $result = 'p1:правая_рука:p1'
+if	instr($args[0],'[щит]')!0: $result = 'p1:левая_рука:p1'
+if	instr($args[0],'[шлем]')!0: $result = 't1:голова:t1'
+if	instr($args[0],'[наплечни]')!0: $result = 't1:плечи:t1'
+if	instr($args[0],'[кираса]')!0: $result = 't1:тело:t1'
+if	instr($args[0],'[перчатки]')!0: $result = 't1:перчатки:t1'
+if	instr($args[0],'[поножи]')!0: $result = 't1:штаны:t1'
+if	instr($args[0],'[обувь]')!0: $result = 't1:обувь:t1'
+if	instr($args[0],'[амулет]')!0: $result = 't1:шея:t1'
+if	instr($args[0],'[стрелы]')!0: $result = 'p1:колчан:p1'
+if	instr($args[0],'[болты]')!0: $result = 'p1:арбалетная_сума:p1'
+if	instr($args[0],'[арбалет]')!0:
+	args['weight']=func('get.tag.num',$args[1],'weight')
+	if property['hero.power.max']/args['weight']>9: $result = 'p1:правая_рука:p1' else $result = 'p1:правая_рука:p1 p2:левая_рука:p2'
+end
+--- get.obj.pos ---------------------------------

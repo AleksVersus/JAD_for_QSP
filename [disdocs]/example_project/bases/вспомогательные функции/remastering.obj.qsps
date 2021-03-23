@@ -1,0 +1,68 @@
+# remastering.obj
+! Функция добавляет исключительные признаки на объект
+! Фактически сравнивает нужные признаки с объектом и меняет, если требуется изменить.
+! $args[0] - исключительные признаки
+! $args[1] - объект
+$args[0] = $args[0]
+$args['res.021213']	= $args[1]
+	$base_tag[0]='' & $base_tag_type[0]='cont'					&	!	идентификатор вида
+	$base_tag[1]='name' & $base_tag_type[1]='cont'				&	!	название объекта
+	$base_tag[2]='np' & $base_tag_type[2]='cont'				&	!	набор признаков
+		$base_tag[3]='type' & $base_tag_type[3]='cont'				&	!	не используется
+		$base_tag[4]='st' & $base_tag_type[4]='cont'				&	!	не используется
+	$base_tag[5]='color' & $base_tag_type[5]='num'				&	!	цвет имени объекта
+	$base_tag[6]='stoim' & $base_tag_type[6]='num'				&	!	стоимость
+	$base_tag[7]='weight' & $base_tag_type[7]='num'				&	!	вес
+		$base_tag[8]='bgcolor' & $base_tag_type[8]='num'			&	!	не используется
+	$base_tag[9]='force' & $base_tag_type[9]='num'				&	!	расход выносливости. Для оружия
+	$base_tag[10]='pos' & $base_tag_type[10]='cont'				&	!	набор позиций, куда помещается предмет	
+	$base_tag[11]='uron' & $base_tag_type[11]='cont'			&	!	набор уронов для оружия и боевых заклинаний
+		$base_tag[12]='efect' & $base_tag_type[12]='cont'			&	!	не используется	
+	$base_tag[13]='uron_absorb' & $base_tag_type[13]='cont'		&	!	поглощение защиты противника
+	$base_tag[14]='block_absorb' & $base_tag_type[14]='cont'	&	!	поглощение урона от атаки
+	$base_tag[15]='block_repulse' & $base_tag_type[15]='cont'	&	!	отражение урона от атаки (т.е. часть урона вычитается из конечного ущерба герою и возвращается врагу)
+	$base_tag[16]='block' & $base_tag_type[16]='cont'			&	!	защита от урона (снижение ущерба от атаки за счёт доспеха)
+	$base_tag[17]='block_recieve' & $base_tag_type[17]='cont'	&	!	рикошет (урон для игрока остаётся тем же, но и врагу наносится ущерб)
+	$base_tag[18]='charge' & $base_tag_type[18]='num'			&	!	заряд предмета по умолчанию
+	$base_tag[19]='maxchrg' & $base_tag_type[19]='num'			&	!	максимальный заряд предмета
+	$base_tag[20]='boom' & $base_tag_type[20]='num'				&	!	расход заряда на выстрел/удар
+	$base_tag[21]='text' & $base_tag_type[21]='cont'			&	!	текст, заменяющий основное описание предмета
+	$base_tag[22]='end' & $base_tag_type[22]='cont'				&	!	текст, добавляющийся к основному описанию предмета
+	$base_tag[23]='DU' & $base_tag_type[23]='num'				&	!	дальность удара для оружия
+	$base_tag[24]='menu' & $base_tag_type[24]='cont'			&	!	перечень дополнительных пунктов меню предмета. Добавляются к основным
+	$base_tag[25]='runs' & $base_tag_type[25]='cont'		&	!	точное время, когда должен сработать скрипт
+	$base_tag[26]='stos' & $base_tag_type[26]='cont'		&	!	точное время, когда должен остановиться скрипт
+	$base_tag[27]='tims' & $base_tag_type[27]='cont'		&	!	промежуток, в течение какого времени должен работать скрипт
+	$base_tag[28]='frqs' & $base_tag_type[28]='cont'		&	!	период срабатывания скрипта
+	$base_tag[29]='num' & $base_tag_type[29]='cont'				&	!	
+	$base_tag[30]='teaching' & $base_tag_type[30]='cont'				&	!	не используется
+	$base_tag[31]='menergy' & $base_tag_type[31]='cont'			&	!	количество магической энергии пространства, арсходуемой на заклинание
+	$base_tag[32]='mana' & $base_tag_type[32]='num'				&	!	количесвто магической энергии расходуемой на заклинание
+	$base_tag[33]='calibr' & $base_tag_type[33]='num'			&	!	калибр патрона или ружья
+	! перебираем каждый тег
+	args['i']=0
+	:base_tag
+	if args['i']<arrsize('$base_tag'):
+		$args['started']='['+$base_tag[args['i']]+':'
+		if $base_tag_type[args['i']]='cont': $args['finished']=':'+$base_tag[args['i']]+']' else $args['finished']=']'
+		$args['ish']=$func('get.tag.'+$base_tag_type[args['i']],$args['res.021213'],$base_tag[args['i']])	&	! исходная информация по предмету
+		! $base_tag_type[args['i']]+':'+$args['ish']+':'+$base_tag[args['i']]
+		$args['end']=$func('get.tag.'+$base_tag_type[args['i']],$args[0],$base_tag[args['i']])	&	! информация, которую мы хотим получить
+		! $base_tag_type[args['i']]+':'+$args['end']+':'+$base_tag[args['i']]
+		if $args['end']!'':
+		! если конечная информация присутствует, т.е. мы хотим заменить исходный тег
+		! проверяем существует ли исходный тег
+			if $args['ish']!'':
+				$args['res.021213']=$replace($args['res.021213'],$args['started']+$args['ish']+$args['finished'],$args['started']+$args['end']+$args['finished'])
+			else
+				$args['res.021213']+=(' '+$args['started']+$args['end']+$args['finished'])
+			end
+			$args[0]=$replace($args[0],$args['started']+$args['end']+$args['finished'])
+		end
+		args['i']+=1
+		jump 'base_tag'
+	end
+	$args['res.021213']+=(' '+TRIM($args[0]))
+$result = $args['res.021213']
+killvar 'base_tag' & killvar 'base_tag_type'
+--- remastering.obj ---------------------------------

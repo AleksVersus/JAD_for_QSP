@@ -1,0 +1,19 @@
+# #+col#
+$args[0] = $args[0]
+$args[1] = $args[1]
+if instr($args[1],'-')!0: $args['+']='-' else $args['+']='+'
+$args[1] = $replace($args[1],'-')
+dynamic 'r_col_plus = '+$func('#hex-dec#',mid($args[0],1,2))+$args['+']+$func('#hex-dec#',$args[1])
+dynamic 'g_col_plus = '+$func('#hex-dec#',mid($args[0],3,2))+$args['+']+$func('#hex-dec#',$args[1])
+dynamic 'b_col_plus = '+$func('#hex-dec#',mid($args[0],5,2))+$args['+']+$func('#hex-dec#',$args[1])
+if r_col_plus>255: r_col_plus=255
+if r_col_plus<0: r_col_plus=0
+if g_col_plus>255: g_col_plus=255
+if g_col_plus<0: g_col_plus=0
+if b_col_plus>255: b_col_plus=255
+if b_col_plus<0: b_col_plus=0
+$result['+col'] = $func('#dec-col#',r_col_plus)+$func('#dec-col#',g_col_plus)+$func('#dec-col#',b_col_plus)
+killvar 'r_col_plus'
+killvar 'g_col_plus'
+killvar 'b_col_plus'
+--- #+col# ---------------------------------

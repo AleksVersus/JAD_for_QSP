@@ -1,0 +1,208 @@
+# base.img
+! Внимание. Не использовать в качестве $args[0] записи в формате RRGGBB (шестнадцатеричная запись цветовых каналов.).
+$args[0] = $args[0]
+! картинка нет картинки
+$result='res/img/no_image'
+! для вывода предметов
+if $args[0]='onim':
+	$result='res/img/obj/obj.noimg'
+	exit
+end
+! для инвентарных предметов
+if $args[0]='back':
+! картинка стрелка назад. Для предметов возврат
+	$result='res/img/ico/obj.back'
+	exit
+end
+! для заметок
+if $args[0]='note':
+! картинка листок. Заметка
+	$result='res/img/ico/note.ico/note.note'
+	exit
+end
+if $args[0]='ps':
+! картинка листок. примечание
+	$result='res/img/ico/note.ico/note.ps'
+	exit
+end
+if $args[0]='toup':
+! переместить на позицию вверх
+	$result='res/img/ico/note.ico/note.toup'
+	exit
+end
+if $args[0]='down':
+! переместить на позицию вниз
+	$result='res/img/ico/note.ico/note.down'
+	exit
+end
+if $args[0]='add':
+! добавить заметку +
+	$result='res/img/ico/note.ico/note.add'
+	exit
+end
+if $args[0]='del':
+! удалить заметку x
+	$result='res/img/ico/note.ico/note.del'
+	exit
+end
+if $args[0]='edit':
+! править заметку
+	$result='res/img/ico/note.ico/note.edit'
+	exit
+end
+if $args[0]='edtp':
+! править примечание
+	$result='res/img/ico/note.ico/note.editps'
+	exit
+end
+! ------------- шкалы ------------------
+	if $args[0]='sclb':
+	! шкала синяя прозрачная.
+		$result='res/img/scl/scl.blue-glass'
+		exit
+	end
+	if $args[0]='scsp':
+	! шкала наполнения пустая область.
+		$result='res/img/scl/scl.space'
+		exit
+	end
+	if $args[0]='scrd':
+	! шкала наполнения заполненная область. Красный. Здоровье.
+		$result='res/img/scl/scl.red'
+		exit
+	end
+	if $args[0]='scsk':
+	! шкала наполнения заполненная область. Голубой. Мана.
+		$result='res/img/scl/scl.sky'
+		exit
+	end
+	if $args[0]='scgr':
+	! шкала наполнения заполненная область. Зелёный. Выносливость.
+		$result='res/img/scl/scl.grass'
+		exit
+	end
+	if $args[0]='scyl':
+	! шкала наполнения переполненная область. Жёлтый. Переполнение.
+		$result='res/img/scl/scl.yellow'
+		exit
+	end
+	if $args[0]='scrn':
+	! шкала радужная.
+		$result='res/img/scl/scl.rainbow.gif'
+		exit
+	end
+! ------------- шкалы ------------------
+! для настроек
+if $args[0]='on':
+! функция включена
+	$result='res/img/ico/sets.ico/sets.on'
+	exit
+end
+if $args[0]='off':
+! функция выключена
+	$result='res/img/ico/sets.ico/sets.off'
+	exit
+end
+if $args[0]='diary.small':	$result='res/img/ico/sets.ico/diary.small'	&	exit
+if $args[0]='diary.big':	$result='res/img/ico/sets.ico/diary.big'	&	exit
+if $args[0]='diary.big1':	$result='res/img/ico/sets.ico/diary.big1'	&	exit
+! для таблиц дневника углы вкладок 8 шт
+if $args[0]='aplt':
+! угол неактивной вкладки левый верхний
+	$result='res/img/diary/diary.angle-passive-left-top'
+	exit
+end
+if $args[0]='aalt':
+! угол активной вкладки левый верхний
+	$result='res/img/diary/diary.angle-active-left-top'
+	exit
+end
+if $args[0]='aprt':
+! угол пассивной вкладки левый верхний
+	$result='res/img/diary/diary.angle-passive-right-top'
+	exit
+end
+if $args[0]='aart':
+! угол активной вкладки правый верхний
+	$result='res/img/diary/diary.angle-active-right-top'
+	exit
+end
+if $args[0]='aplb':
+! угол неактивной вкладки левый нижний
+	$result='res/img/diary/diary.angle-passive-left-bottom'
+	exit
+end
+if $args[0]='aalb':
+! угол активной вкладки левый нижний
+	$result='res/img/diary/diary.angle-active-left-bottom'
+	exit
+end
+if $args[0]='aprb':
+! угол неактивной вкладки левый нижний
+	$result='res/img/diary/diary.angle-passive-right-bottom'
+	exit
+end
+if $args[0]='aarb':
+! угол активной вкладки правый нижний
+	$result='res/img/diary/diary.angle-active-right-bottom'
+	exit
+end
+! для таблиц дневника углы переходов 4 штуки
+if $args[0]='up':
+! угол перехода верхний левый
+	$result='res/img/diary/diary.angle-invert-left-top'
+	exit
+end
+if $args[0]='ua':
+! угол перехода нижний правый
+	$result='res/img/diary/diary.angle-invert-right-bottom'
+	exit
+end
+if $args[0]='dp':
+! угол перехода нижний левый
+	$result='res/img/diary/diary.angle-invert-left-bottom'
+	exit
+end
+if $args[0]='da':
+! угол перехода верхний правый
+	$result='res/img/diary/diary.angle-invert-right-top'
+	exit
+end
+! для таблиц дневника подложка 2 шт
+if $args[0]='abrd':
+! подложка для активной вкладки
+	$result='res/img/diary/diary.board-active'
+	exit
+end
+if $args[0]='pbrd':
+! подложка для пассивной вкладки
+	$result='res/img/diary/diary.board-passive'
+	exit
+end
+! Для таблиц дневника кнопки закрытия
+if $args[0]='cls1':
+! синяя с белым текстом
+	$result='res/img/diary/close.blue-white-plain'
+	exit
+end
+if $args[0]='cls2':
+! синяя с белым текстом полупрозрачная
+	$result='res/img/diary/close.blue-white-plain-glass'
+	exit
+end
+if $args[0]='cls3':
+! зелёная с синим подчёркнутым текстом
+	$result='res/img/diary/close.green-blue-under'
+	exit
+end
+if $args[0]='cls4':
+! зелёная с белым подчёркнутым текстом
+	$result='res/img/diary/close.green-white-under'
+	exit
+end
+if $args[0]='cls5':
+! зелёная с белым текстом
+	$result='res/img/diary/close.green-white-plain'
+	exit
+end
+--- base.img ---------------------------------

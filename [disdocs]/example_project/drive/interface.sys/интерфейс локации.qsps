@@ -1,0 +1,45 @@
+# int.loc.interface
+! интерпретатор интерфейса локации
+$args[0] = $args[0]	&	!	id локации
+$args[1] = $args[1]	&	!	тип локации
+$args['\r\n']="
+"
+
+if $SQUARE['SQUARE.loc.type'] = 'место':
+! Тип локации определён, как нормальная локация места, значит вызываем структуру для локации места:
+	if $light_array[$args[0]]='темно': $args['цветовые настройки']='темно'
+	$args['в основное описание']=$func('interface.place',$args[0])
+	if $GAME_INTERFACE['show.stat']='show': $args['в дополнительное описание']=$SQUARE['SQUARE.stat']
+	if $GAME_INTERFACE['show.acts']='show':
+		$args['в действия']+=$args['\r\n']+$SQUARE['SQUARE.loc.curacts']+$args['\r\n']
+		$args['в действия']+=$SQUARE['SQUARE.loc.acts.inActs']
+		$args['в действия']+=$SQUARE['SQUARE.location.obj.inActs']
+	end
+elseif $SQUARE['SQUARE.loc.type'] = 'хранилище':
+	$args['в основное описание']=$func('interface.chest',$args[0])
+	if $GAME_INTERFACE['show.stat']='show': $args['в дополнительное описание']=$SQUARE['SQUARE.stat']
+	if $GAME_INTERFACE['show.acts']='show':
+		$args['в действия']=''
+		! Внимание!!! При любом режиме хранилище показывается в виде с отключенными действиями.
+	end
+elseif $SQUARE['SQUARE.loc.type'] = 'кузница':
+	$args['в основное описание']=$func('interface.smith',$args[0])
+else
+	$args['в основное описание']+=$SQUARE['SQUARE.loc.maintxt']			&	!	базовое описание выводится в первую очередь
+	$args['в основное описание']+=$SQUARE['SQUARE.loc.hallow']			&	!	следующим по порядку идёт приветствие
+	$args['в основное описание']+=$SQUARE['SQUARE.loc.fromSource']		&	!	описание из исходника
+	$args['в основное описание']+=$SQUARE['SQUARE.loc.plustext']			&	!	добавочный текст
+	$args['в основное описание']+=$SQUARE['SQUARE.loc.dvar']
+	if $GAME_INTERFACE['show.stat']='show': $args['в дополнительное описание']=$SQUARE['SQUARE.stat']
+	if $GAME_INTERFACE['show.acts']='show':
+		$args['в действия']+=$args['\r\n']+$SQUARE['SQUARE.loc.curacts']+$args['\r\n']
+		$args['в действия']+=$SQUARE['SQUARE.loc.acts.inActs']
+	end
+end
+cls
+if $args['в основное описание']<>'': *pl $func('int.din.text',$args['в основное описание'])
+if $args['в дополнительное описание']<>'': pl $func('int.din.text',$args['в дополнительное описание'])
+if $args['в действия']<>'': dynamic $args['в действия']
+gosub 'setScreen',$SQUARE['SQUARE.loc.type'],$args['цветовые настройки']
+gosub 'int.inventory'
+--- int.loc.interface ---------------------------------

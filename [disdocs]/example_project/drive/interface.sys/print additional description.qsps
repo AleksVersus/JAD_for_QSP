@@ -1,0 +1,31 @@
+# print.word
+clr
+if $print['obj.property']!'':	$args['pl']+=$print['obj.property']+'<br>'
+if $print['obj_in_pos']!'':		$args['pl']+=$print['obj_in_pos']+'<br>'
+if $print['take.obj']!'':		$args['pl']+=$print['take.obj']+'<br>'
+if $print['take.money']!'':		$args['pl']+=$print['take.money']+'<br>'
+if $print['menu.in.body']!'':	$args['pl']+=$print['menu.in.body']+'<br>'
+if $print['menu.in.bag']!'':	$args['pl']+=$print['menu.in.bag']+'<br>'
+if $print['use.obj.actObj']!'':	$args['pl']+=$print['use.obj.actObj']+'<br>'
+if $print['put.altar']!'':		$args['pl']+=$print['put.altar']+'<br>'
+if $print['menu.else']!'':		$args['pl']+=$print['menu.else']+'<br>'
+if $print['dynamic.script']!'':	$args['pl']+=$print['dynamic.script']+'<br>'
+if $print['read.book']!'':		$args['pl']+=$print['read.book']+'<br>'
+if $print['hero.health']!'':	$args['pl']+=$print['hero.health']+'<br>'
+if $print['money']!'':			$args['pl']+=$print['money']+'<br>'
+if $print['key.table']!'':		$args['pl']+=$print['key.table']+'<br>'
+if $print['hero.property']!'':	$args['pl']+=$print['hero.property']+'<br>'
+if $print['gs.table']!'':		$args['pl']+=$print['gs.table']+'<br>'
+if $print['obj.unmount']!'':	$args['pl']+=$print['obj.unmount']+'<br>'
+if $print['power.change']!'':	$args['pl']+='<br><div align=right>'+$print['power.change']+'</div>'+'<br>'
+if $print['help']!'':			$args['pl']+=$print['help']+'<br>'
+if $print['counters']!'':		$args['pl']+=$print['counters']+'<br>'
+if $print['charge.altar']!'':	$args['pl']+=$print['charge.altar']+'<br>'
+killvar '$print'
+killvar '$result'
+if $args['pl']!'': $log_print[]+=$args['pl']+'<hr>'
+if arrsize('$log_print')>100: killvar '$log_print',0
+if $GAME_INTERFACE['hero.stat']='stat':  $args['pl']+='<br>'+$replace($replace($func('get.scale.hero'),'<center>'),'</center>')
+$args['pl']=$mid($args['pl'],1,len($args['pl'])-4)
+$result=$args['pl']
+--- print.word ---------------------------------

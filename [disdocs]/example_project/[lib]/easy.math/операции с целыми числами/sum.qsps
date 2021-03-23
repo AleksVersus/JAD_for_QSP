@@ -1,0 +1,27 @@
+# #sum#
+$args[0] = $args[0]
+if $args[0]='': exit
+if $args[1]='':
+	$args[1] = ' '
+elseif $args[1]='/se':
+	$args[1]=''
+end
+if instr($args[0],'$')=1:
+	$args['$']='$'
+end
+:for
+if args['i']<arrsize($args[0]):
+	if $args['$']='$':
+		$args['result'] += $dyneval ("$result=<<$args[0]>>[<<args['i']>>]")+$args[1]
+	else
+		args['result']	+=	dyneval ("result=<<$args[0]>>[<<args['i']>>]")
+	end
+	args['i'] += 1
+	jump 'for'
+end
+if $args['$']='$':
+	$result	= $args['result']
+else
+	result	= args['result']
+end
+--- #sum# ---------------------------------

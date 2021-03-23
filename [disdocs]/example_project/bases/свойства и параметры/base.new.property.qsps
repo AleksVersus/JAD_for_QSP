@@ -1,0 +1,187 @@
+# base.new.property
+! база для выбора и воссоздания свойства по идентификационному слову
+! [:word:]
+! $args[0] - сюда передаётся информация о создаваемом свойстве
+! $args[1] - сюда передаются управляющие конструкции
+! $args[2] - сюда передаётся позиция, в которую нужно поместить объект.
+$args[0] = $args[0]
+$args[1] = $args[1]
+if $args[2]='': $args[2]=$func('get.id.obj','<hero>')
+$args[3] = $args[3]	&	!	дополнительный код для свойства. Склеивается с основным!!!
+$args['b.n.p']='<property> '
+$args['short_word'] = $replace($replace($strfind($args[0],'\[:[\S]+:\]'),'[:'),':]')
+! ------------- собственно база свойств --------------------!
+	:heroname
+	if $args['short_word']='heroname':
+		$args['b.n.p']+='[name:Имя героя:name] [:heroname:] [np:[txt] [hidden.name]:np] [color:008888] [size:6]'
+		jump 'end_sel'
+	end
+	:sex
+	if $args['short_word']='sex':
+		$args['b.n.p']+='[name:Пол:name] [:sex:] [np:[txt]:np]'
+		jump 'end_sel'
+	end
+	:rassa
+	if $args['short_word']='rassa':
+		$args['b.n.p']+='[name:Раса:name] [:rassa:] [np:[txt]:np]'
+		jump 'end_sel'
+	end
+	:power
+	if $args['short_word']='power':
+		$args['b.n.p']+='[name:Сила:name] [:power:] [np:[max] [bonus]:np] [color:880088]'
+		jump 'end_sel'
+	end
+	:health
+	if $args['short_word']='health':
+		$args['b.n.p']+='[name:Здоровье:name] [:health:] [np:[max.bonus] [up.bonus] [influence]:np] [frqs:[hour:1]:frqs] [color:880088]'
+		$args['dynamic']={
+$args[0] = $args[0]	&	!	управляющая конструкция
+$args[1] = $args[1]	&	!	зарезервировано под ай-ди
+$args[2] = $args[2]	&	!	зарезервировано под ай-ди
+$args[3] = $args[3]	&	!	$time['goto']
+$args['obj']=$object_array[arrpos('$id_array',$args[1])]
+if $strfind($args['obj'],'\[np:[\s\S]*\[up[\s\S]*:np\]')='' or property['hero.health.all']>=property['hero.health.max']:
+	exit
+end
+if $args[0] = '!onNewLoc.property!':
+	gosub 'hero.vosst.time',$args[1],$args[3]
+end
+}
+		jump 'end_sel'
+	end
+	:mana
+	if $args['short_word']='mana':
+		$args['b.n.p']+='[name:Магическая Сила:name] [:mana:] [np:[max.bonus] [up.bonus]:np] [frqs:[minute:53]:frqs]  [color:880088]'
+		$args['dynamic']={
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args[2] = $args[2]
+$args[3] = $args[3]
+$args['obj']=$object_array[arrpos('$id_array',$args[1])]
+if $strfind($args['obj'],'\[np:[\s\S]*\[up[\s\S]*:np\]')='' or property['hero.mana.all']>=property['hero.mana.max']:
+	exit
+end
+if $args[0] = '!onNewLoc.property!':
+	gosub 'hero.vosst.time',$args[1],$args[3]
+end
+}
+		jump 'end_sel'
+	end
+	:luck
+	if $args['short_word']='luck':
+		$args['b.n.p']+='[name:Удача:name] [:luck:] [max.bonus] [np:[up.bonus]:np] [frqs:[hour:1] [minute:20]:frqs]  [color:880088]'
+		$args['dynamic']={
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args[2] = $args[2]
+$args[3] = $args[3]
+$args['obj']=$object_array[arrpos('$id_array',$args[1])]
+if $strfind($args['obj'],'\[np:[\s\S]*\[up[\s\S]*:np\]')='' or property['hero.luck.all']>=property['hero.luck.max']:
+	exit
+end
+if $args[0] = '!onNewLoc.property!':
+	gosub 'hero.vosst.time',$args[1],$args[3]
+end
+}
+		jump 'end_sel'
+	end
+	:force
+	if $args['short_word']='force':
+		$args['b.n.p']+='[name:Выносливость:name] [:force:] [np:[max.bonus] [up.bonus]:np] [frqs:[minute:10]:frqs] [color:880088]'
+		$args['dynamic']={
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args[2] = $args[2]
+$args[3] = $args[3]
+$args['obj']=$object_array[arrpos('$id_array',$args[1])]
+if $strfind($args['obj'],'\[np:[\s\S]*\[up[\s\S]*:np\]')='' or property['hero.force.all']>=property['hero.force.max']:
+	exit
+end
+if $args[0] = '!onNewLoc.property!':
+	gosub 'hero.vosst.time',$args[1],$args[3]
+end
+}
+		jump 'end_sel'
+	end
+	:alchemick
+	if $args['short_word']='alchemick':
+		$args['b.n.p']+='[name:Алхимия:name] [:alchemick:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:usedospeh
+	if $args['short_word']='usedospeh':
+		$args['b.n.p']+='[name:Использование доспеха:name] [:usedospeh:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:breaking
+	if $args['short_word']='breaking':
+		$args['b.n.p']+='[name:Умение вскрывать замки:name] [:breaking:] [np:[bonus] [hide]:np]'
+		jump 'end_sel'
+	end
+	:neiro
+	if $args['short_word']='neiro':
+		$args['b.n.p']+='[name:Нейронная Совместимость:name] [:neiro:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:kovka
+	if $args['short_word']='kovka':
+		$args['b.n.p']+='[name:Кузнечный Навык:name] [:kovka:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:teaching
+	if $args['short_word']='teaching':
+		$args['b.n.p']+='[name:Обучаемость:name] [:teaching:]:np]'
+		jump 'end_sel'
+	end
+	:magic_stat
+	if $args['short_word']='magic_stat':
+		$args['b.n.p']+='[name:Магия Стазиса:name] [:magic_stat:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:magic_dyn
+	if $args['short_word']='magic_dyn':
+		$args['b.n.p']+='[name:Магия Изменения:name] [:magic_dyn:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:fast
+	if $args['short_word']='fast':
+		$args['b.n.p']+='[name:Скорость:name] [:fast:] [np:[bonus]:np]'
+		jump 'end_sel'
+	end
+	:kvz
+	if $args['short_word']='kvz':
+		$args['b.n.p']+='[name:Выпито Зелий:name] [:kvz:] [np:[max] [hide]:np]'
+		jump 'end_sel'
+	end
+	:DU
+	if $args['short_word']='DU':
+		$args['b.n.p']+='[name:Дальность Удара:name] [:DU:] [np:[hand]:np]'
+		jump 'end_sel'
+	end
+	:stop_cold
+	if $args['short_word']='stop_cold':
+		$args['b.n.p']+='[name:Запрет Замерзания:name] [:stop_cold:] [np:[hide]:np]'
+		jump 'end_sel'
+	end
+	:stop_raw
+	if $args['short_word']='stop_raw':
+		$args['b.n.p']+='[name:Запрет Зажаривания:name] [:stop_raw:] [np:[hide]:np]'
+		jump 'end_sel'
+	end
+	:nature
+	if $args['short_word']='nature':
+		$args['b.n.p']+='[name:Естесственная защита:name] [:nature:] [c:доспех:c] [block:u1:режущий:u1 u2:дробящий:u2 u3:стрелковый:u3 u4:огненный_mgc:u4 u5:ледяной_mgc:u5 u6:энергетический_mgc:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8:block] [np:[max.bonus] [up]:np] [color:008800]'
+		jump 'end_sel'
+	end
+	:кулачный
+	if $args['short_word']='кулачный':
+		$args['b.n.p']+='[name:Навыки кулачного боя:name] [:кулачный:] [c:оружие:c] [uron:u1:режущий:u1 u2:дробящий:u2 u3:стрелковый:u3 u4:огненный_mgc:u4 u5:ледяной_mgc:u5 u6:энергетический_mgc:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8:uron] [color:008888]'
+		jump 'end_sel'
+	end
+:end_sel
+! добавление отличительных свойств на предмет
+	$args['dynamic']+=$args[3]
+	$args['b.n.p']=$func('remastering.obj',$args[0],$args['b.n.p'])
+	$args['b.n.p']=$func('add.new.obj',$args['b.n.p'],$args[2],'PROPERTY',0,0,$args['dynamic'])
+	$result=$args['b.n.p']
+--- base.new.property ---------------------------------

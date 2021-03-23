@@ -1,0 +1,25 @@
+# hero.health
+! Отвечает за подсчёт здоровья героя
+args[0]	=	args[0]	&	!	на сколько изменяется здоровье
+$args[1]	=	$args[1]	&	!	в какую сторону изменяется
+if $args[2]='': $args[2]='all' else $args[2] = $args[2] & ! all - текущий запас max - максимальный уровень
+$args[3] = $args[3]	&	!	дополнительный текст
+if args[0]!0:
+	args['last_max']=property['hero.health.max']
+	if $args[1]='' or $args[1]='del' or $args[1]='-':
+		property['hero.health.'+$args[2]]-=args[0]
+		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','009.3','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
+		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','009.4','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
+	elseif $args[1]='+' or $args[1]='add':
+		property['hero.health.'+$args[2]]+=args[0]
+		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','009.1','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
+		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','009.2','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
+	end
+	if property['hero.health.max']<>args['last_max']: property['hero.health.all']=property['hero.health.all']+(property['hero.health.max']-args['last_max'])
+	if property['hero.health.all']>property['hero.health.max']: property['hero.health.all']=property['hero.health.max']
+	if property['hero.health.all']<1:
+		GOTO '[death]'
+	end
+	$print['hero.health']+='<font size=-1>'+$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:health:\]'))+'</font>'
+end
+--- hero.health ---------------------------------

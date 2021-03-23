@@ -1,0 +1,10 @@
+# #col-inv#
+if $args[0]='': exit
+$args['r'] = '-'+$mid($args[0],1,2)
+$args['g'] = '-'+$mid($args[0],3,2)
+$args['b'] = '-'+$mid($args[0],5,2)
+$args['rr'] = $mid($func('#+col#','ffffff',$args['r']),1,2)
+$args['gg'] = $mid($func('#+col#','ffffff',$args['g']),1,2)
+$args['bb'] = $mid($func('#+col#','ffffff',$args['b']),1,2)
+$result = $args['rr']+$args['gg']+$args['bb']
+--- #col-inv# ---------------------------------

@@ -1,0 +1,17 @@
+# get.tag.cont
+if $args[1]='<!--!>' and $strfind($args[0],'<!--([\s\S]+?)-->')!'':
+	$result = $strfind($args[0],'<!--([\s\S]+?)-->',1)
+elseif $strfind($args[0],'\['+$args[1]+':([\s\S]+?):'+$args[1]+'\]')!'':
+	$result = $strfind($args[0],'\['+$args[1]+':([\s\S]+?):'+$args[1]+'\]',1)
+elseif $strfind($args[0],'\('+$args[1]+':([\s\S]+?):'+$args[1]+'\)')!'':
+	$result = $strfind($args[0],'\('+$args[1]+':([\s\S]+?):'+$args[1]+'\)',1)
+elseif $strfind($args[0],'\['+$args[1]+'\]([\s\S]+?)\[\/'+$args[1]+'\]')!'':
+	$result = $strfind($args[0],'\['+$args[1]+'\]([\s\S]+?)\[\/'+$args[1]+'\]?',1)
+elseif $strfind($args[0],'<'+$args[1]+':([\s\S]+?):'+$args[1]+'>')!'':
+	$result = $strfind($args[0],'<'+$args[1]+':([\s\S]+?):'+$args[1]+'>',1)
+elseif $strfind($args[0],'<'+$args[1]+'>([\s\S]+?)<\/'+$args[1]+'>')!'':
+	$result = $strfind($args[0],'<'+$args[1]+'>([\s\S]+?)<\/'+$args[1]+'>',1)
+elseif $strfind($args[0],$args[1]+':([\s\S]+?):'+$args[1])!'':
+	$result = $strfind($args[0],$args[1]+':([\s\S]+?):'+$args[1],1)
+end
+--- get.tag.cont ---------------------------------

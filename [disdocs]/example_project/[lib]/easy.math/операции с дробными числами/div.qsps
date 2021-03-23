@@ -1,0 +1,9 @@
+# #:#
+$args[0]=$func('#dz#',$args[0],1)
+$args[1]=$func('#dz#',$args[1],1)
+args[2] = args[2]
+args['max']=max(func('#razdiv#',$args[0]),func('#razdiv#',$args[1]))
+args[0] = func('#undiv#',$args[0],args['max'])
+args[1] = func('#undiv#',$args[1],args['max'])
+$result=$func('#indiv#',args[0],args[1],args[2])
+--- #:# ---------------------------------

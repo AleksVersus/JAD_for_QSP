@@ -1,0 +1,12 @@
+# #raz#
+if args[0]<0: args[0]=-args[0]
+args['10']=1
+:for
+if args[0]/args['10']>9:
+	args['10']=args['10']*10
+	jump 'for'
+else
+	result = args['10']
+	exit
+end
+--- #raz# ---------------------------------

@@ -1,0 +1,40 @@
+# rabbithole.left
+! кроличья нора выводит случайные символы в виде
+killvar '$title_string'
+! некоей стены символов, падающих сверху
+if args[0]=0: args[0]=60	&	!	ширина блока (число символов)
+if args[1]=0: args[1]=30	&	!	высота блока (число строк)
+$args['fcolor']='00C800'
+$fname='Courier New'
+$args['zero']=$func('#zero#',80,' ')
+! самый простой вариант, это падение сверху, или падение снизу
+:still
+args['i']=args[1]
+:generatio
+! генерируем строку:
+$args['gs']=$func('#rndstr#',1,'',$args['zero'])
+! при режиме html
+if args['i']<>0:
+	if $args[2]='' and $args[2]='left':
+		if len($title_string[args['i']])<args[0]:
+			$title_string[args['i']]=$args['gs']+$title_string[args['i']]
+		else
+			$title_string[args['i']]=$args['gs']+$mid($title_string[args['i']],1,len($title_string[args['i']])-1)
+		end
+	else
+		if len($title_string[args['i']])=0:
+			$title_string[args['i']]=$func('#zero#',args[0],' ')
+		else
+			$title_string[args['i']]=$mid($title_string[args['i']],2)+$args['gs']
+		end
+	end
+	args['i']-=1
+	jump 'generatio'
+end
+*clr
+$func('rabbithole.print',args[1],'stright')
+wait 40
+args['u']+=1
+if args['u']<2500: jump 'still'
+	
+--- rabbithole.left ---------------------------------

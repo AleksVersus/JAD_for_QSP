@@ -1,0 +1,14 @@
+# gen.ahref.inMount
+! локация генерирует ссылку для кравтинга предмета
+$args[0] = $args[0]	&	!	id локации кузницы
+$args[1] = $args[1]	&	!	что мы создаём
+$args[2] = $args[2]	&	!	список
+$args[3] = $args[3]	&	!	визуальная информация по крафту
+$args["name"]=$func('get.word.padez',$func('get.tag.cont',$func('base.new.obj',$args[1],'get.obj'),'name'),'В')
+if $args[2] ='':
+	$args['res.021213']='<font color=#888888>Создать <<$args["name"]>>. Понадобится: <<$args[3]>></font>'
+else
+	$args['res.021213']='<a href="exec:'+"gosub 'get.new.obj.inMount','<<$args[0]>>','<<$args[1]>>','<<$args[2]>>'"+'">Создать <<$args["name"]>>. Понадобится: <<$args[3]>></a>'
+end
+$result=$args['res.021213']
+--- gen.ahref.inMount ---------------------------------

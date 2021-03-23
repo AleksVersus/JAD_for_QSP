@@ -1,0 +1,17 @@
+# #even#
+if args[1]=0 or $strfind(str(args[1]),'1[0]+')='': args[1]=100
+if $args[2]='up':
+	:up
+	if args[0]>0: result = val(str(args[0]/args[1]+1)+mid(str(args[1]),2))
+	if args[0]<0: result = val(str(args[0]/args[1]-1)+mid(str(args[1]),2))
+	exit
+elseif $args[2]='down':
+	:down
+	result = args[0]/args[1]*args[1]
+	exit
+elseif $args[2]='' and args[0]>0:
+	if val(mid(str(args[0]-args[0]/args[1]*args[1]),1,1))<5: jump 'down' else jump 'up'
+elseif $args[2]='' and args[0]<0:
+	if val(mid(str(-1*args[0]-(-1*args[0]/args[1]*args[1])),1,1))<5: jump 'down' else jump 'up'
+end
+--- #even# ---------------------------------

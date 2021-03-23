@@ -1,0 +1,38 @@
+# !easy.math!
+if $args[0]="":
+	showobjs 0
+	showstat 0
+	showacts 0
+	$fname="Consolas"
+	"easy.math v 2.3.0 для QSP 5.7.0"
+	"
+	По всем вопросам и предложениям обращаться:
+
+	*	aleksversus@mail.ru
+	*	aleksversus.narod.ru
+
+	Любую функцию можно опробовать прямо здесь, введя её в поле ввода.
+
+	Для нормального функционирования библиотеки с Quest Navigator - в начале игры напишите следующую строку:
+
+		$AVS_PLAYERTYPE = 'QN'
+
+	"
+	$usercom='!--test--!'
+	usehtml=0	
+elseif $args[0]='version':
+	result=2300
+end
+--- !easy.math! ---------------------------------
+
+# !--test--!
+if $user_text='logs':
+	$func('#array.prnt#','$log','[only result]')
+elseif instr(lcase($user_text),'sqrt')=1:
+	$args[0]=$trim($replace($replace($replace($user_text,'sqrt'),'('),')'))
+	if isnum($args[0])=0: $args[0]=$dyneval("$result=$str(<<$args[0]>>)")
+	$func('#sqrt#',$args[0])
+else
+	dynamic $user_text
+end
+--- !--test--! ---------------------------------

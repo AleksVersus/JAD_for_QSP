@@ -1,0 +1,23 @@
+# base.word.uron
+! функция получает текст по входящим словам
+$args[0] = $args[0]	&	!	первая часть метки block, uron, block_absorb, block_recieve, block_repulse, uron_absorb
+$args[1] = $args[1]	&	!	вторая часть метки огненный_mgc, режущий, пр.
+if $args[0]='block': args['pos']=1 & $args['start']='Защита от ' 	&	$args['end']=' урона'
+if $args[0]='uron': args['pos']=2 & $args['start']='' 	&	$args['end']=' урон'
+if $args[0]='block_absorb': args['pos']=1 & $args['start']='Нейтрализация ' 	&	$args['end']=' урона'
+if $args[0]='block_recieve': args['pos']=1 & $args['start']='Рикошет ' 	&	$args['end']=' урона'
+if $args[0]='block_repulse': args['pos']=1 & $args['start']='Отражение ' 	&	$args['end']=' урона'
+if $args[0]='uron_absorb': args['pos']=1 & $args['start']='Поглощение защиты от ' 	&	$args['end']=' урона'
+
+if $args[1]='режущий': $args['pril']=$func('get.word.inPos','р|Р',args['pos'])+'ежущ'+$func('get.word.inPos','его|ий',args['pos'])
+if $args[1]='дробящий': $args['pril']=$func('get.word.inPos','д|Д',args['pos'])+'робящ'+$func('get.word.inPos','его|ий',args['pos'])
+if $args[1]='стрелковый': $args['pril']=$func('get.word.inPos','с|С',args['pos'])+'трелков'+$func('get.word.inPos','ого|ый',args['pos'])
+if $args[1]='огненный_mgc': $args['pril']=$func('get.word.inPos','о|О',args['pos'])+'гненн'+$func('get.word.inPos','ого|ый',args['pos'])
+if $args[1]='ледяной_mgc': $args['pril']=$func('get.word.inPos','л|Л',args['pos'])+'едян'+$func('get.word.inPos','ого|ой',args['pos'])
+if $args[1]='энергетический_mgc': $args['pril']=$func('get.word.inPos','э|Э',args['pos'])+'нергетическ'+$func('get.word.inPos','ого|ий',args['pos'])
+if $args[1]='кислотный_acid': $args['pril']=$func('get.word.inPos','к|К',args['pos'])+'ислотн'+$func('get.word.inPos','ого|ый',args['pos'])
+if $args[1]='ядовитый_psn': $args['pril']=$func('get.word.inPos','я|Я',args['pos'])+'довит'+$func('get.word.inPos','ого|ый',args['pos'])
+
+if $args[1]='luck': $result='Поглощение удачи' 	&	exit
+$result=$args['start']+$args['pril']+$args['end']
+--- base.word.uron ---------------------------------

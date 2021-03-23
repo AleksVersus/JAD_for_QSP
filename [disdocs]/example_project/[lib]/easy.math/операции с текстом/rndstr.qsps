@@ -1,0 +1,37 @@
+# #rndstr#
+if args[0]=0: args[0]=rand(1,8)
+$args[1]=$args[1]
+$args[2] = $args[2]
+if $args[1]='буквы и цифры':
+	$args['symbols']='QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnmёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ'
+	$args[1] = ''
+elseif $args[1]='только это':
+	$args[1] = ''
+else
+	$args['symbols']='QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?1234567890'+"!@#$%^&*()_+-=`~qwertyuiop[]asdfghjkl;'zxcvbnm,./\|№"
+	$args['symbols']+="ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
+end
+if $args[1]<>'':
+	args['i']=len($args['symbols'])
+	:for
+	if len($args[1])>0 and args['i']>0:
+		if len($args[1])>1:
+			$args['1'] = mid ($args[1],1,1)
+			$args[1] = mid ($args[1],2)
+		else
+			$args['1']=$args[1]
+			$args[1]=''
+		end
+		$args['symbols']=$replace($args['symbols'],$args['1'])
+		args['i']-=1
+		if len($args[1])>0: jump 'for'
+	end
+end
+if $args[2]<>'': $args['symbols']+=$args[2]
+:while
+if args[0]>0:
+	$result['rndstr']+=(mid($args['symbols'],rand(1,len($args['symbols'])),1))
+	args[0]-=1
+	if args[0]>0: jump 'while'
+end
+--- #rndstr# ---------------------------------

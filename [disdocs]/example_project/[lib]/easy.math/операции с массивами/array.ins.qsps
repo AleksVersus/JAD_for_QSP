@@ -1,0 +1,36 @@
+# #array.ins#
+$args[0] = $args[0]
+$args[1] = $args[1]
+$args[2] = $args[2]
+if instr($args[0],'$')=1:
+	$args[3]='$'
+	$args[5]="'"+$args[1]+"'"
+else 
+	$args[3]=''
+	$args[5]='<<args[1]>>'
+end
+
+if $args[2]!'':
+	if $args[3]='$': $args[4]="'щЭcmыz9!T7K1АЙ@>FуОk7aСeV0mвзZхaAVSMARKUPDOWN'" else $args[4]='-2147483648'
+	args[2]=dyneval("
+				<<$args[3]>>args[0]=<<$args[0]>>['<<$args[2]>>']
+				<<$args[0]>>['<<$args[2]>>']=<<$args[4]>>
+				result=arrpos('<<$args[0]>>',<<$args[4]>>)
+				<<$args[0]>>[result]=<<$args[3]>>args[0]
+			")
+end
+copyarr "<<$args[3]>>easy_math_copy_array_1",$args[0],0,args[2]
+copyarr "<<$args[3]>>easy_math_copy_array_2",$args[0],args[2]
+copyarr $args[0],"<<$args[3]>>easy_math_copy_array_1"
+dynamic "
+	<<$args[0]>>[]=<<$args[5]>>
+	:for
+	if arrsize('<<$args[3]>>easy_math_copy_array_2')>0:
+		<<$args[0]>>[]=<<$args[3]>>easy_math_copy_array_2[0]
+		killvar '<<$args[3]>>easy_math_copy_array_2',0
+		jump 'for'
+	end
+"
+killvar '<<$args[3]>>easy_math_copy_array_1'
+killvar '<<$args[3]>>easy_math_copy_array_2'
+--- #array.ins# ---------------------------------

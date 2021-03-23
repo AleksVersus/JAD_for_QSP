@@ -1,0 +1,33 @@
+# interface.smith
+! "таблица в основное описание локации кузницы. Понадобятся значения следующих переменных:
+$GAME_INTERFACE['show.stat']
+$GAME_INTERFACE['show.acts']
+$GAME_INTERFACE['maintxt']
+! $SQUARE['SQUARE.loc.maintxt']
+! $SQUARE['SQUARE.loc.fromSource']
+! $SQUARE['SQUARE.loc.hallow']
+! $SQUARE['SQUARE.loc.plustext']
+! $SQUARE['SQUARE.loc.dvar']
+! $SQUARE['SQUARE.loc.acts.inHREF']
+! $SQUARE['SQUARE.head']
+! $SQUARE['SQUARE.stat']
+$SQUARE['SQUARE.chest.closeAct']
+
+$SQUARE['SQUARE.smithing.craftObjs']
+!"
+$args[0] = $args[0]	&	!	id локации
+! формируем заголовок:
+$args['head.text']+=$SQUARE['SQUARE.head']
+! формируем дополнительное описание:
+$args['stat.text']+=$SQUARE['SQUARE.stat']
+! формируем действия:
+$args['acts.text']+=$SQUARE['SQUARE.loc.acts.inHREF']		&	!	действия из массива $avar идут в первую очередь
+! формируем основное описание:
+$args['main.text']+=$SQUARE['SQUARE.smithing.craftObjs']		&	!	в основное описание в первую очередь добавляется список создаваемых предметов
+$args['main.text']+=$SQUARE['SQUARE.loc.maintxt']			&	!	базовое описание
+$args['main.text']+=$SQUARE['SQUARE.loc.hallow']			&	!	следующим по порядку идёт приветствие
+$args['main.text']+=$SQUARE['SQUARE.loc.fromSource']		&	!	описание из исходника
+$args['main.text']+=$SQUARE['SQUARE.loc.plustext']			&	!	добавочный текст
+$args['main.text']+=$SQUARE['SQUARE.loc.dvar']				&	!	текст в накидку
+
+--- interface.smith ---------------------------------

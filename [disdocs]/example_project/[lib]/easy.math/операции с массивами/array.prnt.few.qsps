@@ -1,0 +1,63 @@
+# #array.prnt.few#
+args['last']=arrsize('$args')-1
+if $strfind($args[args['last']],'\S+\s+\S+')!'':
+	$args['construct']=UCASE($args[args['last']])
+	if instr($args['construct'],'[NO TABLE]')!0: $args['table']='' else $args['table']='yep'
+	if instr($args['construct'],'[ONLY RESULT]')!0: $args['table']='' & $args['only result']='only result'
+	jump 'print'
+elseif arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')!-1 and arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')!arrsize('$args')-1:
+	$result="Error: array's name is not correct. args pos:<<arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')>>"
+	exit
+else
+	if $args['table']!'' or $strfind($args[args['last']],'\S+\s+\S+')='': $args['table']='<table border=1 cellpadding=5>'
+	:print
+	if $args['table']!'': $args['table']+='<tr><td>#</td>'
+	args['i']=0
+	:mass
+	if args['i']<9 and $strfind($args[args['i']],'\S+\s+\S+')='' and $args[args['i']]!'':
+		$args[args['i']]=$TRIM($args[args['i']])
+		if $args['table']!'': $args['table']+="<td><<$args[args['i']]>></td>"
+		if arrsize($args[args['i']])>args['size']: args['size']=arrsize($args[args['i']])
+		args['i']+=1
+		jump 'mass'
+	end
+	if args['size']=0: $result='All your massives are empty.' & exit
+	if $args['table']!'': $args['table']+='</tr>'
+	args['b']=0
+	:for
+	if args['b']<args['size']:
+		args['i']=0
+		if $args['table']!'': $args['table']+="<tr><td><<args['b']>></td>"
+		:zap
+		if args['i']<9 and $strfind($args[args['i']],'\S+\s+\S+')='' and $args[args['i']]!'':
+			if $args['only result']!'only result' and $args['table']='': $args['cell'] = $args[args['i']]+"[<<args['b']>>]="
+			if $args['table']='yep':
+				$args['cell'] += $dyneval("if <<$args[args['i']]>>[args[0]]!'': $result = $replace(<<$args[args['i']]>>[args[0]],' ','&nbsp;') else $result='&nbsp;'",args['b'])
+			else
+				$args['cell'] += $dyneval("$result = <<$args[args['i']]>>[args[0]]",args['b'])
+			end
+			if $args['table']!'':
+				$args['table']+='<td>'+$args['cell']+'</td>'
+			else
+				$args['result']+=$args['cell']+'	'
+			end
+			$args['cell']=''
+			args['i']+=1
+			jump 'zap'
+		end
+		if $args['table']!'': $args['table']+="</tr>" else $args['result']+='
+'
+		args['b']+=1
+		jump 'for'
+	end
+	if $args['table']!'': $args['table']+='</table>'
+end
+killvar '$result'
+if $args['table']!'':
+	$result=$args['table']
+elseif $args['result']!'':
+	$result=$mid($args['result'],1,len($args['result'])-1)
+else
+	$result='Oops. If you see this message, that so wrong. Save the game and ask me on aleksversus@mail.ru. Error of easy.math.libs in array.prnt.few'
+end
+--- #array.prnt.few# ---------------------------------

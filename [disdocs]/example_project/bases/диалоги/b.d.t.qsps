@@ -1,0 +1,190 @@
+# b.d.t
+! база текстов движка
+$args[0] = $args[0]	&	!	управляющая конструкиця
+$args[9] = $args[9]	&	!	дополнительные параметры
+! для действий поднятия
+:lift
+if $args[0]='lift':					$args['res.bdt']='Поднять '				&	jump 'end_exit'
+:take
+if $args[0]='take':					$args['res.bdt']='Взять '				&	jump 'end_exit'
+:buy
+if $args[0]='buy':					$args['res.bdt']='Купить '				&	jump 'end_exit'
+! для пунктов меню
+:menu.obj.property
+if $args[0]='menu.obj.property':	$args['res.bdt']='Свойства'				&	jump 'end_exit'
+:menu.obj.read
+if $args[0]='menu.obj.read':		$args['res.bdt']='Прочитать'			&	jump 'end_exit'
+:menu.obj.disCharge
+if $args[0]='menu.obj.disCharge':	$args['res.bdt']='Разрядить'			&	jump 'end_exit'
+:menu.obj.eat
+if $args[0]='menu.obj.eat':			$args['res.bdt']='Съесть'				&	jump 'end_exit'
+:menu.obj.spell.read
+if $args[0]='menu.obj.spell.read':	$args['res.bdt']='Прочесть заклинание'	&	jump 'end_exit'
+:menu.obj.spell.teach
+if $args[0]='menu.obj.spell.teach':	$args['res.bdt']='Изучить заклинание'	&	jump 'end_exit'
+:menu.obj.unmount
+if $args[0]='menu.obj.unmount':		$args['res.bdt']='Разобрать'			&	jump 'end_exit'
+:menu.obj.put.onAltar
+if $args[0]='menu.obj.put.onAltar':	$args['res.bdt']='Зарядить на алтаре'	&	jump 'end_exit'
+:menu.obj.inCharge
+if $args[0]='menu.obj.inCharge':	$args['res.bdt']='Зарядить'				&	jump 'end_exit'
+:menu.in.bag
+if $args[0]='menu.in.bag':			$args['res.bdt']='Переложить в рюкзак'	&	jump 'end_exit'
+:menu.in.body
+if $args[0]='menu.in.body':			$args['res.bdt']='Использовать'			&	jump 'end_exit'
+:menu.in.inventory
+if $args[0]='menu.in.inventory':	$args['res.bdt']='Переложить в инвентарь' &	jump 'end_exit'
+:menu.obj.put
+if $args[0]='menu.obj.put':
+	if $args[1]='sale': 			$args['res.bdt']='Продать по '+$args[2]+' дублон'+$func('get.word.end',val($args[2]),'|а|ов')
+	if $args[1]='put': 				$args['res.bdt']='Выбросить'
+	if $args[1]='smithing': 		$args['res.bdt']='Положить на верстак'
+	if $args[1]='altar': 			$args['res.bdt']='Поместить в жертвенник'
+	if $args[1]='chest': 			$args['res.bdt']='Выложить'
+	jump 'end_exit'
+end
+:menu.obj.spell.read
+if $args[0]='menu.obj.spell.read':	$args['res.bdt']='Прочесть заклинание'	&	jump 'end_exit'
+:menu.obj.read
+if $args[0]='menu.obj.read':		$args['res.bdt']='Принцип работы заклинания' &	jump 'end_exit'
+! предметы onobjsel
+:table.key
+if $args[0]='table.key':			$args['res.bdt']='Ключ' 				&	jump 'end_exit'	&	!	надпись в таблице ключей название ключа
+:table.iner
+if $args[0]='table.iner':			$args['res.bdt']='Штук' 				&	jump 'end_exit'	&	!	надпись в таблице ключей, камней телепортации - количество одинаковых ключей
+:table.open
+if $args[0]='table.open':			$args['res.bdt']='Можно открыть' 		&	jump 'end_exit'	&	!	надпись в таблице ключей - сколько раз можно воспользоваться ключом
+:table.level
+if $args[0]='table.level':			$args['res.bdt']='Уровень замка' 		&	jump 'end_exit'	&	!	надпись в таблице ключей - уровень замка, который можно открыть отмычкой
+:table.noname
+if $args[0]='table.noname':			$args['res.bdt']='Безымянный Ключ' 		&	jump 'end_exit'	&	!	надпись в таблице ключей - ключ, которому не прописано имя
+:gate-stone
+if $args[0]='gate-stone':			$args['res.bdt']='Камни телепортации' 	&	jump 'end_exit'	&	!	надпись в таблице камней телепортации - заголовок
+:target-point
+if $args[0]='target-point':			$args['res.bdt']='Пункт назначения' 	&	jump 'end_exit'	&	!	надпись в таблице камней телепортации - место, в которое ключ перемещает
+:table.charge
+if $args[0]='table.charge':			$args['res.bdt']='Заряд'			 	&	jump 'end_exit'	&	!	надпись в таблице камней телепортации - сколько раз можно воспользоваться камнем телепортации
+:table.move
+if $args[0]='table.move':			$args['res.bdt']='Переместиться' 		&	jump 'end_exit'	&	!	надпись в таблице камней телепортации - гиперссылка, чтобы переместиться
+:g-s.neverland
+if $args[0]='g-s.neverland':		$args['res.bdt']='Неизвестность' 		&	jump 'end_exit'	&	!	надпись в таблице камней телепортации - неизвестно куда перемещает камень
+:g-s.imposible
+if $args[0]='g-s.imposible':		$args['res.bdt']='Невозможно.' 			&	jump 'end_exit'	&	!	надпись в таблице камней телепортации - невозможно переместиться
+! стандартные действия
+:close
+if $args[0]='close' and $args[1]='chest':	$args['res.bdt']='...Закрыть...' 		&	jump 'end_exit'	&	!	надпись закрыть сундук и пр
+if $args[0]='close' and $args[1]='seller':	$args['res.bdt']='...Закончить торг...' &	jump 'end_exit'	&	!	действие закрывающее диалог с торговцем
+! стандартные надписи для алтаря:
+:altar.remove
+if $args[0]='altar.remove': 	$args['res.bdt']='Снять '+$args[1]+' с алтаря.'	&	jump 'end_exit'	&	!	надпись снять предмет с алтаря
+:altar.credence
+if $args[0]='altar.credence':	$args['res.bdt']='Жертвенник'					&	jump 'end_exit'	&	!	надпись отмечающая начало жертвенника
+:altar.charge
+if $args[0]='altar.charge':		$args['res.bdt']='...Зарядить предмет...'		&	jump 'end_exit'	&	!	надпись зарядить предмет
+:altar.sacrifice
+if $args[0]='altar.sacrifice':	$args['res.bdt']='...Принести в жертву...'		&	jump 'end_exit'	&	!	надпись принести в жертву
+:altar.karma
+if $args[0]='altar.karma':		$args['res.bdt']='Кармическая энергия'			&	jump 'end_exit'	&	!	надпись карма
+! стандартные надписи на локациях
+:place.neverland
+if $args[0]='place.neverland':		$args['res.bdt']='Неизвестная Территория' &	jump 'end_exit'	&	!	к заголовкам без имени
+:place.smithing
+if $args[0]='place.smithing':		$args['res.bdt']='Универсальная мастерская' &	jump 'end_exit'	&	!	к заголовкам кузниц
+:place.altar
+if $args[0]='place.altar':			$args['res.bdt']='Алтарь'					&	jump 'end_exit'	&	!	к заголовкам алтарей 
+:place.alchemic
+if $args[0]='place.alchemic':		$args['res.bdt']='Алхимический стол'	 	&	jump 'end_exit'	&	!	к заголовкам алхимических столов
+:place.smithal
+if $args[0]='place.smithal':		$args['res.bdt']='Волшебная мастерская' 	&	jump 'end_exit'	&	!	к заголовкам алтарей и мастерских
+:place.alsmith
+if $args[0]='place.alsmith':		$args['res.bdt']='Алхимическая мастерская'	&	jump 'end_exit'	&	!	к заголовкам алхимических столов и мастерских
+:place.alal
+if $args[0]='place.alal':			$args['res.bdt']='Волшебный алхимический стол' &	jump 'end_exit'	&	!	к заголовкам кузниц
+:place.chest
+if $args[0]='place.chest':			$args['res.bdt']='Хранилище'				&	jump 'end_exit'	&	!	к заголовкам хранилищ
+:place.seller
+if $args[0]='place.seller':			$args['res.bdt']='Торговец'					&	jump 'end_exit'	&	!	к заголовкам торговцев
+:place.bank
+if $args[0]='place.bank':
+	$args['res.bdt']='<br><font color=#' +$args[1]+ ' size=4>'+"Капитал: "+str(args[2])+' '+$func('get.word.end',args[2],'дублон|дублона|дублонов')+"</font>"
+	jump 'end_exit'
+end
+:word.acts
+if $args[0]='word.acts':			$args['res.bdt']='Действия'					&	jump 'end_exit'	&	!	надпись, которая выводится в окне основного описания перед перечислением ействий
+! время и временнЫе фразы
+:time.calendar
+if $args[0]='time.calendar':
+	$args['month...']='Января|Февраля|Марта|Апреля|Мая|Июня|Июля|Августа|Сентября|Октября|Ноября|Декабря'
+	$args['res.bdt']="(<<args[1]>>&nbsp;"+$func('int.time.month',$args['month...'])+"&nbsp;<<args[2]>>&nbsp;года)[<<$args[3]>>:<<$args[4]>>]"
+	jump 'end_exit'
+end
+:time.hd
+if $args[0]='time.hd':				$args['res.bdt']='Утро|День|Вечер|Ночь'		&	jump 'end_exit'	&	!	стандартные фразы для времени суток
+:time.my
+if $args[0]='time.my':				$args['res.bdt']='Лето|Осень|Зима|Весна'	&	jump 'end_exit'	&	!	стандартные фразы для времени года
+:time.m
+if $args[0]='time.m':				$args['res.bdt']='Январь|Февраль|Март|Апрель|Май|Июнь|Июль|Август|Сентябрь|Октябрь|Ноябрь|Декабрь' &	jump 'end_exit'	&	!	стандартные фразы для текущего месяца
+:time.wd
+if $args[0]='time.wd':				$args['res.bdt']='Понедельник|Вторник|Среда|Четверг|Пятница|Суббота|Восскресенье' &	jump 'end_exit'	&	!	стандартные фразы для дней недели
+! надписи к хранилищам пусто/есть вещи/неизвестно
+:chest.dont_know
+if $args[0]='chest.dont_know':		$args['res.bdt']=' (Неизвестно)'			&	jump 'end_exit'	&	!	неизвестно, есть ли в сундуке вещи
+:chest.yep
+if $args[0]='chest.yep':			$args['res.bdt']=' (Есть вещи)'				&	jump 'end_exit'	&	!	в сундуке точно есть вещи
+:chest.nope
+if $args[0]='chest.nope':			$args['res.bdt']=' (Пусто)'					&	jump 'end_exit'	&	!	в сундуке пусто
+! надписи к пунктам дневника:
+:diary.info
+if $args[0]='diary.info':			$args['res.bdt']='Информация'				&	jump 'end_exit'	&	!	надпись для вкладки информации по персонажу
+:diary.next
+if $args[0]='diary.next':			$args['res.bdt']='Текущие задания'			&	jump 'end_exit'	&	!	надпись для вкладки текущих заданий
+:diary.last
+if $args[0]='diary.last':			$args['res.bdt']='Выполненные задания'		&	jump 'end_exit'	&	!	надпись для вкладки выполненных заданий
+:diary.eror
+if $args[0]='diary.eror':			$args['res.bdt']='Проваленные задания'		&	jump 'end_exit'	&	!	надпись для вкладки проваленых заданий
+:diary.sets
+if $args[0]='diary.sets':			$args['res.bdt']='Настройки'				&	jump 'end_exit'	&	!	надпись для вкладки настроек
+:diary.note
+if $args[0]='diary.note':			$args['res.bdt']='Заметки'					&	jump 'end_exit'	&	!	надпись для вкладки заметок
+:diary.change
+if $args[0]='diary.change':			$args['res.bdt']='Сменить представление дневника.' &	jump 'end_exit'	&	!	надпись для вкладки настроек: изменение обложки дневника
+! другие надписи
+:dark
+if $args[0]='dark':					$args['res.bdt'] = "Кругом царит непроглядная темень. Ничего не видно. " &	jump 'end_exit'	&	! надпись, которая выводится на локации, когда темно и ничего не видать
+:a
+if $args[0] = 'a':					$args['res.bdt'] = 'Введи новый текст заметки. '	&	jump 'end_exit'
+:b
+if $args[0] = 'b':					$args['res.bdt'] = 'Введи новый текст примечания. '	&	jump 'end_exit'
+:c
+if $args[0] = 'c':					$args['res.bdt'] = 'Разрешается использовать html-теги. '	&	jump 'end_exit'
+:d
+if $args[0] = 'd':					$args['res.bdt'] = 'Введи текст заметки. '	&	jump 'end_exit'
+:hmayw
+if $args[0] = 'hmayw':
+	! надпись, выводимая в основном при подъёме предмета в месседже.
+	if $args[1]='buy':	 $args['1']='купить'
+	if $args[1]='inInv': $args['1']="переложить в инвентарь"
+	if $args[1]='inBag': $args['1']="переложить в сумку"
+	if $args[1]='lift':	 $args['1']='поднять'
+	$args['res.bdt']="Сколько ты хочешь "+$args['1']+"? Не больше <<args[2]>> "+$func('get.word.end',args[2],'штуки|штук|штук')+". "
+	jump 'end_exit'
+end
+:rebuild
+if $args[0] = 'rebuild':
+	! надпись выводимая при попытке разобрать более пяти предметов в месседже.
+	$args['res.bdt']="Сколько предметов ты хочешь разобрать? Не больше <<args[1]>> "+$func('get.word.end',args[1],'штука|штуки|штук')+". "
+	jump 'end_exit'
+end
+:dark.goto
+if $args[0] = 'dark.goto':
+	! действие перемещения в темноте
+	args['i']=rand(0,2)
+	if args['i']=0: $args['res.bdt']='Идти... куда-то...'
+	if args['i']=1: $args['res.bdt']='Наощупь в темноте...'
+	if args['i']=2: $args['res.bdt']='Шагнуть во мрак...'
+	jump 'end_exit'
+end
+:end_exit
+if $args['res.bdt']='': $args['res.bdt']='<font color=#ff0000><b>Произошла ошибка на локации b.d.t. Возможно передана неверная метка <<$args[0]>>.</b></font>'
+$result = $args['res.bdt']
+--- b.d.t ---------------------------------

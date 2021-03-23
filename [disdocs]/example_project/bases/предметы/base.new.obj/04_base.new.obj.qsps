@@ -1,0 +1,80 @@
+! Это четвёртая часть локации base.new.obj. Локация разбита на 4 части для удобства. Следующая строка закомментирована, чтобы локация собиралась правильно, но на время редактирования я снимаю комментарий с этой строки
+! # base.new.obj
+! ------------------------- далее следует вторая часть генератора. не подлежит редактированию ---------------------------------------------------------
+:end_sel
+! добавление отличительных свойств на предмет
+if $args[1] = '' or instr($args[1],'get.obj')!0:
+	if $args['new_obj']!'<obj> ' and $args['new_obj']!'':
+		! добавляем исходные позициии типа
+		$args['np'] = $func('get.tag.cont',$args['new_obj'],'np')	&	!	получаем набор признаков
+		$args['res.021213']=$args['new_obj']	&	!	запоминаем тело предмета
+		! если дальность удара по функции получается и не присутствует в запомненом теле, добавляем дальность удара
+		if func('get.obj.DU',$args['np'])!0 and func('get.tag.num',$args['res.021213'],'DU')=0: $args['new_obj']+=' [DU:'+str(func('get.obj.DU',$args['res.021213']))+']'
+		! если позиции для предмета есть, добавляем.
+		if $func('get.obj.pos',$args['np'],$args['res.021213'])!'': $args['new_obj'] += ' [pos: '+$func('get.obj.pos',$args['np'],$args['res.021213'])+' :pos]'
+		! Слияние свойств. Приоритет у $args[0]
+		$args['res.obj.021213']=$func('remastering.obj',$args[0],$args['new_obj'])
+		if instr($args['res.obj.021213'],'[oneself]')!0: $args['OIDstart']=$UCASE($args['short_word']) else $args['OIDstart']=$args['short_word']
+		if instr($args['res.obj.021213'],'[maxchrg:')!0 and args[4] = 0:
+			args[4] = func('get.tag.num',$args['res.obj.021213'],'charge')
+		elseif args[4] ! 0 and  instr($args['res.obj.021213'],'[maxchrg:')!0:
+			args[4] = args[4]
+		else
+			args[4] = 0
+		end
+		if $args['run_array']!'': $args['dyn_code']=$args['run_array']
+		if instr($args[1],'get.obj')=0:
+			if $args[2]='': $args[2]=$func('get.loc.id')
+			$args['base.new.obj.AVS']=$func('add.new.obj',$args['res.obj.021213'],$args[2],$args['OIDstart'],args[3],args[4],$args['dyn_code'])
+			$result=$args['base.new.obj.AVS']
+		elseif instr($args[1],'get.run_array')!0:
+			$result=$args['dyn_code']
+		else
+			$result=$args['res.obj.021213']
+		end
+		exit
+	else
+		msg 'Внимание!!! Ошибка базы "base.new.obj". Не найден объект "'+$args['short_word']+'". Проверьте правильность вызова объекта.'
+		exit
+	end
+elseif $args[1]='text':
+	if  $args['text']='':
+		$args['base.new.obj.AVS']='-описание не создано-'
+	else
+		$args['base.new.obj.AVS']=$args['text']
+	end
+	$result=$args['base.new.obj.AVS']
+	exit
+elseif $args[1]='image':
+	if $args['image']='':
+		$args['base.new.obj.AVS']=$func('base.img','onim')
+		$result=$args['base.new.obj.AVS']
+		exit
+	else
+		$args['base.new.obj.AVS']=$args['image']
+		$result=$args['base.new.obj.AVS']
+		exit
+	end
+elseif $args[1]='book':
+	if $args['book']='':
+		$args['base.new.obj.AVS']='-не удаётся прочесть-'
+		$result=$args['base.new.obj.AVS']
+		exit
+	else
+		$args['base.new.obj.AVS']=$args['book']
+		$result=$args['base.new.obj.AVS']
+		exit
+	end
+elseif $args[1]='unmount':
+	$args['result_unmount']=$func('remastering.tag.number',$args[0],$args['ingredients'])
+	if $args['result_unmount']!'':
+		$args['base.new.obj.AVS']=$args['result_unmount']
+		$result=$args['base.new.obj.AVS']
+		exit
+	else
+		$args['base.new.obj.AVS']='cant unmount'
+		$result=$args['base.new.obj.AVS']
+		exit
+	end
+end
+--- base.new.obj ---------------------------------

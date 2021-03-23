@@ -1,0 +1,10 @@
+# #coords.get#
+args[0] = args[0]
+args[1] = args[1]
+$args[2]=$args[2]
+args['y']=args[0]/args[1]
+args['x']=args[0]-args['y']*args[1]
+if $args[2]="": $result = "x:<<args['x']>> y:<<args['y']>>"
+if UCASE($args[2])="X": result=args['x']
+if UCASE($args[2])="Y": result=args['y']
+--- #coords.get# ---------------------------------

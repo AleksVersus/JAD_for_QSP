@@ -1,0 +1,51 @@
+# #array.srch#
+if $args[0]='': $result='error' & exit
+if $args[1]='': $args[1]='max' else $args[1]=LCASE($args[1])
+if $args[2]='':	args[2]=min($args[0]) else args[2]=val($args[2])
+if $args[3]='': args[3]=max($args[0]) else args[3]=val($args[3])
+if args[4] < 0: args[4]=0
+if args[5] = 0: args[5]=arrsize($args[0])-1
+$args[6] = lcase($args[6])
+if args[2]>args[3]:
+	args['t']=args[2]
+	args[2]=args[3]
+	args[3]=args['t']
+end
+if args[4]>args[5]:
+	args['t']=args[4]
+	args[4]=args[5]
+	args[5]=args['t']
+end
+$args['result']='false'
+copyarr 'easy_math_copy_array',$args[0]
+:for
+if no args[4]>args[5]:
+	if easy_math_copy_array[args[4]]>=args[2] and easy_math_copy_array[args[4]]<=args[3]:
+		if $args[1]='max':
+			if (args['m']=0 and $args['result']='false') or easy_math_copy_array[args[4]]>args['m']:
+				args['m']=easy_math_copy_array[args[4]]
+				args['pos']=args[4]
+				$args['result']='true'
+			end 
+		elseif $args[1]='min':
+			if (args['m']=0 and $args['result']='false') or easy_math_copy_array[args[4]]<args['m']:
+				args['m']=easy_math_copy_array[args[4]]
+				args['pos']=args[4]
+				$args['result']='true'
+			end 
+		else
+			$result='easy.math''s error. Please, tell me about it: aleksversus@mail.ru'
+		end
+	end
+	args[4]+=1
+	jump 'for'
+end
+killvar 'easy_math_copy_array'
+if $args[6]='pos' and $args['result']='true':
+	$result="<<args['pos']>>"
+elseif $args['result']='true':
+	$result="<<args['m']>>"
+else
+	$result='false'
+end
+--- #array.srch# ---------------------------------

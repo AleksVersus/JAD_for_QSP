@@ -1,0 +1,45 @@
+# waiting.string
+! функция обеспечивает выведение набора символов для визуальной задержки
+if $args[0]='': $args[0]=':'	&	!	набор символов
+if args[1]=0: args[1]=100	&	!	время задержки между символами
+if args[2]=0: args[2]=args[1]*10 	&	!	общее время продолжительности вывода строки в милисекундах
+if $args[3]='': $args[3]='ff0000'	&	!	начальный цвет
+if $args[4]='': $args[4]='0000ff'	&	!	конечный цвет
+args[5]=args[5]	&	!	размер шрифта
+args[6] = args[6] 	&	!	режим 0 - вывод в окне основного описания и дополнительного, 1 - основного, 2 дополнительного
+args['r1']=func('#hex-dec#',$mid($args[3],1,2))
+args['g1']=func('#hex-dec#',$mid($args[3],3,2))
+args['b1']=func('#hex-dec#',$mid($args[3],5,2))
+args['r2']=func('#hex-dec#',$mid($args[4],1,2))
+args['g2']=func('#hex-dec#',$mid($args[4],3,2))
+args['b2']=func('#hex-dec#',$mid($args[4],5,2))
+args['len'] = len($args[0])	&	!	длина исходной строки
+args['i']=args[2]/args[1]
+args['r']=(args['r1']-args['r2'])/args['i']
+args['g']=(args['g1']-args['g2'])/args['i']
+args['b']=(args['b1']-args['b2'])/args['i']
+if args['r1']>args['r2'] and args['r']=0: args['r']=1
+if args['g1']>args['g2'] and args['g']=0: args['g']=1
+if args['b1']>args['b2'] and args['b']=0: args['b']=1
+if args['r1']<args['r2'] and args['r']=0: args['r']=-1
+if args['g1']<args['g2'] and args['g']=0: args['g']=-1
+if args['b1']<args['b2'] and args['b']=0: args['b']=-1
+args['u']=1
+:cicle
+if args[6]=0 or args[6]=1: *p '<font color=#'+$func('#dec-col#',args['r1'])+$func('#dec-col#',args['g1'])+$func('#dec-col#',args['b1'])+' size=+'+str(args[5])+'><b>'+$mid($args[0],args['u'],1)+'</b></font>'
+if args[6]=0 or args[6]=2: p '<font color=#'+$func('#dec-col#',args['r1'])+$func('#dec-col#',args['g1'])+$func('#dec-col#',args['b1'])+' size=+'+str(args[5])+'><b>'+$mid($args[0],args['u'],1)+'</b></font>'
+args['u']+=1
+args['i']-=1
+args['r1']-=args['r']
+args['g1']-=args['g']
+args['b1']-=args['b']
+if args['r1']<0: args['r1']=0
+if args['g1']<0: args['g1']=0
+if args['b1']<0: args['b1']=0
+if args['r1']>255: args['r1']=255
+if args['g1']>255: args['g1']=255
+if args['b1']>255: args['b1']=255
+if $mid($args[0],args['u'],1)='': args['u']=1
+wait args[1]
+if args['i']>-1: jump 'cicle'
+--- waiting.string ---------------------------------

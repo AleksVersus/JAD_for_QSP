@@ -1,0 +1,19 @@
+# #hex-dec#
+result=0
+$args[0] = lcase ($args[0])
+args['i']=0
+:next
+if args['i']<len($args[0]):
+	args['t'] = instr('0123456789abcdef',mid($args[0],len($args[0])-args['i'],1)) - 1
+	args['j'] = args['i']
+	:multiple
+	if args['j'] > 0:
+		args['t'] = args['t'] * 16
+		args['j'] -= 1
+		if args['j'] > 0: jump 'multiple'
+	end
+	args['i'] += 1
+	result += args['t']
+	if args['i']<len($args[0]): jump 'next'
+end
+--- #hex-dec# ---------------------------------

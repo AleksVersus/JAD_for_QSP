@@ -1,0 +1,28 @@
+# #dev#
+if $args[0]='': $args[0]=str(args[0]) else $args[0] = $args[0]
+if $args[1]='': $args[1]=str(args[1]) else $args[1] = $args[1]
+args['max_len']=max(len($args[0]),len($args[1]))
+$args[0]=$func('#zero#',args['max_len']-len($args[0]))+$args[0]
+$args[1]=$func('#zero#',args['max_len']-len($args[1]))+$args[1]
+:prev
+$result=''
+args['i'] = args['max_len']
+args['lst_byte'] = 0
+:for
+if args['i']>0:
+	args['res_byte']=val(mid($args[0],args['i'],1))-val(mid($args[1],args['i'],1))+args['lst_byte']
+	if args['res_byte']<0:
+		args['res_byte']=10+args['res_byte']
+		args['lst_byte']=-1
+	else
+		args['lst_byte']=0
+	end
+	$result=str(args['res_byte'])+$result
+	args['i']-=1
+	jump 'for'
+elseif args['lst_byte']=-1:
+	$args[0]=$result
+	$args[1]=$func('#zero#',args['max_len']-1)+'1'
+	jump 'prev'
+end
+--- #dev# ---------------------------------

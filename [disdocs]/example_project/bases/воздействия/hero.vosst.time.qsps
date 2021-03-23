@@ -1,0 +1,35 @@
+# hero.vosst.time
+! поскольку все восстановления по сути расчитываются по одинаковым формулам, можно использовать один и тот же алгоритм
+! данный алгоритм предназначен для восстановления с течением времени
+$args[0] = $args[0]	&	!	ай-ди свойства
+$args[1] = $args[1]	&	!	$time['goto']
+$args['obj']=$object_array[arrpos('$id_array',$args[0])]
+$args['property']=$func('get.tag.cont',$args['obj'])
+if $args['property']='health':
+	$args['word']='Регенерация'
+elseif $args['property']='force':
+	$args['word']='Отдых'
+else
+	$args['word']='Восстановление'
+end
+! суммируем остаток времени от предыдущего захода и $time['goto']
+$args['gt.l']=$func('summ.time',$args[1],$time['ost.'+$args[0]])
+! приводим частоту и $time['goto'] к одной единице измерения. Внимание! Это секунды!
+! отсчёт времени должен вестись от предыдущего значения. Т.е. от времени, ещё не изменённого интерпретатором календаря
+args['frqs']=	$func('get.tag.num',$func('conv.time',$func('get.tag.cont',$args['obj'],'frqs'),'secunde',time['last.years']),'secunde')
+args['gt']	=	func('get.tag.num',$func('conv.time',$args['gt.l'],'',time['last.years']),'secunde')
+args['gt.1']=	func('get.tag.num',$func('conv.time',$args[1],'',time['last.years']),'secunde')
+! вычисляем, сколько раз повторился указанный период
+args['pik']	= args['gt']/args['frqs']
+! вычисляем остаток
+args['ost']	= args['gt'] mod args['frqs']
+! изменяем здоровье
+$args['pik.time']=$func('summ.time',$time['last.all'],'[secunde:'+str(args['gt.1']-args['ost'])+']')
+args['hours']=func('get.tag.num',$args['pik.time'],'hour')
+args['minutes']=func('get.tag.num',$args['pik.time'],'minute')
+if len(str(args['hours']))=1: $args['hours.onClock']='0'+str(args['hours']) else $args['hours.onClock']=str(args['hours'])
+if len(str(args['minutes']))=1: $args['minutes.onClock']='0'+str(args['minutes']) else $args['minutes.onClock']=str(args['minutes'])
+gosub 'hero.'+$args['property'],property['hero.'+$args['property']+'.up']*args['pik'],'+',''," <font size=-1>("+$args['word']+": [<<$args['hours.onClock']>>:<<$args['minutes.onClock']>>])</font>"
+! сохраняем остаток до следующего раза
+$time['ost.'+$args[0]]="[secunde:"+str(args['ost'])+"]"
+--- hero.vosst.time ---------------------------------
