@@ -80,7 +80,7 @@ contexts: # теперь необходимо определить "контек
   functions:
     - match: \b({{fncnum}}|{{fnctxt}})\b
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
-    - match: (\$)(?={{fnctxt}})
+    - match: (\$)(?={{fnctxt}}\b)
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
     - match: (\$)(?={{fncnum}}\b)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
