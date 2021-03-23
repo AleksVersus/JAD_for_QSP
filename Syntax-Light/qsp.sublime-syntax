@@ -45,13 +45,13 @@ contexts: # теперь необходимо определить "контек
     
   locations:
     - include: comments
+    - include: markers
     - include: operators
     - include: sysvar
     - include: functions
     - include: strings
     - include: operacion
     - include: numeric
-    - include: markers
 
   operacion:
     - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
@@ -86,7 +86,7 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   markers:
-    - match: ^\s*:[^&'"]+
+    - match: ^(\s*?\:|\:)[^&'"]+
       scope: entity.name.function entity.name avs.markup
 
   strings:
