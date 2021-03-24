@@ -10,7 +10,7 @@
 ! --------- рабочие команды для QSP 5.7.0
 addqst	'drive.qsp'	&	!	игра Steel & Magic использует те же драйвер и базы, что и игра fantastic battles
 addqst	'bases.qsp'
-addqst	'intro.sam.qsp'
+addqst	'intro.qsp'
 addqst	'lib/easy.titles.qsp'
 addqst	'lib/easy.math.qsp'
 ! "--------- рабочие команды для Quest Navigator ---------

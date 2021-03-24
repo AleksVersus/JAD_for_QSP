@@ -1,4 +1,3 @@
-! Это первая часть локации base.new.obj. Локация разбита на 4 части для удобства. Только первая часть содержит название локации (см. следующую строку). В первой части нет символа окончания локации -
 # base.new.obj
 ! база для выбора и воссоздания предметов по идентификационному слову
 ! ------------------------------------------------ первая часть генератора. не подлежит редактированию ----------------------------------------
@@ -61,4 +60,1362 @@ jump $args['jump']
 		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[name:Кошелёк:name] [color:888800] [:money:] [oneself]'
 		if $args[1]='text': $args['text'] = 'Сумка для монет и драгоценностей.'
 	end
+	! --------------------------------------------------------------- штучные ---------------------------------------------------------------------------
+	:радужный_меч
+	if $args['short_word']='радужный_меч':
+		if inStr($args[1],'[menzlot:')=0: args['menzlot']=rand(1,7) else args['menzlot']=func('get.tag.num',$args[1],'menzlot')
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj'] += '[:радужный_меч:] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:90921600] [weight:740] [uron_absorb: u1:luck:u1 p1:1000 :uron_absorb] [menu:m1:Изменить цвет:menu.rainbowsword.color.change:m1:menu] [uron: u1:дробящий:u1 u2:режущий:u2 p1:500 p2:2500 '
+			if args['menzlot']=1: $args['new_obj']+= ' u3:огненный_mgc:u3 p3:5000 :uron] [name:Красный меч|Красного меча|Красному мечу|Красный меч|Красным мечом|Красном мече:name] [color:880000] [menzlot:1]' & !огненный_mgc +50
+			if args['menzlot']=2: $args['new_obj']+= ' u3:огненный_mgc:u3 p3:4000 u4:энергетический_mgc:u4 p4:2000 :uron] [name:Оранжевый меч|Оранжевого меча|Оранжевому мечу|Оранжевый меч|Оранжевым мечом|Оранжевом мече:name] [color:886600] [menzlot:2]' & !Отчасти огненный_mgc, отчасти электрический +40 +20
+			if args['menzlot']=3: $args['new_obj']+= ' u3:энергетический_mgc:u3 p3:5000 :uron] [name:Жёлтый меч|Жёлтого меча|Жёлтому мечу|Жёлтый меч|Жёлтым мечом|Жёлтом мече:name] [color:888800] [menzlot:3]' & !Электрический +50
+			if args['menzlot']=4: $args['new_obj']+= ' u3:ядовитый_psn:u3 p3:5000 :uron] [name:Зелёный меч|Зелёного меча|Зелёному мечу|Зелёный меч|Зелёным мечом|Зелёном мече:name] [color:008800] [menzlot:4]' & !Ядовитый +50
+			if args['menzlot']=5: $args['new_obj']+= ' u3:ледяной_mgc:u3 p3:5000 :uron] [name:Синий меч|Синего меча|Синему мечу|Синийй меч|Синим мечом|Синем мече:name] [color:000088] [menzlot:5]' & !ледяной_mgc +50
+			if args['menzlot']=6: $args['new_obj']+= ' u3:огненный_mgc:u3 p3:2500  u4:ледяной_mgc:u4 p4:2500 :uron] [name:Фиолетовый меч|Фиолетового меча|Фиолетовому мечу|Фиолетовый меч|Фиолетовым мечом|Фиолетовом мече:name] [color:880088] [menzlot:6]' & !Отчасти огненный_mgc отчасти ледяной_mgc +25 +25
+			if args['menzlot']=7: $args['new_obj']+= ' u3:огненный_mgc:u3 p3:2000 u4:ледяной_mgc:u4 p4:1500 u5:ядовитый_psn:u5 p5:1500 :uron] [name:Чёрный меч|Чёрного меча|Чёрному мечу|Чёрный меч|Чёрным мечом|Чёрном мече:name] [color:000000] [menzlot:7]' & !Отчасти ядовитый, отчасти ледяной_mgc, отчасти электрический +20 +15 +15
+			$args['run_array']+={
+			$args[0]=$args[0]
+			$args[1]=$args[1]
+			$args[2]=$args[2]
+			if $args[0]='used':
+				gosub 'hero.luck',500,'+','max'
+			end
+			if $args[0]='deused':
+				gosub 'hero.luck',500,'-','max'
+			end
+			}
+		end
+		if $args[1]='text': $args['text'] = 'Лёгкий одноручный меч, Выкованный эльфийскими кузнецами из цельного куска радуги.<br><font color=#006688><b>Особые свойства:</b><br>Увеличивает удачливость.<br>Отдав Радужному Мечу часть своей силы, ты можешь изменить его цвет.</font>'
+	end
+	:деревянная_булава
+	if $args['short_word']='деревянная_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:деревянная_булава:] [name:Дубина|Дубины|Дубине|Дубину|Дубиной|Дубине:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:176] [weight:50][color:663300] [uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1000 p2:125 :uron]'
+		if $args[1]='text': $args['text'] = 'Обыкновенная деревянная дубина.'
+	end
+	:деревянный_меч
+	if $args['short_word']='деревянный_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:деревянный_меч:] [name:Деревянный меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:82] [weight:50] [color:663300][uron: u1:дробящий:u1 u2:режущий:u2 p1:100 p2:400 :uron]'
+		if $args[1]='text': $args['text'] = 'Выструганный из дубовой доски короткий клинок.'
+	end
+	:деревянный_клеймор
+	if $args['short_word']='деревянный_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:деревянный_клеймор:] [name:Деревянный клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:145] [weight:120][color:663300][uron: u1:дробящий:u1 u2:режущий:u2 p1:250 p2:600 :uron]'
+		if $args[1]='text': $args['text'] = 'Выструганный из дубовой доски длинный деревянный меч.'
+	end
+	:деревянный_лук
+	if $args['short_word']='деревянный_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:деревянный_лук:] [name:Резной Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:283] [weight:610][color:663300] [DU:2700] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:80 p2:400 p3:800 :uron]'
+		if $args[1]='text': $args['text'] = 'Превосходный тисовый лук, украшенный витиеватой резьбой.'
+	end
+	:клеёный_лук
+	if $args['short_word']='клеёный_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:клеёный_лук:] [name:Клеёный Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:374] [weight:900][color:663300] [DU:2900] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:100 p2:500 p3:1000 :uron]'
+		if $args[1]='text': $args['text'] = 'Составной лук из прочнейшего дуба. Все его части при сборке были пропитаны костным клеем наивысшего качества.'
+	end
+	:деревянный_молот1
+	if $args['short_word']='деревянный_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:деревянный_молот1:] [name:Киянка:name] [number] [np:[оружие] [одноручное] [молот]:np] [stoim:147] [weight:110][color:663300][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:750 p2:125 :uron]'
+		if $args[1]='text': $args['text'] = 'Одноручный плотницкий молот, предназначенный больше для подбивочных работ, чем для сражений.'
+	end
+	:деревянный_молот2
+	if $args['short_word']='деревянный_молот2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:деревянный_молот2:] [name:Барсик:name] [number] [np:[оружие] [двуручное] [молот]:np] [stoim:295] [weight:550][color:663300][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1300 p2:125 :uron]'
+		if $args[1]='text': $args['text'] = 'Двуручный плотницкий молот, предназначенный больше для подбивки брёвен в срубах, чем для сражений.'
+	end
+	:каменный_топор1
+	if $args['short_word']='каменный_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:каменный_топор1:] [name:Томагавк:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:310] [weight:450][color:777777][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:2000 p2:1200 p3:500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:каменный_нож
+	if $args['short_word']='каменный_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:каменный_нож:] [name:Кремниевый Нож:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:58] [weight:80][color:777777][uron: u2:режущий:u2 u1:стрелковый:u1 p2:500 p1:200 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:каменный_клеймор
+	if $args['short_word']='каменный_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:каменный_клеймор:] [name:Мраморный Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:515] [weight:4390][color:777777][uron: u1:дробящий:u1 u2:режущий:u2 p1:1000 p2:1500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:каменный_меч
+	if $args['short_word']='каменный_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:каменный_меч:] [name:Мраморный Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:163] [weight:780][color:777777][uron: u1:дробящий:u1 u2:режущий:u2 p1:400 p2:1000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:костяная_булава
+	if $args['short_word']='костяная_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:костяная_булава:] [name:Бивень:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:18929] [weight:110][color:999966][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1000 p2:125 :uron]'
+		if $args[1]='text': $args['text'] = 'Булава, собранная из обожжённых костей.'
+	end
+	:костяной_лук
+	if $args['short_word']='костяной_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:костяной_лук:] [name:Костяной лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:316964] [weight:1480][color:999966] [DU:2300] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1200 p2:6000 p3:12000 :uron]'
+		if $args[1]='text': $args['text'] = 'Составной лук из расточенных костей.'
+	end
+	:костяной_меч
+	if $args['short_word']='костяной_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:костяной_меч:] [name:Костяной нож:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:156490] [weight:110][color:999966][uron: u1:дробящий:u1 u2:режущий:u2 p1:100 p2:10000 :uron]'
+		if $args[1]='text': $args['text'] = 'Составленный из резных обоженных костей одноручный меч.'
+	end
+	:ржавый_молот2
+	if $args['short_word']='ржавый_молот2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_молот2:] [name:Ржавая Кувалда:name] [number] [np:[оружие] [двуручное] [молот]:np] [stoim:2286] [weight:2460][color:993300][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2500 p2:600 :uron]'
+		if $args[1]='text': $args['text'] = 'Старая ржавая кувалда, предназначенная скорее для заколачивания костылей в шпалы, чем для сражений.'
+	end
+	:ржавый_меч
+	if $args['short_word']='ржавый_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_меч:] [name:Ржавый Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:621] [weight:510][color:993300][uron: u1:дробящий:u1 u2:режущий:u2 p1:200 p2:800 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавый_кинжал
+	if $args['short_word']='ржавый_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_кинжал:] [name:Ржавый Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:481] [weight:210][color:993300][uron: u1:режущий:u1 u2:стрелковый:u2 p1:640 p2:320 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавый_нож
+	if $args['short_word']='ржавый_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_нож:] [name:Ржавый Нож:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:239] [weight:100][color:993300][uron: u1:режущий:u1 u2:стрелковый:u2 p1:400 p2:80 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавый_молот1
+	if $args['short_word']='ржавый_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_молот1:] [name:Ржавый Молот:name] [number] [np:[оружие] [одноручное] [молот]:np] [stoim:1287] [weight:1230][color:993300][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1500 p2:400 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавый_топор1
+	if $args['short_word']='ржавый_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_топор1:] [name:Колун:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:1028] [weight:340][color:993300][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1000 p2:960 p3:200 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавый_топор2
+	if $args['short_word']='ржавый_топор2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_топор2:] [name:Ржавая Секира:name] [number] [np:[оружие] [двуручное] [топор]:np] [stoim:2118] [weight:1870][color:993300][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1200 p2:2000 p3:80 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавая_булава
+	if $args['short_word']='ржавая_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавая_булава:] [name:Кусок арматуры:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:1197] [weight:510][color:993300][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2000 p2:400 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:ржавый_лук
+	if $args['short_word']='ржавый_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:ржавый_лук:] [name:Ржавый Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:3787] [weight:6810][color:993300][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:150 p2:750 p3:1500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_лук
+	if $args['short_word']='стальной_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_лук:] [name:Стальной Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:6948] [weight:6780] [DU:2000] [color:333333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:240 p2:1200 p3:2400 :uron]'
+		if $args[1]='text': $args['text'] = 'Удобный стальной лук без пружинной оттяжки.'
+	end
+	:стальной_нож
+	if $args['short_word']='стальной_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_нож:] [name:Охотничий Нож:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:635] [weight:100][color:333333][uron: u1:режущий:u1 u2:стрелковый:u2 p1:750 p2:120 :uron]'
+		if $args[1]='text': $args['text'] = 'Обыкновенный острый нож из закалённой стали. Такие часто используются охотниками для разделки туш животных.'
+	end
+	:стальной_меч
+	if $args['short_word']='стальной_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_меч:] [name:Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:1472] [weight:510][color:333333][uron: u1:дробящий:u1 u2:режущий:u2 p1:240 p2:1500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_клеймор
+	if $args['short_word']='стальной_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_клеймор:] [name:Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:2702] [weight:1280][color:333333][uron: u1:дробящий:u1 u2:режущий:u2 p1:600 p2:2250:uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_кинжал
+	if $args['short_word']='стальной_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_кинжал:] [name:Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:1230] [weight:200][color:333333][uron: u1:режущий:u1 u2:стрелковый:u2 p1:1200 p2:480 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_молот1
+	if $args['short_word']='стальной_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_молот1:] [name:Боевой Молот:name] [number] [np:[оружие] [одноручное] [молот]:np] [stoim:2368] [weight:1220][color:333333][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1800 p2:600 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_молот2
+	if $args['short_word']='стальной_молот2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_молот2:] [name:Военный Молот:name] [number] [np:[оружие] [двуручное] [молот]:np] [stoim:4141] [weight:2430][color:333333][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:3000 p2:900 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_топор1
+	if $args['short_word']='стальной_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_топор1:] [name:Топор:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:2381] [weight:340][color:333333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1200 p2:1800 p3:300 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальной_топор2
+	if $args['short_word']='стальной_топор2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальной_топор2:] [name:Секира:name] [number] [np:[оружие] [двуручное] [топор]:np] [stoim:4684] [weight:1850][color:333333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1440 p2:3750 p3:120 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:стальная_булава
+	if $args['short_word']='стальная_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:стальная_булава:] [name:Палица:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:2296] [weight:510][color:333333][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2400 p2:600 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:старая_булава
+	if $args['short_word']='старая_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старая_булава:] [name:Старая Палица|Старой Палицы|Старой Палице|Старую Палицу|Старой Палицей|Старой Палице:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:1570] [weight:500][color:006666][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2000 p2:500 :uron]'
+		if $args[1]='text': $args['text'] = 'Старая стальная палица, испещрённая сколами и пятнами ржавчины.'
+	end
+	:старый_лук
+	if $args['short_word']='старый_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_лук:] [name:Старый Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:5176] [weight:6690] [color:006666] [DU:1900] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:200 p2:1000 p3:2000 :uron]'
+		if $args[1]='text': $args['text'] = 'Старый стальной лук, покрытый пятнами ржавчины и царапинами.'
+	end
+	:старый_меч
+	if $args['short_word']='старый_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_меч:] [name:Старый Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:890] [weight:500][color:006666][uron: u1:дробящий:u1 u2:режущий:u2 p1:200 p2:1000 :uron]'
+		if $args[1]='text': $args['text'] = 'Старый стальной меч, сплошь покрытый сколами и пятнами ржавчины.'
+		if $args[1]='image': $args['image'] = 'res\img\старый_меч.png'
+	end
+	:старый_клеймор
+	if $args['short_word']='старый_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_клеймор:] [name:Старый Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:1711] [weight:1270] [color:006666] [uron: u1:дробящий:u1 u2:режущий:u2 p1:500 p2:1500 :uron]'
+		if $args[1]='text': $args['text'] = 'Старый стальной меч, сплошь покрытый сколами и пятнами ржавчины.'
+	end
+	:старый_нож
+	if $args['short_word']='старый_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_нож:] [name:Старый Нож:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:366] [weight:100][color:006666][uron: u1:режущий:u1 u2:стрелковый:u2 p1:500 p2:100 :uron]'
+		if $args[1]='text': $args['text'] = 'Старый стальной нож с зазубринами, покрытый пятнами ржавчины.'
+	end
+	:старый_кинжал
+	if $args['short_word']='старый_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_кинжал:] [name:Старый Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:733] [weight:200][color:006666][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:800 p2:400 :uron]'
+	end
+	:старый_молот1
+	if $args['short_word']='старый_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_молот1:] [name:Старый Молот:name] [number] [np:[оружие] [одноручное] [молот одноручный]:np] [stoim:1675] [weight:1200][color:006666][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1500 p2:500 :uron]'
+		if $args[1]='text': $args['text'] = 'Старый боевой молот, покрытый пятнами ржавчины.'
+	end
+	:старый_молот2
+	if $args['short_word']='старый_молот2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_молот2:] [name:Старая Кувалда:name] [number] [np:[оружие] [двуручное] [молот]:np] [stoim:2957] [weight:2400][color:006666][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2500 p2:750 :uron]'
+	end
+	:старый_топор2
+	if $args['short_word']='старый_топор2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_топор2:] [name:Старая Секира:name] [number] [np:[оружие] [двуручное] [топор]:np] [stoim:2161] [weight:330][color:006666][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1200 p2:2500 p3:100 :uron]'
+		if $args[1]='text': $args['text'] = 'Старая секира вся в сколах и бурых пятнах от запёкшейся крови.'
+	end
+	:старый_топор1
+	if $args['short_word']='старый_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:старый_топор1:] [name:Старый Топор:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:2235] [weight:1820][color:006666][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1000 p2:1200 p3:250 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_лук
+	if $args['short_word']='серебряный_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_лук:] [name:Серебряный Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:61045] [weight:9120][color:3399ff][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:240 p2:1200 p3:2400 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_меч
+	if $args['short_word']='серебряный_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_меч:] [name:Серебряный Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:17475] [weight:680][color:3399ff][uron: u1:дробящий:u1 u2:режущий:u2 u3:серебро p1:280 p2:1750 p3:1000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_клеймор
+	if $args['short_word']='серебряный_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_клеймор:] [name:Серебряный Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:30876] [weight:1730][color:3399ff][uron: u1:дробящий:u1 u2:режущий:u2 p1:700 p2:2625 u3:серебро  p3:1500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_кинжал
+	if $args['short_word']='серебряный_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_кинжал:] [name:Серебряный Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:14461] [weight:270][color:3399ff][uron: u1:режущий:u1 u2:стрелковый:u2 p1:1400 p2:600 u3:серебро  p3:800 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_нож
+	if $args['short_word']='серебряный_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_нож:] [name:Серебряный Нож:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:7843] [weight:140][color:3399ff][uron: u1:режущий:u1 u2:стрелковый:u2 p1:875 p2:150 u3:серебро  p3:500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_молот1
+	if $args['short_word']='серебряный_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_молот1:] [name:Серебряный Молот:name] [number] [np:[оружие] [одноручное] [молот]:np] [stoim:22562] [weight:1640][color:3399ff][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2100 p2:750 u3:серебро  p3:300 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_молот2
+	if $args['short_word']='серебряный_молот2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_молот2:] [name:Серебряная Кувалда:name] [number] [np:[оружие] [двуручное] [молот]:np] [stoim:40767] [weight:3280][color:3399ff][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:3500 p2:1125 u3:серебро  p3:750 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_топор1
+	if $args['short_word']='серебряный_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_топор1:] [name:Серебряный Топор:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:26024] [weight:450][color:3399ff][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1400 p2:2100 p3:375 u4:серебро  p4:1200 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряный_топор2
+	if $args['short_word']='серебряный_топор2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряный_топор2:] [name:Серебряная Секира:name] [number] [np:[оружие] [двуручное] [топор]:np] [stoim:52684] [weight:2480][color:3399ff][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1680 p2:4375 p3:150 u4:серебро  p4:2500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:серебряная_булава
+	if $args['short_word']='серебряная_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:серебряная_булава:] [name:Серебряная Булава:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:22280] [weight:680][color:3399ff][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:2800 p2:750 u3:серебро  p3:500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотой_лук
+	if $args['short_word']='золотой_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотой_лук:] [name:Лук Короля:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:7473802] [weight:16790][color:999900][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:160 p2:800 p3:1600 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотой_меч
+	if $args['short_word']='золотой_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотой_меч:] [name:Королевский Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:1317089] [weight:1260][color:999900][uron: u1:дробящий:u1 u2:режущий:u2 p1:400 p2:1750 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотой_кинжал
+	if $args['short_word']='золотой_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотой_кинжал:] [name:Золотой Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:1120105] [weight:500][color:999900][uron: u1:режущий:u1 u2:стрелковый:u2 p1:1400 p2:1000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотой_нож
+	if $args['short_word']='золотой_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотой_нож:] [name:Золотой Нож:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:531084] [weight:250][color:999900][uron: u1:режущий:u1 u2:стрелковый:u2 p1:875 p2:250 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотой_молот1
+	if $args['short_word']='золотой_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотой_молот1:] [name:Королевский Молот:name] [number] [np:[оружие] [одноручное] [молот]:np] [stoim:2804124] [weight:3010][color:999900][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:3000 p2:1250 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотой_топор1
+	if $args['short_word']='золотой_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотой_топор1:] [name:Золотой Топор:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:2149442] [weight:840][color:999900][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:2000 p2:2100 p3:625 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:золотая_булава
+	if $args['short_word']='золотая_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:золотая_булава:] [name:Королевская Палица:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:2514442] [weight:1260][color:999900][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:4000 p2:1250 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:платиновый_меч
+	if $args['short_word']='платиновый_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:платиновый_меч:] [name:Платиновый Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:2226820] [weight:1360][color:77aa33][uron: u1:дробящий:u1 u2:режущий:u2 p1:400 p2:2000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:платиновый_клеймор
+	if $args['short_word']='платиновый_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:платиновый_клеймор:] [name:Платиновый Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:4418105] [weight:3460][color:77aa33][uron: u1:дробящий:u1 u2:режущий:u2 p1:1000 p2:3000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:платиновая_булава
+	if $args['short_word']='платиновая_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:платиновая_булава:] [name:Платиновая Булава:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:3766642] [weight:1360][color:77aa33][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:4000 p2:1000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:титановый_лук
+	if $args['short_word']='титановый_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_лук:] [name:Титановый Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:6728353] [weight:3910][color:77aaaa][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:300 p2:1500 p3:3000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:39 :1]'
+	end
+	:титановый_меч
+	if $args['short_word']='титановый_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_меч:] [name:Титановый Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:2618727] [weight:290][color:77aaaa][uron: u1:дробящий:u1 u2:режущий:u2 p1:100 p2:3000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:2 :1]'
+	end
+	:титановый_клеймор
+	if $args['short_word']='титановый_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_клеймор:] [name:Титановый Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:4240948] [weight:740][color:77aaaa][uron: u1:дробящий:u1 u2:режущий:u2 p1:250 p2:4500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:7 :1]'
+	end
+	:титановый_кинжал
+	if $args['short_word']='титановый_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_кинжал:] [name:Титановый Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:2023913] [weight:120][color:77aaaa][uron: u1:режущий:u1 u2:стрелковый:u2 p1:2400 p2:100 :uron]'
+		if $args[1]='text': $args['text'] = 'Обоюдоострый зазубренный кинжал с открывашкой.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:1 :1]'
+	end
+	:титановый_нож
+	if $args['short_word']='титановый_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_нож:] [name:Опасная Бритва:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:1224390] [weight:60][color:77aaaa][uron: u1:режущий:u1 u2:стрелковый:u2 p1:1500 p2:25 :uron]'
+		if $args[1]='text': $args['text'] = 'Идеально заточенная бритва. Превосходно избавляет от бород, усов и врагов.'
+	end
+	:титановый_молот1
+	if $args['short_word']='титановый_молот1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_молот1:] [name:Титановый Молот:name] [number] [np:[оружие] [одноручное] [молот]:np] [stoim:1216665] [weight:700][color:77aaaa][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:750 p2:125 :uron]'
+		if $args[1]='text': $args['text'] = 'Лёгкий титановый молот, выплавленный в виде сцепленных шестерней и секундной стрелки.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:6 :1] [2:name:полоса_кожаная:name count:1 :2]'
+	end
+	:титановый_молот2
+	if $args['short_word']='титановый_молот2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_молот2:] [name:Титановая Кувалда|Титановой Кувалды|Титановой Кувалде|Титановую Кувалду|Титановой Кувалдой|Титановой Кувалде:name] [number] [np:[оружие] [двуручное] [молот]:np] [stoim:2192315] [weight:1400][color:77aaaa][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1250 p2:188 :uron]'
+		if $args[1]='text': $args['text'] = 'Цельнометаллическая кувалда из титана, выплавленная в виде сложенных друг на друга шестерней, с рукоятью похожей на минутную стрелку.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:11 :1]'
+	end
+	:титановый_топор1
+	if $args['short_word']='титановый_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_топор1:] [name:Титановый Топор:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:3362631] [weight:190][color:77aaaa][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:500 p2:3600 p3:63 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:1 :1]'
+	end
+	:титановый_топор2
+	if $args['short_word']='титановый_топор2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановый_топор2:] [name:Титановая Секира:name] [number] [np:[оружие] [двуручное] [топор]:np] [stoim:7095284] [weight:1060][color:77aaaa][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:600 p2:7500 p3:25 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:10 :1]'
+	end
+	:титановая_булава
+	if $args['short_word']='титановая_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:титановая_булава:] [name:Титановая Булава:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:1093068] [weight:290][color:77aaaa][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1000 p2:125 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:2 :1]'
+	end
+	:дариевый_лук
+	if $args['short_word']='дариевый_лук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_лук:] [name:Чёрный Лук:name] [number] [np:[оружие] [двуручное] [лук]:np] [stoim:10092529] [weight:3910][color:010101][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:300 p2:1500 p3:3000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевый_меч
+	if $args['short_word']='дариевый_меч':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_меч:] [name:Чёрный Меч:name] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:7404278] [weight:290][color:010101][uron: u1:дробящий:u1 u2:режущий:u2 p1:100 p2:3000 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевый_клеймор
+	if $args['short_word']='дариевый_клеймор':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_клеймор:] [name:Чёрный Клеймор:name] [number] [np:[оружие] [двуручное] [меч]:np] [stoim:11575702] [weight:740][color:010101][uron: u1:дробящий:u1 u2:режущий:u2 p1:250 p2:4500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевый_кинжал
+	if $args['short_word']='дариевый_кинжал':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_кинжал:] [name:Чёрный Кинжал:name] [number] [np:[оружие] [одноручное] [кинжал]:np] [stoim:5816819] [weight:120][color:010101][uron: u1:режущий:u1 u2:стрелковый:u2 p1:2400 p2:100 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевый_нож
+	if $args['short_word']='дариевый_нож':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_нож:] [name:Нож Убийцы:name] [number] [np:[оружие] [одноручное] [нож]:np] [stoim:5892137] [weight:60][color:010101][uron: u1:режущий:u1 u2:стрелковый:u2 p1:1500 p2:25 :uron] [uron_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 u4:luck p4:2000 p1:500 p2:500 p3:500 :uron_absorb]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевый_топор1
+	if $args['short_word']='дариевый_топор1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_топор1:] [name:Чёрный Топор:name] [number] [np:[оружие] [одноручное] [топор]:np] [stoim:9215372] [weight:190][color:010101][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:500 p2:3600 p3:63 :uron] [uron_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:1200 p2:1200 p3:1200 :uron_absorb]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевый_топор2
+	if $args['short_word']='дариевый_топор2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевый_топор2:] [name:Чёрная Секира:name] [number] [np:[оружие] [двуручное] [топор]:np] [stoim:17595299] [weight:1060][color:010101][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:600 p2:7500 p3:25 :uron] [uron_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:2000 p2:2000 p3:2000 :uron_absorb]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:дариевая_булава
+	if $args['short_word']='дариевая_булава':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] += '[:дариевая_булава:] [name:Чёрная Булава:name] [number] [np:[оружие] [одноручное] [булава]:np] [stoim:3377695] [weight:290][color:010101][uron: u1:дробящий:u1 u2:стрелковый:u2 p1:1000 p2:125 :uron] [uron_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:500 p2:500 p3:500 :uron_absorb]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
 	
+	:деревянная_кираса
+	if $args['short_word']='деревянная_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:деревянная_кираса:] [name:Деревянная Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:2129] [weight:610][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:1000 p4:500 p5:375 p6:7000 p7:250 p8:3500 :block]'
+		if $args[1]='text': $args['text'] = 'Прочная кираса из деревянных пластин, скреплённых бечёвкой.'
+	end
+	:деревянные_башмаки
+	if $args['short_word']='деревянные_башмаки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:деревянные_башмаки:] [name:Деревянные Башмаки:name] [number] [np:[доспех] [обувь]:np] [stoim:265] [weight:120][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:50 p2:50 p3:150 p4:100 p5:200 p6:700 p7:50 p8:350 :block]'
+		if $args[1]='text': $args['text'] = 'Пара выдолбленных из цельных кусков дуба башмаков.'
+	end
+	:деревянный_шлем
+	if $args['short_word']='деревянный_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:деревянный_шлем:] [name:Деревянный Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:381] [weight:120][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:150 p2:125 p3:150 p4:150 p5:75 p6:1400 p7:25 p8:350 :block]'
+		if $args[1]='text': $args['text'] = 'Шлем из прочной древесины, вырезанный из цельного куска дерева.'
+	end
+	:лыковая_кираса
+	if $args['short_word']='лыковая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:лыковая_кираса:] [name:Плетёная Рубаха:name] [number] [np:[доспех] [кираса]:np] [stoim:1103] [weight:500][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:250 p2:250 p3:0 p4:2000 p5:375 p6:400 p7:100 p8:3500 :block]'
+		if $args[1]='text': $args['text'] = 'Сплетённое из березового лыка одеяние типа куртки или рубахи.'
+	end
+	:лыковые_наплечни
+	if $args['short_word']='лыковые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:лыковые_наплечни:] [name:Плетёная Мантия|Плетёной Мантии|Плетёной Мантии|Плетёную Мантию|Плетёной Мантией|Плетёной Мантии:name] [number] [np:[доспех] [наплечни]:np] [stoim:204] [weight:300][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:125 p2:125 p3:0 p4:300 p5:75 p6:80 p7:10 p8:350 :block]'
+		if $args[1]='text': $args['text'] = 'Мантия, сплетённая из полос березового лыка.'
+	end
+	:лыковые_поножи
+	if $args['short_word']='лыковые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:лыковые_поножи:] [name:Плетёные Штаны:name] [number] [np:[доспех] [поножи]:np] [stoim:487] [weight:200][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:75 p2:125 p3:0 p4:600 p5:250 p6:200 p7:60 p8:1750 :block]'
+		if $args[1]='text': $args['text'] = 'Штаны, сплетённые из полос берёзового лыка.'
+	end
+	:лыковые_туфли
+	if $args['short_word']='лыковые_туфли':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:лыковые_туфли:] [name:Лапти:name] [number] [np:[доспех] [обувь]:np] [stoim:170] [weight:80][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:25 p2:25 p3:0 p4:400 p5:200 p6:40 p7:20 p8:350 :block]'
+		if $args[1]='text': $args['text'] = 'Обувка из лыка.'
+	end
+	:деревянный_щит
+	if $args['short_word']='деревянный_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:деревянный_щит:] [name:Деревянный Щит:name] [number] [np:[доспех] [щит]:np] [stoim:3105] [weight:240][color:663300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:1000 p4:2000 p5:375 p6:7000 p7:250 p8:3500 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1800 p2:1800 p3:1800 :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Широкий щит, выдолбленный из цельного куска дерева, с ремнями из сыромятной кожи.'
+	end
+	:золотая_кираса
+	if $args['short_word']='золотая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотая_кираса:] [name:Королевская Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:14798900] [weight:16740][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:3000 p2:3000 p3:500 p4:1000 p5:2625 p6:4000 p7:1750 :block][block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:1900 p2:1900 p3:1900 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Лёгкая пластинчатая кираса из золота, выкованная лучшими эльфийскими кузнецами. Такие кирасы, как правило, изготавливались для высших правителей.'
+	end
+	:золотой_шлем
+	if $args['short_word']='золотой_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотой_шлем:] [name:Шлем Короля:name] [number] [np:[доспех] [шлем]:np] [stoim:3466531] [weight:3350][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:900 p2:750 p3:75 p4:300 p5:525 p6:800 p7:175 :block][block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:700 p2:700 p3:700 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Дорогостоящий золотой шлем, искуссной работы, сделанный на заказ эльфийскими ювелирами для какого-то богача. Мягкое и тяжелое золото - не самый лучший материал для защиты драгоценной головы, но все недостатки с лихвой перекрываются одним достоинством: шлем можно очень дорого продать.'
+	end
+	:золотые_наплечни
+	if $args['short_word']='золотые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотые_наплечни:] [name:Королевские Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:5164069] [weight:5020][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:1500 p2:1500 p3:100 p4:150 p5:525 p6:800 p7:175 :block][block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:1200 p2:1200 p3:1200 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Наборные золотые наплечни, украшенные полудрагоценными камнями. Такого рода доспехи, как правило, изготавливались для высших правителей.'
+	end
+	:золотые_перчатки
+	if $args['short_word']='золотые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотые_перчатки:] [name:Королевские Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:3895261] [weight:2510][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:600 p2:900 p3:125 p4:300 p5:1050 p6:400 p7:700 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:500 p2:500 p3:500 p4:500 p5:500 p6:500 p7:500 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Лёгкие золотые перчатки, украшенные витиеватой гравировкой и драгоценными камнями.'
+	end
+	:золотые_поножи
+	if $args['short_word']='золотые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотые_поножи:] [name:Поножи Короля:name] [number] [np:[доспех] [поножи]:np] [stoim:7802108] [weight:10050][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:900 p2:1500 p3:250 p4:300 p5:1750 p6:2000 p7:1050 :block][block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:800 p2:800 p3:800 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Лёгкие золотые поножи, изготовленные лучшими эльфийскими кузнецами. Такие поножи, как правило, изготавливаются для высших правителей.'
+	end
+	:золотые_сапоги
+	if $args['short_word']='золотые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотые_сапоги:] [name:Королевские Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:4580842] [weight:5020][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:540 p2:900 p3:150 p4:300 p5:1750 p6:1000 p7:700 :block][block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:500 p2:500 p3:500 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сапоги с золотыми нашивками, выкованными лучшими эльфийскими кузнецами. Такие сапоги обыкновенно носят правители.'
+	end
+	:золотой_щит
+	if $args['short_word']='золотой_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:золотой_щит:] [name:Щит Короля:name] [number] [np:[доспех] [щит]:np] [stoim:11384512] [weight:6700][color:999900][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:3000 p2:3000 p3:500 p4:1000 p5:2625 p6:4000 p7:1750 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:900 p2:900 p3:900 :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 p1:200 p2:200 p3:1000 p4:1000 p5:1000 p6:200 :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:200 p2:200 p3:200 :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Тяжёлый золотой щит, треугольной формы с витиеватым орнаментом и шипами по внутреннему контуру окантовки. Такие щиты, как правило, изготавливались не для сражений, а в качестве украшения интерьера для замков высших правителей.'
+	end
+	:кожаная_куртка
+	if $args['short_word']='кожаная_куртка':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаная_куртка:] [name:Кожаная Куртка:name] [number] [np:[доспех] [кираса]:np] [stoim:2532] [weight:440][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:450 p2:500 p3:2000 p4:1600 p5:375 p6:1000 p7:500 p8:1600 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенная куртка из грубо выделанной кожи.'
+	end
+	:кожаная_юбка
+	if $args['short_word']='кожаная_юбка':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаная_юбка:] [name:Кожаная Юбка:name] [number] [np:[доспех] [поножи]:np] [stoim:1334] [weight:510][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:100 p2:300 p3:1200 p4:500 p5:250 p6:500 p7:300 p8:800 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенная женская юбка из тщательно выделанной размягчённой кожи.'
+	end
+	:кожаные_перчатки
+	if $args['short_word']='кожаные_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаные_перчатки:] [name:Беспалые Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:790] [weight:170][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:90 p2:150 p3:500 p4:480 p5:150 p6:100 p7:200 p8:800 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенные кожаные перчатки с отрезанными для удобства напалечниками.'
+	end
+	:кожаные_сапоги
+	if $args['short_word']='кожаные_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаные_сапоги:] [name:Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:844] [weight:410][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:81 p2:150 p3:600 p4:480 p5:250 p6:250 p7:200 p8:400 :block]'
+		if $args[1]='text': $args['text'] = 'Мягкие красные сапоги из лизардовой кожи.'
+	end
+	:кожаные_штаны
+	if $args['short_word']='кожаные_штаны':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаные_штаны:] [name:Кожаные Брюки:name] [number] [np:[доспех] [поножи]:np] [stoim:1279] [weight:510][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:135 p2:250 p3:1000 p4:480 p5:300 p6:500 p7:300 p8:800 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенные штаны из грубо выделанной кожи.'
+	end
+	:кожаный_плащ1
+	if $args['short_word']='кожаный_плащ1':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаный_плащ1:] [name:Плащ:name] [number] [np:[доспех] [наплечни]:np] [stoim:682] [weight:680][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:225 p2:250 p3:400 p4:240 p5:75 p6:200 p7:50 p8:160 :block]'
+		if $args[1]='text': $args['text'] = 'Плащ из кожи лизарда. Охотники очень ценят такие плащи за присущий им стойкий запах ящеров, позволяющий незаметно подкрадываться к дичи.'
+	end
+	:кожаный_плащ2
+	if $args['short_word']='кожаный_плащ2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаный_плащ2:] [name:Плащ Убийцы:name] [number] [np:[доспех] [наплечни]:np] [stoim:996] [weight:680][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:225 p2:1000 p3:400 p4:240 p5:75 p6:500 p7:50 p8:160 :block] [prop: u1:скрытность p1:2500 :prop]'
+		if $args[1]='text': $args['text'] = 'Плащ из кожи лизарда. Охотники очень ценят такие плащи за присущий им стойкий запах ящеров, позволяющий незаметно подкрадываться к дичи.'
+	end
+	:кожаный_шлем
+	if $args['short_word']='кожаный_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаный_шлем:] [name:Кожаный Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:498] [weight:140][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:135 p2:125 p3:300 p4:480 p5:75 p6:200 p7:50 p8:160 :block]'
+		if $args[1]='text': $args['text'] = 'Очень мягкий, но прочный шлем из лизардовой кожи, надежно предохраняющий голову от резких перепадов температур.'
+	end
+	:кожаный_щит
+	if $args['short_word']='кожаный_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:кожаный_щит:] [name:Кожаный Щит:name] [number] [np:[доспех] [щит]:np] [stoim:4374] [weight:300][color:cc6633][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:450 p2:1000 p3:2000 p4:1600 p5:375 p6:1000 p7:500 p8:1600 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:300 p2:300 p3:200 p4:200 p5:200 p6:300 p7:100 p8:100 :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 p1:500 p2:500 p3:200 p4:200 p5:200 p6:500 :block_repulse][block_recieve: u1:дробящий:u1 u[weight:ож u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:100 p4:100 p5:100 p6:500 p7:100 p8:100 :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Щит, обтянутый сыромятной кожей.'
+	end
+	:каменная_кираса
+	if $args['short_word']='каменная_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:каменная_кираса:] [name:Малахитовая Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:2028] [weight:2250][color:777777][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1000 p2:4500 p3:2000 p4:1000 p5:375 p6:10000 p7:5000 p8:1000 :block]'
+		if $args[1]='text': $args['text'] = 'Узорная кираса, собранная из лакированных малахитовых пластин, изготовленных лучшими гномьими мастерами.'
+	end
+	:каменный_щит
+	if $args['short_word']='каменный_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:каменный_щит:] [name:Армированная Плита:name] [number] [np:[доспех] [щит]:np] [stoim:2779] [weight:900][color:777777][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1000 p2:4500 p3:2000 p4:1000 p5:375 p6:10000 p7:5000 p8:1000 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:900 p2:900 p3:500 p4:500 p5:500 p6:900 p7:900 p8:900 :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:900 p2:900 p3:900 :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:900 p2:900 p3:900 :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Кусок армированной бетонной плиты, выдранный у разваливающегося здания.'
+	end
+	:костяная_кираса
+	if $args['short_word']='костяная_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:костяная_кираса:] [name:Костяная Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:399961] [weight:1470][color:999966][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:3250 p2:3250 p3:3000 p4:1000 p5:1125 p6:7000 p7:5000 p8:1000 :block]'
+		if $args[1]='text': $args['text'] = 'Составная кираса, собранная из множества костей и зубов.'
+	end
+	:костяной_шлем
+	if $args['short_word']='костяной_шлема':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:костяной_шлем:] [name:Череп врага:name] [number] [np:[доспех] [шлем]:np] [stoim:77433] [weight:290][color:999966][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:975 p2:812 p3:450 p4:300 p5:225 p6:1400 p7:500 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Лакированный шлем, вырезанный из белоснежного черепа.'
+	end
+	:костяные_наплечни
+	if $args['short_word']='костяные_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:костяные_наплечни:] [name:Трофеи:name] [number] [np:[доспех] [наплечни]:np] [stoim:102155] [weight:440][color:999966][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1625 p2:1625 p3:600 p4:150 p5:225 p6:1400 p7:500 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Наплечни из лакированных черепов. Очень ценятся в кругу охотников за головами.'
+	end
+	:костяные_поножи
+	if $args['short_word']='костяные_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:костяные_поножи:] [name:Костяные поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:199712] [weight:880][color:999966][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:975 p2:1625 p3:1500 p4:300 p5:750 p6:3500 p7:3000 p8:500 :block]'
+		if $args[1]='text': $args['text'] = 'Составные поножи из берцовых костей и рёбер. Надёжно защищают от ударов по ногам.'
+	end
+	:костяной_щит
+	if $args['short_word']='костяной_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:костяной_щит:] [name:Костяной щит:name] [number] [np:[доспех] [щит]:np] [stoim:386473] [weight:590][color:999966][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:3250 p2:3250 p3:3000 p4:1000 p5:1125 p6:7000 p7:5000 p8:1000 :block]'
+		if $args[1]='text': $args['text'] = 'Составной щит из костей животных, обтянутый сыромятной кожей.'
+	end
+	:мирониевая_кираса
+	if $args['short_word']='мирониевая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевая_кираса:] [name:Зеркальная Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:60661007] [weight:20280][color:ffffff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 p1:0 p2:0 p3:5000 p4:2500 p5:3750 p6:0 p7:800 :block][block_repulse: u3:огненный_mgc:u3 u2:ледяной_mgc:u2 u1:энергетический_mgc:u1 p3:3000 p2:3000 p1:3000 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Великолепная мирониевая кираса. Такие кирасы весьма популярны у магов и охотников на драконов, ведь они практически полностью отражают все виды магических атак.'
+	end
+	:мирониевые_наплечни
+	if $args['short_word']='мирониевые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевые_наплечни:] [name:Зеркальные Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:19821604] [weight:6080][color:ffffff][block: u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u2:энергетический_mgc:u2 u6:кислотный_acid:u6 p3:1000 p4:375 p2:750 p1:800 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1500 p4:1500 p5:1500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Великолепные мирониевые наплечни. Такие наплечни весьма популярны среди магов и охотников на драконов, ведь они практически полностью отражают все виды магических атак.'
+	end
+	:мирониевые_перчатки
+	if $args['short_word']='мирониевые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевые_перчатки:] [name:Зеркальные Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:14104822] [weight:3040][color:ffffff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:0 p2:0 p3:1250 p4:750 p5:750 p6:0 p7:320 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:500 p4:500 p5:500 p6:500 p7:500 p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Великолепные мирониевые перчатки. Такие перчатки весьма популярны среди магов и охотников на драконов, потому что практически полностью отражают магические атаки.'
+	end
+	:мирониевые_поножи
+	if $args['short_word']='мирониевые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевые_поножи:] [name:Зеркальные Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:33610865] [weight:12170][color:ffffff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:0 p2:0 p3:2500 p4:750 p5:2500 p6:0 p7:480 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1500 p4:1500 p5:1500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Великолепные мирониевые поножи. Такие поножи весьма популярны у магов и охотников на драконов, поскольку практически полностью отражают магические атаки.'
+	end
+	:мирониевые_сапоги
+	if $args['short_word']='мирониевые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевые_сапоги:] [name:Зеркальные Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:18566701] [weight:6080][color:ffffff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:0 p2:0 p3:1500 p4:750 p5:2500 p6:0 p7:320 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:500 p4:500 p5:500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сапоги с мирониевыми нашивками, практически полностью отражающими магические атаки. Такие сапоги весьма популярны у магов и охотников на драконов.'
+	end
+	:мирониевый_шлем
+	if $args['short_word']='мирониевый_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевый_шлем:] [name:Зеркальный Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:13781922] [weight:4060][color:ffffff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:0 p2:0 p3:750 p4:750 p5:750 p6:0 p7:80 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1000 p4:1000 p5:1000 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Мирониевый шлем, отполированный до зеркального блеска. Такие шлема весьма популярны у магов и охотников на драконов, ведь мироний практически полностью отражает магические атаки.'
+	end
+	:мирониевый_щит
+	if $args['short_word']='мирониевый_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:мирониевый_щит:] [name:Зеркальный Щит:name] [number] [np:[доспех] [щит]:np] [stoim:36194058] [weight:8110][color:ffffff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:0 p2:0 p3:5000 p4:2500 p5:3750 p6:0 p7:800 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1500 p4:1500 p5:1500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Великолепный мирониевый щит. Кулачный. Отполированный до зеркального блеска. Такие щиты весьма популярны у охотников на драконов, поскольку практически полностью отражают магические атаки.'
+	end
+	:платиновая_кираса
+	if $args['short_word']='платиновая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновая_кираса:] [name:Платиновая Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:23896854] [weight:18200][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:3500 p2:3500 p3:800 p4:800 p5:1500 p6:4000 p7:1750 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:2100 p4:2100 p5:2100 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Облегчённая платиновая кираса, украшенная выгравированным изображением грифона, который обнимает крыльями панцирь.'
+	end
+	:платиновие_наплечни
+	if $args['short_word']='платиновие_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновие_наплечни:] [name:Платиновые Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:8537129] [weight:5460][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1750 p2:1750 p3:160 p4:120 p5:300 p6:800 p7:175 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1300 p4:1300 p5:1300 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Несимметричные цельнометаллические наплечники. Левый выполнен в виде головы орла, правый - как львиная лапа.'
+	end
+	:платиновие_перчатки
+	if $args['short_word']='платиновие_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновие_перчатки:] [name:Платиновые Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:5993461] [weight:2730][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:700 p2:1050 p3:200 p4:240 p5:600 p6:400 p7:700 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:500 p4:500 p5:500 p6:500 p7:500 p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Лёгкие платиновые перчатки с гардлингами в виде грифонов.'
+	end
+	:платиновие_поножи
+	if $args['short_word']='платиновие_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновие_поножи:] [name:Платиновые Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:12502171] [weight:10920][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1050 p2:1750 p3:400 p4:240 p5:1000 p6:2000 p7:1050 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:900 p4:900 p5:900 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Прочные платиновые поножи с выгравироваными на них перьями грифона.'
+	end
+	:платиновие_сапоги
+	if $args['short_word']='платиновие_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновие_сапоги:] [name:Платиновые Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:7000268] [weight:5460][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:630 p2:1050 p3:240 p4:240 p5:1000 p6:1000 p7:700 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:500 p4:500 p5:500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Лёгкие сапоги с платиновыми нашивками, выполненные в виде гепардов в прыжке.'
+	end
+	:платиновый_шлем
+	if $args['short_word']='платиновый_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновый_шлем:] [name:Платиновый Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:5685497] [weight:3640][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1050 p2:875 p3:120 p4:240 p5:300 p6:800 p7:175 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:800 p4:800 p5:800 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Лёгкий платиновый шлем, выполненный ввиде головы орла, украшенный гребнем из белых перьев.'
+	end
+	:платиновый_щит
+	if $args['short_word']='платиновый_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:платиновый_щит:] [name:Платиновый Щит:name] [number] [np:[доспех] [щит]:np] [stoim:18673304] [weight:7280][color:77aa33][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:3500 p2:3500 p3:800 p4:800 p5:1500 p6:4000 p7:1750 p8:0 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3: p4: p5: p6:500 p7: p8: :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:1300 p4:1300 p5:1300 p6:500 p7: p8: :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3: p4: p5: p6:500 p7: p8: :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Облегчённый платиновый щит треугольной формы, украшенный гравировкой с изображением грифона.'
+	end
+	:ржавая_кираса
+	if $args['short_word']='ржавая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавая_кираса:] [name:Ржавая Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:6209] [weight:6850][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1500 p2:1250 p3:1000 p4:1000 p5:750 p6:1500 p7:250 p8:1000 :block]'
+		if $args[1]='text': $args['text'] = 'Проржавевшая до дыр железная кираса, в аварийном состоянии.'
+	end
+	:ржавые_наплечни
+	if $args['short_word']='ржавые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавые_наплечни:] [name:Ржавые Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:1789] [weight:2050][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:750 p2:625 p3:200 p4:150 p5:150 p6:300 p7:25 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Насквозь проржавевшие цельнометалические наплечни.'
+	end
+	:ржавые_перчатки
+	if $args['short_word']='ржавые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавые_перчатки:] [name:Ржавые Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:1359] [weight:1030][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:300 p2:375 p3:250 p4:300 p5:300 p6:150 p7:100 p8:500 :block]'
+		if $args[1]='text': $args['text'] = 'Эти перчатки настолько проржавели, что невозможно прочитать рисунок на гардлинге.'
+	end
+	:ржавые_поножи
+	if $args['short_word']='ржавые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавые_поножи:] [name:Ржавые Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:3242] [weight:4110][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:450 p2:625 p3:500 p4:300 p5:500 p6:750 p7:150 p8:500 :block]'
+		if $args[1]='text': $args['text'] = 'Заржавленные поножи весьма неприглядного вида.'
+	end
+	:ржавые_сапоги
+	if $args['short_word']='ржавые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавые_сапоги:] [name:Ржавые Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:1859] [weight:2050][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:270 p2:375 p3:300 p4:300 p5:500 p6:375 p7:100 p8:250 :block]'
+		if $args[1]='text': $args['text'] = 'Сапоги с проржавевшими стальными нашивками.'
+	end
+	:ржавый_шлем
+	if $args['short_word']='ржавый_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавый_шлем:] [name:Ржавый Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:1298] [weight:1370][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:450 p2:312,5 p3:150 p4:300 p5:150 p6:300 p7:25 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Очень старый насквозь проржавевший шлем.'
+	end
+	:ржавый_щит
+	if $args['short_word']='ржавый_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ржавый_щит:] [name:Ржавый Щит:name] [number] [np:[доспех] [щит]:np] [stoim:6863] [weight:2740][color:993300][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1500 p2:1250 p3:1000 p4:1000 p5:750 p6:1500 p7:250 p8:1000 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:800 p2:800 p3: p4: p5: p6:800 p7: p8: :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:800 p2:800 p3: p4: p5: p6:800 p7: p8: :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:300 p2:300 p3: p4: p5: p6:300 p7: p8: :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Небольшой круглый щит, окованный железом. Поверхность щита изъедена ржавчиной, так что невозможно различить гербовую гравировку.'
+	end
+	:серебряная_кираса
+	if $args['short_word']='серебряная_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряная_кираса:] [name:Серебряная Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:147079] [weight:9100][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:2700 p2:2700 p3:1000 p4:1000 p5:2625 p6:3500 p7:1000 p8:2500 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1700 p4:1700 p5:1700 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Серебряная кираса, состоящая из цельнометаллических узорчатых пластин, соединённых проволокой.'
+	end
+	:серебряные_наплечни
+	if $args['short_word']='серебряные_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряные_наплечни:] [name:Серебряные Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:48775] [weight:2730][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1350 p2:1350 p3:200 p4:150 p5:525 p6:700 p7:100 p8:250 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1000 p4:1000 p5:1000 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сверкающие наборные серебряные наплечни с подвязками из красной кожи.'
+	end
+	:серебряные_перчатки
+	if $args['short_word']='серебряные_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряные_перчатки:] [name:Серебряные Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:46208] [weight:1360][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:540 p2:810 p3:250 p4:300 p5:1050 p6:350 p7:400 p8:1250 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:500 p4:500 p5:500 p6:500 p7: p8:500 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Латные перчатки, каждый сегмент которых изготовлен из серебра.'
+	end
+	:серебряные_поножи
+	if $args['short_word']='серебряные_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряные_поножи:] [name:Серебряные Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:74752] [weight:5460][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:810 p2:1350 p3:500 p4:300 p5:1750 p6:1750 p7:600 p8:1250 :block][block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:700 p2:700 p3:700 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сборные серебрянные поножи с красными кожаными ремнями.'
+	end
+	:серебряные_сапоги
+	if $args['short_word']='серебряные_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряные_сапоги:] [name:Серебряные Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:46048] [weight:2730][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:486 p2:810 p3:300 p4:300 p5:1750 p6:875 p7:400 p8:625 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:500 p4:500 p5:500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сапоги с серебряными нашивками.'
+	end
+	:серебряный_шлем
+	if $args['short_word']='серебряный_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряный_шлем:] [name:Серебряный Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:33584] [weight:1820][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:810 p2:675 p3:150 p4:300 p5:525 p6:700 p7:100 p8:250 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:600 p4:600 p5:600 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сверкающий сербрянный шлем, отполированный мельчайшим речным песком.'
+	end
+	:серебряный_щит
+	if $args['short_word']='серебряный_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:серебряный_щит:] [name:Серебряный Щит:name] [number] [np:[доспех] [щит]:np] [stoim:128426] [weight:3640][color:3399ff][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:2700 p2:2700 p3:1000 p4:1000 p5:2625 p6:3500 p7:1000 p8:2500 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3: p4: p5: p6:500 p7: p8: :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:700 p4:700 p5:700 p6:500 p7: p8: :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3: p4: p5: p6:500 p7: p8: :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Круглый серебряный щит с орнаментальной каймой и сложной гравировкой на лицевой стороне.'
+	end
+	:стальная_кираса
+	if $args['short_word']='стальная_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальная_кираса:] [name:Стальная Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:13025] [weight:6760][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:2400 p2:2000 p3:1000 p4:1500 p5:1500 p6:2500 p7:750 p8:1500 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенная кираса из стальных пластин, связанных кожанными ремнями.'
+	end
+	:стальной_шлем
+	if $args['short_word']='стальной_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальной_шлем:] [name:Стальной Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:2744] [weight:1350][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:720 p2:500 p3:150 p4:450 p5:300 p6:500 p7:75 p8:150 :block]'
+		if $args[1]='text': $args['text'] = 'Вполне обыкновенный шлем из стали.'
+	end
+	:стальные_наплечни
+	if $args['short_word']='стальные_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальные_наплечни:] [name:Стальные Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:3716] [weight:2030][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1200 p2:1000 p3:200 p4:225 p5:300 p6:500 p7:75 p8:150 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенные цельнометаллические наплечни из стали хорошего качества.'
+	end
+	:стальные_перчатки
+	if $args['short_word']='стальные_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальные_перчатки:] [name:Стальные Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:4050] [weight:1010][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:480 p2:600 p3:250 p4:450 p5:600 p6:250 p7:300 p8:750 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3: p4: p5: p6:500 p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Обыкновенные латные перчатки из доброй стали.'
+	end
+	:стальные_поножи
+	if $args['short_word']='стальные_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальные_поножи:] [name:Стальные Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:6660] [weight:4060][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:720 p2:1000 p3:500 p4:450 p5:1000 p6:1250 p7:450 p8:750 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенные стальные поножи.'
+	end
+	:стальные_сапоги
+	if $args['short_word']='стальные_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальные_сапоги:] [name:Стальные Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:3999] [weight:2030][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:432 p2:600 p3:300 p4:450 p5:1000 p6:625 p7:300 p8:375 :block]'
+		if $args[1]='text': $args['text'] = 'Сапоги со стальными нашивками, надежно защищающими от ударов.'
+	end
+	:стальной_щит
+	if $args['short_word']='стальной_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стальной_щит:] [name:Стальной Щит:name] [number] [np:[доспех] [щит]:np] [stoim:13706] [weight:2700][color:333333][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:2400 p2:2000 p3:1000 p4:1500 p5:1500 p6:2500 p7:750 p8:1500 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:300 p2:300 p3: p4: p5: p6:300 p7: p8: :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:700 p2:700 p3: p4: p5: p6:700 p7: p8: :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:700 p2:700 p3: p4: p5: p6:700 p7: p8: :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Небольшой стальной щит, простой овальной формы с выгравированым орнаментом, без умбона.'
+	end
+	:старая_кираса
+	if $args['short_word']='старая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старая_кираса:] [name:Старая Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:8790] [weight:6670][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:2000 p2:1500 p3:1000 p4:1000 p5:1125 p6:2000 p7:500 p8:1000 :block]'
+		if $args[1]='text': $args['text'] = 'Покрытая пятнами ржавчины кираса из старой стали. Продукт вторичной переработки.'
+	end
+	:старые_наплечни
+	if $args['short_word']='старые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старые_наплечни:] [name:Старые Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:2551] [weight:2000][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1000 p2:750 p3:200 p4:150 p5:225 p6:400 p7:50 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Наборные наплечни из старой стали, покрытые пятнами ржавчины.'
+	end
+	:старые_перчатки
+	if $args['short_word']='старые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старые_перчатки:] [name:Старые Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:1963] [weight:1000][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:400 p2:450 p3:250 p4:300 p5:450 p6:200 p7:200 p8:500 :block]'
+		if $args[1]='text': $args['text'] = 'Пластинчатые перчатки из старой стали. Продукт вторичной переработки.'
+	end
+	:старые_поножи
+	if $args['short_word']='старые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старые_поножи:] [name:Старые Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:4553] [weight:4000][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:600 p2:750 p3:500 p4:300 p5:750 p6:1000 p7:300 p8:500 :block]'
+		if $args[1]='text': $args['text'] = 'Поножи из старой стали, покрытые пятнами ржавчины. Продукт вторичной переработки.'
+	end
+	:старые_сапоги
+	if $args['short_word']='старые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старые_сапоги:] [name:Старые Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:2674] [weight:2000][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:360 p2:450 p3:300 p4:300 p5:750 p6:500 p7:200 p8:250 :block]'
+		if $args[1]='text': $args['text'] = 'Подбитые сапоги с вшитыми пластинами из старой стали.'
+	end
+	:старый_шлем
+	if $args['short_word']='старый_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старый_шлем:] [name:Старый Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:1847] [weight:1330][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:600 p2:375 p3:150 p4:300 p5:225 p6:400 p7:50 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Шлем из старой стали, покрытый пятнами ржавчины.'
+	end
+	:старый_щит
+	if $args['short_word']='старый_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старый_щит:] [name:Старый Щит:name] [number] [np:[доспех] [щит]:np] [stoim:6696] [weight:2670][color:006666][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:2000 p2:1500 p3:1000 p4:1000 p5:1125 p6:2000 p7:500 p8:1000 :block]'
+		if $args[1]='text': $args['text'] = 'Лёгкий щит из старой стали, покрытый пятнами ржавчины.'
+	end
+	:титановая_кираса
+	if $args['short_word']='титановая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановая_кираса:] [name:Титановая Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:19254213] [weight:3900][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1500 p2:4000 p3:800 p4:500 p5:1875 p6:2500 p7:1750 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:2700 p4:2700 p5:2700 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Титановая кираса, украшенная ложными шуруповыми шляпками, рисунками цепей передачи и шестерней.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:38 :1]'
+	end
+	:титановые_наплечни
+	if $args['short_word']='титановые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановые_наплечни:] [name:Титановые Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:7265231] [weight:1170][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:750 p2:2000 p3:160 p4:75 p5:375 p6:500 p7:175 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1400 p4:1400 p5:1400 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Составные титановые наплечни, украшенные гравировками, изображающими шестерни, цепи передачи и шляпки болтов и шурупов.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:11 :1]'
+	end
+	:титановые_перчатки
+	if $args['short_word']='титановые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановые_перчатки:] [name:Титановые Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:5507825] [weight:580][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:300 p2:1200 p3:200 p4:150 p5:750 p6:250 p7:700 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:500 p2:500 p3:500 p4:500 p5:500 p6:500 p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Титановые перчатки, украшенные гравировками в виде шестерней, с гардлингами в виде цепей передачи.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:5 :1]'
+	end
+	:титановые_поножи
+	if $args['short_word']='титановые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановые_поножи:] [name:Титановые Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:9184858] [weight:2340][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:450 p2:2000 p3:400 p4:150 p5:1250 p6:1250 p7:1050 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:1000 p4:1000 p5:1000 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Титановые поножи с выгравированными на них ложными шурупами и изящными шестернями, цепями передач.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:22 :1]'
+	end
+	:титановые_сапоги
+	if $args['short_word']='титановые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановые_сапоги:] [name:Титановые Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:5488513] [weight:1170][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:270 p2:1200 p3:240 p4:150 p5:1250 p6:625 p7:700 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:500 p4:500 p5:500 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Сапоги с титановыми нашивками, выполннными в виде шестерней и механизмов.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:11 :1]'
+	end
+	:титановый_шлем
+	if $args['short_word']='титановый_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановый_шлем:] [name:Титановый Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:4828037] [weight:780][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:450 p2:1000 p3:120 p4:150 p5:375 p6:500 p7:175 p8:0 :block][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:900 p4:900 p5:900 p6: p7: p8: :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Великолепный титановый шлем. Лёгкий и прочный. Надежно защищает голову от ударов холодным оружием.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:7 :1]'
+	end
+	:титановый_щит
+	if $args['short_word']='титановый_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:титановый_щит:] [name:Титановый Щит:name] [number] [np:[доспех] [щит]:np] [stoim:16983104] [weight:1560][color:77aaaa][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:1500 p2:4000 p3:800 p4:500 p5:1875 p6:2500 p7:1750 p8:0 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:300 p2:300 p3: p4: p5: p6:300 p7: p8: :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:400 p2:400 p3:1400 p4:1400 p5:1400 p6:400 p7: p8: :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:400 p2:400 p3: p4: p5: p6:400 p7: p8: :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Тяжёлый титановый щит, в форме шестерни с широким умбоном, окаймлённым гравировкой в виде цепи передачи.'
+		if $args[1]='unmount': $args['ingredients']='[1:name:стержень_титановый:name count:15 :1]'
+	end
+	:тканевая_кираса
+	if $args['short_word']='тканевая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевая_кираса:] [name:Рубаха:name] [number] [np:[доспех] [кираса]:np] [stoim:585] [weight:140][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:50 p2:250 p3:200 p4:3500 p5:375 p6:400 p7:200 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенная поношенная байковая рубаха.'
+	end
+	:тканевая_шляпа
+	if $args['short_word']='тканевая_шляпа':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевая_шляпа:] [name:Фетровая Шляпа:name] [number] [np:[доспех] [шлем]:np] [stoim:158] [weight:70][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:15 p2:62,5 p3:30 p4:1050 p5:75 p6:80 p7:20 p8:10 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенная фетровая шляпа со слегка потрёпанными краями.'
+	end
+	:тканевая_юбка
+	if $args['short_word']='тканевая_юбка':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевая_юбка:] [name:Юбка:name] [number] [np:[доспех] [поножи]:np] [stoim:263] [weight:380][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:11 p2:150 p3:120 p4:1100 p5:210 p6:200 p7:120 p8:50 :block]'
+		if $args[1]='text': $args['text'] = 'Тёплый клетчатый кильт, привезённый поморцами их Хатландии.'
+	end
+	:тканевые_перчатки
+	if $args['short_word']='тканевые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевые_перчатки:] [name:Варежки:name] [number] [np:[доспех] [перчатки]:np] [stoim:345] [weight:70][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:10 p2:75 p3:50 p4:1050 p5:150 p6:40 p7:80 p8:50 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1: p2: p3:500 p4:500 p5:500 p6: p7: p8: :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Тёплые шерстяные варежки.'
+	end
+	:тканевые_поножи
+	if $args['short_word']='тканевые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевые_поножи:] [name:Джинсы:name] [number] [np:[доспех] [поножи]:np] [stoim:252] [weight:340][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:15 p2:125 p3:100 p4:1050 p5:250 p6:200 p7:120 p8:50 :block]'
+		if $args[1]='text': $args['text'] = 'Весьма приличные широкие брюки из джинсовой ткани, прочные и удобные.'
+	end
+	:тканевый_плащ
+	if $args['short_word']='тканевый_плащ':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевый_плащ:] [name:Плащ:name] [number] [np:[доспех] [наплечни]:np] [stoim:147] [weight:410][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:25 p2:125 p3:40 p4:525 p5:75 p6:80 p7:20 p8:10 :block]'
+		if $args[1]='text': $args['text'] = 'Обыкновенный дорожный плащ. Хорошая защита от дождя, снега и холода.'
+	end
+	:тканевые_сапоги
+	if $args['short_word']='тканевые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:тканевые_сапоги:] [name:Кеды:name] [number] [np:[доспех] [обувь]:np] [stoim:400] [weight:230][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:100 p2:100 p3:50 p4:100 p5:100 p6:100 p7:50 p8:50 :block]'
+		if $args[1]='text': $args['text'] = 'Старые поношенные кеды.'
+	end
+	:дариевая_кираса
+	if $args['short_word']='дариевая_кираса':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевая_кираса:] [name:Чёрная Кираса:name] [number] [np:[доспех] [кираса]:np] [stoim:37832501] [weight:3900][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:1500 p2:4000 p3:5000 p4:2500 p5:3750 p6:2500 p7:500 :block][block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:3000 p2:3000 p3:3000:block_absorb]'
+		if $args[1]='text': $args['text'] = 'Кираса из редкого металла - дария. Пластины украшены рельефным рисунком ввиде чешуи дракона. Возможно, когда-то эта кираса принадлежала одному из древних королей.'
+	end
+	:дариевые_наплечни
+	if $args['short_word']='дариевые_наплечни':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевые_наплечни:] [name:Чёрные Наплечни:name] [number] [np:[доспех] [наплечни]:np] [stoim:12856098] [weight:1170][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:750 p2:2000 p3:1000 p4:375 p5:750 p6:500 p7:50 :block][block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:1500 p2:1500 p3:1500 :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Ассиметричные наплечни из редкого металла - дария. Левый выполнен в виде головы дракона, правый - украшен зубцами, напоминающими хвостовой гребень. Возможно эти наплечни носил какой-нибудь древний правитель.'
+	end
+	:дариевые_перчатки
+	if $args['short_word']='дариевые_перчатки':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевые_перчатки:] [name:Чёрные Перчатки:name] [number] [np:[доспех] [перчатки]:np] [stoim:9941895] [weight:580][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:300 p2:1200 p3:1250 p4:750 p5:1500 p6:250 p7:250 :block][block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:500 p2:500 p3:500 :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 p1:500 p2:500 :block_repulse]'
+		if $args[1]='text': $args['text'] = 'Шипованные латные перчатки из редкого металла дария с гардлингами, выполненными в виде драконов. Возможно раньше эти перчатки носил какой-нибудь древний правитель.'
+	end
+	:дариевые_поножи
+	if $args['short_word']='дариевые_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевые_поножи:] [name:Чёрные Поножи:name] [number] [np:[доспех] [поножи]:np] [stoim:19165377] [weight:2340][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:450 p2:2000 p3:2500 p4:750 p5:2500 p6:1250 p7:250 :block][block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:1500 p2:1500 p3:1500 :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Поножи из редкого металла дария, украшенные рельефным рисунком драконьей чешуи. Такие могли принадлежать одному из древних королей.'
+	end
+	:дариевые_сапоги
+	if $args['short_word']='дариевые_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевые_сапоги:] [name:Чёрные Сапоги:name] [number] [np:[доспех] [обувь]:np] [stoim:11170147] [weight:1170][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:270 p2:1200 p3:1500 p4:750 p5:2500 p6:625 p7:125 :block][block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:500 p2:500 p3:500 :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Чёрные сапоги из редкого металла дария с нашивками в виде гребневых зубцов дракона. Такие сапоги могли принадлежать одному из древних правителей.'
+	end
+	:дариевый_шлем
+	if $args['short_word']='дариевый_шлем':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевый_шлем:] [name:Чёрный Шлем:name] [number] [np:[доспех] [шлем]:np] [stoim:9304594] [weight:780][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:450 p2:1000 p3:750 p4:750 p5:750 p6:500 p7:50 :block][block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:1000 p2:1000 p3:1000 :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Шлем из редкого металла - дария, выполненный в виде головы дракона, украшенный зубцами от наносника до макушки. Возможно когда-то он принадлежал одному из древних королей.'
+	end
+	:дариевый_щит
+	if $args['short_word']='дариевый_щит':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:дариевый_щит:] [name:Чёрный Щит|Чёрного Щита|Чёрному Щиту|Чёрный Щит|Чёрным Щитом|Чёрном Щите:name] [number] [np:[доспех] [щит]:np] [stoim:40798847] [weight:1560][color:010101][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:1500 p2:4000 p3:5000 p4:2500 p5:3750 p6:2500 p7:500 :block][block_absorb: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 p1:1800 p2:1800 p3:1500 p4:1500 p5:1500 p6:1800 :block_absorb][block_repulse: u1:дробящий:u1 u2:режущий:u2 p1:800 p2:800 :block_repulse][block_recieve: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:800 p2:800 p3:800 :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Щит из редкого металла - дария. Кулачный. Украшен гравировкой в виде дракона. Возможно когда-то этот щит принадлежал одному из древних королей.'
+	end
+	:ученика_куртка
+	if $args['short_word']='ученика_куртка':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ученика_куртка:] [name:Форменная Куртка|Форменной Куртки|Форменной Куртке|Форменную Куртку|Форменной Курткой|Форменной Куртке:name] [number] [np:[доспех] [кираса]:np] [stoim:600] [weight:200] [color:666600] [block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:100 p2:100 p3:100 p4:100 p5:100 p6:100 p7:100 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Эта куртка является верхней частью обязательной ученической формы. Все студенты Академии обязаны носить такие куртки во время учёбы.'
+	end
+	:ученика_юбка
+	if $args['short_word']='ученика_юбка':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ученика_юбка:] [name:Форменная Юбка|Форменной Юбки|Форменной Юбке|Форменную Юбку|Форменной Юбкой|Форменной Юбке:name] [number] [np:[доспех] [поножи]:np] [stoim:400] [weight:200] [color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:100 p2:100 p3:100 p4:100 p5:100 p6:100 p7:100 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Эта юбка является нижней частью обязательной ученической формы. Все девушки, учащиеся в Академии, обязаны носить такие юбки во время учёбы.'
+	end
+	:ученика_поножи
+	if $args['short_word']='ученика_поножи':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ученика_поножи:] [name:Форменные Брюки|Форменных Брюк|Форменным Брюкам|Форменные Брюки|Форменными Брюками|Форменных Брюках:name] [number] [np:[доспех] [поножи]:np] [stoim:500] [weight:300][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:кислотный_acid:u7 u8:ядовитый_psn:u8 p1:100 p2:100 p3:100 p4:100 p5:100 p6:100 p7:100 p8:100 :block]'
+		if $args[1]='text': $args['text'] = 'Эти брюки являются нижней частью обязательной ученической формы. Все юноши, учащиеся в Академии обязаны носить такие юбки во время учёбы.'
+	end
+	:ученика_сапоги
+	if $args['short_word']='ученика_сапоги':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ученика_сапоги:] [name:Форменные Туфли|Форменных Туфлей|Форменным Туфлям|Форменные Туфли|Форменными Туфлями|Форменных Туфлях:name] [number] [np:[доспех] [обувь]:np] [stoim:1500] [weight:250][color:666600][block: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 u7:ядовитый_psn:u7 p1:0 p2:100 p3:150 p4:150 p5:100 p6:0 p7:0 :block]'
+		if $args[1]='text': $args['text'] = 'Чёрные лаковые туфли на низком каблуке. Эти туфли входят в комплект обязательной ученической формы.'
+	end
+	
+	! амулеты
+	:амулет_мз
+	if $args['short_word']='амулет_мз':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:амулет_мз:] [name:Амулет Магической Защиты:name] [number] [np:[доспех] [амулет]:np]  [stoim:11587290] [weight:0][color:999900][block: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:2500 p2:2500 p3:2500 :block][uron_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:2500 p2:2500 p3:2500 :uron_absorb][block_block_repulse: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:2500 p2:2500 p3:2500 :block_block_repulse][block_recieve: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:2500 p2:2500 p3:2500 :block_recieve]'
+		if $args[1]='text': $args['text'] = 'Изящный золотой амулет на тесёмке с тремя разноцветными камнями, изготовленный эльфийскими кузнецами для защиты от трех стихий.'
+	end
+	:амулет_пм
+	if $args['short_word']='амулет_пм':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:амулет_пм:] [name:Пожиратель Магии:name] [number] [np:[доспех] [амулет]:np] [stoim:6952407] [weight:0][color:999900] [block_absorb: u1:огненный_mgc:u1 u2:ледяной_mgc:u2 u3:энергетический_mgc:u3 p1:6000 p2:6000 p3:6000 :block_absorb]'
+		if $args[1]='text': $args['text'] = 'Орочий кулон в виде засушеной головы на золотой цепочке. Способствует поглощению магических атак и преобразованию их энергии в ману. За этот кулон многие орки готовы выложить кругленькую сумму.'
+	end
+	! арбалеты
+	:древний_арбалет
+	if $args['short_word']='древний_арбалет':
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj']+='[:древний_арбалет:] [name:Древний Арбалет:name] [number] [np:[оружие] [арбалет]:np] [color:880066] [weight:1200] [stoim:103535] [DU:3500]'
+			$args['99']='огненный_mgc'
+			$args['100']='ледяной_mgc'
+			$args['101']='энергетический_mgc'
+			$args['new_obj']+=' [uron: u1:дробящий:u1 u2:стрелковый:u2 u3:режущий:u3 u4:'+$args['<<rand(99,101)>>']+':u4 p1:500 p2:3000 p3:500 p4:1000 :uron]'
+		end
+		if $args[1]='text': $args['text'] = 'Древний изветшавший арбалет. При стрельбе из такого арбалета всегда есть риск, что он развалится в руках. Однако дух древних воинов наделяет каждый выстрел особой силой.'
+	end
+	:арбалет
+	if $args['short_word']='арбалет':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:арбалет:] [name:Арбалет:name] [number] [np:[оружие] [арбалет]:np] [color:880066] [weight:1000] [stoim:192156] [DU:4200] [uron: u1:дробящий:u1 u2:стрелковый:u2 p1:700 p2:5500 :uron]'
+		if $args[1]='text': $args['text'] = 'Обыкновенный арбалет с облегчённым ложем и плечами из высокоуглеродистой стали.'
+	end
+	:старый_арбалет
+	if $args['short_word']='старый_арбалет':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:старый_арбалет:] [name:Старый Арбалет:name] [number] [np:[оружие] [арбалет]:np] [color:880066] [weight:900] [stoim:122171] [DU:3800] [uron: u1:дробящий:u1 u2:стрелковый:u2 p1:500 p2:4500 :uron]'
+		if $args[1]='text': $args['text'] = 'Старый лёгкий арбалет, покрытый плесенью и пятнами ржавчины.'
+	end
+	:новый_арбалет
+	if $args['short_word']='новый_арбалет':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:новый_арбалет:] [name:Новый Арбалет:name] [number] [np:[оружие] [арбалет]:np] [color:880066] [weight:1250] [stoim:182221] [DU:4700] [uron: u1:дробящий:u1 u2:стрелковый:u2 u3:режущий:u3 p1:700 p2:6500 p3:700 :uron]'
+		if $args[1]='text': $args['text'] = 'Великолепный арбалет серийного производства, сделанный несколько лет назад. Идеально сбалансирован для стрельбы с одной руки. Специальное устройство плечей позволяет зарядить в арбалет до пяти стрел, которые будут подаваться на ложе автоматичеки, что увеличивает скорость стрельбы.'
+	end
+	:зачарованный_арбалет
+	if $args['short_word']='зачарованный_арбалет':
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj']+='[:зачарованный_арбалет:] [name:Зачарованный Арбалет:name] [number] [np:[оружие] [арбалет]:np] [color:880066] [weight:1500] [stoim:276438] [DU:5200]'
+			args['огонь']=rand(1,45)
+			args['лёд']=rand(1,(45-args['огонь']))
+			args['энергия']=45-args['огонь']-args['лёд']
+			$args['new_obj']+=' [uron: u1:дробящий:u1 u2:стрелковый:u2 u3:режущий:u3 u4:огненный_mgc:u4 u5:ледяной_mgc:u5 u6:энергетический_mgc:u6 p1:1100 p2:7500 p3:1100 p4:'+str(args['огонь']*100)+' p5:'+str(args['лёд']*100)+' p6:'+str(args['энергия']*100)+' :uron]'
+		end
+		if $args[1]='text': $args['text'] = 'Детали для этого арбалета изготовлены из материалов лучшего качества. Сталь с наивысшей степенью упругости и укреплённое специальными рассолами дерево, зачарованные на алтарях эльфийских духов, придают таким арбалетам особые магические свойства.'
+	end
+	! посохи
+	:посох_файербол
+	if $args['short_word']='посох_файербол':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:посох_файербол:] [name:Посох Огненного Шара:name] [number] [np:[оружие] [двуручное] [посох]:np]  [stoim:37383] [weight:1000] [color:cc00cc] [uron:u1:огненный_mgc:u1 p1:1000:uron] [charge:40000] [maxchrg:40000] [boom:1000] [DU:5000]'
+		if $args[1]='text': $args['text'] = 'Узловатая ветвь со вставкой из совершенного рубина.'
+	end
+	:посох_айсбол
+	if $args['short_word']='посох_айсбол':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:посох_айсбол:] [name:Посох Ледяного Шара:name] [number] [np:[оружие] [двуручное] [посох]:np]  [stoim:37383] [weight:1000][color:00cccc][uron: u1:ледяной_mgc:u1 p1:1000 :uron] [charge:40000] [maxchrg:40000] [boom:1000]  [DU:5000]'
+		if $args[1]='text': $args['text'] = 'Узловатая ветвь со вставкой из совершенного изумруда.'
+	end
+	:посох_танцующие_молнии
+	if $args['short_word']='посох_танцующие_молнии':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:посох_танцующие_молнии:] [name:Танцующие Молнии:name] [number] [np:[оружие] [двуручное] [посох]:np]  [stoim:21668232] [weight:1000] [color:00aacc] [uron: u1:энергетический_mgc:u1 p1:17700 :uron] [charge:500000] [maxchrg:500000] [boom:10000]  [DU:7500]'
+		if $args[1]='text': $args['text'] = 'Великолепный дариевый посох, выполненный в виде двух переплетенных змей, которые держат в пасти большую голубую жемчужину.'
+	end
+	! ружья
+	:ружьё_самопальное
+	if $args['short_word']='ружьё_самопальное':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ружьё_самопальное:] [name:Самопальное Ружьё:name] [number] [np:[оружие] [огнестрельное] [двуручное]:np] [stoim:385047] [weight:800] [color:009966][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:1500 p2:1500 p3:8000 :uron] [maxchrg:2] [boom:2] [calibr:000000] [DU:7500]'
+		if $args[1]='text': $args['text'] = 'Самодельное ружьё, собранное из обрезков водопроводных труб и составных частей от сгнивших старых ружий. Продукт вторичной переработки'
+	end
+	:ружьё_револьвер
+	if $args['short_word']='ружьё_револьвер':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:ружьё_револьвер:] [name:Револьвер:name] [number] [np:[оружие] [огнестрельное] [одноручное]:np] [stoim:434019] [weight:170] [color:009966] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:200 p2:200 p3:3500 :uron] [pos: t1:рука:t1 :pos] [maxchrg:6] [boom:1] [calibr:000001] [DU:2000]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	! ------------------------------------------------------------ меновые ---------------------------------------------------------------------------
+	:болты_ржавые
+	if $args['short_word']='болты_ржавые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:болты_ржавые:] [name:Ржавые Болты:name] [count] [np:[снаряды] [болты]:np] [stoim:962] [color:333366][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:800 p2:400 p3:800 :uron]'
+		if $args[1]='text': $args['text'] = 'Ржавые железные болты.'
+	end
+	:болты_серебряные
+	if $args['short_word']='болты_серебряные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:болты_серебряные:] [name:Серебряные Болты:name] [count] [np:[снаряды] [болты]:np] [stoim:9185] [color:333366][uron: u1:дробящий:u1 u2:режущий:u2 u4:серебро u3:стрелковый:u3 p1:600 p2:300 p3:600 p4:600 :uron]'
+		if $args[1]='text': $args['text'] = 'Болты для арбалета из чистого серебра. Идеально подходят для охоты на оборотней и вампиров.'
+	end
+	:болты_старые
+	if $args['short_word']='болты_старые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:болты_старые:] [name:Старые Болты:name] [count] [np:[снаряды] [болты]:np] [stoim:696] [color:333366][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:400 p2:200 p3:400 :uron]'
+		if $args[1]='text': $args['text'] = 'Легкие болты из старой стали для стрельбы из арбалета.'
+	end
+	:болты_стальные
+	if $args['short_word']='болты_стальные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:болты_стальные:] [name:Болты:name] [count] [np:[снаряды] [болты]:np] [stoim:1040] [color:333366][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:500 p2:250 p3:500 :uron]'
+		if $args[1]='text': $args['text'] = 'Легкие болты из мягкой стали для стрельбы из арбалета.'
+	end
+	
+	:стрелы_ржавые
+	if $args['short_word']='стрелы_ржавые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_ржавые:] [name:Ржавые Стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:600] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:200 p2:400 p3:800 :uron]'
+		if $args[1]='text': $args['text'] = 'Прочные деревянные стрелы с ржавыми железными наконечниками.'
+	end
+	:стрелы_дариевые
+	if $args['short_word']='стрелы_дариевые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_дариевые:] [name:Чёрные стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:9420467] [color:663307][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:700 p2:1400 p3:5600 :uron]'
+		if $args[1]='text': $args['text'] = 'Великилепные стрелы с наконечниками из тёмного металла - дария. Такие стрелы некогда изготавливались специально для боевых магов.'
+	end
+	:стрелы_деревянные
+	if $args['short_word']='стрелы_деревянные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_деревянные:] [name:Пруты:name] [count] [np:[снаряды] [стрелы]:np] [stoim:99] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:50 p2:100 p3:500 :uron]'
+		if $args[1]='text': $args['text'] = 'Обыкновенные заострённые ивовые прутья, вымоченные в рассоле.'
+	end
+	:стрелы_золотые
+	if $args['short_word']='стрелы_золотые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_золотые:] [name:Золотые Стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:1656982] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:энергетический_mgc:u3 u4:стрелковый:u4 p1:350 p2:700 p3:500 p4:2600 :uron]'
+		if $args[1]='text': $args['text'] = 'Изготовленные эльфийскими мастерами стрелы с золотыми наконечниками. Специальная обработка древков, а так же особая выплавка острия наконечников, делает эти стрелы практически неразрушимыми. Даже пролежавшие несколько десятков лет закопанными в землю, они остаются пригодными к незамедлительному использованию.
+Каждая стрела при изготовлении благословляется Индрой.'
+	end
+	:стрелы_каменные
+	if $args['short_word']='стрелы_каменные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_каменные:] [name:Кремниевые стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:117] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:150 p2:300 p3:1100 :uron]'
+		if $args[1]='text': $args['text'] = 'Примитивные стрелы с острыми кремниевыми наконечниками. Такие нередко можно найти на болотах у Троглодитов.'
+	end
+	:стрелы_костяные
+	if $args['short_word']='стрелы_костяные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_костяные:] [name:Костяные стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:69892] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:650 p2:1300 p3:2600 :uron]'
+		if $args[1]='text': $args['text'] = 'Выструганные из костей стрелы. Использовать их очень сложно, пуск такой стрелы на большое расстояние требует огромных сил, как физических, так и духовных. Возьми лук понадежнее и пусть Удача сопутствует тебе.'
+	end
+	:стрелы_платиновые
+	if $args['short_word']='стрелы_платиновые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_платиновые:] [name:Платиновые Стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:2813136] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:ледяной_mgc:u4 u5:энергетический_mgc:u5 u6:стрелковый:u6 p1:400 p2:800 p3:300 p4:300 p5:300 p6:2500 :uron]'
+		if $args[1]='text': $args['text'] = 'Изготовленные эльфийскими мастерами стрелы с платиновыми наконечниками. По легенде, кузнец при изготовлении каждого наконечника, просил Браму благословить его работу. Отчего стрелы обретали магические свойства трёх стихий.'
+	end
+	:стрелы_серебрянные
+	if $args['short_word']='стрелы_серебрянные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_серебрянные:] [name:Серебряные Стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:21573] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:400 p2:800 p3:3300 :uron]'
+		if $args[1]='text': $args['text'] = 'Великолепные стрелы с посеребрёнными наконечниками. Дороговизна этих стрел окупается сразу, как только приходится столкнуться с вервольфом, или вампиром'
+	end
+	:стрелы_стальные
+	if $args['short_word']='стрелы_стальные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_стальные:] [name:Стальные Стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:2296] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:350 p2:700 p3:2400 :uron]'
+		if $args[1]='text': $args['text'] = 'Качественные стрелы со стальными наконечниками. Превосходно подходят для охоты, не очень дороги, но идеально сбалансированы для полёта на дальние дистанции.'
+	end
+	:стрелы_старые
+	if $args['short_word']='стрелы_старые':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стрелы_старые:] [name:Старые Стрелы:name] [count] [np:[снаряды] [стрелы]:np] [stoim:1732] [color:663333][uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:350 p2:700 p3:2200 :uron]'
+		if $args[1]='text': $args['text'] = 'Весьма неплохие стрелы с наконечниками из старой стали. Видимо они долго пролежали в сырости, потому как наконечники покрылись ржавчиной, а древки поросли зелёной плесенью.'
+	end
+	
+	:патроны_самопальные
+	if $args['short_word']='патроны_самопальные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:патроны_самопальные:] [name:Самопальные Патроны:name] [count] [np:[заряд] [патроны]:np] [stoim:421] [weight:100][color:008800] [uron: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:стрелковый:u4 p1:200 p2:200 p3:100 p4:500 :uron] [calibr:000000] [maxchrg:1] [charge:1][DU:-100]'
+		if $args[1]='text': $args['text'] = 'Склеенные из плотного пергамента и кусочков стали самодельные патроны с мелкой дробью.'
+	end
+	:патроны_револьверные
+	if $args['short_word']='патроны_револьверные':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:патроны_револьверные:] [name:Патроны 25 калибра:name] [count] [np:[заряд] [патроны]:np] [stoim:561] [color:008800] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:300 p2:300 p3:600 :uron] [calibr:000001] [maxchrg:1] [charge:1]'
+		if $args[1]='text': $args['text'] = 'Превосходные патроны двадцать пятого калибра без каких либо необычных свойств.'
+	end
+	:патроны_револьверные_патронтаж_2
+	if $args['short_word']='патроны_револьверные_патронтаж_2':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:патроны_револьверные_патронтаж_2:] [name:Ви-патроны 25 калибра:name] [count] [np:[заряд] [патроны]:np] [stoim:561] [color:008800] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:300 p2:300 p3:600 :uron] [calibr:000001] [maxchrg:2] [charge:2]'
+		if $args[1]='text': $args['text'] = 'Пистон на два патрона 25-го калибра. Без каких-либо необычных свойств'
+	end
+	:патроны_револьверные_патронтаж_6
+	if $args['short_word']='патроны_револьверные_патронтаж_6':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:патроны_револьверные_патронтаж_6:] [name:Пистоли 25 калибра:name] [count] [np:[заряд] [патроны]:np] [stoim:561] [color:008800] [uron: u1:дробящий:u1 u2:режущий:u2 u3:стрелковый:u3 p1:300 p2:300 p3:600 :uron] [calibr:000001] [maxchrg:6] [charge:6]'
+		if $args[1]='text': $args['text'] = 'Пистон на шесть патронов 25-го калибра. Без каких либо необычных свойств.'
+	end
+	
+	:бомбы
+	if $args['short_word']='бомбы':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:бомбы:] [name:Бомбы:name] [count]  [np:[снаряды] [снаряд метательный]:np] [stoim:10 с] [weight:5][color:663317][uron: u1:дробящий:u1 u2:режущий:u2 u3:огненный_mgc:u3 u4:стрелковый:u4 p1:100 p2: p3:2700 p4:500 :uron]'
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	:святая_вода
+	if $args['short_word']='святая_вода':
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj'] +='[:святая_вода:] [name:Святая Вода:name] [count]  [np:[снаряды] [снаряд метательный] [ингредиент] [еда]:np] [stoim:9 c] [weight:0] [color:663318] [uron: u1:благословение_dim:u1 p1:10000 :uron]'
+			$args['run_array']+={
+			$args[0]=$args[0]
+			$args[1]=$args[1]
+			$args[2]=$args[2]
+			if $args[0]='eat':
+				$print['dynamic.script']+=$func('int.din.text','<b><font color=#008888>Ты выпи(л//ла) пузырёк святой воды. </font><b>')
+				gosub 'hero.mana',property['hero.mana.max']-property['hero.mana.all'],'+'
+			end
+			}
+		end
+		if $args[1]='text': $args['text'] = '-описание не создано-'
+	end
+	
+	! ------------------------------------------------------------ еда ----------------------------------------------------------------------
+	:яблоко
+	if $args['short_word']='яблоко':
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj'] +='[:яблоко:] [name:Яблоки:name] [count]  [np:[ингредиент] [еда]:np] [stoim:0] [color:dd8800]'
+			$args['run_array']+={
+			$args[0]=$args[0]
+			$args[1]=$args[1]
+			$args[2]=$args[2]
+			if $args[0]='eat':
+				$print['dynamic.script']+=$func('int.din.text','<b><font color=#008888>Ты съе(л//ла) яблоко. </font><b>')
+				gosub 'hero.health',50,'+'
+			end
+			}
+		end
+		if $args[1]='text': $args['text'] = 'Полезный в изготовлении зелий ингредиент, а так же лёгкая закуска, восстанавливающая пол единицы здоровья.'
+	end
+	! ------------------------------------------------------------ еда ----------------------------------------------------------------------
+	
+	:сундук
+	if $args['short_word']='сундук':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj']+='[:сундук:] [name:Сундук с Золотом:name] [count]  [np:[шкатулка] [меновой]:np] [stoim:20000] [weight:2000] [color:888800]'
+		if $args[1]='text': $args['text'] = 'Большой сундук, заполненный золотыми монетами.'
+	end
+	:слиток_титановый
+	if $args['short_word']='слиток_титановый':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:слиток_титановый:] [name:Титановый слиток:name] [count]  [np:[материал]:np] [stoim:459201] [color:77aaaa] [weight:1000]'
+		if $args[1]='text': $args['text'] = 'Слиток, выплавленный из первоклассного титана. пригодится для изготовления оружия, доспехов и других изделий из титана.'
+	end
+	:стержень_титановый
+	if $args['short_word']='стержень_титановый':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:стержень_титановый:] [name:Титановый стержень:name] [count]  [np:[материал] [снаряды] [болты]:np] [stoim:45920] [color:77aaaa] [weight:100]'
+		if $args[1]='text': $args['text'] = 'Кусок титановой арматуры. Пригодится для изготовления оружия, доспехов и других изделий из титана.'
+	end
+	:полоса_кожаная
+	if $args['short_word']='полоса_кожаная':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:полоса_кожаная:] [name:Полоска Кожи:name] [count]  [np:[материал]:np] [stoim:15] [color:cc6633] [weight:50]'
+		if $args[1]='text': $args['text'] = 'Полоска выделанной кожи. Пригодится для обмотки рукоятей, подвязки доспехов или шнуровки одежды и сумок.'
+	end
+	:полоса_лыковая
+	if $args['short_word']='полоса_лыковая':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:полоса_лыковая:] [name:Лыковая Полоска:name] [count] [np:[материал]:np] [stoim:10] [color:663300] [weight:50]'
+		if $args[1]='text': $args['text'] = 'Полоса берёзового лыка. Пригодится для изготовления лаптей, плетёных шляп, корзин и прочих изделий.'
+	end
+	:жемчужина_голубая_большая
+	if $args['short_word']='жемчужина_голубая_большая':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj'] +='[:жемчужина_голубая_большая:] [name:Большая Голубая Жемчужина|Большой Голубой Жемчужины|Большой Голубой Жемчужине|Большую Голубую Жемчужину|Большой Голубой Жемчужиной|Большой Голубой Жемчужине:name] [count] [np:[материал]:np] [stoim:10000] [color:000000] [weight:50] [spirit:10000 :spirit]'
+		if $args[1]='text': $args['text'] = 'Переливающаяся пастельными тонами голубого жемчужина, расмером с абрикос. Такие попадаются очень редко.'
+	end
+	! -------------------------------------------------- меновые -------------------------------------------------
+	
+	! ------------------------------------------------ заклинания --------------------------------------------------------------------------
+	:spell_Перст_Гемеры
+	if $args['short_word']='spell_Перст_Гемеры':
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj']+= '[name:Перст Гемеры:name] [color:663399] [:spell_Перст_Гемеры:] [count] [np:[свиток]:np] [stoim:10000] [teaching: teach:1 :teaching] [menergy:u1:свет:u1 p1:100:menergy]'
+			$args['run_array']+={
+			! Скрипт заклинания "Перст Гемеры".
+			! меняет $light_array[$curloc] на путое значение, что соответствует освещённости помещения.
+			$args[0] = $args[0]	&	!	управляющая конструкция
+			$args[1] = $args[1]	&	!	id - заклинания
+			$args[2] = $args[2]
+			if $args[0] = "!spell.read!":
+				$args['light']	=	$func('int.lighting')
+				if $light_array[$curloc]!'темно':
+					$print['dynamic.script']	=	$func('base.word.screen','019.1')+"<b><font color=#884444>позиция освещена.</font></b>"
+					$result = 'false'
+					exit
+				else
+					$light_array[$curloc]=''
+					$result = 'true'
+					$print['dynamic.script']	=	$func('int.din.text',"<font color=#008888>Ты сконцентрирова(лся/лась) и начерти(л//ла) в воздухе пару кругов. За твоим указательным пальцем тянулись пылающие линии, между которыми возникла светящаяся точка. Когда её свет стал достаточно ярким, чтобы осветить всё окружающее пространство, ты произ(нёс/несла) несколько магических слов.</font>")
+					exit
+				end
+			end
+			if $args[0] = "spell.teach":
+			! Здесь будет скрипт изучения заклинания
+			end
+			}
+		end
+		if $args[1]='text': $args['text'] = 'Заклинание "Перст Гемеры", записанное в свиток.'
+		if $args[1]='book':
+			$args['book'] = '<font size=5 color=#663399 face="CyrillicOld">Перст Гемеры</font>
+В окружающем пространстве всегда, или почти всегда, присутствуют потоки света. Это потоки, накопленные предметами за день, или привнесённые извне. Так путники, ночевавшие в пещерах, зажигали там костры и оставили немного света, или Луна недавно глядела в окно и забыла свои лучи.
+Маг может вычерпать свет и перенаправить поток так, что ещё долгое время накопленный свет будет возвращаться в выбранную магом точку, а после вновь излучаться в пространство. Так действует заклинание "Перст Гемеры", которое Вы можете исполнить. Не следует забывать, что без поддержки мага, перенаправленные потоки быстро возвращаются в исходное состояние. Иными словами, как только Вы покинете место применения заклинания, его эффект пропадёт.'
+		end
+	end
+	:spell_файерболл
+	if $args['short_word']='spell_файерболл':
+		if $args[1]='' or instr($args[1],'get.obj')!0:
+			$args['new_obj']+= '[name:Файерболл:name] [color:663399] [:spell_файерболл:] [count] [np:[свиток]:np] [stoim:10000] [teaching: teach:1 :teaching] [mana:1000000] [uron: u1:огненный_mgc:u1 p1:2700:uron]'
+			$args['run_array']+="$result=$func('magic.warspell',$args[0],$args[1],$args[2])"	&	!	
+		end
+		if $args[1]='text': $args['text'] = 'Заклинание "Файерболл", записанное в свиток.'
+		if $args[1]='book':
+			$args['book'] = '<font size=5 color=#663399 face="CyrillicOld">Файерболл</font>
+Внутри тебя живёт огонь, и лучше ты его не тронь. -не дописано-'
+		end
+	end
+	! ------------------------------------------------ заклинания --------------------------------------------------------------------------
+	! книги
+	:пустой_пергамент
+	if $args['short_word']='пустой_пергамент':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj']+='[:пустой_пергамент:] [name:Пустой Пергамент|Пустого Пергамента|Пустому Пергаменту|Пустой Пергамент|Пустым Пергаментом|Пустом Пергаменте:name] [number] [np:[книга] [материал]:np] [stoim:100] [color:003366]'
+		if $args[1]='text': $args['text'] = 'Лист пустого пергамента.'
+		if $args[1]='book': $args['book'] = 'Здесь ничего не написано.'
+	end
+	:мятая_бумага
+	if $args['short_word']='мятая_бумага':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj']+='[:мятая_бумага:] [name:Мятый клочок бумаги:name] [number] [np:[книга] [материал]:np] [color:003366]'
+		if $args[1]='text': $args['text'] = 'Бумага сильно измята, невозможно ничего прочесть.'
+	end
+	:инструкция_для_возвратника
+	if $args['short_word']='инструкция_для_возвратника':
+		if $args[1]='' or instr($args[1],'get.obj')!0: $args['new_obj']+='[:инструкция_для_возвратника:] [name:Инструкция для "Возвратника":name] [number] [np:[книга] [брошюра]:np]  [stoim:2500] [color:003366]'
+		if $args[1]='text': $args['text'] ='Небольшая брошюра, которая поможет тебе правильно использовать возвратник'
+		if $args[1]='book':
+			$args['book']='
+<font size=5 color=#77aaaa face="CyrillicOld">"Возвратник". Модель PG-20.89.-i</font>
+
+<font size=3 color=#770000 face="CyrillicOld">Меры предосторожности:</font>
+
+<font size=1>Не применяйте телепортационное устройство(далее "возвратник") для возврата в сейсмоопасную местность или ветхие строения. В связи с тем, что возвратное устройство использует для определения координат спиралевидную систему темпорального отсчета, возможны побочные эффекты, как то:
+
+	 *перемещение в относительном временном континууме (возврат в прошлое или будущее)
+	 *перемещение в изолированые участки (так называемые "острова темпорального покоя").
+
+Чтобы избежать подобных явлений, постарайтесь не использовать возвратник вблизи живых существ и в запирающихся помещениях, лучше всего производить процесс записи в открытой местности. Если всё же произошло непредвиденое, и Вы переместились в прошедшее или на "остров покоя", воспользуйтесь функцией отката, которой оснащена данная модель возвратника.</font>
+
+<font size=3 color=#000077 face="CyrillicOld">Использование:</font>
+
+<font size=2 color=#007700 face="CyrillicOld">Запись/запоминание:</font>
+<font size=1>1.	Возьмите возвратник в правую руку и обратитесь лицом на север.
+2.	Глаз возвратника направьте взглядом перпендикулярно линии горизонта
+3.	Оттяните спусковой рычаг к рукояти возвратника, прибор зафиксирует ваше текущее пространственно-темпоральное положение, о чём проиндицирует синяя лампочка.</font>
+<font size=2 color=#007700 face="CyrillicOld">Возврат:</font><font size=1>
+4.	Выполните пункты 1 и 2 данной инструкции.
+5.	Оттяните спусковой рычаг от рукояти возвратника. Прибор телепортирует Вас в последнее зафиксированое пространственно-темпоральное положение.
+</font>
+<font size=2 color=#007700 face="CyrillicOld">Откат:</font><font size=1>
+6.	В случае неудачной телепортации повторно оттяните спусковой рычаг от рукояти возвратника. Ваше текущее пространственно-временное положение будет изменено на предыдущее.</font>
+
+<font size=1 color=#ff0000>
+Ни в коем случае не пытайтесь переместиться из текущего пространственно-темпорального положения в текущее же!!! Это может повлечь за собой наложение слоев реальности друг на друга и как следствие - аннигиляцию вашего материального тела.</font>'
+		end
+		if $args[1]='image': $args['image']='res\img\backer.gif'
+	end
+!------------------------------------------------------ собственно база лутов -------------------------------------------------------------------
+
+! ------------------------- далее следует вторая часть генератора. не подлежит редактированию ---------------------------------------------------------
+:end_sel
+! добавление отличительных свойств на предмет
+if $args[1] = '' or instr($args[1],'get.obj')!0:
+	if $args['new_obj']!'<obj> ' and $args['new_obj']!'':
+		! добавляем исходные позициии типа
+		$args['np'] = $func('get.tag.cont',$args['new_obj'],'np')	&	!	получаем набор признаков
+		$args['res.021213']=$args['new_obj']	&	!	запоминаем тело предмета
+		! если дальность удара по функции получается и не присутствует в запомненом теле, добавляем дальность удара
+		if func('get.obj.DU',$args['np'])!0 and func('get.tag.num',$args['res.021213'],'DU')=0: $args['new_obj']+=' [DU:'+str(func('get.obj.DU',$args['res.021213']))+']'
+		! если позиции для предмета есть, добавляем.
+		if $func('get.obj.pos',$args['np'],$args['res.021213'])!'': $args['new_obj'] += ' [pos: '+$func('get.obj.pos',$args['np'],$args['res.021213'])+' :pos]'
+		! Слияние свойств. Приоритет у $args[0]
+		$args['res.obj.021213']=$func('remastering.obj',$args[0],$args['new_obj'])
+		if instr($args['res.obj.021213'],'[oneself]')!0: $args['OIDstart']=$UCASE($args['short_word']) else $args['OIDstart']=$args['short_word']
+		if instr($args['res.obj.021213'],'[maxchrg:')!0 and args[4] = 0:
+			args[4] = func('get.tag.num',$args['res.obj.021213'],'charge')
+		elseif args[4] ! 0 and  instr($args['res.obj.021213'],'[maxchrg:')!0:
+			args[4] = args[4]
+		else
+			args[4] = 0
+		end
+		if $args['run_array']!'': $args['dyn_code']=$args['run_array']
+		if instr($args[1],'get.obj')=0:
+			if $args[2]='': $args[2]=$func('get.loc.id')
+			$args['base.new.obj.AVS']=$func('add.new.obj',$args['res.obj.021213'],$args[2],$args['OIDstart'],args[3],args[4],$args['dyn_code'])
+			$result=$args['base.new.obj.AVS']
+		elseif instr($args[1],'get.run_array')!0:
+			$result=$args['dyn_code']
+		else
+			$result=$args['res.obj.021213']
+		end
+		exit
+	else
+		msg 'Внимание!!! Ошибка базы "base.new.obj". Не найден объект "'+$args['short_word']+'". Проверьте правильность вызова объекта.'
+		exit
+	end
+elseif $args[1]='text':
+	if  $args['text']='':
+		$args['base.new.obj.AVS']='-описание не создано-'
+	else
+		$args['base.new.obj.AVS']=$args['text']
+	end
+	$result=$args['base.new.obj.AVS']
+	exit
+elseif $args[1]='image':
+	if $args['image']='':
+		$args['base.new.obj.AVS']=$func('base.img','onim')
+		$result=$args['base.new.obj.AVS']
+		exit
+	else
+		$args['base.new.obj.AVS']=$args['image']
+		$result=$args['base.new.obj.AVS']
+		exit
+	end
+elseif $args[1]='book':
+	if $args['book']='':
+		$args['base.new.obj.AVS']='-не удаётся прочесть-'
+		$result=$args['base.new.obj.AVS']
+		exit
+	else
+		$args['base.new.obj.AVS']=$args['book']
+		$result=$args['base.new.obj.AVS']
+		exit
+	end
+elseif $args[1]='unmount':
+	$args['result_unmount']=$func('remastering.tag.number',$args[0],$args['ingredients'])
+	if $args['result_unmount']!'':
+		$args['base.new.obj.AVS']=$args['result_unmount']
+		$result=$args['base.new.obj.AVS']
+		exit
+	else
+		$args['base.new.obj.AVS']='cant unmount'
+		$result=$args['base.new.obj.AVS']
+		exit
+	end
+end
+--- base.new.obj ---------------------------------

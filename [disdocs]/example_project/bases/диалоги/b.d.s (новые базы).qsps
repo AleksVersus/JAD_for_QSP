@@ -53,7 +53,7 @@ if $args[0]='':
 	if args['rand']=2: $args['b.d.s'] += 'Повтори-ка ещё разик...'
 	if args['rand']=3: $args['b.d.s'] += 'Никак не пойму, чего ты от меня хочешь!'
 	if args['rand']=4: $args['b.d.s'] += $func('int.din.text','Вот ты сейчас сказа(л//ла) вообще непонятно.')
-	if args['rand']=5: $args['b.d.s'] += 'Несёшь какой-то бред.')
+	if args['rand']=5: $args['b.d.s'] += 'Несёшь какой-то бред.'
 end
 :end_keep
 $args['b.d.s'] = '<b><font color=#'+$args['color']+'>'+$args['s.name']+':</font></b> - '+$args['b.d.s']

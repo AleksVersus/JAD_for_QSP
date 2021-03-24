@@ -223,6 +223,21 @@ QBST принимает следующие аргументы, записанн�
 `"function.genFilesPaths: File don't exist. Prove path '[...]'."` — функция *genFilesPaths* не обнаружила файла по указанному пути. Данный файл не существует.
 `function.searchProject: not found 'project.json' file for this project. Prove path '[...]'."` — функция *searchProject* не обнаружила файл "`project.json`".
 
+Если всё же в консоли у вас выводятся ошибки, то скорее всего они имеют вот такой вид:
+
+```
+Traceback (most recent call last):
+  File "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QBST\main.py", line 72, in <module>
+    qsp.constructFile(build_files,exit_txt)
+  File "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QBST\function.py", line 44, in constructFile
+    file.write(text)
+  File "C:\Program Files\Python39\lib\encodings\cp1251.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2191' in position 29347: character maps to <undefined>
+```
+
+В данном случае ошибка показывает, что имеются проблемы с декодированием. Сообщите о ней, написав мне на почту aleksversus@mail.ru.
+
 ## Подсветка синтаксиса QSP
 
 Для того, чтобы в ваших файлах формата TXT2GAM с расширениями "`.qsps`", "`.qsp-txt`", или "`.txt-qsp`", автоматически подсвечивался код QSP, необходимо установить пакет подсветки синтаксиса QSP в ваш Sublime Text. Для этого просто скопируйте файл "`QSP.sublime-package`" из папки "`Syntax-Light`" в папку "`Packages`" в месте установки вашего Sublime Text. Например, у меня эта папка лежит по адресу "`C:\Program Files\Sublime Text\Packages`".

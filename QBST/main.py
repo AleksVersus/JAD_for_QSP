@@ -33,6 +33,13 @@ if work_dir!=None:
 	if "player" in root:
 		if os.path.isfile(os.path.abspath(root["player"])):
 			player_exe=os.path.abspath(root["player"])
+	if "save_txt2gam" in root:
+		if root["save_txt2gam"]=="True":
+			save_txt2gam=True
+		else:
+			save_txt2gam=False
+	else:
+		save_txt2gam=False
 	# инициализируем разные данные
 	export_files=[] # список файлов, получаемых на выходе
 	start_file="" # файл, который мы должны запустить
@@ -75,7 +82,8 @@ if work_dir!=None:
 			if os.path.isfile(exit_qsp):
 				export_files.append(exit_qsp)
 			# теперь удаляем промежуточный файл
-			os.remove(exit_txt) # можно добавить аргумент, запрещающий удалять этот файл
+			if save_txt2gam==False:
+				os.remove(exit_txt) # можно добавить аргумент, запрещающий удалять этот файл
 
 	if args["run"]==True:
 		# если разрешён запуск

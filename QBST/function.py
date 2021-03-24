@@ -39,8 +39,12 @@ def constructFile(build_list,new_file):
 		with open(path,"r",encoding="utf-8") as file:
 			# открываем путь как файл
 			text+=file.read()+"\r\n"
+	# если папка не создана, нужно её создать
+	path_folder=os.path.split(new_file)[0]
+	if os.path.exists(path_folder)!=True:
+		os.makedirs(path_folder)
 	# необходимо записывать файл в кодировке cp1251, txt2gam версии 0.1.1 понимает лишь её
-	text=text.encode('utf-8', 'ignore').decode('cp1251','ignore')
+	text=text.encode('cp1251', 'backslashreplace').decode('cp1251','ignore')
 	with open(new_file,"w",encoding="cp1251") as file:
 		file.write(text)
 
