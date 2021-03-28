@@ -43,9 +43,9 @@ def constructFile(build_list,new_file):
 	path_folder=os.path.split(new_file)[0]
 	if os.path.exists(path_folder)!=True:
 		os.makedirs(path_folder)
-	# необходимо записывать файл в кодировке cp1251, txt2gam версии 0.1.1 понимает лишь её
-	text=text.encode('cp1251', 'backslashreplace').decode('cp1251','ignore')
-	with open(new_file,"w",encoding="cp1251") as file:
+	# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
+	text=text.encode('utf-16-le', 'ignore').decode('utf-16-le','ignore')
+	with open(new_file,"w",encoding="utf-16-le") as file:
 		file.write(text)
 
 # данная функция находит папку проекта или возвращает None
