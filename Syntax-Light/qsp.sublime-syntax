@@ -33,10 +33,10 @@ contexts: # теперь необходимо определить "контек
         - match: ".*"
           scope: comment.qsp
       with_prototype:
-        - match: ^(#)\s?.+$
+        - match: ^(\s*?)(#)\s?.+$
           scope: constant.character.qsp avs.locstart
           push:
-            - match: ^(-)(.*?)$
+            - match: ^\1(-)(.*?)$
               pop: true
               captures:
                 1: variable.parameter.url.qsp avs.locend
