@@ -1,0 +1,180 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+#
+# Quest Soft Player 5.7.0 Language:
+# http://qsp.su/
+
+name: QSP # название языка
+hidden: true
+scope: source.locations.QSP
+variables: # назначаем переменные для удобства
+  oprt: (?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprttxt: (?i:(pl?|nl|clr|clear))
+  sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
+  sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage|args|result))
+  fncnum: (?i:obj|isplay|len|iif|rgb|msecscount|no|and|mod|arrsize|arrpos|countobj|instr|isnum|val|loc|or|r(a)?nd|(arr|str)comp|strpos)
+  fnctxt: (?i:(input|user_text|usrtxt|dyneval|desc|maintxt|stattxt|qspver|func|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|max|min|strfind))
+  figop: '\{'
+  figcls: '\}'
+  quote: '"'
+  ap: "'"
+  opener: '{{figop}}{{quote}}{{ap}}'
+  closer: '{{figcls}}{{quote}}{{ap}}'
+
+contexts: # теперь необходимо определить "контексты" подсветки
+  main: # обязательный контекст main, с него стартует распознавание синтаксиса
+    - match: ^\s*?(#)\s?.+$
+      scope: constant.character.qsp avs.locstart
+    - match: ^\s*?(-)(.*?)$
+      captures:
+        1: variable.parameter.url.qsp avs.locend
+        2: entity.name.function entity.name avs.locend.comments
+    - include: locations
+
+  locations:
+    - include: comments
+    - include: markers
+    - include: operators
+    - include: sysvar
+    - include: functions
+    - include: strings
+    - include: operacion
+    - include: numeric
+
+  operacion:
+    - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
+      scope: support.function.qsp
+
+  numeric:
+    - match: \b[0-9]+\b
+      scope: constant.numeric avs.numberic
+    
+  operators:
+    - match: \b({{oprt}}|{{oprttxt}})\b
+      scope: support.function.qsp avs.operators
+    - match: (\*)(?={{oprttxt}}\b)
+      scope: support.function.qsp avs.operators
+    - match: (\*)(?={{oprt}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+
+  sysvar:
+    - match: \b({{sysvarnum}}|{{sysvartxt}})\b
+      scope: keyword.qsp avs.sysvar
+    - match: (\$)(?={{sysvartxt}})
+      scope: keyword.qsp avs.sysvar
+    - match: (\$)(?={{sysvarnum}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+
+  functions:
+    - match: \b({{fncnum}}|{{fnctxt}})\b
+      scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+    - match: (\$)(?={{fnctxt}}\b)
+      scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+    - match: (\$)(?={{fncnum}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+
+  markers:
+    - match: ^(\s*?\:|\:)[^&'"]+
+      scope: entity.name.function entity.name avs.markup
+
+  strings:
+    - match: '"'
+      push:
+        - meta_scope: string.qsp
+        - match: '""'
+          scope: string.qsp
+        - match: '"'
+          pop: true
+        - include: subexpression
+    - match: "'"
+      push:
+        - meta_scope: string.qsp
+        - match: "''"
+          scope: string.qsp
+        - match: "'"
+          pop: true
+        - include: subexpression
+
+  subexpression:
+    - match: '<<'
+      scope: entity.name.function entity.name avs.markup
+      push:
+        - clear_scopes: true
+        - match: '>>'
+          scope: entity.name.function entity.name avs.markup
+          pop: true
+        - include: subex
+
+  subex:
+    - include: operators
+    - include: sysvar
+    - include: functions
+    - include: strings
+    - include: operacion
+    - include: numeric
+
+
+  comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
+    - match: ((^\s*?)|(\&\s*?))(!)
+      captures:
+        3: support.function.qsp
+        4: comment.qsp
+      push:
+        - meta_scope: comment.qsp
+        - match: (\n\r|\r|\r\n|\n)
+          scope: comment.qsp
+          pop: true
+        - include: cominquotes
+        - include: brackin
+
+  brackin: # данная конструкция отвечает за поддержку вложенных скобок в комменте
+    - match: '\{'
+      scope: comment.qsp
+      push:
+        - match: '\}'
+          scope: comment.qsp
+          pop: true
+        - include: brackin
+        - include: quoteinbrack
+        - include: apinbrack
+
+  quoteinbrack: # данная конструкция отвечает за поддержку апострофов и кавычек в комменте
+    - match: '{{quote}}'
+      scope: comment.qsp
+      push:
+        - match: '{{quote}}'
+          scope: comment.qsp
+          pop: true
+    - match: '{{quote}}'
+      scope: invalid.illegal.stray-bracket-end.qsp
+
+  apinbrack:
+    - match: '{{ap}}'
+      scope: comment.qsp
+      push:
+        - match: '{{ap}}'
+          scope: comment.qsp
+          pop: true
+    - match: '{{ap}}'
+      scope: invalid.illegal.stray-bracket-end.qsp
+
+  cominquotes:
+    - match: '[^{{opener}}]*?\"'
+      scope: comment.qsp
+      push:
+        - meta_scope: comment.qsp
+        - match: ^.*?{{quote}}.*?{{quote}}.*?$
+          scope: comment.qsp
+        - match: \"
+          scope: comment.qsp
+          pop: true
+    - match: "[^{{opener}}]*?\'"
+      scope: comment.qsp
+      push:
+        - meta_scope: comment.qsp
+        - match: ^.*?{{ap}}.*?{{ap}}.*?$
+          scope: comment.qsp
+        - match: \'
+          scope: comment.qsp
+          pop: true
