@@ -71,9 +71,9 @@ contexts: # теперь необходимо определить "контек
     - match: ({{left_operand}}\s*?)\K(,)(?=\s*?{{right_operand}})
       scope: support.function.qsp avs.operacion6
     - match: ({{left_operand}}\s*?)\K(,)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion7
-    - match: (^\s*?|[\(\[\{]\s*?)\K(,)(?=\s*?{{right_operand}}?)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion8
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma1
+    - match: (^\s*?|[\(\{]\s*?)\K(,)(?=\s*?{{right_operand}}?)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma2
     - match: '(?i:(!|,|\:|\;|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
 
