@@ -27,7 +27,8 @@ variables: # назначаем переменные для удобства
   ap: "'"
   opener: '{{figop}}{{quote}}{{ap}}'
   closer: '{{figcls}}{{quote}}{{ap}}'
-  operand: '("[\s\S]*?|''[\s\S]*?''|\([\s\S]*?\)|\$?\w+?|\d+?)'
+  left_operand: '([\s\S]*{{quote}}|[\s\S]*{{ap}}|[\s\S]*?\)|\$?\w+?|\d+?)'
+  right_operand: '({{quote}}[\s\S]*|{{ap}}[\s\S]*|\([\s\S]*?|\$?\w+?|\d+?)'
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -49,31 +50,31 @@ contexts: # теперь необходимо определить "контек
   locations:
     - include: comments
     - include: markers
-    - include: strings
     - include: operators
     - include: operacion
     - include: sysvar
     - include: functions
     - include: numeric
+    - include: strings
 
   operacion:
-    - match: ({{operand}}\s*?)\K(\!|\+|-)(?!\s*?{{operand}})
+    - match: ({{left_operand}}\s*?)\K(\!|\+|-)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion1
-    - match: ({{operand}}\s*?)\K(<=|>=)(?!\s*?{{operand}})
+    - match: ({{left_operand}}\s*?)\K(<=|>=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion2
     - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.operacion3
-    - match: ({{operand}}\s*?)\K(<|>|=)(?!\s*?{{operand}})
+    - match: ({{left_operand}}\s*?)\K(<|>|=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion4
     - match: (<|>|=)
       scope: support.function.qsp avs.operacion5
-    - match: ({{operand}}\s*?)\K(,)(?=\s*?{{operand}})
+    - match: ({{left_operand}}\s*?)\K(,)(?=\s*?{{right_operand}})
       scope: support.function.qsp avs.operacion6
-    - match: ({{operand}}\s*?)\K(,)(?!\s*?{{operand}})
+    - match: ({{left_operand}}\s*?)\K(,)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion7
-    # - match: (,)(?=\s*?{{operand}})
+    # - match: (,)(?=\s*?{{right_operand}})
     #  scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion8
-    - match: '(?i:(!|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
+    - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
 
   numeric:
@@ -143,12 +144,11 @@ contexts: # теперь необходимо определить "контек
         - include: subex
 
   subex:
-    - include: locations
     - include: operacion
     - include: sysvar
     - include: functions
-    - include: strings
     - include: numeric
+    - include: strings
 
 
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
