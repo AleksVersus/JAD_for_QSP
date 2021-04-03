@@ -27,7 +27,7 @@ variables: # назначаем переменные для удобства
   ap: "'"
   opener: '{{figop}}{{quote}}{{ap}}'
   closer: '{{figcls}}{{quote}}{{ap}}'
-  operand: ("[\s\S]*?"|\'[\s\S]*?\'|\([\s\S]*?\)|\$?\w+?|\d+?)
+  operand: '("[\s\S]*?|''[\s\S]*?''|\([\s\S]*?\)|\$?\w+?|\d+?)'
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -71,8 +71,8 @@ contexts: # теперь необходимо определить "контек
       scope: support.function.qsp avs.operacion6
     - match: ({{operand}}\s*?)\K(,)(?!\s*?{{operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion7
-    - match: (,)(?=\s*?{{operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion8
+    # - match: (,)(?=\s*?{{operand}})
+    #  scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion8
     - match: '(?i:(!|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
 
@@ -115,21 +115,21 @@ contexts: # теперь необходимо определить "контек
   strings:
     - match: '"'
       push:
-        - include: subexpression
         - meta_scope: string.qsp
         - match: '""'
           scope: string.qsp
         - match: '"'
           pop: true
+        - include: subexpression
         
     - match: "'"
       push:
-        - include: subexpression
         - meta_scope: string.qsp
         - match: "''"
           scope: string.qsp
         - match: "'"
           pop: true
+        - include: subexpression
         
 
   subexpression:
@@ -143,6 +143,7 @@ contexts: # теперь необходимо определить "контек
         - include: subex
 
   subex:
+    - include: locations
     - include: operacion
     - include: sysvar
     - include: functions
