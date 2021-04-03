@@ -18,8 +18,9 @@ variables: # назначаем переменные для удобства
   sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
   sysvarot: (?i:(args|result))
-  fncnum: (?i:obj|isplay|len|iif|rgb|msecscount|no|and|mod|arrsize|arrpos|countobj|instr|isnum|val|loc|or|r(a)?nd|(arr|str)comp|strpos)
-  fnctxt: (?i:(input|user_text|usrtxt|dyneval|desc|maintxt|stattxt|qspver|func|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|max|min|strfind))
+  fncnum: (?i:obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|r(a)?nd|arrsize|arrpos|arrcomp|strcomp|strpos)
+  fnctxt: (?i:(input|user_text|usrtxt|desc|maintxt|stattxt|qspver|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|strfind))
+  fncot: (?i:(iif|dyneval|func|max|min))
   figop: '\{'
   figcls: '\}'
   quote: '"'
@@ -55,6 +56,8 @@ contexts: # теперь необходимо определить "контек
     - include: numeric
 
   operacion:
+    - match: \!(?<!\s*?\w+?)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
     - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp
 
@@ -73,7 +76,7 @@ contexts: # теперь необходимо определить "контек
   sysvar:
     - match: (?<!\$)({{sysvartxt}}) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
-    - match: (\$)(?={{sysvartxt}}|{{sysvarot}})
+    - match: (\$)(?=(\b{{sysvartxt}}|{{sysvarot}}\b))
       scope: keyword.qsp avs.sysvar
     - match: \b({{sysvarnum}}|{{sysvartxt}}|{{sysvarot}})\b
       scope: keyword.qsp avs.sysvar
@@ -81,11 +84,13 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   functions:
-    - match: \b({{fncnum}}|{{fnctxt}})\b
+    - match: (?<!\$)(\b{{fnctxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: (\$)(?=(\b{{fnctxt}}|{{fncot}}\b))
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
-    - match: (\$)(?={{fnctxt}}\b)
+    - match: \b({{fncnum}}|{{fnctxt}}|{{fncot}})\b
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
-    - match: (\$)(?={{fncnum}}\b)
+    - match: (\$)(?=\b{{fncnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   markers:
