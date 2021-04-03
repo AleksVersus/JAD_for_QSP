@@ -13,7 +13,7 @@ file_extensions: # расширения файлов
 first_line_match: ^(#)\s?.+$
 scope: source.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg))
   oprttxt: (?i:(pl?|nl|clr|clear))
   sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
@@ -27,6 +27,7 @@ variables: # назначаем переменные для удобства
   ap: "'"
   opener: '{{figop}}{{quote}}{{ap}}'
   closer: '{{figcls}}{{quote}}{{ap}}'
+  operand: ("[\s\S]*?"|'[\s\S]*?'|\([\s\S]*?\)|\w+?|\d+?)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -49,15 +50,25 @@ contexts: # теперь необходимо определить "контек
     - include: comments
     - include: markers
     - include: operators
+    - include: operacion
     - include: sysvar
     - include: functions
     - include: strings
-    - include: operacion
     - include: numeric
 
   operacion:
-    - match: \!(?<!\s*?\w+?)
+    - match: ({{operand}}\s*?)\K(\!|\+|,|-)(?!\s*?{{operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: ({{operand}}\s*?)\K(<=|>=)(?!\s*?{{operand}})
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
+      scope: support.function.qsp
+    - match: ({{operand}}\s*?)\K(<|>|=)(?!\s*?{{operand}})
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: (<|>|=)
+      scope: support.function.qsp
+    # - match: (?<!(^\s|\(|\(\s+))(,)(?=\s*?{{operand}}) # не поддерживается расширяющийся lookbehind, так что пока не знаю, как подсветить запятую в начале строки как ошибку
+    #  scope: invalid.illegal.expected-mapping-key.qsp avs.error
     - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp
 
