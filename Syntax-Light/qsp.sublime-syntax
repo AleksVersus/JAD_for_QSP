@@ -72,12 +72,14 @@ contexts: # теперь необходимо определить "контек
       scope: support.function.qsp avs.operacion6
     - match: ({{left_operand}}\s*?)\K(,)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion7
-    # - match: (,)(?=\s*?{{right_operand}})
-    #  scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion8
-    - match: '(?i:(!|,|\:|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
+    - match: (^\s*?|[\(\[\{]\s*?)\K(,)(?=\s*?{{right_operand}}?)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion8
+    - match: '(?i:(!|,|\:|\;|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
 
   numeric:
+    - match: \b\d+[A-Za-zа-яА-Я\$\.]+\b # неправильные переменные
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongvar
     - match: \b[0-9]+\b
       scope: constant.numeric avs.numberic
     
