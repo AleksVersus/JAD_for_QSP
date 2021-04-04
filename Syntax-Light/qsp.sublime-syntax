@@ -27,8 +27,8 @@ variables: # назначаем переменные для удобства
   ap: "'"
   opener: '{{figop}}{{quote}}{{ap}}'
   closer: '{{figcls}}{{quote}}{{ap}}'
-  left_operand: '([\s\S]*{{quote}}|[\s\S]*{{ap}}|[\s\S]*?\)|\$?\w+?|\d+?)'
-  right_operand: '({{quote}}[\s\S]*|{{ap}}[\s\S]*|\([\s\S]*?|\$?\w+?|\d+?)'
+  left_operand: '([^{{quote}}]*{{quote}}|[^{{ap}}]*{{ap}}|[^\(]*?\)|\$?\w+?|\d+?)'
+  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\$?\w+?|\d+?)'
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -66,15 +66,21 @@ contexts: # теперь необходимо определить "контек
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
     - match: ({{left_operand}}\s*?)\K(<=|>=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
+    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
     - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.operacion1
     # ошибка записи операторов > < =  без правого операнда
     - match: ({{left_operand}}\s*?)\K(<|>|=)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion4
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
+    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
     - match: (<|>|=)
-      scope: support.function.qsp avs.operacion5
+      scope: support.function.qsp avs.operacion5 
     # подсветка всех операторов для операций, в т.ч. скобок и прочего
     - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\&|\+|\/|\*|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
