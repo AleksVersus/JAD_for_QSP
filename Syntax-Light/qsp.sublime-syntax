@@ -95,7 +95,7 @@ contexts: # теперь необходимо определить "контек
       scope: support.function.qsp avs.operacion9
 
   numeric:
-    - match: \b\d+[A-Za-zа-яА-Я0-9\$\.]+\b # неправильные переменные
+    - match: \b\d+([A-Za-zа-яА-Я\$\.]+\d*)+\b # неправильные переменные
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongvar
     - match: \b[0-9]+\b
       scope: constant.numeric avs.numberic
