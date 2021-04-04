@@ -50,12 +50,14 @@ contexts: # теперь необходимо определить "контек
   locations:
     - include: comments
     - include: markers
+    - include: figurebrack
     - include: operators
     - include: operacion
     - include: sysvar
     - include: functions
     - include: numeric
     - include: strings
+
 
   operacion:
     # ошибка записи операторов операций без правого операнда
@@ -74,7 +76,7 @@ contexts: # теперь необходимо определить "контек
     - match: (<|>|=)
       scope: support.function.qsp avs.operacion5
     # подсветка всех операторов для операций, в т.ч. скобок и прочего
-    - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\{|\}|\&|\+|\/|\*|=|-|(>|<)=?|=?(>|<)))'
+    - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\&|\+|\/|\*|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
 
   numeric:
@@ -116,6 +118,7 @@ contexts: # теперь необходимо определить "контек
     - match: ^(\s*?\:|\:)[^&'"]+
       scope: entity.name.function entity.name avs.markup
 
+  # # # ------------------- строки ------------------------ # # #
   strings:
     - match: '"'
       push:
@@ -152,7 +155,7 @@ contexts: # теперь необходимо определить "контек
     - include: numeric
     - include: strings
 
-
+  # # # ------------------------ Подсветка комментариев ------------------------  # # #
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
     - match: ((^\s*?)|(\&\s*?))(!)
       captures:
@@ -216,3 +219,13 @@ contexts: # теперь необходимо определить "контек
         - match: \'
           scope: comment.qsp
           pop: true
+
+  # # # ---------- фигурные скобки --------------- # # #
+  figurebrack:
+    - match: '\{'
+      scope: support.function.qsp avs.figopen
+      push:
+        - match: '\}'
+          scope: support.function.qsp avs.figclose
+          pop: true
+        - include: locations
