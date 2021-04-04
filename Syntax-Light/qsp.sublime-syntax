@@ -32,9 +32,9 @@ variables: # назначаем переменные для удобства
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
-    - match: ""
-      push: 
-        - match: ".*"
+    - match: "" # совпадения не ищутся
+      push: # всё вытесняется подсветкой
+        - match: ".*" # любое множество символов подсвечивается как комментарий
           scope: comment.qsp
       with_prototype:
         - match: ^(\s*?)(#)\s?.+$
@@ -58,23 +58,23 @@ contexts: # теперь необходимо определить "контек
     - include: strings
 
   operacion:
-    - match: ({{left_operand}}\s*?)\K(\!|\+|-)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion1
+    # ошибка записи операторов операций без правого операнда
+    - match: ({{left_operand}}\s*?)\K(\!|\+|-|\/|\*)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
+    # ошибка записи операторов больше-равно и меньше-равно без правого операнда
     - match: ({{left_operand}}\s*?)\K(<=|>=)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion2
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
+    # подсветка правильно записанных операторов больше-равно и меньше-равно
     - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
-      scope: support.function.qsp avs.operacion3
+      scope: support.function.qsp avs.operacion1
+    # ошибка записи операторов > < =  без правого операнда
     - match: ({{left_operand}}\s*?)\K(<|>|=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.operacion4
+    # подсветка правильно записанных операторов > < =
     - match: (<|>|=)
       scope: support.function.qsp avs.operacion5
-    - match: ({{left_operand}}\s*?)\K(,)(?=\s*?{{right_operand}})
-      scope: support.function.qsp avs.operacion6
-    - match: ({{left_operand}}\s*?)\K(,)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma1
-    - match: (^\s*?|[\(\{]\s*?)\K(,)(?=\s*?{{right_operand}}?)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma2
-    - match: '(?i:(!|,|\:|\;|\[|\]|\(|\)|\{|\}|\&|\+|=|-|(>|<)=?|=?(>|<)))'
+    # подсветка всех операторов для операций, в т.ч. скобок и прочего
+    - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\{|\}|\&|\+|\/|\*|=|-|(>|<)=?|=?(>|<)))'
       scope: support.function.qsp avs.operacion9
 
   numeric:
@@ -84,6 +84,7 @@ contexts: # теперь необходимо определить "контек
       scope: constant.numeric avs.numberic
     
   operators:
+    # подсветка операторов
     - match: \b({{oprt}}|{{oprttxt}})\b
       scope: support.function.qsp avs.operators
     - match: (\*)(?={{oprttxt}}\b)
@@ -132,8 +133,7 @@ contexts: # теперь необходимо определить "контек
           scope: string.qsp
         - match: "'"
           pop: true
-        - include: subexpression
-        
+        - include: subexpression    
 
   subexpression:
     - match: '<<'
