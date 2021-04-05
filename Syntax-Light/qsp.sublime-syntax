@@ -67,7 +67,7 @@ contexts: # теперь необходимо определить "контек
     - match: (?<={{left_operand}})\s*?(<=|>=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (?<=(\&|\(|\{|\[))\s*?(<=|>=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
     - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
@@ -164,11 +164,46 @@ contexts: # теперь необходимо определить "контек
         - include: subex
 
   subex:
-    - include: operacion
+    - include: opinse
     - include: sysvar
     - include: functions
     - include: numeric
     - include: strings
+
+  opinse:
+    # ошибка записи операторов операций без правого операнда
+    - match: (?<={{left_operand}})\s*?(\!|\+|-|\/|\*)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
+    # ошибка записи операторов больше-равно и меньше-равно без правого операнда
+    - match: (?<={{left_operand}})\s*?(<=|>=)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
+    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
+    # подсветка правильно записанных операторов больше-равно и меньше-равно
+    - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
+      scope: support.function.qsp avs.operacion1
+    # ошибка записи операторов > < =  без правого операнда
+    - match: (?<={{left_operand}})\s*?(<|>|=)(?!(>|\s*?{{right_operand}}))
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
+    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
+    - match: (?<=(<|\&|\(|\{|\[))\s*?(<|>|=)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
+    # подсветка правильно записанных операторов > < =
+    - match: (<|>|=)
+      scope: support.function.qsp avs.operacion5 
+    # ошибка записи запятых без правого операнда
+    - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma2
+    # ошибка записи запятых без левого операнда или отдельной строкой
+    - match: (?<=(<|\&|\(|\{|\[))\s*?(\/|\*|=|,)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma3
+    # подсветка правильно записанных операторов больше-равно и меньше-равно
+    - match: (\/|\*|=|,) # допустимые в QSP => и =< в данной подсветке не поддерживаются
+      scope: support.function.qsp avs.comma1
+    # подсветка всех операторов для операций, в т.ч. скобок и прочего
+    - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\&|\+|-|(>|<)=?|=?(>|<)))'
+      scope: support.function.qsp avs.operacion9
 
   # # # ------------------------ Подсветка комментариев ------------------------  # # #
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
