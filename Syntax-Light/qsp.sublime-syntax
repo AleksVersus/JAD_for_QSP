@@ -73,7 +73,7 @@ contexts: # теперь необходимо определить "контек
     - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.operacion1
     # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(<|>|=)(?!\s*?{{right_operand}})
+    - match: ({{left_operand}}\s*?)\K(<|>|=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
     - match: (?<=(\&|\(|\{|\[))\s*?(<|>|=)(?=\s*?{{right_operand}}*)
@@ -85,7 +85,7 @@ contexts: # теперь необходимо определить "контек
     - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma2
     # ошибка записи запятых без левого операнда или отдельной строкой
-    - match: (?<=(\&|\(|\{|\[))\s*?(\/|\*|=|,)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\/|\*|=|,)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
     - match: (\/|\*|=|,) # допустимые в QSP => и =< в данной подсветке не поддерживаются
