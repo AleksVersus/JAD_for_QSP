@@ -73,10 +73,10 @@ contexts: # теперь необходимо определить "контек
     - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.operacion1
     # ошибка записи операторов > < =  без правого операнда
-    - match: ({{left_operand}}\s*?)\K(<|>|=)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?(<|>|=)(?!(>|\s*?{{right_operand}}))
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (?<=(\&|\(|\{|\[))\s*?(<|>|=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
     - match: (<|>|=)
@@ -164,6 +164,8 @@ contexts: # теперь необходимо определить "контек
         - include: subex
 
   subex:
+    - match: (\n\r|\r|\r\n|\n)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongenter
     - include: opinse
     - include: sysvar
     - include: functions
