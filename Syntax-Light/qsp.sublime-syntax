@@ -48,9 +48,13 @@ contexts: # теперь необходимо определить "контек
             - include: locations
     
   locations:
+    - include: figurebrack
+    - include: actions
+    - include: conditions
+    - match: \bend\b # подсветка лишнего end'а
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongend
     - include: comments
     - include: markers
-    - include: figurebrack
     - include: operators
     - include: operacion
     - include: sysvar
@@ -58,6 +62,58 @@ contexts: # теперь необходимо определить "контек
     - include: numeric
     - include: strings
 
+  actions:
+    - match: '(?<=\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
+      captures:
+        2: support.function.qsp avs.actionsopen1
+      push:
+        - match: ^(\1)(\s*?)(end)([^\&\}]*?)
+          captures:
+            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
+            3: support.function.qsp avs.actionsend
+            4: constant.numeric avs.numberic
+          pop: true
+        - include: locations
+    - match: '(^|\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
+      captures:
+        3: support.function.qsp avs.actionsopen1
+      push:
+        - match: ^(\2)(\s*?)(end)([^\&]*?)
+          captures:
+            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
+            3: support.function.qsp avs.actionsend
+            4: constant.numeric avs.numberic
+          pop: true
+        - include: locations
+    - match: '(^\s?|\{|\&)\s*?(act)(?=\s*?.*?\:.)'
+      captures:
+        1: support.function.qsp avs.operacion0
+        2: support.function.qsp avs.actionsopen1
+      push:
+        - match: (\n\r|\r|\r\n|\n)
+          pop: true
+        - include: locations
+
+  conditions:
+    - match: '^(\s*?)(if)(?=\s*?.*?\:\s*?$)'
+      captures:
+        2: support.function.qsp avs.actionsopen1
+      push:
+        - match: ^(\1)(\s*?)(end)(.*?)$
+          captures:
+            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
+            3: support.function.qsp avs.actionsend
+            4: constant.numeric avs.numberic
+          pop: true
+        - include: locations
+    - match: '^(\s*?|\&\s*?)(if)(?=\s*?.*?\:.)'
+      captures:
+        1: support.function.qsp avs.operacion0
+        2: support.function.qsp avs.actionsopen1
+      push:
+        - match: (\n\r|\r|\r\n|\n)
+          pop: true
+        - include: locations
 
   operacion:
     # ошибка записи операторов операций без правого операнда
@@ -209,6 +265,17 @@ contexts: # теперь необходимо определить "контек
 
   # # # ------------------------ Подсветка комментариев ------------------------  # # #
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
+    - match: (?<=\{)((\s*?)|(\&\s*?))(!)
+      captures:
+        3: support.function.qsp
+        4: comment.qsp
+      push:
+        - meta_scope: comment.qsp
+        - match: (\n\r|\r|\r\n|\n)
+          scope: comment.qsp
+          pop: true
+        - include: cominquotes
+        - include: brackin
     - match: ((^\s*?)|(\&\s*?))(!)
       captures:
         3: support.function.qsp
@@ -277,7 +344,7 @@ contexts: # теперь необходимо определить "контек
     - match: '\{'
       scope: support.function.qsp avs.figopen
       push:
+        - include: locations
         - match: '\}'
           scope: support.function.qsp avs.figclose
           pop: true
-        - include: locations
