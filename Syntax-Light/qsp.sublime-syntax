@@ -13,7 +13,7 @@ file_extensions: # расширения файлов
 first_line_match: ^(#)\s?.+$
 scope: source.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|refint|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|elseif|else|refint|end|when|showobjs|showstat|showacts|showinput|msg))
   oprttxt: (?i:(pl?|nl|clr|clear))
   sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
@@ -29,6 +29,7 @@ variables: # назначаем переменные для удобства
   closer: '{{figcls}}{{quote}}{{ap}}'
   left_operand: '({{quote}}|{{ap}}|\)|\$|\w|\d)'
   right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\$?\w+?|\d+?)'
+  nr: (\n\r|\r|\r\n|\n)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -53,6 +54,10 @@ contexts: # теперь необходимо определить "контек
     - include: conditions
     - match: \bend\b # подсветка лишнего end'а
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongend
+    - match: ^(?:\s*?)\belse\b # лишний else
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse
+    - match: \belseif\b # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelseif
     - include: comments
     - include: markers
     - include: operators
@@ -67,68 +72,93 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.function.qsp avs.actionsopen1
       push:
-        - match: ^(\1)(\s*?)(end)([^\&\}\n\r]*)
+        - match: ^(\s*?)(end)([^\&\}\n\r]*)
           captures:
-            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
-            3: support.function.qsp avs.actionsend
-            4: constant.numeric avs.numberic
+            2: support.function.qsp avs.actionsend
+            3: constant.numeric avs.numberic
           pop: true
+        - include: wrongclose
         - include: locations
     - match: '^(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.function.qsp avs.actionsopen1
       push:
-        - match: ^(\1)(\s*?)(end)([^\&\n\r]*)
+        - match: ^(\s*?)(end)([^\&\n\r]*)
           captures:
-            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
-            3: support.function.qsp avs.actionsend
-            4: constant.numeric avs.numberic
+            2: support.function.qsp avs.actionsend
+            3: constant.numeric avs.numberic
           pop: true
+        - include: wrongclose
         - include: locations
-    
 
   conditions:
+    - match: '(?<=\{)(\s*?)(if)(?=\s*?.*?\:\s*?$)'
+      captures:
+        2: support.function.qsp avs.actionsopen1
+      push:
+        - match: ^(\s*?)(end)([^\&\}\n\r]*)
+          captures:
+            2: support.function.qsp avs.actionsend
+            3: constant.numeric avs.numberic
+          pop: true
+        - include: wrongclose
+        - include: elseifelse
+        - include: locations
     - match: '^(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.function.qsp avs.actionsopen1
       push:
-        - match: ^(\1)(\s*?)(end)([^\&\n\r]*)
+        - match: ^(\s*?)(end)([^\&\n\r]*)
           captures:
-            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
-            3: support.function.qsp avs.actionsend
-            4: constant.numeric avs.numberic
+            2: support.function.qsp avs.actionsend
+            3: constant.numeric avs.numberic
           pop: true
+        - include: wrongclose
         - include: elseifelse
         - include: locations
 
+  wrongclose:
+    - match: ^\s*?(-)(.*?){{nr}}$
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+      pop: true
+
   elseifelse:
-    - match: ^(\s*?)(else)([^\&\n\r]*)
+    - match: ^\s*?\belse\b(\:?)\s*?$ # правильный else
+      scope: support.function.qsp avs.else
+    - match: ^\s*?(\belse\b)([^\:]*)(\:?)\s*?([^\n\r]*)$
       captures:
-        2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
-        3: support.function.qsp avs.actionsend
-        4: constant.numeric avs.numberic
-        
+        1: support.function.qsp avs.else
+        2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+        3: support.function.qsp avs.else
+        4: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse2
+    - match: ^(?:\s*?)\belseif\b(?=\s+\S.*?\:\s*?{{nr}})
+      scope: support.function.qsp avs.elseif
+    - match: ^(?:\s*?)(\belseif\b)(\s+\S.*?\:\s*?[^\n\r]*)$
+      captures:
+        1: support.function.qsp avs.else
+        2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+
   operacion:
     # ошибка записи операторов операций без правого операнда
-    - match: (?<={{left_operand}})\s*?(\!|\+|-|\/|\*)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
-    - match: (?<={{left_operand}})\s*?(<=|>=)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?(<=|>=|\+=|-=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=|\+=|-=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
+    - match: (<=|>=|\+=|-=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.operacion1
     # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(<|>|=)(?!(>|\s*?{{right_operand}}))
+    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!(>|\s*?{{right_operand}}))
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\+|-|<|>|=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
-    - match: (<|>|=)
+    - match: (\+|-|<|>|=)
       scope: support.function.qsp avs.operacion5 
     # ошибка записи запятых без правого операнда
     - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
@@ -192,6 +222,7 @@ contexts: # теперь необходимо определить "контек
         - match: '"'
           pop: true
         - include: subexpression
+        - include: htmlsupport 
         
     - match: "'"
       push:
@@ -200,7 +231,8 @@ contexts: # теперь необходимо определить "контек
           scope: string.qsp
         - match: "'"
           pop: true
-        - include: subexpression    
+        - include: subexpression
+        - include: htmlsupport   
 
   subexpression:
     - match: '<<'
@@ -223,25 +255,25 @@ contexts: # теперь необходимо определить "контек
 
   opinse:
     # ошибка записи операторов операций без правого операнда
-    - match: (?<={{left_operand}})\s*?(\!|\+|-|\/|\*)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
-    - match: (?<={{left_operand}})\s*?(<=|>=)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?(<=|>=|\+=|-=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=|\+=|-=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (<=|>=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
+    - match: (<=|>=|\+=|-=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.operacion1
     # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(<|>|=)(?!(>|\s*?{{right_operand}}))
+    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!(>|\s*?{{right_operand}}))
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (?<=(<|\&|\(|\{|\[))\s*?(<|>|=)(?=\s*?{{right_operand}}*)
+    - match: (?<=(<|\&|\(|\{|\[))\s*?(\+|-|<|>|=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
-    - match: (<|>|=)
+    - match: (\+|-|<|>|=)
       scope: support.function.qsp avs.operacion5 
     # ошибка записи запятых без правого операнда
     - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
@@ -337,7 +369,17 @@ contexts: # теперь необходимо определить "контек
     - match: '\{'
       scope: support.function.qsp avs.figopen
       push:
+        - include: htmlsupport
         - include: locations
         - match: '\}'
           scope: support.function.qsp avs.figclose
+          pop: true
+
+  htmlsupport:
+    - match: (?i:<html>)
+      scope: message.error avs.html
+      push: Packages/HTML/HTML.sublime-syntax   
+      with_prototype:
+        - match: (?i:</html>)
+          scope: message.error avs.html
           pop: true
