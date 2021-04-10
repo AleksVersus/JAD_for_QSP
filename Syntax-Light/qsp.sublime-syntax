@@ -77,6 +77,7 @@ contexts: # теперь необходимо определить "контек
             2: support.function.qsp avs.actionsend
             3: constant.numeric avs.numberic
           pop: true
+        - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(act)(?=\s*?.*?\:\s*?$)'
@@ -89,6 +90,7 @@ contexts: # теперь необходимо определить "контек
             3: constant.numeric avs.numberic
           pop: true
         - include: wrongclose
+        - include: wrongcloseinscope
         - include: locations
 
   conditions:
@@ -101,6 +103,7 @@ contexts: # теперь необходимо определить "контек
             2: support.function.qsp avs.actionsend
             3: constant.numeric avs.numberic
           pop: true
+        - include: wrongcloseinscope
         - include: wrongclose
         - include: elseifelse
         - include: locations
@@ -114,11 +117,17 @@ contexts: # теперь необходимо определить "контек
             3: constant.numeric avs.numberic
           pop: true
         - include: wrongclose
+        - include: wrongcloseinscope
         - include: elseifelse
         - include: locations
 
   wrongclose:
-    - match: ^\s*?(-)(.*?){{nr}}$
+    - match: ^\s*?(-)(.*)({{nr}}$|$)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+      pop: true
+
+  wrongcloseinscope:
+    - match: \}(.*)({{nr}}$|$)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
       pop: true
 
@@ -378,7 +387,9 @@ contexts: # теперь необходимо определить "контек
   htmlsupport:
     - match: (?i:<html>)
       scope: message.error avs.html
-      push: Packages/HTML/HTML.sublime-syntax   
+      push:
+        - clear_scopes: true
+        - include: Packages/HTML/HTML.sublime-syntax   
       with_prototype:
         - match: (?i:</html>)
           scope: message.error avs.html

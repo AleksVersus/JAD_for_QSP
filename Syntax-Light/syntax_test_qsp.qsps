@@ -157,7 +157,7 @@ end
 
 # [0.1_game_info]
 local a, b, c
-"<center><h1><font color=#dddd00>ВОЛШЕБСТВО И СТАЛЬ. v 1.2</font></h1></center><center><font color=#000000><table width=70% bgcolor=#ffeedd border=2 cellspacing=5 cellpadding=20><tr><td>
+"<html><center><h1><font color=#dddd00>ВОЛШЕБСТВО И СТАЛЬ. v 1.2</font></h1></center><center><font color=#000000><table width=70% bgcolor=#ffeedd border=2 cellspacing=5 cellpadding=20><tr><td>
 <div align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Игра построена на движке <font color=#ff8800>MAGICON.FB v 0.2</font>.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Движок подключается в качестве модуля drive.qsp
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;В качестве модулей так же подключаются базы bases.qsp , вводные данные intro.qsp и прочие необходимые библиотеки.
@@ -166,7 +166,7 @@ local a, b, c
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Для работы всех прочих модулей и самих игровых скриптов необходимо подключение стандартных библиотек easy.libs</div>
 
 
-<center><a href=""exec: goto '[start]'"">Назад</a></center></td></tr></table></font></center>"
+<center><a href=""exec: goto '[start]'"">Назад</a></center></td></tr></table></font></center></html>"
 --- [0.1_game_info] ---------------------------------
 
 $func
@@ -320,9 +320,9 @@ if здесь_был[$curloc]=0:
 	! Яблоко
 	gosub 'add.new.obj','<link> [name::name] [other:Посреди улицы стоит одинокая берёза.<br>:other] <obj:[io1:[:титановый_лук:] [kolvo:result=rand(2,5):kolvo]:io1]  [io2:[:лыковые_туфли:] [kolvo:result=1:kolvo]:io2]:obj> [respawn:[day:1]:respawn]','',"берёза"
 end
-$lvar['локация.исходник']={[lnk]с улицы в дом|Войти в дом, который построил Джек[/lnk]
+$lvar['локация.исходник']={<html>[lnk]с улицы в дом|Войти в дом, который построил Джек[/lnk]
 [lnk]берёза|Посреди улицы стоит одинокая берёза.<br>|На берёзе созрело несколько титановых луков.<br>[/lnk]
-[goto]Зайти в дом медленно (1 час 23 минуты)|[м:1]_дом| |[hour:1] [minute:23][/goto]}
+[goto]Зайти в дом медленно (1 час 23 минуты)|[м:1]_дом| |[hour:1] [minute:23][/goto]</html>}
 --- [м:2]_улица ---------------------------------
 
 # место;стандартная_кухня
@@ -513,5 +513,11 @@ end
 --- [death] ---------------------------------
 
 # [help]
+
+{
+	{
+		
+	}
+}
 
 --- [help] ---------------------------------
