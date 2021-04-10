@@ -13,7 +13,7 @@ file_extensions: # расширения файлов
 first_line_match: ^(#)\s?.+$
 scope: source.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|else|refint|elseif|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|refint|end|when|showobjs|showstat|showacts|showinput|msg))
   oprttxt: (?i:(pl?|nl|clr|clear))
   sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
@@ -67,54 +67,47 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.function.qsp avs.actionsopen1
       push:
-        - match: ^(\1)(\s*?)(end)([^\&\}]*?)
+        - match: ^(\1)(\s*?)(end)([^\&\}\n\r]*)
           captures:
             2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
             3: support.function.qsp avs.actionsend
             4: constant.numeric avs.numberic
           pop: true
         - include: locations
-    - match: '(^|\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
-        3: support.function.qsp avs.actionsopen1
-      push:
-        - match: ^(\2)(\s*?)(end)([^\&]*?)
-          captures:
-            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
-            3: support.function.qsp avs.actionsend
-            4: constant.numeric avs.numberic
-          pop: true
-        - include: locations
-    - match: '(^\s?|\{|\&)\s*?(act)(?=\s*?.*?\:.)'
-      captures:
-        1: support.function.qsp avs.operacion0
         2: support.function.qsp avs.actionsopen1
       push:
-        - match: (\n\r|\r|\r\n|\n)
+        - match: ^(\1)(\s*?)(end)([^\&\n\r]*)
+          captures:
+            2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
+            3: support.function.qsp avs.actionsend
+            4: constant.numeric avs.numberic
           pop: true
         - include: locations
+    
 
   conditions:
     - match: '^(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.function.qsp avs.actionsopen1
       push:
-        - match: ^(\1)(\s*?)(end)(.*?)$
+        - match: ^(\1)(\s*?)(end)([^\&\n\r]*)
           captures:
             2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
             3: support.function.qsp avs.actionsend
             4: constant.numeric avs.numberic
           pop: true
-        - include: locations
-    - match: '^(\s*?|\&\s*?)(if)(?=\s*?.*?\:.)'
-      captures:
-        1: support.function.qsp avs.operacion0
-        2: support.function.qsp avs.actionsopen1
-      push:
-        - match: (\n\r|\r|\r\n|\n)
-          pop: true
+        - include: elseifelse
         - include: locations
 
+  elseifelse:
+    - match: ^(\s*?)(else)([^\&\n\r]*)
+      captures:
+        2: invalid.illegal.expected-mapping-key.qsp avs.error avs.leftspace
+        3: support.function.qsp avs.actionsend
+        4: constant.numeric avs.numberic
+        
   operacion:
     # ошибка записи операторов операций без правого операнда
     - match: (?<={{left_operand}})\s*?(\!|\+|-|\/|\*)(?!\s*?{{right_operand}})
