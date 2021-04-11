@@ -393,6 +393,7 @@ contexts: # теперь необходимо определить "контек
       scope: message.error avs.html
       push:
         - clear_scopes: true
+        - meta_scope: markup.raw.code-fence.json.markdown-gfm
         - include: Packages/HTML/HTML.sublime-syntax   
       with_prototype:
         - match: (?i:</html>)
