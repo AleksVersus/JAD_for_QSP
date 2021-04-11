@@ -3,7 +3,7 @@
 # [0.1_game_info]
 $cur[1]='[start]'
 '<center><h1>Волшебство и Сталь</h1></center>'
-"<center><a href='exec: goto $cur[1]'>Назад</a></center><center>
+"<html><center><a href='exec: goto $cur[1]'>Назад</a></center><center>
 
 
 <table width=860 border=0 bgcolor=#ffffee cellpadding=10><tr><td><div align=justify><font color=#000000>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Игра построена на движке Magicon.FB v 0.2
@@ -22,7 +22,7 @@ $cur[1]='[start]'
 </font></div></td></tr></table>
 
 
-<center><a href='exec: goto $cur[1]'>Назад</a></center>"
+<center><a href='exec: goto $cur[1]'>Назад</a></center></html>"
 --- [0.1_game_info] ---------------------------------
 
 # [0.2_drive_info]

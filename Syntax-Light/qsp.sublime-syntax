@@ -10,10 +10,10 @@ file_extensions: # расширения файлов
   - qsps
   - qsp-txt
   - txt-qsp
-first_line_match: ^(#)\s?.+$
+first_line_match: (^(#)\s?.+$|^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
 scope: source.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|del\s?act|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|elseif|else|refint|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|elseif|else|refint|end|when|showobjs|showstat|showacts|showinput|msg))
   oprttxt: (?i:(pl?|nl|clr|clear))
   sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
@@ -27,9 +27,10 @@ variables: # назначаем переменные для удобства
   ap: "'"
   opener: '{{figop}}{{quote}}{{ap}}'
   closer: '{{figcls}}{{quote}}{{ap}}'
-  left_operand: '({{quote}}|{{ap}}|\)|\$|\w|\d)'
-  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\$?\w+?|\d+?)'
+  left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\w|\d)'
+  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?)'
   nr: (\n\r|\r|\r\n|\n)
+  oprcid: (<=|>=|\+=|-=|<>)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -44,7 +45,7 @@ contexts: # теперь необходимо определить "контек
             - match: ^\1(-)(.*?)$
               pop: true
               captures:
-                1: variable.parameter.url.qsp avs.locend
+                1: variable.parameter.qsp meta.tag markup.heading.qsp punctuation.definition.heading.qsp avs.locend
                 2: entity.name.function entity.name avs.locend.comments
             - include: locations
     
@@ -67,6 +68,7 @@ contexts: # теперь необходимо определить "контек
     - include: numeric
     - include: strings
 
+  # действия и условия
   actions:
     - match: '(?<=\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
@@ -147,24 +149,25 @@ contexts: # теперь необходимо определить "контек
         1: support.function.qsp avs.else
         2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
 
+  # операции
   operacion:
     # ошибка записи операторов операций без правого операнда
     - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
-    - match: (?<={{left_operand}})\s*?(<=|>=|\+=|-=)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*{{oprcid}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=|\+=|-=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{oprcid}}(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (<=|>=|\+=|-=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
-      scope: support.function.qsp avs.operacion1
+    - match: (?<={{left_operand}})\s*?{{oprcid}}(?=\s*?{{right_operand}}) 
+      scope: support.function.qsp avs.operacion1 # допустимые в QSP => и =< в данной подсветке не поддерживаются
     # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!(>|\s*?{{right_operand}}))
+    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\+|-|<|>|=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
     - match: (\+|-|<|>|=)
@@ -210,7 +213,7 @@ contexts: # теперь необходимо определить "контек
   functions:
     - match: (?<!\$)(\b{{fnctxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
-    - match: (\$)(?=(\b{{fnctxt}}|{{fncot}}\b))
+    - match: (\$)(?=({{fnctxt}}\b|{{fncot}}\b))
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
     - match: \b({{fncnum}}|{{fnctxt}}|{{fncot}})\b
       scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
@@ -254,6 +257,7 @@ contexts: # теперь необходимо определить "контек
         - include: subex
 
   subex:
+    - include: figurebrack
     - match: (\n\r|\r|\r\n|\n)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongenter
     - include: opinse
@@ -267,19 +271,19 @@ contexts: # теперь необходимо определить "контек
     - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
-    - match: (?<={{left_operand}})\s*?(<=|>=|\+=|-=)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?{{oprcid}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<=|>=|\+=|-=)(?=\s*?{{right_operand}}*)
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{oprcid}}(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (<=|>=|\+=|-=) # допустимые в QSP => и =< в данной подсветке не поддерживаются
-      scope: support.function.qsp avs.operacion1
+    - match: (?<={{left_operand}})\s*?{{oprcid}}(?=\s*?{{right_operand}})
+      scope: support.function.qsp avs.operacion1 # допустимые в QSP => и =< в данной подсветке не поддерживаются
     # ошибка записи операторов > < =  без правого операнда
     - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!(>|\s*?{{right_operand}}))
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (?<=(<|\&|\(|\{|\[))\s*?(\+|-|<|>|=)(?=\s*?{{right_operand}}*)
+    - match: (?<=(<|\&|\(|\{|\[))\s*?(<|>|=)(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
     - match: (\+|-|<|>|=)

@@ -80,6 +80,8 @@ nosave=1 & val("456")
 " " ! " " !  & 234 * 
 ! операция без левого операнда
 <= 678 & >=789 & (<567) & {=234} & ! в фигурных скобках тоже должно подсвечиваться ошибкой
+"<<run += 567>>"
+run ! 567
 {! комментарии корректно подсвечиваются, если идут первой строкой
 	< 234 >  & ! для рекурсивной подсветки работают только правила без \K
 }
@@ -101,6 +103,11 @@ $massive[,456,567]="dj вложенном <<$massive[,456,567]>>"
 "строка <<'
 строка внутри вложенного выражения может быть разорвана
 '>> строка"
+! разрыв внутри фигурных скобок не подсвечивается
+"строка <<$dyneval{
+	$result='insert string'
+}>> строка"
+
 --- [ошибки] ---------------------------------
 
 # фигурные скобки действия условия
@@ -510,14 +517,40 @@ end
 ! локация смерти главного героя. Переменные не обнуляются, только выводится действие: начать игру заново. Уже это действие обнуляет все переменные.
 ! при попадании на эту локацию должно так же создаваться сохранение, чтобы в случае случайного выбора действия "начать игру заново", можно было
 ! загрузиться на локации и проверить, нет ли способа воскреснуть.
+! операторы
+exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|elseif|else|refint|end|when|showobjs|showstat|showacts|showinput|msg
+! текстовые
+pl|nl|clr|clear|p
+*pl|*nl|*clr|*clear|*p
+! числовые системные переменные
+nosave|disablescroll|disablesubex|debug|usehtml|bcolor|fcolor|lcolor|fsize
+! текстовые системные переменные
+$counter|$ongload|$ongsave|$onnewloc|$onactsel|$onobjsel|$onobjadd|$onobjdel|$usercom|$fname|$backimage
+! системные переменные, которые можно употреблять как числовые и текстовые
+$args|args|result|$result
+! числовые функции
+obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|rnd|rand|arrsize|arrpos|arrcomp|strcomp|strpos
+!текстовые функции
+$input|$user_text|$usrtxt|$desc|$maintxt|$stattxt|$qspver|$curloc|$selobj|$selact|$curacts|$mid|$ucase|$lcase|$trim|$replace|$getobj|$str|$strfind
+! функции, возвращающие как текстовые, так и числовые значения
+iif|dyneval|func|max|min
+$iif|$dyneval|$func|$max|$min
+
 --- [death] ---------------------------------
 
 # [help]
 
 {
 	{
-		
+		act "незакрытое многострочное действие":
+			123
 	}
 }
+if незакрытое условие:
+	567
+else
+	6788
+
+rund=567
 
 --- [help] ---------------------------------

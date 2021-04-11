@@ -9,12 +9,12 @@ if args[0]!0:
 	if ($args[1]='' or $args[1]='del' or $args[1]='-') and (($args[2]='max' and (property['hero.luck.max']-args[0])>4) or $args[2]<>'max'):
 	! удача не может упасть ниже 5 единиц.
 		property['hero.luck.'+$args[2]]-=args[0]
-		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','025.3','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
-		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','025.4','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
+		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','025.3','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
+		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','025.4','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
 	elseif $args[1]='+' or $args[1]='add':
 		property['hero.luck.'+$args[2]]+=args[0]
-		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','025.1','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
-		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','025.2','[колво:'+str(args[0])+'] [txt:<<$args[3]>>:txt]')
+		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','025.1','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
+		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','025.2','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
 	end
 	if property['hero.luck.max']<>args['last_max']: property['hero.luck.all']=property['hero.luck.all']+(property['hero.luck.max']-args['last_max'])
 	! Удача может превышать максимальный уровень.

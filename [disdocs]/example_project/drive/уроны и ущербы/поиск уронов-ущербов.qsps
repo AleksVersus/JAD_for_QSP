@@ -6,12 +6,12 @@ if $args[2] = '': $args[2]='ff0000' 	&	!	цвет, по умолчанию яр�
 args['i']=1
 $args['res.021213']='<table align=left valign=top border=0 cellpadding=0 cellspacing=0 width=60%>'
 :for_uron
-$args['uron_i']=$func('get.tag.cont',$args[1],'u'+str(args['i']))
-args['power_i']=func('get.tag.num',$args[1],'p'+str(args['i']))
+$args['uron_i']=$func('get.tag.cont',$args[1],'u'+$str(args['i']))
+args['power_i']=func('get.tag.num',$args[1],'p'+$str(args['i']))
 if $args['uron_i']!'':
 	if args['power_i']!0: $args['res.021213']+='<tr><td align=left><b>'+$func('base.word.uron',$args[0],$args['uron_i'])+':'+'</b></td><td align=left width=10%><font color=#'+$args[2]+'>'+$func('#indiv#',args['power_i'],100,10)+'</font></td></tr>'
-	$args[1]=TRIM($replace($args[1],'u'+str(args['i'])+':'+$args['uron_i']+':'+'u'+str(args['i'])))
-	$args[1]=TRIM($replace($args[1],'p'+str(args['i'])+':'+$args['uron_i']))
+	$args[1]=$TRIM($replace($args[1],'u'+$str(args['i'])+':'+$args['uron_i']+':'+'u'+$str(args['i'])))
+	$args[1]=$TRIM($replace($args[1],'p'+$str(args['i'])+':'+$args['uron_i']))
 end
 args['i']+=1
 if len($args[1])>0 and args['i']<100: jump 'for_uron'
@@ -64,8 +64,8 @@ killvar 'u_gsu'
 
 # sim.uron.onFull
 ! Локация сравнивает два набора характеристик
-$args[0] = TRIM($args[0])	&	!	первый набор - основной
-$args[1] = TRIM($args[1])	&	!	второй набор - проверочный
+$args[0] = $TRIM($args[0])	&	!	первый набор - основной
+$args[1] = $TRIM($args[1])	&	!	второй набор - проверочный
 ! Результат является верным, когда все характеристики из второго набора по параметрам превышают или равны характеристикам из первого
 ! наборы приходят в виде u1:djdj:u1 p1:1000 u2:mmd:u2 p2:100 и т.д.
 args['i']=1
@@ -91,8 +91,8 @@ if $strfind($args[0],"u[\d]+:[\s\S]+:u[\d]+")!'':
 		end
 		! удаляем характеристику из первой строки
 		$args[0] = $replace($args[0],"u<<args['i']>>:"+$args['uron.1']+":u<<args['i']>>")
-		$args[0] = $replace($args[0],"p<<args['i']>>:"+str(args['uron.1.p']))
-		$args[0]=TRIM($args[0])
+		$args[0] = $replace($args[0],"p<<args['i']>>:"+$str(args['uron.1.p']))
+		$args[0]=$TRIM($args[0])
 	end
 	args['i']+=1
 	jump 'надежда_твой_компас_земной'

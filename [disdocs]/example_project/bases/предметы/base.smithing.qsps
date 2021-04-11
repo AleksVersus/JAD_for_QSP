@@ -12,7 +12,7 @@ if $func('get.daughter.obj',$args[0],'','$smithing_id')='true':
 		args['pos_in_table']=arrpos('$id_array',$smithing_id[args['i']])
 		$smithing_object[args['i']]=$object_array[args['pos_in_table']]
 		smithing_kolvo[args['i']]=kolvo_array[args['pos_in_table']]
-		$log_error+='<br>'+$smithing_id[args['i']]+' &gt;&gt; '+$smithing_object[args['i']]+' &gt;&gt; '+str(smithing_kolvo[args['i']])
+		$log_error+='<br>'+$smithing_id[args['i']]+' &gt;&gt; '+$smithing_object[args['i']]+' &gt;&gt; '+$str(smithing_kolvo[args['i']])
 		args['i']+=1
 		jump 'for'
 	end
