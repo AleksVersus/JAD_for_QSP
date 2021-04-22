@@ -83,7 +83,7 @@ if work_dir!=None:
 				export_files.append(exit_qsp)
 			# теперь удаляем промежуточный файл
 			if save_txt2gam==False:
-				os.remove(exit_txt) # можно добавить аргумент, запрещающий удалять этот файл
+				os.remove(exit_txt)
 
 	if args["run"]==True:
 		# если разрешён запуск
