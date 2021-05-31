@@ -13,7 +13,8 @@ file_extensions: # расширения файлов
 first_line_match: (^(#)\s?.+$|^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
 scope: source.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|elseif|else|refint|end|when|showobjs|showstat|showacts|showinput|msg))
+  oprt: (?i:(exec|set|let|local|view|inclib|freelib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg))
+  oprtms: (?i:(act|if|elseif|else|loop|while|step|end)) # support.type
   oprttxt: (?i:(pl?|nl|clr|clear))
   sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
@@ -67,16 +68,17 @@ contexts: # теперь необходимо определить "контек
     - include: functions
     - include: numeric
     - include: strings
+    - include: tests
 
   # действия и условия
   actions:
     - match: '(?<=\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.function.qsp avs.actionsopen1
+        2: support.type avs.actionsopen1
       push:
         - match: ^(\s*?)(end)([^\&\}\n\r]*)
           captures:
-            2: support.function.qsp avs.actionsend
+            2: support.type avs.actionsend
             3: constant.numeric avs.numberic
           pop: true
         - include: wrongcloseinscope
@@ -84,11 +86,11 @@ contexts: # теперь необходимо определить "контек
         - include: locations
     - match: '^(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.function.qsp avs.actionsopen1
+        2: support.type avs.actionsopen1
       push:
         - match: ^(\s*?)(end)([^\&\n\r]*)
           captures:
-            2: support.function.qsp avs.actionsend
+            2: support.type avs.actionsend
             3: constant.numeric avs.numberic
           pop: true
         - include: wrongclose
@@ -98,11 +100,11 @@ contexts: # теперь необходимо определить "контек
   conditions:
     - match: '(?<=\{)(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.function.qsp avs.actionsopen1
+        2: support.type avs.actionsopen1
       push:
         - match: ^(\s*?)(end)([^\&\}\n\r]*)
           captures:
-            2: support.function.qsp avs.actionsend
+            2: support.type avs.actionsend
             3: constant.numeric avs.numberic
           pop: true
         - include: wrongcloseinscope
@@ -111,11 +113,11 @@ contexts: # теперь необходимо определить "контек
         - include: locations
     - match: '^(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.function.qsp avs.actionsopen1
+        2: support.type avs.actionsopen1
       push:
         - match: ^(\s*?)(end)([^\&\n\r]*)
           captures:
-            2: support.function.qsp avs.actionsend
+            2: support.type avs.actionsend
             3: constant.numeric avs.numberic
           pop: true
         - include: wrongclose
@@ -135,18 +137,18 @@ contexts: # теперь необходимо определить "контек
 
   elseifelse:
     - match: ^\s*?\belse\b(\:?)\s*?$ # правильный else
-      scope: support.function.qsp avs.else
+      scope: support.type avs.else
     - match: ^\s*?(\belse\b)([^\:]*)(\:?)\s*?([^\n\r]*)$
       captures:
-        1: support.function.qsp avs.else
+        1: support.type avs.else
         2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
-        3: support.function.qsp avs.else
+        3: support.type avs.else
         4: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse2
     - match: ^(?:\s*?)\belseif\b(?=\s+\S.*?\:\s*?{{nr}})
-      scope: support.function.qsp avs.elseif
+      scope: support.type avs.elseif
     - match: ^(?:\s*?)(\belseif\b)(\s+\S.*?\:\s*?[^\n\r]*)$
       captures:
-        1: support.function.qsp avs.else
+        1: support.type avs.else
         2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
 
   # операции
@@ -197,7 +199,11 @@ contexts: # теперь необходимо определить "контек
       scope: support.function.qsp avs.operators
     - match: (\*)(?={{oprttxt}}\b)
       scope: support.function.qsp avs.operators
+    - match: \b{{oprtms}}\b
+      scope: support.type avs.operators-multiline
     - match: (\*)(?={{oprt}}\b)
+      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: (\*)(?={{oprtms}}\b)
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   sysvar:
@@ -393,9 +399,98 @@ contexts: # теперь необходимо определить "контек
       scope: message.error avs.html
       push:
         - clear_scopes: true
-        - meta_scope: markup.raw.code-fence.json.markdown-gfm
+        - meta_scope: markup.raw avs.htmlsupport
         - include: Packages/HTML/HTML.sublime-syntax   
       with_prototype:
         - match: (?i:</html>)
           scope: message.error avs.html
           pop: true
+
+  # тестовые матчи
+  tests:
+    - match: ^%comment%$
+      scope: comment
+    - match: ^%string%$
+      scope: string
+    - match: ^%constant.numeric%$
+      scope: constant.numeric
+    - match: ^%storage.type.numeric%$
+      scope: storage.type.numeric
+    - match: ^%constant.language%$
+      scope: constant.language
+    - match: ^%constant.character%$
+      scope: constant.character
+    - match: ^%variable%$
+      scope: variable
+    - match: ^%storage%$
+      scope: storage
+    - match: ^%storage.type%$
+      scope: storage.type
+    - match: ^%entity.name%$
+      scope: entity.name
+    - match: ^%entity.other.inherited-class%$
+      scope: entity.other.inherited-class
+    - match: ^%variable.parameter%$
+      scope: variable.parameter
+    - match: ^%variable.language%$
+      scope: variable.language
+    - match: ^%entity.name.tag%$
+      scope: entity.name.tag
+    - match: ^%variable.function%$
+      scope: variable.function
+    - match: ^%support.type%$
+      scope: support.type
+    - match: ^%invalid%$
+      scope: invalid
+    - match: ^%invalid.deprecated%$
+      scope: invalid.deprecated
+    - match: ^%meta.structure.dictionary.json%$
+      scope: meta.structure.dictionary.json
+    - match: ^%string.unquoted.yaml%$
+      scope: string.unquoted.yaml
+    - match: ^%meta.diff%$
+      scope: meta.diff
+    - match: ^%markup.heading%$
+      scope: markup.heading
+    - match: ^%markup.heading punctuation.definition.heading%$
+      scope: markup.heading punctuation.definition.heading
+    - match: ^%markup.heading.1%$
+      scope: markup.heading.1
+    - match: ^%markup.underline.link%$
+      scope: markup.underline.link
+    - match: ^%markup.bold%$
+      scope: markup.bold
+    - match: ^%markup.italic%$
+      scope: markup.italic
+    - match: ^%markup.underline%$
+      scope: markup.underline
+    - match: ^%markup.italic markup.bold%$
+      scope: markup.italic markup.bold
+    - match: ^%punctuation.definition.thematic-break%$
+      scope: punctuation.definition.thematic-break
+    - match: ^%markup.list.numbered.bullet%$
+      scope: markup.list.numbered.bullet
+    - match: ^%markup.list.unnumbered.bullet%$
+      scope: markup.list.unnumbered.bullet
+    - match: ^%markup.raw%$
+      scope: markup.raw
+    - match: ^%markup.raw punctuation.definition.raw%$
+      scope: markup.raw punctuation.definition.raw
+    - match: ^%markup.deleted%$
+      scope: markup.deleted
+    - match: ^%markup.inserted%$
+      scope: markup.inserted
+    - match: ^%markup.changed%$
+      scope: markup.changed
+    - match: ^%constant.numeric.line-number.find-in-files%$
+      scope: constant.numeric.line-number.find-in-files
+    - match: ^%message.error%$
+      scope: message.error
+    - match: ^%diff.deleted%$
+      scope: diff.deleted
+    - match: ^%diff.deleted.char%$
+      scope: diff.deleted.char
+    - match: ^%diff.inserted%$
+      scope: diff.inserted
+    - match: ^%diff.inserted.char%$
+      scope: diff.inserted.char

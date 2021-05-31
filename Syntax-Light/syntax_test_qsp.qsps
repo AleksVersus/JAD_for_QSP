@@ -11,6 +11,7 @@
 при этом после решётки # не обязательно ставить пробел, но для читаемости кода рекомендую ставить
 
 # [start]
+	
 	*clr & *clear
 	*p "Данная локация демонстрирует подсветку операторов, таких как *pl *p *nl p pl nl и других."
 	*pl "Звёздочка присутствует только у четырёх операторов"
@@ -159,7 +160,9 @@ else u=999: неверная запись else в многострочном о�
 
 end
 
-
+loop local i=1 while i<11 step i+=1:
+	*pl "12 * <<i>> = <<12*i>>"
+end
 -
 
 # [0.1_game_info]
@@ -518,10 +521,24 @@ end
 ! при попадании на эту локацию должно так же создаваться сохранение, чтобы в случае случайного выбора действия "начать игру заново", можно было
 ! загрузиться на локации и проверить, нет ли способа воскреснуть.
 ! операторы
-exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|act|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|if|elseif|else|refint|end|when|showobjs|showstat|showacts|showinput|msg
+exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg
 ! текстовые
 pl|nl|clr|clear|p
 *pl|*nl|*clr|*clear|*p
+! операторы конструкций
+act 'jjjjjjj':
+
+end
+
+if 1:
+
+elseif 2:
+
+else
+
+end
+
+loop while step
 ! числовые системные переменные
 nosave|disablescroll|disablesubex|debug|usehtml|bcolor|fcolor|lcolor|fsize
 ! текстовые системные переменные
@@ -536,7 +553,55 @@ $input|$user_text|$usrtxt|$desc|$maintxt|$stattxt|$qspver|$curloc|$selobj|$selac
 iif|dyneval|func|max|min
 $iif|$dyneval|$func|$max|$min
 
+set a, d = 234, 678
+
 --- [death] ---------------------------------
+
+# [test]
+%comment%
+%string%
+%constant.numeric%
+%storage.type.numeric%
+%constant.language%
+%constant.character%
+%variable%
+%storage%
+%storage.type%
+%entity.name%
+%entity.other.inherited-class%
+%variable.parameter%
+%variable.language%
+%entity.name.tag%
+%variable.function%
+%support.type%
+%invalid%
+%invalid.deprecated%
+%meta.structure.dictionary.json%
+%string.unquoted.yaml%
+%meta.diff%
+%markup.heading%
+%markup.heading punctuation.definition.heading%
+%markup.heading.1%
+%markup.underline.link%
+%markup.bold%
+%markup.italic%
+%markup.underline%
+%markup.italic markup.bold%
+%punctuation.definition.thematic-break%
+%markup.list.numbered.bullet%
+%markup.list.unnumbered.bullet%
+%markup.raw%
+%markup.raw punctuation.definition.raw%
+%markup.deleted%
+%markup.inserted%
+%markup.changed%
+%constant.numeric.line-number.find-in-files%
+%message.error%
+%diff.deleted%
+%diff.deleted.char%
+%diff.inserted%
+%diff.inserted.char%
+-
 
 # [help]
 
