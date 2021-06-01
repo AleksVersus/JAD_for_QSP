@@ -32,6 +32,7 @@ variables: # назначаем переменные для удобства
   right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?)'
   nr: (\n\r|\r|\r\n|\n)
   oprcid: (<=|>=|\+=|-=|<>)
+  rightvar: ([A-Za-zА-Яа-я_][\w\.]*)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -54,6 +55,8 @@ contexts: # теперь необходимо определить "контек
     - include: figurebrack
     - include: actions
     - include: conditions
+    - include: loop
+    - include: setvars
     - match: \bend\b # подсветка лишнего end'а
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongend
     - match: ^(?:\s*?)\belse\b # лишний else
@@ -76,7 +79,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs.actionsopen1
       push:
-        - match: ^(\s*?)(end)([^\&\}\n\r]*)
+        - match: ^(\s*?)(end|end\s+?act)([^\&\}\n\r]*)
           captures:
             2: support.type avs.actionsend
             3: constant.numeric avs.numberic
@@ -88,7 +91,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs.actionsopen1
       push:
-        - match: ^(\s*?)(end)([^\&\n\r]*)
+        - match: ^(\s*?)(end|end\s+?act)([^\&\n\r]*)
           captures:
             2: support.type avs.actionsend
             3: constant.numeric avs.numberic
@@ -97,12 +100,41 @@ contexts: # теперь необходимо определить "контек
         - include: wrongcloseinscope
         - include: locations
 
+  # циклы
+  loop:
+    - match: '(?<=\{)(\s*?)(\bloop\b)(?=.*?\bwhile\b\s\S.*?(\bstep\b)?\s*?.*?\:\s*?$)'
+      captures:
+        2: support.type
+      push:
+        - match: ^(\s*?)(end|end\s+?loop)([^\&\}\n\r]*)
+          captures:
+            2: support.type
+            3: constant.numeric
+          pop: true
+        - include: wrongcloseinscope
+        - include: wrongclose
+        - include: locations
+    - match: '^(\s*?)(\bloop\b)(?=.*?\bwhile\b\s\S.*?(\bstep\b)?\s*?.*?\:\s*?$)'
+      captures:
+        2: support.type
+      push:
+        - match: ^(\s*?)(end|end\s+?loop)([^\&\n\r]*)
+          captures:
+            2: support.type
+            3: constant.numeric
+          pop: true
+        - include: wrongclose
+        - include: wrongcloseinscope
+        - include: locations
+    - match: '(\bloop\b)(?!.*\bwhile\b)'
+      scope: invalid
+
   conditions:
     - match: '(?<=\{)(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs.actionsopen1
       push:
-        - match: ^(\s*?)(end)([^\&\}\n\r]*)
+        - match: ^(\s*?)(end|end\s+?if)([^\&\}\n\r]*)
           captures:
             2: support.type avs.actionsend
             3: constant.numeric avs.numberic
@@ -115,7 +147,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs.actionsopen1
       push:
-        - match: ^(\s*?)(end)([^\&\n\r]*)
+        - match: ^(\s*?)(end|end\s+?if)([^\&\n\r]*)
           captures:
             2: support.type avs.actionsend
             3: constant.numeric avs.numberic
@@ -127,12 +159,12 @@ contexts: # теперь необходимо определить "контек
 
   wrongclose:
     - match: ^\s*?(-)(.*)({{nr}}$|$)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+      scope: invalid.qsp avs.error avs.wrongelse1
       pop: true
 
   wrongcloseinscope:
     - match: \}(.*)({{nr}}$|$)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+      scope: invalid.qsp avs.error avs.wrongelse1
       pop: true
 
   elseifelse:
@@ -151,35 +183,43 @@ contexts: # теперь необходимо определить "контек
         1: support.type avs.else
         2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
 
+  # set и local
+  setvars:
+      # ([A-Za-zА-Яа-я_][\w\.]*)
+    - match: \b(set|local)\b(?=\s+{{rightvar}}(\,\s*{{rightvar}})*(\s*\=[^=]+)?\s*(\&|{{nr}}|\}|\bwhile\b))
+      scope: support.function.qsp
+    - match: \b(set|local)\b
+      scope: invalid.qsp
+
   # операции
   operacion:
     # ошибка записи операторов операций без правого операнда
     - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
+      scope: invalid.qsp avs.error avs.wrongoperator1
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
     - match: (?<={{left_operand}})\s*{{oprcid}}(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
+      scope: invalid.qsp avs.error avs.wrongoperator2
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{oprcid}}(?=\s*?{{right_operand}}*)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
+      scope: invalid.qsp avs.error avs.wrongoperator3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
     - match: (?<={{left_operand}})\s*?{{oprcid}}(?=\s*?{{right_operand}}) 
       scope: support.function.qsp avs.operacion1 # допустимые в QSP => и =< в данной подсветке не поддерживаются
     # ошибка записи операторов > < =  без правого операнда
     - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
+      scope: invalid.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
+      scope: invalid.qsp avs.error avs.wrongoperator6
     # подсветка правильно записанных операторов > < =
     - match: (\+|-|<|>|=)
       scope: support.function.qsp avs.operacion5 
     # ошибка записи запятых без правого операнда
     - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma2
+      scope: invalid.qsp avs.error avs.wrongcomma2
     # ошибка записи запятых без левого операнда или отдельной строкой
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\/|\*|=|,)(?=\s*?{{right_operand}}*)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma3
+      scope: invalid.qsp avs.error avs.wrongcomma3
     # подсветка правильно записанных операторов больше-равно и меньше-равно
     - match: (\/|\*|=|,) # допустимые в QSP => и =< в данной подсветке не поддерживаются
       scope: support.function.qsp avs.comma1
@@ -265,7 +305,7 @@ contexts: # теперь необходимо определить "контек
   subex:
     - include: figurebrack
     - match: (\n\r|\r|\r\n|\n)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongenter
+      scope: invalid.qsp avs.error avs.wrongenter
     - include: opinse
     - include: sysvar
     - include: functions
@@ -405,92 +445,3 @@ contexts: # теперь необходимо определить "контек
         - match: (?i:</html>)
           scope: message.error avs.html
           pop: true
-
-  # тестовые матчи
-  tests:
-    - match: ^%comment%$
-      scope: comment
-    - match: ^%string%$
-      scope: string
-    - match: ^%constant.numeric%$
-      scope: constant.numeric
-    - match: ^%storage.type.numeric%$
-      scope: storage.type.numeric
-    - match: ^%constant.language%$
-      scope: constant.language
-    - match: ^%constant.character%$
-      scope: constant.character
-    - match: ^%variable%$
-      scope: variable
-    - match: ^%storage%$
-      scope: storage
-    - match: ^%storage.type%$
-      scope: storage.type
-    - match: ^%entity.name%$
-      scope: entity.name
-    - match: ^%entity.other.inherited-class%$
-      scope: entity.other.inherited-class
-    - match: ^%variable.parameter%$
-      scope: variable.parameter
-    - match: ^%variable.language%$
-      scope: variable.language
-    - match: ^%entity.name.tag%$
-      scope: entity.name.tag
-    - match: ^%variable.function%$
-      scope: variable.function
-    - match: ^%support.type%$
-      scope: support.type
-    - match: ^%invalid%$
-      scope: invalid
-    - match: ^%invalid.deprecated%$
-      scope: invalid.deprecated
-    - match: ^%meta.structure.dictionary.json%$
-      scope: meta.structure.dictionary.json
-    - match: ^%string.unquoted.yaml%$
-      scope: string.unquoted.yaml
-    - match: ^%meta.diff%$
-      scope: meta.diff
-    - match: ^%markup.heading%$
-      scope: markup.heading
-    - match: ^%markup.heading punctuation.definition.heading%$
-      scope: markup.heading punctuation.definition.heading
-    - match: ^%markup.heading.1%$
-      scope: markup.heading.1
-    - match: ^%markup.underline.link%$
-      scope: markup.underline.link
-    - match: ^%markup.bold%$
-      scope: markup.bold
-    - match: ^%markup.italic%$
-      scope: markup.italic
-    - match: ^%markup.underline%$
-      scope: markup.underline
-    - match: ^%markup.italic markup.bold%$
-      scope: markup.italic markup.bold
-    - match: ^%punctuation.definition.thematic-break%$
-      scope: punctuation.definition.thematic-break
-    - match: ^%markup.list.numbered.bullet%$
-      scope: markup.list.numbered.bullet
-    - match: ^%markup.list.unnumbered.bullet%$
-      scope: markup.list.unnumbered.bullet
-    - match: ^%markup.raw%$
-      scope: markup.raw
-    - match: ^%markup.raw punctuation.definition.raw%$
-      scope: markup.raw punctuation.definition.raw
-    - match: ^%markup.deleted%$
-      scope: markup.deleted
-    - match: ^%markup.inserted%$
-      scope: markup.inserted
-    - match: ^%markup.changed%$
-      scope: markup.changed
-    - match: ^%constant.numeric.line-number.find-in-files%$
-      scope: constant.numeric.line-number.find-in-files
-    - match: ^%message.error%$
-      scope: message.error
-    - match: ^%diff.deleted%$
-      scope: diff.deleted
-    - match: ^%diff.deleted.char%$
-      scope: diff.deleted.char
-    - match: ^%diff.inserted%$
-      scope: diff.inserted
-    - match: ^%diff.inserted.char%$
-      scope: diff.inserted.char

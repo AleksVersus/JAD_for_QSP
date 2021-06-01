@@ -160,9 +160,18 @@ else u=999: неверная запись else в многострочном о�
 
 end
 
-loop local i=1 while i<11 step i+=1:
+loop local i,pyu=5,6 while i<11 step i+=1:
 	*pl "12 * <<i>> = <<12*i>>"
-end
+end loop
+
+local i,t=6,7,8 & local r=8
+! неверный local
+local
+local 7=9
+local i=6,d=6
+local i,7=5,8
+
+set b56=9
 -
 
 # [0.1_game_info]
@@ -538,7 +547,9 @@ else
 
 end
 
-loop while step
+loop while i<9 step:
+	jjjjj=000
+end
 ! числовые системные переменные
 nosave|disablescroll|disablesubex|debug|usehtml|bcolor|fcolor|lcolor|fsize
 ! текстовые системные переменные
@@ -553,55 +564,9 @@ $input|$user_text|$usrtxt|$desc|$maintxt|$stattxt|$qspver|$curloc|$selobj|$selac
 iif|dyneval|func|max|min
 $iif|$dyneval|$func|$max|$min
 
-set a, d = 234, 678
+set a, d =234, 678
 
 --- [death] ---------------------------------
-
-# [test]
-%comment%
-%string%
-%constant.numeric%
-%storage.type.numeric%
-%constant.language%
-%constant.character%
-%variable%
-%storage%
-%storage.type%
-%entity.name%
-%entity.other.inherited-class%
-%variable.parameter%
-%variable.language%
-%entity.name.tag%
-%variable.function%
-%support.type%
-%invalid%
-%invalid.deprecated%
-%meta.structure.dictionary.json%
-%string.unquoted.yaml%
-%meta.diff%
-%markup.heading%
-%markup.heading punctuation.definition.heading%
-%markup.heading.1%
-%markup.underline.link%
-%markup.bold%
-%markup.italic%
-%markup.underline%
-%markup.italic markup.bold%
-%punctuation.definition.thematic-break%
-%markup.list.numbered.bullet%
-%markup.list.unnumbered.bullet%
-%markup.raw%
-%markup.raw punctuation.definition.raw%
-%markup.deleted%
-%markup.inserted%
-%markup.changed%
-%constant.numeric.line-number.find-in-files%
-%message.error%
-%diff.deleted%
-%diff.deleted.char%
-%diff.inserted%
-%diff.inserted.char%
--
 
 # [help]
 
