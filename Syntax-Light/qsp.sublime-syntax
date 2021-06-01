@@ -21,7 +21,7 @@ variables: # назначаем переменные для удобства
   sysvarot: (?i:(args|result))
   fncnum: (?i:obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|r(a)?nd|arrsize|arrpos|arrcomp|strcomp|strpos)
   fnctxt: (?i:(input|user_text|usrtxt|desc|maintxt|stattxt|qspver|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|strfind))
-  fncot: (?i:(iif|dyneval|func|max|min))
+  fncot: (?i:(iif|dyneval|func|max|min|arritem))
   figop: '\{'
   figcls: '\}'
   quote: '"'
@@ -188,7 +188,7 @@ contexts: # теперь необходимо определить "контек
       scope: support.function.qsp avs.operacion9
 
   numeric:
-    - match: \b\d+([A-Za-zа-яА-Я\$\.]+\d*)+\b # неправильные переменные
+    - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongvar
     - match: \b[0-9]+\b
       scope: constant.numeric avs.numberic
@@ -400,7 +400,7 @@ contexts: # теперь необходимо определить "контек
       push:
         - clear_scopes: true
         - meta_scope: markup.raw avs.htmlsupport
-        - include: Packages/HTML/HTML.sublime-syntax   
+        - include: Packages/HTML/HTML.sublime-syntax
       with_prototype:
         - match: (?i:</html>)
           scope: message.error avs.html
