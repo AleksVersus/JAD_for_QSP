@@ -10,7 +10,7 @@ file_extensions: # расширения файлов
   - qsps
   - qsp-txt
   - txt-qsp
-first_line_match: (^(#)\s?.+$|^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
+first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
 scope: source.QSP
 variables: # назначаем переменные для удобства
   oprt: (?i:(exec|set|let|local|view|inclib|freelib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg))
@@ -29,7 +29,7 @@ variables: # назначаем переменные для удобства
   opener: '{{figop}}{{quote}}{{ap}}'
   closer: '{{figcls}}{{quote}}{{ap}}'
   left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\w|\d)'
-  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?)'
+  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?|\@)'
   nr: (\n\r|\r|\r\n|\n)
   oprcid: (<=|>=|\+=|-=|<>)
   rightvar: ([A-Za-zА-Яа-я_][\w\.]*)
@@ -47,8 +47,8 @@ contexts: # теперь необходимо определить "контек
             - match: ^\1(-)(.*?)$
               pop: true
               captures:
-                1: variable.parameter.qsp meta.tag markup.heading.qsp punctuation.definition.heading.qsp avs.locend
-                2: entity.name.function entity.name avs.locend.comments
+                1: markup.heading punctuation.definition.heading avs.locend
+                2: entity.name avs.locend.comments
             - include: locations
     
   locations:
@@ -57,12 +57,13 @@ contexts: # теперь необходимо определить "контек
     - include: conditions
     - include: loop
     - include: setvars
+    - include: sugarfunc
     - match: \bend\b # подсветка лишнего end'а
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongend
+      scope: invalid.qsp avs.error avs.wrongend
     - match: ^(?:\s*?)\belse\b # лишний else
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse
+      scope: invalid.qsp avs.error avs.wrongelse
     - match: \belseif\b # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelseif
+      scope: invalid.qsp avs.error avs.wrongelseif
     - include: comments
     - include: markers
     - include: operators
@@ -71,7 +72,15 @@ contexts: # теперь необходимо определить "контек
     - include: functions
     - include: numeric
     - include: strings
-    - include: tests
+
+  # неявный вызов функций
+  sugarfunc:
+    - match: (\@[\w\.\#]+)(?=\s*\()
+      scope: entity.other.inherited-class
+    - match: (\@[\w\.\#]+\s+{{right_operand}})
+      scope: invalid
+    - match: (\@[\w\.\#]+)
+      scope: entity.other.inherited-class
 
   # действия и условия
   actions:
