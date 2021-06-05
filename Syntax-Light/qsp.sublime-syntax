@@ -39,15 +39,16 @@ contexts: # теперь необходимо определить "контек
     - match: "" # совпадения не ищутся
       push: # всё вытесняется подсветкой
         - match: ".*" # любое множество символов подсвечивается как комментарий
-          scope: comment.qsp
+          scope: meta.diff avs-mainscope
       with_prototype:
         - match: ^(\s*?)(#)\s?.+$
-          scope: constant.character.qsp avs.locstart
+          scope: constant.character.qsp avs-locstart
           push:
+            - meta_scope: avs-location-body
             - match: ^\1(-)(.*?)$
               pop: true
               captures:
-                1: markup.heading punctuation.definition.heading avs.locend
+                1: markup.heading punctuation.definition.heading avs-locend
                 2: entity.name avs.locend.comments
             - include: locations
     
