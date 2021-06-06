@@ -1,0 +1,12 @@
+[
+// Auto-pair underscore
+    {
+        "keys": ["b"],
+        "command": "insert_snippet",
+        "args": {"contents": "<b>${0:$SELECTION}</b>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+]
