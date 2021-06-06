@@ -87,24 +87,24 @@ contexts: # теперь необходимо определить "контек
   actions:
     - match: '(?<=\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs.actionsopen1
+        2: support.type avs-startact
       push:
-        - match: ^(\s*?)(end|end\s+?act)([^\&\}\n\r]*)
+        - match: ^(\s*?)(end\s+?act|end)([^\&\}\n\r]*)
           captures:
-            2: support.type avs.actionsend
-            3: constant.numeric avs.numberic
+            2: support.type avs-endact
+            3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(act)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs.actionsopen1
+        2: support.type avs-startact
       push:
-        - match: ^(\s*?)(end|end\s+?act)([^\&\n\r]*)
+        - match: ^(\s*?)(end\s+?act|end)([^\&\n\r]*)
           captures:
-            2: support.type avs.actionsend
-            3: constant.numeric avs.numberic
+            2: support.type avs-endact
+            3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -114,24 +114,24 @@ contexts: # теперь необходимо определить "контек
   loop:
     - match: '(?<=\{)(\s*?)(\bloop\b)(?=.*?\bwhile\b\s\S.*?(\bstep\b)?\s*?.*?\:\s*?$)'
       captures:
-        2: support.type
+        2: support.type avs-startloop
       push:
-        - match: ^(\s*?)(end|end\s+?loop)([^\&\}\n\r]*)
+        - match: ^(\s*?)(end\s+?loop|end)([^\&\}\n\r]*)
           captures:
-            2: support.type
-            3: constant.numeric
+            2: support.type avs-endloop
+            3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(\bloop\b)(?=.*?\bwhile\b\s\S.*?(\bstep\b)?\s*?.*?\:\s*?$)'
       captures:
-        2: support.type
+        2: support.type avs-startloop
       push:
-        - match: ^(\s*?)(end|end\s+?loop)([^\&\n\r]*)
+        - match: ^(\s*?)(end\s+?loop|end)([^\&\n\r]*)
           captures:
-            2: support.type
-            3: constant.numeric
+            2: support.type avs-endloop
+            3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -139,15 +139,16 @@ contexts: # теперь необходимо определить "контек
     - match: '(\bloop\b)(?!.*\bwhile\b)'
       scope: invalid
 
+  # конструкции условий
   conditions:
     - match: '(?<=\{)(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs.actionsopen1
+        2: support.type avs-startif
       push:
-        - match: ^(\s*?)(end|end\s+?if)([^\&\}\n\r]*)
+        - match: ^(\s*?)(end\s+?if|end)([^\&\}\n\r]*)
           captures:
-            2: support.type avs.actionsend
-            3: constant.numeric avs.numberic
+            2: support.type avs-endif
+            3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
@@ -155,12 +156,12 @@ contexts: # теперь необходимо определить "контек
         - include: locations
     - match: '^(\s*?)(if)(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs.actionsopen1
+        2: support.type avs-startif
       push:
-        - match: ^(\s*?)(end|end\s+?if)([^\&\n\r]*)
+        - match: ^(\s*?)(end\s+?if|end)([^\&\n\r]*)
           captures:
-            2: support.type avs.actionsend
-            3: constant.numeric avs.numberic
+            2: support.type avs-endif
+            3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -241,7 +242,7 @@ contexts: # теперь необходимо определить "контек
     - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные
       scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongvar
     - match: \b[0-9]+\b
-      scope: constant.numeric avs.numberic
+      scope: constant.numeric avs-numberic
     
   operators:
     # подсветка операторов
