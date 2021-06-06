@@ -1,9 +1,63 @@
 [
-// Auto-pair underscore
+    // Auto-pair underscore
     {
         "keys": ["b"],
         "command": "insert_snippet",
         "args": {"contents": "<b>${0:$SELECTION}</b>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+    {
+        "keys": ["i"],
+        "command": "insert_snippet",
+        "args": {"contents": "<i>${0:$SELECTION}</i>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+    {
+        "keys": ["alt+h"],
+        "command": "insert_snippet",
+        "args": {"contents": "<html>${0:$SELECTION}</html>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+    {
+        "keys": ["p"],
+        "command": "insert_snippet",
+        "args": {"contents": "<p>${0:$SELECTION}</p>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+    {
+        "keys": ["f"],
+        "command": "insert_snippet",
+        "args": {"contents": "<font color=#${1:000000} size=${2:0}>${0:$SELECTION}</font>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+    {
+        "keys": ["d"],
+        "command": "insert_snippet",
+        "args": {"contents": "<div>${0:$SELECTION}</div>"},
+        "context": [
+            { "key": "setting.auto_match_enabled"},
+            { "key": "selection_empty", "operand": false, "match_all": true },
+        ]
+    },
+    {
+        "keys": ["h"],
+        "command": "insert_snippet",
+        "args": {"contents": "<h${1:1}>${0:$SELECTION}</$1>"},
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
