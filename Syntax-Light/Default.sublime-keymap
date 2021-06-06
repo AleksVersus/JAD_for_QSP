@@ -70,4 +70,23 @@
             { "key": "selector", "operand": "source.QSP" }
         ]
     },
+    // Build-System
+    { "keys": ["ctrl+f5"],
+        "command": "build",
+        "args": 
+        {"build_system": "Packages/QSP/QSP.sublime-build",
+        "variant":"qsp-build-and-run"}
+    },
+    { "keys": ["ctrl+alt+q"],
+        "command": "build",
+        "args": 
+        {"build_system": "Packages/QSP/QSP.sublime-build",
+        "variant":"qsp-build"}
+    },
+    { "keys": ["ctrl+alt+s"],
+        "command": "build",
+        "args": 
+        {"build_system": "Packages/QSP/QSP.sublime-build",
+        "variant":"qsp-run"}
+    },
 ]
