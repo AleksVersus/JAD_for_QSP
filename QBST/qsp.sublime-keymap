@@ -2,7 +2,8 @@
 	{ "keys": ["ctrl+f5"],
 		"command": "build",
 		"args": 
-		{"build_system": "Packages/User/QSP.sublime-build"}
+		{"build_system": "Packages/User/QSP.sublime-build",
+		"variant":"qsp-build-and-run"}
 	},
 	{ "keys": ["ctrl+alt+q"],
 		"command": "build",
