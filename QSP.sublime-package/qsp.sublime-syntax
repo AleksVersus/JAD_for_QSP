@@ -279,7 +279,7 @@ contexts: # теперь необходимо определить "контек
 
   markers:
     - match: ^(\s*?\:|\:)[^&'"]+
-      scope: entity.name.function entity.name avs.markup
+      scope: entity.name avs-markup
 
   # # # ------------------- строки ------------------------ # # #
   strings:
@@ -305,11 +305,11 @@ contexts: # теперь необходимо определить "контек
 
   subexpression:
     - match: '<<'
-      scope: entity.name.function entity.name avs.markup
+      scope: entity.name avs-markup
       push:
         - clear_scopes: true
         - match: '>>'
-          scope: entity.name.function entity.name avs.markup
+          scope: entity.name avs-markup
           pop: true
         - include: subex
 
