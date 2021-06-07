@@ -269,11 +269,11 @@ contexts: # теперь необходимо определить "контек
 
   functions:
     - match: (?<!\$)(\b{{fnctxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+      scope: invalid avs.error
     - match: (\$)(?=({{fnctxt}}\b|{{fncot}}\b))
-      scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+      scope: markup.heading punctuation.definition.heading avs.function
     - match: \b({{fncnum}}|{{fnctxt}}|{{fncot}})\b
-      scope: variable.parameter meta.tag markup.heading punctuation.definition.heading avs.function
+      scope: markup.heading punctuation.definition.heading avs.function
     - match: (\$)(?=\b{{fncnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
