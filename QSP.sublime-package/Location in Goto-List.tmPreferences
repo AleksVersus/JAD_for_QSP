@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+	<key>scope</key>
+	<string>source.QSP avs-location-body avs-locstart</string>
+	<key>settings</key>
+	<dict>
+		<key>name</key>
+  		<string>Symbol List: Locations</string>
+		<key>showInSymbolList</key>
+	    <integer>1</integer>
+	    <key>symbolTransformation</key>
+	    <string>
+	        s/^\s*?\#\s?(.+)$/Локация: \1/g;
+	    </string>
+	    <key>showInIndexedSymbolList</key>
+	    <integer>1</integer>
+	    <key>symbolIndexTransformation</key>
+	    <string>
+	        s/^\s*?\#\s?(.+)$/Локация: \1/g;
+	    </string>
+	</dict>
+</dict>
+</plist>
