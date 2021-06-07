@@ -5,6 +5,8 @@
 	<string>source.QSP</string>
 	<key>settings</key>
 	<dict>
+		<key>decreaseIndentPattern</key>
+    	<string>^\s*end\b.*</string>
 		<key>increaseIndentPattern</key>
 		<string>^\s*(if|else|elseif|act|loop)\b.*:\s*$</string>
 		<key>disableIndentNextLinePattern</key>
