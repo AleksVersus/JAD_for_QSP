@@ -171,7 +171,7 @@ local
 local 7=9
 local i=6,d=6
 local i,7=5,8
-
+local i,$b=4,"56"
 set b56=9
 -
 
