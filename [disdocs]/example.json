@@ -64,5 +64,7 @@
 	"converter":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe",
 	"player":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe",
 	// ещё один аргумент. Если выставлено "True", промежуточные файлы TXT2gam сохраняются
-	"save_txt2gam":"True"
+	"save_txt2gam":"True",
+	// включаем обработку всех файлов проекта препроцессором
+	"preprocessor":"True"
 }

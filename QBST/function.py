@@ -31,14 +31,14 @@ def genFilesPaths(files):
 				error_file.write("function.genFilesPaths: File don't exist. Prove path '"+file_path+"'.\n")
 	return files_paths
 
-# из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .qsp по указанному пути
+# из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
 def constructFile(build_list,new_file):
 	# получив список файлов из которых мы собираем выходной файл, делаем следующее
 	text=""
 	for path in build_list:
 		with open(path,"r",encoding="utf-8") as file:
 			# открываем путь как файл
-			text+=file.read()+"\r\n"
+			text+=file.read()+"\r\n" # здесь нужно проверить работу препроцессора
 	# если папка не создана, нужно её создать
 	path_folder=os.path.split(new_file)[0]
 	if os.path.exists(path_folder)!=True:
