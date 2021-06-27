@@ -25,9 +25,18 @@ def addVariable(vares,direct):
 	else:
 		vares[direct]=True
 
+# функция распарсивает строку условия на элементы
+def parseCondition(vares,direct):
+	operand_list=re.split(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>',direct)
+	for i in operand_list:
+		i=i.strip()
+		if i!="" and (not i in vares):
+			vares[i]=False
+
 # функция, которая проверяет, выполняется ли условие
 def metCondition(vares,direct):
 	result=dict()
+	parseCondition(vares,direct)
 	# следующий цикл формирует условие с действительными значениями вместо элементов
 	for var in vares:
 		if var in direct:
@@ -90,7 +99,53 @@ def replaceArgs(arguments,args):
 
 # обработка строки. Поиск спецкомментариев
 def ppString(text_lines,string,args):
-	result=""
+	if string=='p "Текст для вывода в окно дополнительного описания" & !@ спецкомментарий\n':
+		p=True
+	else:
+		p=False
+	if args["include"]==True:
+		# обработка
+		result=string
+		if args["pp"]==True and args["savecomm"]==False:
+			i=0
+			for s in string:
+				if p:
+					print(args['openquote'])
+				if args["openquote"]==False:
+					if s=="'":
+						args["openquote"]=True
+						args["quote"]="apostrophes"
+					elif s=='"':
+						args["openquote"]=True
+						args["quote"]="quotes"
+					elif s=="{":
+						args["openquote"]=True
+						args["quote"]="brackets"
+					elif s=="!":
+						if s+string[i+1]+string[i+2]=="!@<":
+							# если это удаляющий комментарий
+							result="" # строка удаляется из списка
+							break
+						elif s+string[i+1]=="!@":
+							# если это не удаляющий комментарий, но специальный
+							# необходимо удалить его из строки
+							result=string[:i]
+							result=re.sub(r'\s*?\&\s*?$','',result)+'\n'
+							break
+				else:
+					if s=="'" and args["quote"]=="apostrophes":
+						args["openquote"]=False
+						args["quote"]=""
+					elif s=='"' and args["quote"]=="quotes":
+						args["openquote"]=False
+						args["quote"]=""
+					elif s=="}" and args["quote"]=="brackets":
+						args["openquote"]=False
+						args["quote"]=""
+				i+=1
+	elif args["include"]==False:
+		# строки исключаются
+		result=""
 	if result!="":
 		text_lines.append(result)
 
@@ -99,12 +154,15 @@ def ppThisFile(file_path,args):
 	# эта функция будет обрабатывать файл
 	# и возвращать результат после препроцессинга
 	result_text=[] # результат обработки: список строк
+	output_text="" # возвращаемый функцией текст
 	variables={} # список (словарь) переменных и их значений
 	arguments={
 		"include":True, # пока включен этот режим, строки добавляются в результат
 		"pp":True, # пока включен этот режим, строки обрабатываются парсером
 		"openif":False, # отметка о том, что открыт блок условия
 		"savecomm":False, # отметка о том, что не нужно удалять специальные комментарии
+		"openquote":False, # отметка, что были открыты кавычки
+		"quote":"", # тип открытых кавычек
 		"if":{"include":True, "pp":True, "savecomm":False} # список инструкций до выполнения блока условий
 	} # словарь режимов
 	replaceArgs(arguments,args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
@@ -146,16 +204,21 @@ def ppThisFile(file_path,args):
 						direct=getDirect(comm_list[1],'if') # получаем содержимое скобок
 						condition=metCondition(variables,direct) # проверяем условие
 						openCondition(comm_list[2],condition,arguments)
+					else:
+						# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
+						pass
 				else:
 					# при отключенном препроцессоре выполняется только команда endif
 					if strfind(r'^endif\n$',comm_list[1])!="":
 						# закрываем условие
-						closeCondition(arguments)				
+						closeCondition(arguments)
+
 		if arguments["openif"]==True:
 			closeCondition(arguments)
-		print(result_text)
-					
+		for line in result_text:
+			output_text+=line
+		return output_text			
 					
 args={"include":True, "pp":True, "savecomm":False} # глобальные значения
 file="test.qsps"
-ppThisFile(file,args)
+print(ppThisFile(file,args))
