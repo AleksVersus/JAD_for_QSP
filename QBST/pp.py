@@ -1,6 +1,12 @@
 import sys, os
 import re
 
+# main
+def main():
+	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
+	file=".\\preprocessor-docs\\test.qsps"
+	print(ppThisFile(file,args))
+
 # возвращает вхождение регэкспа или пустую строку
 def strfind(regex,string):
 	instr=re.search(regex,string)
@@ -150,12 +156,11 @@ def ppString(text_lines,string,args):
 		text_lines.append(result)
 
 # основная функция
-def ppThisFile(file_path,args):
+def ppThisFile(file_path,args,variables):
 	# эта функция будет обрабатывать файл
 	# и возвращать результат после препроцессинга
 	result_text=[] # результат обработки: список строк
 	output_text="" # возвращаемый функцией текст
-	variables={} # список (словарь) переменных и их значений
 	arguments={
 		"include":True, # пока включен этот режим, строки добавляются в результат
 		"pp":True, # пока включен этот режим, строки обрабатываются парсером
@@ -212,13 +217,11 @@ def ppThisFile(file_path,args):
 					if strfind(r'^endif\n$',comm_list[1])!="":
 						# закрываем условие
 						closeCondition(arguments)
-
 		if arguments["openif"]==True:
 			closeCondition(arguments)
 		for line in result_text:
 			output_text+=line
-		return output_text			
-					
-args={"include":True, "pp":True, "savecomm":False} # глобальные значения
-file="test.qsps"
-print(ppThisFile(file,args))
+		return output_text
+
+if __name__ == '__main__':
+    main()

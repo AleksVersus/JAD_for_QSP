@@ -1,9 +1,11 @@
 # QSP-builder предназначен для сборки отдельных игр формата .qsp
 # из текстовых файлов, написанных в формате TXT2GAM
 
-import sys # импортируем системные файлы
-import os, json, subprocess #импортируем нужные модули
+import os, sys # импортируем системные файлы
+import json, subprocess #импортируем нужные модули
+import re # модуль работы с регулярками
 import function as qsp # импортируем свой модуль с коротким именем qsp
+import pp as pp # импортируем модуль препроцессора
 
 # заранее определяем пути к плееру и утилите TXT2GAM
 txt2gam="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe" # путь к txt2gam
@@ -45,6 +47,9 @@ if work_dir!=None:
 	start_file="" # файл, который мы должны запустить
 
 	if args["build"]==True:
+		pp_markers={"initial":True} # словарь глобальных меток для препроцессора
+		if not "preprocessor" in root:
+			root["preprocessor"]="Off"
 		# только если разрешена сборка файла
 		# получаем список инструкций из элемента "project"
 		for instruction in root["project"]:
@@ -76,7 +81,7 @@ if work_dir!=None:
 					error_file.write("main: Key 'build' not found in project-list. Choose export name "+exit_qsp+".\n")
 			# после того, как все данные получены, генерируем выходной файл
 			# собираем текстовый файл
-			qsp.constructFile(build_files,exit_txt)
+			qsp.constructFile(build_files,exit_txt,root["preprocessor"],pp_markers)
 			# теперь нужно конвертировать файл в бинарник
 			subprocess.run([txt2gam,exit_txt,exit_qsp])
 			if os.path.isfile(exit_qsp):

@@ -32,13 +32,30 @@ def genFilesPaths(files):
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
-def constructFile(build_list,new_file):
-	# получив список файлов из которых мы собираем выходной файл, делаем следующее
-	text=""
+def constructFile(build_list,new_file,pponoff,pp_markers):
+	# получив список файлов, из которых мы собираем выходной файл, делаем следующее
+	text="" # выходной текст
 	for path in build_list:
+		# открываем путь как файл
 		with open(path,"r",encoding="utf-8") as file:
-			# открываем путь как файл
-			text+=file.read()+"\r\n" # здесь нужно проверить работу препроцессора
+			if pponoff=="Hard-off":
+				text+=file.read()+"\r\n" # файл не отправляется на препроцессинг
+			elif pponoff=="Off":
+				first_string=file.readline()
+				second_string=file.readline()
+				if first_string=="!@pp:on\n" or second_string=="!@pp:on":
+					arguments={"include":True, "pp":True, "savecomm":False}
+					# файл отправляется на препроцессинг
+					text+=pp.ppThisFile(path,arguments,pp_markers)+'\r\n'
+				else:
+					text+=file.read()+"\r\n"
+			elif pponoff=="On":
+				if first_string=="!@pp:off\n" or second_string=="!@pp:off":
+					text+=file.read()+"\r\n"
+				else:
+					arguments={"include":True, "pp":True, "savecomm":False}
+					text+=pp.ppThisFile(path,arguments,pp_markers)+'\r\n'
+			
 	# если папка не создана, нужно её создать
 	path_folder=os.path.split(new_file)[0]
 	if os.path.exists(path_folder)!=True:
