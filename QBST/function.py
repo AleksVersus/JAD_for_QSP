@@ -36,7 +36,6 @@ def genFilesPaths(files):
 def constructFile(build_list,new_file,pponoff,pp_markers):
 	# получив список файлов, из которых мы собираем выходной файл, делаем следующее
 	text="" # выходной текст
-	print(pponoff,new_file)
 	for path in build_list:
 		# открываем путь как файл
 		with open(path,"r",encoding="utf-8") as file:
