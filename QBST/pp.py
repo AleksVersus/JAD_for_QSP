@@ -1,6 +1,12 @@
 import sys, os
 import re
 
+# main
+def main():
+	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
+	file=".\\preprocessor-docs\\test.qsps"
+	print(ppThisFile(file,args))
+
 # возвращает вхождение регэкспа или пустую строку
 def strfind(regex,string):
 	instr=re.search(regex,string)
@@ -210,3 +216,6 @@ def ppThisFile(file_path,args,variables):
 		for line in result_text:
 			output_text+=line
 		return output_text
+
+if __name__ == '__main__':
+    main()
