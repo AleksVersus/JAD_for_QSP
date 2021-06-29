@@ -2,7 +2,7 @@
     "cmd":
     [
     	"C:\\Program Files\\Python39\\python.exe", 
-    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
+    	"C:\\Program Files (x86)\\QSP\\QBST\\main.py", 
     	"$file"
     ],
     "selector": "source.QSP",
@@ -13,7 +13,7 @@
     		"cmd":
 		    [
 		    	"C:\\Program Files\\Python39\\python.exe", 
-		    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
+		    	"C:\\Program Files (x86)\\QSP\\QBST\\main.py", 
 		    	"$file","--br"
 		    ]
     	},
@@ -22,7 +22,7 @@
     		"cmd":
 		    [
 		    	"C:\\Program Files\\Python39\\python.exe", 
-		    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
+		    	"C:\\Program Files (x86)\\QSP\\QBST\\main.py", 
 		    	"$file","--build"
 		    ]
     	},
@@ -31,7 +31,7 @@
     		"cmd":
 		    [
 		    	"C:\\Program Files\\Python39\\python.exe", 
-		    	"С:\\Program Files (x86)\\QSP\\Builder\\main.py", 
+		    	"C:\\Program Files (x86)\\QSP\\QBST\\main.py", 
 		    	"$file","--run"
 		    ]
     	}
