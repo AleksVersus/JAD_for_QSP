@@ -67,6 +67,15 @@
 					"path":"[lib]\\easy.titles"
 				}
 			]
+		},
+		{
+			"build":"..\\example_game\\pp-test\\pp-test.qsp",
+			"folders":
+			[
+				{
+					"path":"[pp-test]"
+				}
+			]
 		}
 	],
 	"start":"..\\example_game\\game.sam.qsp",
