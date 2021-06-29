@@ -108,15 +108,8 @@ def parseARGS(arguments):
 		args["point_file"]=os.getcwd()+"\\"+sys.argv[0]
 	return args
 
-
 # из переданного названия файла получаем пути к промежуточному файлу и конечному
 def exitFiles(game_path):
 	exit_qsp=os.path.abspath(game_path)
 	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
 	return [exit_qsp,exit_txt]
-
-# распечатка на экране списка
-def printList(cur_list):
-	for i in cur_list:
-		print(i)
-	print (":)")
