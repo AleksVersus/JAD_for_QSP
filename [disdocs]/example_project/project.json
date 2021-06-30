@@ -42,15 +42,6 @@
 			]
 		},
 		{
-			"build":"..\\example_game\\lib\\easy.titles.qsp",
-			"folders":
-			[
-				{
-					"path":"[lib]\\easy.titles"
-				}
-			]
-		},
-		{
 			"build":"..\\example_game\\lib\\easy.math.qsp",
 			"folders":
 			[
