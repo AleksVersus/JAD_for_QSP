@@ -83,7 +83,7 @@ if work_dir!=None:
 			# собираем текстовый файл
 			qsp.constructFile(build_files,exit_txt,root["preprocessor"],pp_markers)
 			# теперь нужно конвертировать файл в бинарник
-			subprocess.run([txt2gam,exit_txt,exit_qsp])
+			subprocess.run([txt2gam,exit_txt,exit_qsp],stdout=subprocess.PIPE)
 			if os.path.isfile(exit_qsp):
 				export_files.append(exit_qsp)
 			# теперь удаляем промежуточный файл
