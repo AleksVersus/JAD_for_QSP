@@ -38,10 +38,9 @@ contexts: # теперь необходимо определить "контек
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
     - match: "" # совпадения не ищутся
       push: # всё вытесняется подсветкой
+        - include: preprocessor
         - match: ".*" # любое множество символов подсвечивается как комментарий
-          push:
-            - meta_scope: meta.diff avs-mainscope
-            - include: preprocessor
+          scope: meta.diff avs-mainscope
       with_prototype:
         - match: ^(\s*?)(#)\s?.+$
           scope: constant.character.qsp avs-locstart
@@ -447,7 +446,7 @@ contexts: # теперь необходимо определить "контек
   preprocessor:
     - match: ^(\!@pp\:.*?)$
       captures:
-        1: diff.deleted markup.bold preprocessor.avs
+        1: diff.deleted preprocessor.avs
         #2: markup.bold preprocessor.avs
 
   # # # ---------- фигурные скобки --------------- # # #
