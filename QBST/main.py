@@ -112,4 +112,9 @@ if work_dir!=None:
 			with open("errors.log","a",encoding="utf-8") as error_file:
 				error_file.write("main: Start-file is wrong. Don't start the player.\n")
 		else:
-			subprocess.run([player_exe,start_file])
+			proc=subprocess.Popen([player_exe,start_file])
+			# эта инструкция завершает программу через секунду
+			try:
+				proc.wait(0.01)
+			except subprocess.TimeoutExpired:
+				pass
