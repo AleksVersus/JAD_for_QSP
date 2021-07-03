@@ -131,6 +131,8 @@ def ppString(text_lines,string,args):
 							# необходимо удалить его из строки
 							result=string[:i]
 							result=re.sub(r'\s*?\&\s*?$','',result)+'\n'
+							if re.match(r'^\s*?$',result)!=None:
+								result=""
 							break
 				else:
 					if s=="'" and args["quote"]=="apostrophes":
