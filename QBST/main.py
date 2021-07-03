@@ -113,7 +113,9 @@ if work_dir!=None:
 				error_file.write("main: Start-file is wrong. Don't start the player.\n")
 		else:
 			proc=subprocess.Popen([player_exe,start_file])
-			# эта инструкция завершает программу через секунду
+			# эта инструкция завершает скрипт через 10 мс уже после вызова плеера
+			# это нужно, чтобы окно консоли не подвисало, когда уже запущен плеер,
+			# но и плеер должен открыться выше окна консоли.
 			try:
 				proc.wait(0.01)
 			except subprocess.TimeoutExpired:
