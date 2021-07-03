@@ -73,7 +73,7 @@
     {
         "keys": ["alt+/"],
         "command": "insert_snippet",
-        "args": {"contents": "\t& !$1"},
+        "args": {"contents": "\t& !@ $1"},
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selector", "operand": "source.QSP" }
