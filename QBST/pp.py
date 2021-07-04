@@ -214,7 +214,7 @@ def ppThisFile(file_path,args,variables):
 				else:
 					# при отключенном препроцессоре выполняется только команда endif
 					if strfind(r'^endif\n$',comm_list[1])!="":
-						# закрываем условие
+						# закрываем условие.
 						closeCondition(arguments)
 		if arguments["openif"]==True:
 			closeCondition(arguments)
