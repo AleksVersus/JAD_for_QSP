@@ -35,8 +35,11 @@ def addVariable(vares,direct):
 def parseCondition(vares,direct):
 	operand_list=re.split(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>',direct)
 	for i in operand_list:
-		i=i.strip()
-		if i!="" and (not i in vares):
+		if len(operand_list)>1:
+			i=i.strip()
+			if i!="" and (not i in vares):
+				vares[i]=i
+		elif not i in vares:
 			vares[i]=False
 
 # функция, которая проверяет, выполняется ли условие

@@ -337,6 +337,7 @@ UnicodeEncodeError: 'charmap' codec can't encode character '\u2191' in position 
 "Если метки layer и quest_navigator определены, данная строка останется в конечном файле"
 !@pp:endif
 ```
+7. Заранее определены метки "True" и "False", для которых установлены соответствующие булевые значения. Таким образом допустимо использовать команды `if(build_em!=True)` или `if(build_em==False)`.
 
 ##### Включение препроцессора
 

@@ -47,7 +47,7 @@ if work_dir!=None:
 	start_file="" # файл, который мы должны запустить
 
 	if args["build"]==True:
-		pp_markers={"initial":True} # словарь глобальных меток для препроцессора
+		pp_markers={"Initial":True,"True":True,"False":False} # словарь глобальных меток для препроцессора
 		if not "preprocessor" in root:
 			root["preprocessor"]="Off"
 		# только если разрешена сборка файла
