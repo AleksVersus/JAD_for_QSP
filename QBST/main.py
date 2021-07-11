@@ -45,7 +45,12 @@ if work_dir!=None:
 	# инициализируем разные данные
 	export_files=[] # список файлов, получаемых на выходе
 	start_file="" # файл, который мы должны запустить
-
+	if args["build"]==True and args["run"]==True:
+		print("Build and Run Mode")
+	elif args["build"]==True:
+		print("Build Mode")
+	elif args["run"]==True:
+		print("Run Mode")
 	if args["build"]==True:
 		pp_markers={"Initial":True,"True":True,"False":False} # словарь глобальных меток для препроцессора
 		if not "preprocessor" in root:
@@ -113,10 +118,10 @@ if work_dir!=None:
 				error_file.write("main: Start-file is wrong. Don't start the player.\n")
 		else:
 			proc=subprocess.Popen([player_exe,start_file])
-			# эта инструкция завершает скрипт через 10 мс уже после вызова плеера
+			# эта инструкция завершает скрипт через 100 мс уже после вызова плеера
 			# это нужно, чтобы окно консоли не подвисало, когда уже запущен плеер,
 			# но и плеер должен открыться выше окна консоли.
 			try:
-				proc.wait(0.01)
+				proc.wait(0.1)
 			except subprocess.TimeoutExpired:
 				pass

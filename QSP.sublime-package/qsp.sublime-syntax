@@ -91,7 +91,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs-startact
       push:
-        - match: ^(\s*?)(end\s+?act|end)([^\&\}\n\r]*)
+        - match: ^(\s*?)(\bend\s+?act\b|\bend\b)([^\&\}\n\r]*)
           captures:
             2: support.type avs-endact
             3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
@@ -103,7 +103,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs-startact
       push:
-        - match: ^(\s*?)(end\s+?act|end)([^\&\n\r]*)
+        - match: ^(\s*?)(\bend\s+?act\b|\bend\b)([^\&\n\r]*)
           captures:
             2: support.type avs-endact
             3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
@@ -118,7 +118,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs-startloop
       push:
-        - match: ^(\s*?)(end\s+?loop|end)([^\&\}\n\r]*)
+        - match: ^(\s*?)(\bend\s+?loop\b|\bend\b)([^\&\}\n\r]*)
           captures:
             2: support.type avs-endloop
             3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
@@ -130,7 +130,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs-startloop
       push:
-        - match: ^(\s*?)(end\s+?loop|end)([^\&\n\r]*)
+        - match: ^(\s*?)(\bend\s+?loop\b|\bend\b)([^\&\n\r]*)
           captures:
             2: support.type avs-endloop
             3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
@@ -147,7 +147,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs-startif
       push:
-        - match: ^(\s*?)(end\s+?if|end)([^\&\}\n\r]*)
+        - match: ^(\s*?)(\bend\s+?if\b|\bend\b)([^\&\}\n\r]*)
           captures:
             2: support.type avs-endif
             3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
@@ -160,7 +160,7 @@ contexts: # теперь необходимо определить "контек
       captures:
         2: support.type avs-startif
       push:
-        - match: ^(\s*?)(end\s+?if|end)([^\&\n\r]*)
+        - match: ^(\s*?)(\bend\s+?if\b|\bend\b)([^\&\n\r]*)
           captures:
             2: support.type avs-endif
             3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
@@ -407,7 +407,7 @@ contexts: # теперь необходимо определить "контек
           scope: comment.qsp
           pop: true
     - match: '{{quote}}'
-      scope: invalid.illegal.stray-bracket-end.qsp
+      scope: invalid.qsp
 
   apinbrack:
     - match: '{{ap}}'
@@ -417,7 +417,7 @@ contexts: # теперь необходимо определить "контек
           scope: comment.qsp
           pop: true
     - match: '{{ap}}'
-      scope: invalid.illegal.stray-bracket-end.qsp
+      scope: invalid.qsp
 
   cominquotes:
     - match: '[^{{opener}}]*?\"'
