@@ -152,6 +152,8 @@ def ppString(text_lines,string,args):
 		# строки исключаются
 		result=""
 	if result!="":
+		if re.match(r'^\s*?$',result)!=None:
+			result=""
 		text_lines.append(result)
 
 # основная функция
