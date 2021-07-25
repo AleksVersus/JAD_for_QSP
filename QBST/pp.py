@@ -152,7 +152,7 @@ def ppString(text_lines,string,args):
 		# строки исключаются
 		result=""
 	if result!="":
-		if re.match(r'^\s*?$',result)!=None:
+		if re.match(r'^\s*?$',result)!=None and args["openquote"]==False:
 			result=""
 		text_lines.append(result)
 
