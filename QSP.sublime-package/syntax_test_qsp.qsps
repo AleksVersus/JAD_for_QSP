@@ -186,7 +186,7 @@ local a, b, c
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Для работы всех прочих модулей и самих игровых скриптов необходимо подключение стандартных библиотек easy.libs</div>
 
 
-<center><a href=""exec: goto '[start]'"">Назад</a></center></td></tr></table></font></center></html>"
+<center><a href='exec: goto ""[start]""'>Назад</a></center></td></tr></table></font></center></html>"
 --- [0.1_game_info] ---------------------------------
 
 b
@@ -565,7 +565,8 @@ $input|$user_text|$usrtxt|$desc|$maintxt|$stattxt|$qspver|$curloc|$selobj|$selac
 iif|dyneval|func|max|min
 $iif|$dyneval|$func|$max|$min
 
-set a, d =234, 678
+set a, d = 234, 678
+local a=234
 
 --- [death] ---------------------------------
 
