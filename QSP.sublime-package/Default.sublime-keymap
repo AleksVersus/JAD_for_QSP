@@ -23,7 +23,7 @@
     {
         "keys": ["alt+h"],
         "command": "insert_snippet",
-        "args": {"contents": "<html>${0:$SELECTION}</html>"},
+        "args": {"contents": "<qhtml>${0:$SELECTION}</qhtml>"},
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },

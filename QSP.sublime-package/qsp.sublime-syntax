@@ -461,13 +461,13 @@ contexts: # теперь необходимо определить "контек
           pop: true
 
   htmlsupport:
-    - match: (?i:<html>)
+    - match: (?i:<qhtml>)
       scope: message.error avs.html
       push:
         - clear_scopes: true
         - meta_scope: markup.raw avs.htmlsupport
         - include: Packages/HTML/HTML.sublime-syntax
       with_prototype:
-        - match: (?i:</html>)
+        - match: (?i:</qhtml>)
           scope: message.error avs.html
           pop: true
