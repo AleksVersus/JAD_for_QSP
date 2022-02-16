@@ -562,7 +562,7 @@ name=123 & !@< а вот эта строка кода будет удалена
 
 ## P.S.:
 
-[![Работа с JAD](https://i9.ytimg.com/vi/jgAnP4Hrfvk/maxresdefault.jpg?time=1645015500000&sqp=CMzjs5AG&rs=AOn4CLBdfYk38B614-krpWKQBWnr6ZqQCg)](https://youtu.be/jgAnP4Hrfvk)
+[![Работа с JAD](https://i.ibb.co/nsgpkqV/cover-blacksteel.png)](https://youtu.be/jgAnP4Hrfvk)
 
 * Канал на YouTube обучающий писать игры на QSP: https://www.youtube.com/c/aleksversus
 
