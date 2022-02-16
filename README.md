@@ -562,7 +562,7 @@ name=123 & !@< а вот эта строка кода будет удалена
 
 ## P.S.:
 
-[здесь будет вставлена ссылка на видео]
+[![Работа с JAD](https://i9.ytimg.com/vi/jgAnP4Hrfvk/maxresdefault.jpg?time=1645015500000&sqp=CMzjs5AG&rs=AOn4CLBdfYk38B614-krpWKQBWnr6ZqQCg)](https://youtu.be/jgAnP4Hrfvk)
 
 * Канал на YouTube обучающий писать игры на QSP: https://www.youtube.com/c/aleksversus
 
@@ -593,3 +593,4 @@ name=123 & !@< а вот эта строка кода будет удалена
 Донаты мне на развитие проекта и канала на ютубе:
 * Закинуть сумму единоразово https://www.donationalerts.com/r/aleksversus
 * Подписаться на 10 рублей в месяц https://boosty.to/aleksversus (на бусти я публикую различные новости, связанные с моей творческой деятельностью. Выход новых роликов на канале, статьи, отзывы, рецензии, рассказы, стихи и сё прочее по мере выхода).
+* На патреоне, символическая подписка в 1 бакс https://www.patreon.com/aleksversus
