@@ -60,11 +60,11 @@ contexts: # теперь необходимо определить "контек
     - include: loop
     - include: setvars
     - include: sugarfunc
-    - match: \bend\b # подсветка лишнего end'а
+    - match: (?i:(\bend\b)) # подсветка лишнего end'а
       scope: invalid.qsp avs.error avs.wrongend
-    - match: ^(?:\s*?)\belse\b # лишний else
+    - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
       scope: invalid.qsp avs.error avs.wrongelse
-    - match: \belseif\b # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
+    - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
       scope: invalid.qsp avs.error avs.wrongelseif
     - include: preprocessor
     - include: comments
@@ -87,11 +87,11 @@ contexts: # теперь необходимо определить "контек
 
   # действия и условия
   actions:
-    - match: '(?<=\{)(\s*?)(act)(?=\s*?.*?\:\s*?$)'
+    - match: '(?<=\{)(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs-startact
       push:
-        - match: ^(\s*?)(\bend\s+?act\b|\bend\b)([^\&\}\n\r]*)
+        - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\}\n\r]*)
           captures:
             2: support.type avs-endact
             3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
@@ -99,11 +99,11 @@ contexts: # теперь необходимо определить "контек
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
-    - match: '^(\s*?)(act)(?=\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs-startact
       push:
-        - match: ^(\s*?)(\bend\s+?act\b|\bend\b)([^\&\n\r]*)
+        - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\n\r]*)
           captures:
             2: support.type avs-endact
             3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
@@ -114,11 +114,11 @@ contexts: # теперь необходимо определить "контек
 
   # циклы
   loop:
-    - match: '(?<=\{)(\s*?)(\bloop\b)(?=.*?\bwhile\b\s\S.*?(\bstep\b)?\s*?.*?\:\s*?$)'
+    - match: '(?<=\{)(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs-startloop
       push:
-        - match: ^(\s*?)(\bend\s+?loop\b|\bend\b)([^\&\}\n\r]*)
+        - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\}\n\r]*)
           captures:
             2: support.type avs-endloop
             3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
@@ -126,11 +126,11 @@ contexts: # теперь необходимо определить "контек
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
-    - match: '^(\s*?)(\bloop\b)(?=.*?\bwhile\b\s\S.*?(\bstep\b)?\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs-startloop
       push:
-        - match: ^(\s*?)(\bend\s+?loop\b|\bend\b)([^\&\n\r]*)
+        - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\n\r]*)
           captures:
             2: support.type avs-endloop
             3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
@@ -138,16 +138,16 @@ contexts: # теперь необходимо определить "контек
         - include: wrongclose
         - include: wrongcloseinscope
         - include: locations
-    - match: '(\bloop\b)(?!.*\bwhile\b)'
+    - match: '(?i:(\bloop\b))(?!.*(?i:(\bwhile\b)))'
       scope: invalid
 
   # конструкции условий
   conditions:
-    - match: '(?<=\{)(\s*?)(if)(?=\s*?.*?\:\s*?$)'
+    - match: '(?<=\{)(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs-startif
       push:
-        - match: ^(\s*?)(\bend\s+?if\b|\bend\b)([^\&\}\n\r]*)
+        - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\}\n\r]*)
           captures:
             2: support.type avs-endif
             3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
@@ -156,11 +156,11 @@ contexts: # теперь необходимо определить "контек
         - include: wrongclose
         - include: elseifelse
         - include: locations
-    - match: '^(\s*?)(if)(?=\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
       captures:
         2: support.type avs-startif
       push:
-        - match: ^(\s*?)(\bend\s+?if\b|\bend\b)([^\&\n\r]*)
+        - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\n\r]*)
           captures:
             2: support.type avs-endif
             3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
@@ -181,17 +181,17 @@ contexts: # теперь необходимо определить "контек
       pop: true
 
   elseifelse:
-    - match: ^\s*?\belse\b(\:?)\s*?$ # правильный else
+    - match: ^(?i:(\s*?\belse\b(\:?)\s*?))$ # правильный else
       scope: support.type avs.else
-    - match: ^\s*?(\belse\b)([^\:]*)(\:?)\s*?([^\n\r]*)$
+    - match: ^\s*?(?i:(\belse\b))([^\:]*)(\:?)\s*?([^\n\r]*)$
       captures:
         1: support.type avs.else
         2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
         3: support.type avs.else
         4: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse2
-    - match: ^(?:\s*?)\belseif\b(?=\s+\S.*?\:\s*?{{nr}})
+    - match: ^(?i:(?:\s*?)\belseif\b(?=\s+\S.*?\:\s*?{{nr}}))
       scope: support.type avs.elseif
-    - match: ^(?:\s*?)(\belseif\b)(\s+\S.*?\:\s*?[^\n\r]*)$
+    - match: ^(?:\s*?)(?i:(\belseif\b))(\s+\S.*?\:\s*?[^\n\r]*)$
       captures:
         1: support.type avs.else
         2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
@@ -199,9 +199,9 @@ contexts: # теперь необходимо определить "контек
   # set и local
   setvars:
       # ([A-Za-zА-Яа-я_][\w\.]*)
-    - match: \b(set|local)\b(?=\s+{{rightvar}}(\,\s*{{rightvar}})*(\s*\=[^=]+)?\s*(\&|{{nr}}|\}|\bwhile\b))
+    - match: \b(?i:(set|local))\b(?=\s+{{rightvar}}(\,\s*{{rightvar}})*(\s*\=[^=]+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
       scope: support.function.qsp
-    - match: \b(set|local)\b
+    - match: \b(?i:(set|local))\b
       scope: invalid.qsp
 
   # операции
