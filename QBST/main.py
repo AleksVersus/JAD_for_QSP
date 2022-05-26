@@ -7,9 +7,9 @@ import re # модуль работы с регулярками
 import function as qsp # импортируем свой модуль с коротким именем qsp
 import pp # импортируем модуль препроцессора
 
-# заранее определяем пути к плееру и утилите TXT2GAM
-txt2gam="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe" # путь к txt2gam
-player_exe="D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe"
+# заранее определяем пути к плееру и утилите TXT2GAM — по умолчанию
+txt2gam="C:\\Program Files\\QSP\\converter\\txt2gam.exe" # путь к txt2gam
+player_exe="C:\\Program Files\\QSP\\qsp570\\qspgui.exe"
 
 # получаем набор команд из аргументов. Всегда три команды!!!
 args=qsp.parseARGS(sys.argv[1:])
@@ -22,6 +22,16 @@ args=qsp.parseARGS(sys.argv[1:])
 # теперь нам нужно найти файл проекта, это делаем с помощью searchProject
 # и выполняем весь остальной код только при наличии файла проекта
 work_dir = qsp.searchProject(args["point_file"])
+if work_dir==None and os.path.splitext(args["point_file"])[1]=='.qsps' and os.path.isfile(txt2gam)==True and os.path.isfile(player_exe):
+	# если файл проекта не найден, а файл, из которого запущен билдер .qsps, и по указанным путям присутствуют файлы плеера и конвертера
+	game_name=os.path.splitext(os.path.split(args["point_file"])[1])[0]
+	work_dir=os.path.abspath('.')
+	project_json='{"project":[{"build":".\\'+game_name+'.qsp","files":[{"path":"'+args["point_file"]+'"}]}],"start":".\\'+game_name+'.qsp",	"converter":"'+txt2gam+'","player":"'+player_exe+'","save_txt2gam":"True","preprocessor":"Off"}'
+	project_json=project_json.replace('\\', '\\\\')
+	with open(work_dir+"\\project.json","w",encoding="utf-8") as file:
+		file.write(project_json)
+	with open("errors.log","a",encoding="utf-8") as error_file:
+		error_file.write(f"File '{work_dir}\\project.json' was created.\n")
 if work_dir!=None:
 	# итак, если у нас есть рабочая дирректория, выставляем её, как текущую рабочу папку для удобства
 	os.chdir(work_dir)
