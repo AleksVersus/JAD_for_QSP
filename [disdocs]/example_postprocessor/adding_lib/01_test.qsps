@@ -1,0 +1,18 @@
+QSP-Game Локация для тестов
+# start
+
+$mass[0]="яблоко"
+mass[0]=12
+$mass[1]="груша"
+mass[1]=45
+$mass[2]="слива"
+$mass[3]="апельсин"
+
+*pl $mass[0] & *pl mass[0]
+*pl $mass[1] & *pl mass[1]
+*pl $mass[2] & *pl mass[2]
+*pl $mass[3] & *pl mass[3]
+
+arrsize('$mass')
+
+- start

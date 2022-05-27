@@ -1,0 +1,11 @@
+{
+	"project":
+	[
+		{
+			"build":".\\tests.qsp",
+			"folders":[{"path":"."}]
+		}
+	],
+	"start":".\\tests.qsp",
+	"postprocessors":[".\\scripts\\renamemass.py"]
+}
