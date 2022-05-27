@@ -26,7 +26,7 @@ if work_dir==None and os.path.splitext(args["point_file"])[1]=='.qsps' and os.pa
 	# если файл проекта не найден, а файл, из которого запущен билдер .qsps, и по указанным путям присутствуют файлы плеера и конвертера
 	game_name=os.path.splitext(os.path.split(args["point_file"])[1])[0]
 	work_dir=os.path.abspath('.')
-	project_json='{"project":[{"build":".\\'+game_name+'.qsp","files":[{"path":"'+args["point_file"]+'"}]}],"start":".\\'+game_name+'.qsp",	"converter":"'+txt2gam+'","player":"'+player_exe+'","save_txt2gam":"True","preprocessor":"Off"}'
+	project_json='{"project":[{"build":".\\'+game_name+'.qsp","files":[{"path":"'+args["point_file"]+'"}]}],"start":".\\'+game_name+'.qsp",	"converter":"'+txt2gam+'","player":"'+player_exe+'"}'
 	project_json=project_json.replace('\\', '\\\\')
 	with open(work_dir+"\\project.json","w",encoding="utf-8") as file:
 		file.write(project_json)
