@@ -52,6 +52,10 @@ if work_dir!=None:
 			save_txt2gam=False
 	else:
 		save_txt2gam=False
+	if "postprocessors" in root:
+		include_scripts=root["postprocessors"]
+	else:
+		include_scripts=None
 	# инициализируем разные данные
 	export_files=[] # список файлов, получаемых на выходе
 	start_file="" # файл, который мы должны запустить
@@ -94,9 +98,18 @@ if work_dir!=None:
 				exit_qsp, exit_txt = qsp.exitFiles("game%i.qsp" %num) # генерируем название файла по номеру инструкции
 				with open("errors.log","a",encoding="utf-8") as error_file:
 					error_file.write("main: Key 'build' not found in project-list. Choose export name "+exit_qsp+".\n")
+			if "postprocessor" in instruction:
+				# если указаны скрипты постпроцессора, назначаем их
+				# таким образом, не важно, выставили мы общие скрипты, или нет
+				# если их прописать отдельно, они выполнятся для отдельного билда
+				include_scripts=instruction["postprocessors"]
 			# после того, как все данные получены, генерируем выходной файл
 			# собираем текстовый файл
 			qsp.constructFile(build_files,exit_txt,root["preprocessor"],pp_markers)
+			# перед конвертированием можно прогнать каждый файл скриптами постпроцессора
+			if include_scripts!=None:
+				for script in include_scripts:
+					subprocess.run([sys.executable,script,exit_txt],stdout=subprocess.PIPE)
 			# теперь нужно конвертировать файл в бинарник
 			subprocess.run([txt2gam,exit_txt,exit_qsp],stdout=subprocess.PIPE)
 			if os.path.isfile(exit_qsp):
