@@ -63,29 +63,31 @@ if work_dir!=None:
 		else:
 			prove_file_loc="prvFile"
 		found_files=[] # полные пути к файлам
-		scans_folders=root["scans"]["folders"] # получили список папок
-		scans_files=root["scans"]["files"]
 		start_file=os.path.abspath(root["start"]) # получили путь до запускаемого файла
 		start_file_folder=os.path.split(start_file)[0] # получаем путь к папке с запускаемым файлом
-		for folder in scans_folders:
-			# перебираем папки, сравнивая пути с start_file, чтоб понять лежит ли папка глубже относительно него
-			sf,f=comparePaths(start_file_folder,os.path.abspath(folder))
-			if sf=='':
-				# если папка находится относительно данного пути
-				found_files.extend(getFilesList(folder,filters=[]))
-			else:
-				# если папка не находится относительно данного пути, нужно сделать запись об ошибке
-				with open("errors.log","a",encoding="utf-8") as error_file:
-					error_file.write(f"Folder '{folder}' is not in the project.\n")
-		for file in scans_files:
-			sf,f=comparePaths(start_file_folder,os.path.abspath(file))
-			if sf=='':
-				# если папка находится относительно данного пути
-				found_files.append(os.path.abspath(file))
-			else:
-				# если папка не находится относительно данного пути, нужно сделать запись об ошибке
-				with open("errors.log","a",encoding="utf-8") as error_file:
-					error_file.write(f"File '{file}' is not in the project.\n")
+		if "folders" in root["scans"]:
+			scans_folders=root["scans"]["folders"] # получили список папок
+			for folder in scans_folders:
+				# перебираем папки, сравнивая пути с start_file, чтоб понять лежит ли папка глубже относительно него
+				sf,f=qsp.comparePaths(start_file_folder,os.path.abspath(folder))
+				if sf=='':
+					# если папка находится относительно данного пути
+					found_files.extend(qsp.getFilesList(folder,filters=[]))
+				else:
+					# если папка не находится относительно данного пути, нужно сделать запись об ошибке
+					with open("errors.log","a",encoding="utf-8") as error_file:
+						error_file.write(f"Folder '{folder}' is not in the project.\n")
+		if "files" in root["scans"]:
+			scans_files=root["scans"]["files"]
+			for file in scans_files:
+				sf,f=qsp.comparePaths(start_file_folder,os.path.abspath(file))
+				if sf=='':
+					# если папка находится относительно данного пути
+					found_files.append(os.path.abspath(file))
+				else:
+					# если папка не находится относительно данного пути, нужно сделать запись об ошибке
+					with open("errors.log","a",encoding="utf-8") as error_file:
+						error_file.write(f"File '{file}' is not in the project.\n")
 		qsp_file_body=[
 			'QSP-Game Функция для проверки наличия файлов\n',
 			f'# {prove_file_loc}\n'
@@ -93,7 +95,7 @@ if work_dir!=None:
 			'$args[1]="\n'
 		]
 		for file in found_files:
-			sf,f=comparePaths(start_file_folder,os.path.abspath(file))
+			sf,f=qsp.comparePaths(start_file_folder,os.path.abspath(file))
 			qsp_file_body.append(f'[{f}]\n')
 		qsp_file_body.extend([
 			'"\n',
