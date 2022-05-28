@@ -2,7 +2,7 @@ import sys, os
 import pp
 
 # данная функция составляет список файлов .qsps .qsp-txt .txt-qsp в указанной папке и вложенных папках
-def getFilesList(folder):
+def getFilesList(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 	error=folder # запоминаем путь для возможных ошибок
 	build_files=[] # это будет список файлов для билда
 	tree=os.walk(folder) # получаем все вложенные файлы и папки в виде объекта-генератора
@@ -10,14 +10,27 @@ def getFilesList(folder):
 		# перебираем файлы и выбираем только нужные нам
 		for file in files:
 			sp=os.path.splitext(file) # получаем путь к файлу в виде ГОЛОВА.ХВОСТ, где ХВОСТ - расширение
-			if sp[1]==".qsps" or sp[1]=='.qsp-txt' or sp[1]=='.txt-qsp':
+			if (sp[1] in filters) or filters==[]:
 				# если это наше расширение
 				# добавляем файл в список к билду
 				build_files.append(abs_path+'\\'+file)
 	if len(build_files)==0:
 		with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write("function.getFilesList: Folder is empty. Prove path '"+error+"'.\n")
+				error_file.write(f"function.getFilesList: Folder is empty. Prove path '{error}'.\n")
 	return build_files
+
+def comparePaths(path1, path2):
+	# функция сравнивает два пути и возвращает в результат хвосты относительно общей папки
+	path1_list=path1.split('\\')
+	path2_list=path2.split('\\')
+	while path1_list[0]==path2_list[0]:
+		path2_list.pop(0)
+		path1_list.pop(0)
+		if (len(path1_list)==0 or len(path2_list)==0):
+			break
+	path1='\\'.join(path1_list)
+	path2='\\'.join(path2_list)
+	return path1, path2
 
 # функция преобразует список словарей, содержащих пути, в список путей
 def genFilesPaths(files):
