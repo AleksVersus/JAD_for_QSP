@@ -1,6 +1,7 @@
 # Пакет QSP
 
-Включает в себя:
+**Включает в себя:**
+
 * `Default.sublime-keymap` - файл настройки сочетаний клавиш при работе с QSP-файлом
 * `Indentation Rules.tmPreferences` - файл настройки поведения отступов
 * `Location in Goto-List.tmPreferences` - файл настройки распознавания локаций в проекте
@@ -9,6 +10,8 @@
 * `qsp.sublime-syntax` - файл со схемой подсветки синтаксиса QSP
 * `qsp_locations.sublime-syntax` - дополнительный файл со схемой подсветки синтаксиса QSP, предназначенный для встраивания подсветки QSP в схемы подсветки других языков.
 * `syntax_test_qsp.qsps` - файл с образцом синтаксиса QSP для теста подсветки (не билдится сублаймом).
+
+**Для установки пакета:**
 
 1. Отредактируйте файлы "`Default.sublime-keymap`" и "`QSP.sublime-build`" (подробнее читайте на [https://github.com/AleksVersus/JAD_for_QSP](https://github.com/AleksVersus/JAD_for_QSP));
 2. Упакуйте всё содержимое данной папки в zip-архив и переименуйте его так, чтобы он назывался "`QSP.sublime-package`";
