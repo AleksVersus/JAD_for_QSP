@@ -16,8 +16,8 @@ variables: # назначаем переменные для удобства
   oprt: (?i:(exec|set|let|local|view|inclib|freelib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg))
   oprtms: (?i:(act|if|elseif|else|loop|while|step|end)) # support.type
   oprttxt: (?i:(pl?|nl|clr|clear))
-  sysvarnum: (?i:\b(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize)\b)
-  sysvartxt: (?i:\b(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage)\b)
+  sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
+  sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
   sysvarot: (?i:(args|result))
   fncnum: (?i:obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|r(a)?nd|arrsize|arrpos|arrcomp|strcomp|strpos)
   fnctxt: (?i:(input|user_text|usrtxt|desc|maintxt|stattxt|qspver|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|strfind))
@@ -260,7 +260,7 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
 
   sysvar:
-    - match: (?<!\$)({{sysvartxt}}) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
+    - match: (?<!\$)(\b{{sysvartxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
       scope: invalid.illegal.expected-mapping-key.qsp avs.error
     - match: (\$)(?=(\b{{sysvartxt}}|{{sysvarot}}\b))
       scope: keyword.qsp avs.sysvar
