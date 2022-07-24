@@ -52,6 +52,8 @@ contexts: # теперь необходимо определить "контек
                 1: markup.heading punctuation.definition.heading avs-locend
                 2: entity.name avs.locend.comments
             - include: locations
+            - match: ^(\s*?)(-)(.*?)$
+              scope: invalid.qsp avs.error avs.wronglocend
     
   locations:
     - include: figurebrack
