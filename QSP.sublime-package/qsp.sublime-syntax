@@ -31,7 +31,7 @@ variables: # назначаем переменные для удобства
   left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\w|\d)'
   right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?|\@)'
   nr: (\n\r|\r|\r\n|\n)
-  oprcid: (<=|>=|\+=|-=|<>)
+  oprcid: (<=|>=|\+=|-=|\*=|\/=|<>)
   rightvar: (\$?[A-Za-zА-Яа-я_][\w\.]*)
 
 contexts: # теперь необходимо определить "контексты" подсветки
@@ -207,8 +207,8 @@ contexts: # теперь необходимо определить "контек
   # операции
   operacion:
     # ошибка записи операторов операций без правого операнда
-    - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
-      scope: invalid.qsp avs.error avs.wrongoperator1
+    # - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
+    #   scope: invalid.qsp avs.error avs.wrongoperator1
     # ошибка записи операторов больше-равно и меньше-равно без правого операнда
     - match: (?<={{left_operand}})\s*{{oprcid}}(?!\s*?{{right_operand}})
       scope: invalid.qsp avs.error avs.wrongoperator2
@@ -219,7 +219,7 @@ contexts: # теперь необходимо определить "контек
     - match: (?<={{left_operand}})\s*?{{oprcid}}(?=\s*?{{right_operand}}) 
       scope: support.function.qsp avs.operacion1 # допустимые в QSP => и =< в данной подсветке не поддерживаются
     # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=|\!|\/|\*)(?!\s*?{{right_operand}})
       scope: invalid.qsp avs.error avs.wrongoperator5
     # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
