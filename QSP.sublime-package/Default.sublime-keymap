@@ -1,7 +1,7 @@
 [
     // Auto-pair underscore
     {
-        "keys": ["b"],
+        "keys": ["ctrl+alt+b"],
         "command": "insert_snippet",
         "args": {"contents": "<b>${0:$SELECTION}</b>"},
         "context": [
@@ -11,7 +11,7 @@
         ]
     },
     {
-        "keys": ["i"],
+        "keys": ["ctrl+alt+i"],
         "command": "insert_snippet",
         "args": {"contents": "<i>${0:$SELECTION}</i>"},
         "context": [
@@ -31,7 +31,7 @@
         ]
     },
     {
-        "keys": ["p"],
+        "keys": ["ctrl+alt+p"],
         "command": "insert_snippet",
         "args": {"contents": "<p>${0:$SELECTION}</p>"},
         "context": [
@@ -41,7 +41,7 @@
         ]
     },
     {
-        "keys": ["f"],
+        "keys": ["ctrl+alt+f"],
         "command": "insert_snippet",
         "args": {"contents": "<font color=#${1:000000} size=${2:0}>${0:$SELECTION}</font>"},
         "context": [
@@ -51,7 +51,7 @@
         ]
     },
     {
-        "keys": ["d"],
+        "keys": ["ctrl+alt+d"],
         "command": "insert_snippet",
         "args": {"contents": "<div>${0:$SELECTION}</div>"},
         "context": [
@@ -61,7 +61,7 @@
         ]
     },
     {
-        "keys": ["h"],
+        "keys": ["ctrl+alt+h"],
         "command": "insert_snippet",
         "args": {"contents": "<h${1:1}>${0:$SELECTION}</h$1>"},
         "context": [
