@@ -48,7 +48,8 @@ def metCondition(vares,direct):
 	parseCondition(vares,direct)
 	# следующий цикл формирует условие с действительными значениями вместо элементов
 	for var in vares:
-		if var in direct:
+		trim_var=re.search(r'\b'+var+r'\b',direct)
+		if (var in direct) and (trim_var!=None):
 			if type(vares[var])==str:
 				direct=direct.replace(var,f"'{vares[var]}'")
 			else:
