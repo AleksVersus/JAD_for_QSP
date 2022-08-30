@@ -1,0 +1,12 @@
+<snippet>
+	<content><![CDATA[
+loop ${1:local i=0} while ${2:i<10} step ${3:i+=1}:
+${4/.+/\t/}${4:!@ Тело цикла}
+end
+$0]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>loop</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<scope>source.QSP</scope>
+	<description>Новый цикл</description>
+</snippet>
