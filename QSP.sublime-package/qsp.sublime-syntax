@@ -201,9 +201,11 @@ contexts: # теперь необходимо определить "контек
   # set и local
   setvars:
       # ([A-Za-zА-Яа-я_][\w\.]*)
-    - match: \b(?i:(set|local))\b(?=\s+{{rightvar}}(\,\s*{{rightvar}})*(\s*\=[^=]+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
+    - match: \b(?i:(local))\b(?=\s+{{rightvar}}(\[.*?\])?(\,\s*{{rightvar}}(\[.*?\])?)*(\s*\=\s*.+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
       scope: support.function.qsp
-    - match: \b(?i:(set|local))\b
+    - match: \b(?i:(set|let))\b(?=\s+{{rightvar}}(\[.*?\])?(\,\s*{{rightvar}}(\[.*?\])?)*(\s*\=\s*.+)\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
+      scope: support.function.qsp
+    - match: \b(?i:(set|local|let))\b
       scope: invalid.qsp
 
   # операции
