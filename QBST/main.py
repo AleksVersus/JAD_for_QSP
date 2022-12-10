@@ -15,17 +15,14 @@ import json
 import re
 
 # Importing my modules.
-# Импортируем свой модуль с коротким именем qsp и модуль препроцессора.
 import function as qsp
 import pp
 
 # Default paths to converter and player.
-# Заранее определяем пути к плееру и утилите TXT2GAM — по умолчанию.
 txt2gam="C:\\Program Files\\QSP\\converter\\txt2gam.exe"
 player_exe="C:\\Program Files\\QSP\\qsp570\\qspgui.exe"
 
 # Three commands from arguments.
-# получаем набор команд из аргументов. Всегда три команды!!!
 args=qsp.parse_args(sys.argv[1:])
 
 # -----------------------------------------------------------------------
@@ -51,9 +48,11 @@ if qsp.need_project_file(work_dir, args["point_file"], txt2gam, player_exe):
 if work_dir is not None:
 	# Change work dir:
 	os.chdir(work_dir)
+
 	# Deserializing project-file:
 	with open("project.json","r",encoding="utf-8") as project_file:
 		root=json.load(project_file)
+
 	# Get paths to converter and player (not Deafault)
 	if "converter" in root:
 		if os.path.isfile(os.path.abspath(root["converter"])):
@@ -61,6 +60,7 @@ if work_dir is not None:
 	if "player" in root:
 		if os.path.isfile(os.path.abspath(root["player"])):
 			player_exe=os.path.abspath(root["player"])
+
 	# Save temp-files Mode:
 	if "save_txt2gam" in root:
 		if root["save_txt2gam"]=="True":
@@ -69,13 +69,15 @@ if work_dir is not None:
 			save_txt2gam=False
 	else:
 		save_txt2gam=False
+
 	# Postprocessor's scripts list (or none):
 	if "postprocessors" in root:
 		include_scripts=root["postprocessors"]
 	else:
 		include_scripts=None
+
+	# Generate location with files-list.	
 	if ("scans" in root) and ("start" in root):
-		# Generate location with files-list.
 		if "location" in root["scans"]:
 			prove_file_loc=root["scans"]["location"]
 		else:
@@ -109,7 +111,7 @@ if work_dir is not None:
 						error_file.write(f"File '{file}' is not in the project.\n")
 		qsp_file_body=[
 			'QSP-Game Функция для проверки наличия файлов\n',
-			f'# {prove_file_loc}\n'
+			f'# {prove_file_loc}\n',
 			'$args[0]=$args[0] & !@ путь к файлу, который нужно проверить\n',
 			'$args[1]="\n'
 		]
@@ -121,30 +123,24 @@ if work_dir is not None:
 			'if instr($args[1],"[<<$args[0]>>]")<>0: result=1 else result=0\n',
 			f'--- {prove_file_loc} ---\n'
 		])
+		# Create file next to project-file:
 		with open('.\\prvFile_location.qspst', 'w',encoding='utf-8') as file:
-			# файл создаётся рядом с project.json
 			file.writelines(qsp_file_body)
-		# осталось добавить путь на файл в какой-нибудь билд:
+		# Add file-path to build:
 		if "files" in root["project"][0]:
 			root["project"][0]["files"].append({"path":".\\prvFile_location.qspst"})
 		else:
 			root["project"][0]["files"]=[{"path":".\\prvFile_location.qspst"}]
 
-	# инициализируем разные данные
-	export_files=[] # список файлов, получаемых на выходе
-	start_file="" # файл, который мы должны запустить
-	if args["build"]==True and args["run"]==True:
-		print("Build and Run Mode")
-	elif args["build"]==True:
-		print("Build Mode")
-	elif args["run"]==True:
-		print("Run Mode")
+	# Data init.
+	export_files=[]
+	start_file="" # File, that start in player.
+	print_builder_mode(args["build"], args["run"])
 	if args["build"]==True:
-		pp_markers={"Initial":True,"True":True,"False":False} # словарь глобальных меток для препроцессора
+		pp_markers={"Initial":True,"True":True,"False":False} # Preproc markers.
 		if not "preprocessor" in root:
 			root["preprocessor"]="Off"
-		# только если разрешена сборка файла
-		# получаем список инструкций из элемента "project"
+		# Get instructions list from "project".
 		for instruction in root["project"]:
 			build_files=[] # этот список будет содержать названия файлов, из которых билдим новый
 			# каждая инструкция снова представляет собой словарь

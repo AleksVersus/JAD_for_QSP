@@ -154,5 +154,17 @@ def get_standart_project(game_name, point_file, txt2gam, player_exe):
 		txt2gam, '",\n\t"player":"', player_exe, '"\n}'
 		])
 
+def print_builder_mode(build, run):
+	"""
+		Unloading code.
+		Print builder's work mode.
+	"""
+	if build==True and run==True:
+		print("Build and Run Mode")
+	elif build==True:
+		print("Build Mode")
+	elif run==True:
+		print("Run Mode")
+
 if __name__=="__main__":
 	pass
