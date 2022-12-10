@@ -52,7 +52,7 @@ class BuildQSP():
 		# Path to point file.
 		point_file = self.args["point_file"]
 		# Search the project-file's folder.
-		self.set_work_dir(qsp.search_project_folder())
+		self.set_work_dir(qsp.search_project_folder(point_file))
 
 		if qsp.need_project_file(self.work_dir, point_file, self.converter, self.player):
 			# If project-file's folder is not found, but other
@@ -81,11 +81,11 @@ class BuildQSP():
 
 			# Get paths to converter and player (not Deafault)
 			if "converter" in self.root:
-				if os.path.isfile(os.path.abspath(root["converter"])):
-					self.converter = os.path.abspath(root["converter"])
+				if os.path.isfile(os.path.abspath(self.root["converter"])):
+					self.converter = os.path.abspath(self.root["converter"])
 			if "player" in self.root:
-				if os.path.isfile(os.path.abspath(root["player"])):
-					self.player = os.path.abspath(root["player"])
+				if os.path.isfile(os.path.abspath(self.root["player"])):
+					self.player = os.path.abspath(self.root["player"])
 
 			# Save temp-files Mode:
 			if "save_txt2gam" in self.root:
@@ -139,11 +139,11 @@ class BuildQSP():
 			# Generate location with files-list.
 			self.create_scans_loc()
 
-		if args["build"]:
+		if self.args["build"]:
 			# Build QSP-files.
 			self.build_qsp_files()
 
-		if args["run"]:
+		if self.args["run"]:
 			# Run Start QSP-file.
 			self.run_qsp_files()
 
@@ -226,7 +226,7 @@ class BuildQSP():
 			if "postprocessor" in instruction:
 				# Include scripts in build instructions have priority.
 				include_scripts = instruction["postprocessors"]
-			elif len(self.include_scripts)>0:
+			elif self.include_scripts is not None:
 				include_scripts = self.include_scripts
 			else:
 				include_scripts = None
@@ -253,7 +253,7 @@ class BuildQSP():
 		if not os.path.isfile(self.start_file):
 			qsp.write_error_log("error.log", f"[110] Start-file is wrong. Don't start the player.\n")
 		else:
-			proc = subprocess.Popen([player_exe,start_file])
+			proc = subprocess.Popen([self.player, self.start_file])
 			# This instruction kill the builder after 100 ms.
 			# It necessary to close process in console window,
 			# but player must be open above console.
