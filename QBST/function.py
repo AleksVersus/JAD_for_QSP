@@ -84,7 +84,7 @@ def constructFile(build_list,new_file,pponoff,pp_markers):
 		file.write(text)
 
 # данная функция находит папку проекта или возвращает None
-def searchProject(path):
+def search_project(path):
 	error=path # запоминаем путь для возможных ошибок
 	# если путь является файлом, получаем только путь
 	if os.path.isfile(path)==True:
@@ -93,7 +93,7 @@ def searchProject(path):
 	while os.path.isfile(path+"\\project.json")==False:
 		if os.path.ismount(path)==True:
 			with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write("function.searchProject: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
+				error_file.write("function.search_project: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
 			break
 		path=os.path.split(path)[0]
 	else:
@@ -125,3 +125,34 @@ def exitFiles(game_path):
 	exit_qsp=os.path.abspath(game_path)
 	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
 	return [exit_qsp,exit_txt]
+
+
+def need_project_file(work_dir, point_file, txt2gam, player_exe):
+	"""
+		Unloading conditions.
+		If project-file is not found, and start point file is .qsps, 
+		and paths to converter and player are right, return True.
+	"""
+	cond = all((
+		work_dir is None,
+		os.path.splitext(point_file)[1]=='.qsps',
+		os.path.isfile(txt2gam),
+		os.path.isfile(player_exe)
+		))
+	return (True if cond else False)
+
+def get_standart_project(game_name, point_file, txt2gam, player_exe):
+	"""
+		Unloading code.
+		Create standart text of project-file in json-format.
+	"""
+	return ''.join([
+		'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":".\\', game_name,
+		'.qsp",\n\t\t\t"files":\n\t\t\t[\n\t\t\t\t{"path":"',
+		point_file, '"}\n\t\t\t]\n\t\t}\n\t],\n\t"start":".\\',
+		game_name, '.qsp",\n\t"converter":"',
+		txt2gam, '",\n\t"player":"', player_exe, '"\n}'
+		])
+
+if __name__=="__main__":
+	pass

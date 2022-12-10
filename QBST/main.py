@@ -5,6 +5,9 @@
 # Build the game-files in ".qsp"-format from text-files in TXT2GAM-format.
 # Собирает файлы игр формата ".qsp" из текстовых файлов формата TXT2GAM.
 
+# Don't use this script as module! Не используйте этот скрипт, как модуль!
+
+# Importing standart modules.
 import sys
 import os 
 import subprocess
@@ -31,33 +34,20 @@ args=qsp.parseARGS(sys.argv[1:])
 # args["run"] - command for run the project
 # -----------------------------------------------------------------------
 
-def need_project_file(work_dir,point_file,txt2gam,player_exe):
-	"""
-		Unloading conditions.
-		if project-file is not found, and start point file is .qsps, 
-		and paths to converter and player are right, return True.
-	"""
-	cond = all((
-		work_dir is None,
-		os.path.splitext(point_file)[1]=='.qsps',
-		os.path.isfile(txt2gam),
-		os.path.isfile(player_exe)
-		))
-	return (True if cond else False)
+# Search the project-file. Ищем файл проекта.
+work_dir = qsp.search_project(args["point_file"])
 
-# теперь нам нужно найти файл проекта, это делаем с помощью searchProject
-# и выполняем весь остальной код только при наличии файла проекта
-work_dir = qsp.searchProject(args["point_file"])
-if need_project_file(work_dir,args["point_file"],txt2gam,player_exe):
-	
-	game_name=os.path.splitext(os.path.split(args["point_file"])[1])[0]
-	work_dir=os.path.abspath('.')
-	project_json='{"project":[{"build":".\\'+game_name+'.qsp","files":[{"path":"'+args["point_file"]+'"}]}],"start":".\\'+game_name+'.qsp",	"converter":"'+txt2gam+'","player":"'+player_exe+'"}'
-	project_json=project_json.replace('\\', '\\\\')
+if qsp.need_project_file(work_dir, args["point_file"], txt2gam, player_exe):
+	# If project-file is not found, but othe conditional is right, generate the new project-file.
+	game_name = os.path.splitext(os.path.split(args["point_file"])[1])[0]
+	work_dir = os.path.abspath('.')
+	project_json = qsp.get_standart_project(game_name, args["point_file"], txt2gam, player_exe)
+	project_json = project_json.replace('\\', '\\\\')
 	with open(work_dir+"\\project.json","w",encoding="utf-8") as file:
 		file.write(project_json)
 	with open("errors.log","a",encoding="utf-8") as error_file:
 		error_file.write(f"File '{work_dir}\\project.json' was created.\n")
+
 if work_dir!=None:
 	# итак, если у нас есть рабочая дирректория, выставляем её, как текущую рабочу папку для удобства
 	os.chdir(work_dir)
