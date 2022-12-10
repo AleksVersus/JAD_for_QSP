@@ -19,7 +19,7 @@ def getFilesList(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 				error_file.write(f"function.getFilesList: Folder is empty. Prove path '{error}'.\n")
 	return build_files
 
-def comparePaths(path1, path2):
+def compare_paths(path1, path2):
 	# функция сравнивает два пути и возвращает в результат хвосты относительно общей папки
 	path1_list=path1.split('\\')
 	path2_list=path2.split('\\')
@@ -100,7 +100,7 @@ def search_project(path):
 		return path
 
 # функция возвращает словарь команд, в зависимости от полученных от системы аргументов
-def parseARGS(arguments):
+def parse_args(arguments):
 	args={}
 	for a in arguments:
 		if a=="--buildandrun" or a=="--br" or a=="--b" or a=="--build":

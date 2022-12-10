@@ -26,7 +26,7 @@ player_exe="C:\\Program Files\\QSP\\qsp570\\qspgui.exe"
 
 # Three commands from arguments.
 # получаем набор команд из аргументов. Всегда три команды!!!
-args=qsp.parseARGS(sys.argv[1:])
+args=qsp.parse_args(sys.argv[1:])
 
 # -----------------------------------------------------------------------
 # args["point_file"] - start point for search `project.json`
@@ -38,7 +38,7 @@ args=qsp.parseARGS(sys.argv[1:])
 work_dir = qsp.search_project(args["point_file"])
 
 if qsp.need_project_file(work_dir, args["point_file"], txt2gam, player_exe):
-	# If project-file is not found, but othe conditional is right, generate the new project-file.
+	# If project-file is not found, but other conditional is right, generate the new project-file.
 	game_name = os.path.splitext(os.path.split(args["point_file"])[1])[0]
 	work_dir = os.path.abspath('.')
 	project_json = qsp.get_standart_project(game_name, args["point_file"], txt2gam, player_exe)
@@ -48,19 +48,20 @@ if qsp.need_project_file(work_dir, args["point_file"], txt2gam, player_exe):
 	with open("errors.log","a",encoding="utf-8") as error_file:
 		error_file.write(f"File '{work_dir}\\project.json' was created.\n")
 
-if work_dir!=None:
-	# итак, если у нас есть рабочая дирректория, выставляем её, как текущую рабочу папку для удобства
+if work_dir is not None:
+	# Change work dir:
 	os.chdir(work_dir)
-	# открываем файл project.json через обёртку with и получаем структуру json-файла
+	# Deserializing project-file:
 	with open("project.json","r",encoding="utf-8") as project_file:
 		root=json.load(project_file)
-	# получаем пути к txt2gam и плееру
+	# Get paths to converter and player (not Deafault)
 	if "converter" in root:
 		if os.path.isfile(os.path.abspath(root["converter"])):
 			txt2gam=os.path.abspath(root["converter"])
 	if "player" in root:
 		if os.path.isfile(os.path.abspath(root["player"])):
 			player_exe=os.path.abspath(root["player"])
+	# Save temp-files Mode:
 	if "save_txt2gam" in root:
 		if root["save_txt2gam"]=="True":
 			save_txt2gam=True
@@ -68,35 +69,37 @@ if work_dir!=None:
 			save_txt2gam=False
 	else:
 		save_txt2gam=False
+	# Postprocessor's scripts list (or none):
 	if "postprocessors" in root:
 		include_scripts=root["postprocessors"]
 	else:
 		include_scripts=None
 	if ("scans" in root) and ("start" in root):
-		# если данный параметр указан, значит мы должны составить список вложенных файлов
+		# Generate location with files-list.
 		if "location" in root["scans"]:
 			prove_file_loc=root["scans"]["location"]
 		else:
 			prove_file_loc="prvFile"
-		found_files=[] # полные пути к файлам
-		start_file=os.path.abspath(root["start"]) # получили путь до запускаемого файла
-		start_file_folder=os.path.split(start_file)[0] # получаем путь к папке с запускаемым файлом
+		found_files=[] # Absolute files paths
+		start_file=os.path.abspath(root["start"])
+		start_file_folder=os.path.split(start_file)[0]
 		if "folders" in root["scans"]:
-			scans_folders=root["scans"]["folders"] # получили список папок
+			scans_folders=root["scans"]["folders"] # folders for scans
 			for folder in scans_folders:
-				# перебираем папки, сравнивая пути с start_file, чтоб понять лежит ли папка глубже относительно него
-				sf,f=qsp.comparePaths(start_file_folder,os.path.abspath(folder))
+				# Iterate through the folders, comparing the paths with start_file,
+				# to understand if the folder lies deeper relative to it.
+				sf,f=qsp.compare_paths(start_file_folder,os.path.abspath(folder))
 				if sf=='':
-					# если папка находится относительно данного пути
+					# Folder relative to path.
 					found_files.extend(qsp.getFilesList(folder,filters=[]))
 				else:
-					# если папка не находится относительно данного пути, нужно сделать запись об ошибке
+					# Folder is not relative to path. Is error.
 					with open("errors.log","a",encoding="utf-8") as error_file:
 						error_file.write(f"Folder '{folder}' is not in the project.\n")
 		if "files" in root["scans"]:
 			scans_files=root["scans"]["files"]
 			for file in scans_files:
-				sf,f=qsp.comparePaths(start_file_folder,os.path.abspath(file))
+				sf,f=qsp.compare_paths(start_file_folder,os.path.abspath(file))
 				if sf=='':
 					# если папка находится относительно данного пути
 					found_files.append(os.path.abspath(file))
@@ -111,7 +114,7 @@ if work_dir!=None:
 			'$args[1]="\n'
 		]
 		for file in found_files:
-			sf,f=qsp.comparePaths(start_file_folder,os.path.abspath(file))
+			sf,f=qsp.compare_paths(start_file_folder,os.path.abspath(file))
 			qsp_file_body.append(f'[{f}]\n')
 		qsp_file_body.extend([
 			'"\n',
