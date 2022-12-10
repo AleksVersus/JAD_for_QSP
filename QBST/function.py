@@ -1,8 +1,12 @@
 import sys, os
 import pp
 
+def write_error_log(file, string):
+	with open(file,"a",encoding="utf-8") as error_file:
+		error_file.write(string)
+
 # данная функция составляет список файлов .qsps .qsp-txt .txt-qsp в указанной папке и вложенных папках
-def getFilesList(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
+def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 	error=folder # запоминаем путь для возможных ошибок
 	build_files=[] # это будет список файлов для билда
 	tree=os.walk(folder) # получаем все вложенные файлы и папки в виде объекта-генератора
@@ -10,13 +14,13 @@ def getFilesList(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 		# перебираем файлы и выбираем только нужные нам
 		for file in files:
 			sp=os.path.splitext(file) # получаем путь к файлу в виде ГОЛОВА.ХВОСТ, где ХВОСТ - расширение
-			if (sp[1] in filters) or filters==[]:
+			if (sp[1] in filters) or len(filters)==0:
 				# если это наше расширение
 				# добавляем файл в список к билду
 				build_files.append(abs_path+'\\'+file)
 	if len(build_files)==0:
 		with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write(f"function.getFilesList: Folder is empty. Prove path '{error}'.\n")
+			error_file.write(f"function.get_files_list: Folder is empty. Prove path '{error}'.\n")
 	return build_files
 
 def compare_paths(path1, path2):
@@ -33,7 +37,7 @@ def compare_paths(path1, path2):
 	return path1, path2
 
 # функция преобразует список словарей, содержащих пути, в список путей
-def genFilesPaths(files):
+def gen_files_paths(files):
 	files_paths=[]
 	for path in files:
 		# перебираем указанные файлы (каждый элемент списка представляет собой словарь)
@@ -42,11 +46,11 @@ def genFilesPaths(files):
 			files_paths.append(file_path) # если файл существует
 		else:
 			with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write("function.genFilesPaths: File don't exist. Prove path '"+file_path+"'.\n")
+				error_file.write("function.gen_files_paths: File don't exist. Prove path '"+file_path+"'.\n")
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
-def constructFile(build_list,new_file,pponoff,pp_markers):
+def construct_file(build_list, new_file, pponoff, pp_markers):
 	# получив список файлов, из которых мы собираем выходной файл, делаем следующее
 	text="" # выходной текст
 	for path in build_list:
@@ -83,8 +87,11 @@ def constructFile(build_list,new_file,pponoff,pp_markers):
 	with open(new_file,"w",encoding="utf-16-le") as file:
 		file.write(text)
 
-# данная функция находит папку проекта или возвращает None
-def search_project(path):
+def search_project_folder(path):
+	"""
+		Find project-file and return folder path whith project.
+		In other return None.
+	"""
 	error=path # запоминаем путь для возможных ошибок
 	# если путь является файлом, получаем только путь
 	if os.path.isfile(path)==True:
@@ -121,13 +128,13 @@ def parse_args(arguments):
 	return args
 
 # из переданного названия файла получаем пути к промежуточному файлу и конечному
-def exitFiles(game_path):
+def exit_files(game_path):
 	exit_qsp=os.path.abspath(game_path)
 	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
 	return [exit_qsp,exit_txt]
 
 
-def need_project_file(work_dir, point_file, txt2gam, player_exe):
+def need_project_file(work_dir, point_file, converter, player):
 	"""
 		Unloading conditions.
 		If project-file is not found, and start point file is .qsps, 
@@ -136,22 +143,35 @@ def need_project_file(work_dir, point_file, txt2gam, player_exe):
 	cond = all((
 		work_dir is None,
 		os.path.splitext(point_file)[1]=='.qsps',
-		os.path.isfile(txt2gam),
-		os.path.isfile(player_exe)
+		os.path.isfile(converter),
+		os.path.isfile(player)
 		))
 	return (True if cond else False)
 
-def get_standart_project(game_name, point_file, txt2gam, player_exe):
+def need_point_file(root, start_file, point_file):
+	"""
+		Unloading conditions.
+		If not `start` in root or not exist start-file, 
+		and running file is qsp, return True, other False.
+	"""
+	cond = all((
+		(not "start" in root) or (not os.path.isfile(start_file)),
+		os.path.splitext(point_file)[1]==".qsp"
+		))
+	return (True if cond else False)
+
+def get_standart_project(point_file, converter, player):
 	"""
 		Unloading code.
 		Create standart text of project-file in json-format.
 	"""
+	game_name = os.path.splitext(os.path.split(point_file)[1])[0]
 	return ''.join([
 		'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":".\\', game_name,
 		'.qsp",\n\t\t\t"files":\n\t\t\t[\n\t\t\t\t{"path":"',
 		point_file, '"}\n\t\t\t]\n\t\t}\n\t],\n\t"start":".\\',
 		game_name, '.qsp",\n\t"converter":"',
-		txt2gam, '",\n\t"player":"', player_exe, '"\n}'
+		converter, '",\n\t"player":"', player, '"\n}'
 		])
 
 def print_builder_mode(build, run):
