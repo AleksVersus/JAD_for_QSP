@@ -1,29 +1,55 @@
-# QSP-builder предназначен для сборки отдельных игр формата .qsp
-# из текстовых файлов, написанных в формате TXT2GAM
+# QSP-builder
 
-import os, sys # импортируем системные файлы
-import json, subprocess #импортируем нужные модули
-import re # модуль работы с регулярками
-import function as qsp # импортируем свой модуль с коротким именем qsp
-import pp # импортируем модуль препроцессора
+# Sorry My BAD English!!!
 
-# заранее определяем пути к плееру и утилите TXT2GAM — по умолчанию
-txt2gam="C:\\Program Files\\QSP\\converter\\txt2gam.exe" # путь к txt2gam
+# Build the game-files in ".qsp"-format from text-files in TXT2GAM-format.
+# Собирает файлы игр формата ".qsp" из текстовых файлов формата TXT2GAM.
+
+import sys
+import os 
+import subprocess
+import json
+import re
+
+# Importing my modules.
+# Импортируем свой модуль с коротким именем qsp и модуль препроцессора.
+import function as qsp
+import pp
+
+# Default paths to converter and player.
+# Заранее определяем пути к плееру и утилите TXT2GAM — по умолчанию.
+txt2gam="C:\\Program Files\\QSP\\converter\\txt2gam.exe"
 player_exe="C:\\Program Files\\QSP\\qsp570\\qspgui.exe"
 
+# Three commands from arguments.
 # получаем набор команд из аргументов. Всегда три команды!!!
 args=qsp.parseARGS(sys.argv[1:])
+
 # -----------------------------------------------------------------------
-# args["point_file"] - отправная точка для поиска project.json
-# args["build"] - указание собирать ли проект
-# args["run"] - указание запускать ли проект
+# args["point_file"] - start point for search `project.json`
+# args["build"] - command for build the project
+# args["run"] - command for run the project
 # -----------------------------------------------------------------------
+
+def need_project_file(work_dir,point_file,txt2gam,player_exe):
+	"""
+		Unloading conditions.
+		if project-file is not found, and start point file is .qsps, 
+		and paths to converter and player are right, return True.
+	"""
+	cond = all((
+		work_dir is None,
+		os.path.splitext(point_file)[1]=='.qsps',
+		os.path.isfile(txt2gam),
+		os.path.isfile(player_exe)
+		))
+	return (True if cond else False)
 
 # теперь нам нужно найти файл проекта, это делаем с помощью searchProject
 # и выполняем весь остальной код только при наличии файла проекта
 work_dir = qsp.searchProject(args["point_file"])
-if work_dir==None and os.path.splitext(args["point_file"])[1]=='.qsps' and os.path.isfile(txt2gam)==True and os.path.isfile(player_exe):
-	# если файл проекта не найден, а файл, из которого запущен билдер .qsps, и по указанным путям присутствуют файлы плеера и конвертера
+if need_project_file(work_dir,args["point_file"],txt2gam,player_exe):
+	
 	game_name=os.path.splitext(os.path.split(args["point_file"])[1])[0]
 	work_dir=os.path.abspath('.')
 	project_json='{"project":[{"build":".\\'+game_name+'.qsp","files":[{"path":"'+args["point_file"]+'"}]}],"start":".\\'+game_name+'.qsp",	"converter":"'+txt2gam+'","player":"'+player_exe+'"}'
