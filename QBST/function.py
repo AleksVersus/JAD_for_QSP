@@ -2,29 +2,29 @@ import sys, os
 import pp
 
 def write_error_log(file, string):
+	""" Write message in error.log file. """
 	with open(file,"a",encoding="utf-8") as error_file:
 		error_file.write(string)
 
-# данная функция составляет список файлов .qsps .qsp-txt .txt-qsp в указанной папке и вложенных папках
 def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
-	error=folder # запоминаем путь для возможных ошибок
-	build_files=[] # это будет список файлов для билда
-	tree=os.walk(folder) # получаем все вложенные файлы и папки в виде объекта-генератора
+	"""
+		Create list of files in folder and includes folders.
+	"""
+	build_files=[]
+	tree=os.walk(folder)
 	for abs_path, folders, files in tree:
-		# перебираем файлы и выбираем только нужные нам
 		for file in files:
-			sp=os.path.splitext(file) # получаем путь к файлу в виде ГОЛОВА.ХВОСТ, где ХВОСТ - расширение
-			if (sp[1] in filters) or len(filters)==0:
-				# если это наше расширение
-				# добавляем файл в список к билду
-				build_files.append(abs_path+'\\'+file)
+			sp = os.path.splitext(file)
+			if len(filters)==0 or (sp[1] in filters):
+				build_files.append(f'{abs_path}\\{file}')
 	if len(build_files)==0:
-		with open("errors.log","a",encoding="utf-8") as error_file:
-			error_file.write(f"function.get_files_list: Folder is empty. Prove path '{error}'.\n")
+		qsp.write_error_log("error.log", f"[201] Folder is empty. Prove path '{folder}'.\n")
 	return build_files
 
 def compare_paths(path1, path2):
-	# функция сравнивает два пути и возвращает в результат хвосты относительно общей папки
+	"""
+		Compare two paths and return tail relative to shared folder. 
+	"""
 	path1_list=path1.split('\\')
 	path2_list=path2.split('\\')
 	while path1_list[0]==path2_list[0]:
@@ -36,17 +36,17 @@ def compare_paths(path1, path2):
 	path2='\\'.join(path2_list)
 	return path1, path2
 
-# функция преобразует список словарей, содержащих пути, в список путей
-def gen_files_paths(files):
+def gen_files_paths(files_array):
+	"""
+		Convert dictionary list in paths list.
+	"""
 	files_paths=[]
-	for path in files:
-		# перебираем указанные файлы (каждый элемент списка представляет собой словарь)
-		file_path=os.path.abspath(path["path"]) # приводим путь к абсолютному
+	for el in files_array:
+		file_path=os.path.abspath(el["path"])
 		if os.path.isfile(file_path):
-			files_paths.append(file_path) # если файл существует
+			files_paths.append(file_path)
 		else:
-			with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write("function.gen_files_paths: File don't exist. Prove path '"+file_path+"'.\n")
+			qsp.write_error_log("error.log", f"[202] File don't exist. Prove path {file_path}.\n")
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути

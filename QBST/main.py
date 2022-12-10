@@ -278,7 +278,7 @@ def main():
 
 	# Initialise of Builder:
 	builder = BuildQSP(args, converter, player)
-	# Run the Builder to work
+	# Run the Builder to work:
 	builder.build_and_run()
 
 if __name__=="__main__":
