@@ -92,15 +92,12 @@ def search_project_folder(path):
 		Find project-file and return folder path whith project.
 		In other return None.
 	"""
-	error=path # запоминаем путь для возможных ошибок
-	# если путь является файлом, получаем только путь
-	if os.path.isfile(path)==True:
+	error=path
+	if os.path.isfile(path):
 		path=os.path.split(path)[0]
-	# пока не найден файл проекта
-	while os.path.isfile(path+"\\project.json")==False:
-		if os.path.ismount(path)==True:
-			with open("errors.log","a",encoding="utf-8") as error_file:
-				error_file.write("function.search_project: not found 'project.json' file for this project. Prove path '"+error+"'.\n")
+	while not os.path.isfile(f"{path}\\project.json"):
+		if os.path.ismount(path):
+			qsp.write_error_log("error.log", f"[203] not found 'project.json' file for this project. Prove path {error}.\n")
 			break
 		path=os.path.split(path)[0]
 	else:
@@ -108,11 +105,14 @@ def search_project_folder(path):
 
 # функция возвращает словарь команд, в зависимости от полученных от системы аргументов
 def parse_args(arguments):
+	"""
+		Returns modes dictionary, based on systems arguments.
+	"""
 	args={}
 	for a in arguments:
-		if a=="--buildandrun" or a=="--br" or a=="--b" or a=="--build":
+		if a in ("--buildandrun", "--br", "--b", "--build"):
 			args["build"]=True
-		if a=="--buildandrun" or a=="--br" or a=="--r" or a=="--run":
+		if a in ("--buildandrun", "--br", "--r", "--run"):
 			args["run"]=True
 		if os.path.isfile(a):
 			args["point_file"]=os.path.abspath(a)
@@ -127,11 +127,14 @@ def parse_args(arguments):
 		args["point_file"]=os.getcwd()+"\\"+sys.argv[0]
 	return args
 
-# из переданного названия файла получаем пути к промежуточному файлу и конечному
 def exit_files(game_path):
+	"""
+		On input QSP-file's path, on output QSP-file's abs.path
+		and temporary txt-file's abs path.
+	"""
 	exit_qsp=os.path.abspath(game_path)
 	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
-	return [exit_qsp,exit_txt]
+	return [exit_qsp, exit_txt]
 
 
 def need_project_file(work_dir, point_file, converter, player):
