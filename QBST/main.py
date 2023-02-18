@@ -41,14 +41,14 @@ class BuildQSP():
 
 		# Init work dir.
 		self.work_dir_init()
-		# Reinit main fields and init other fields.
+		
 		if self.work_dir is not None:
+			# Reinit main fields and init other fields.
 			self.fields_init()
-			# Init start-file
+			# Init start-file.
 			self.start_file_init()
 
 	def work_dir_init(self):
-		
 		# Path to point file.
 		point_file = self.args["point_file"]
 		# Search the project-file's folder.

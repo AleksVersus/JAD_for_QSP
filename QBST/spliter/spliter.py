@@ -1,4 +1,4 @@
-import sys, os, re, codecs, io
+import sys, os, re, codecs
 
 def replBadSym(file_name):
 	# заменяем запрещённые символы на символы подчёркивания
