@@ -27,8 +27,10 @@ class QspToQsps():
 			with open(self.input_file, 'r', encoding='utf-16le') as file:
 				self.qsp_source_text = file.read()
 			self.read_qsp()
-			with open(f'{self.output_folder}\\{self.file_name}.qsps', 'w', encoding='utf-8') as file:
-			 	file.write(self.to_qsps())
+			output_file = f'{self.output_folder}\\{self.file_name}.qsps'
+			with open(output_file, 'w', encoding='utf-8') as file:
+				file.write(self.to_qsps())
+			return output_file
 		else:
 			print(f'File {self.input_file} is not exist.')
 
