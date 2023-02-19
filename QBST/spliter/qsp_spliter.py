@@ -17,7 +17,7 @@ class QspSplitter():
 			self.qsp_game_path = os.path.abspath(self.args['game-file'])
 			self.root_folder_path, full_file_name = os.path.split(self.qsp_game_path)
 			self.file_name = os.path.splitext(full_file_name)[0]
-			self.qsp_to_qsps = QspToQsps({'file-path':self.qsp_game_path})
+			self.qsp_to_qsps = QspToQsps({'game-file':self.qsp_game_path})
 			self.qsps_file = self.qsp_to_qsps.convert()
 			self.qsp_project_file = f"{self.root_folder_path}\\{self.file_name}.qproj"
 			self.output_folder = f"{self.root_folder_path}\\{self.file_name}"

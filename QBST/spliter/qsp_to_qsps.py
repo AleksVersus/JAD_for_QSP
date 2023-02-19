@@ -4,12 +4,12 @@ import re
 
 class QspToQsps():
 	"""Converter ".qsp" game files into qsps-files. Based on converter by Werewolf in JS.
-	stand `file-path` and run script for getting qsps-format file"""
+	stand `game-file` and run script for getting qsps-format file"""
 	def __init__(self, args={}):
 		self.QSP_CODREMOV = 5 #constanta
 		self.args = args
-		if 'file-path' in self.args:
-			self.input_file = os.path.abspath(args['file-path'])
+		if 'game-file' in self.args:
+			self.input_file = os.path.abspath(args['game-file'])
 			self.output_folder, file_full_name = os.path.split(self.input_file)
 			self.file_name = os.path.splitext(file_full_name)[0]
 		else:
@@ -150,10 +150,7 @@ class QspToQsps():
 
 
 if __name__ == "__main__":
-	args = {
-		'file-path': 'Киберия.qsp'
-	}
-	qsp_to_qsps = QspToQsps(args)
+	qsp_to_qsps = QspToQsps(args = {'game-file': 'Киберия.qsp'})
 	qsp_to_qsps.convert()
 	# if you need choose converter for decode gamepass:
 	print(QspToQsps().decode_string(f'\\r`,+3'))
