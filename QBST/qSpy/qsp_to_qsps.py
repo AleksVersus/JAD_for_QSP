@@ -148,9 +148,13 @@ class QspToQsps():
 	def decode_string(self, qsp_line):
 		return self.decode_qsp_line(qsp_line)
 
+		
+def main():
+	qsp_to_qsps = QspToQsps(args = {'game-file': 'Киберия.qsp'})
+	qsp_to_qsps.convert()
 
 if __name__ == "__main__":
-	# qsp_to_qsps = QspToQsps(args = {'game-file': 'Киберия.qsp'})
-	# qsp_to_qsps.convert()
+	# 
+	main()
 	# if you need choose converter for decode gamepass:
 	print(QspToQsps().decode_string(f'jiI`rGj^'))
