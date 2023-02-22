@@ -1,7 +1,11 @@
 # Sorry my Bad English.
 
-import sys, os, re, codecs
-from qsp_to_qsps import QspToQsps
+import sys
+import os
+import re
+import codecs
+
+from qSpy.qsp_to_qsps import QspToQsps
 
 class QspSplitter():
 	"""

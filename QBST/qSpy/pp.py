@@ -1,4 +1,5 @@
-import sys, os
+import sys
+import os
 import re
 
 # возвращает вхождение регэкспа или пустую строку
