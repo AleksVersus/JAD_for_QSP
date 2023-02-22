@@ -16,7 +16,7 @@ from qSpy.builder import BuildQSP
 
 def main():
 	# Default paths to converter and player.
-	converter="C:\\Program Files\\QSP\\converter\\txt2gam.exe"
+	converter="qsps_to_qsp" # buil-in converter. WARNING! Test-mode!!!
 	player="C:\\Program Files\\QSP\\qsp570\\qspgui.exe"
 
 	# Three commands from arguments.

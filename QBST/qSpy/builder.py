@@ -5,6 +5,7 @@ import json
 
 # Importing my modules.
 import qSpy.function as qsp
+from qSpy.qsps_to_qsp import NewQspFile, NewQspLocation
 # import qSpy.pp as pp
 
 class BuildQSP():
@@ -43,12 +44,12 @@ class BuildQSP():
 		# Search the project-file's folder.
 		self.set_work_dir(qsp.search_project_folder(point_file))
 
-		if qsp.need_project_file(self.work_dir, point_file, self.converter, self.player):
+		if qsp.need_project_file(self.work_dir, point_file, self.player):
 			# If project-file's folder is not found, but other
 			# conditional is right, generate the new project-file.
 			self.set_work_dir(os.path.abspath('.'))
 
-			project_json = qsp.get_standart_project(point_file, self.converter, self.player)
+			project_json = qsp.get_standart_project(point_file, self.player)
 			project_json = project_json.replace('\\', '\\\\')
 
 			with open(self.work_dir+"\\project.json", "w", encoding="utf-8") as file:
@@ -227,7 +228,11 @@ class BuildQSP():
 				for script in include_scripts:
 					subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
 			# Convert TXT2GAM at `.qsp`
-			subprocess.run([self.converter, exit_txt, exit_qsp],stdout=subprocess.PIPE)
+			if self.converter == "qsps_to_qsp":
+				qsps_file = NewQspsFile(input_file=exit_txt, output_file=exit_qsp)
+				qsps_file.convert()
+			else:
+				subprocess.run([self.converter, exit_txt, exit_qsp],stdout=subprocess.PIPE)
 			if os.path.isfile(exit_qsp):
 				self.export_files_paths.append(exit_qsp)
 			# Delete temp file.
@@ -250,3 +255,4 @@ class BuildQSP():
 				proc.wait(0.1)
 			except subprocess.TimeoutExpired:
 				pass
+

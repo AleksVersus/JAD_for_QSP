@@ -24,10 +24,14 @@ class NewQspsFile():
 	"""
 		qsps-file, separated in locations
 	"""
-	def __init__(self, file_path="game.qsps"):
-		self.input_file = os.path.abspath(file_path)
+	def __init__(self, input_file="game.qsps", output_file=""):
+		self.input_file = os.path.abspath(input_file)
 		self.output_folder, file_full_name = os.path.split(self.input_file)
 		self.file_name = os.path.splitext(file_full_name)[0]
+		if output_file != "":
+			self.output_file = os.path.abspath(output_file)
+		else:
+			self.output_file = f"{self.output_folder}\\{self.file_name}.qsp"
 		self.locations_count = 0
 		self.locations = []
 		self.locations_id = {}
@@ -94,10 +98,9 @@ class NewQspsFile():
 			new_file_strings.append(self.decode_qsps_line(location.name)+'\n\n')
 			new_file_strings.append(self.decode_location(location.code)+'\n')
 			new_file_strings.append(self.decode_qsps_line(0)+'\n')
-		with open(f"{self.output_folder}\\{self.file_name}.qsp", 'w', encoding='utf-16le') as file:
+		with open(self.output_file, 'w', encoding='utf-16le') as file:
 			file.write(''.join(new_file_strings))
 
-if __name__ == "__main__":
-	file_path = "drive-.qsps"
-	file = NewQspsFile(file_path)
+if __name__ == "__main__": 
+	file = NewQspsFile(input_file="drive-.qsps")
 	file.convert()
