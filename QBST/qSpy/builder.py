@@ -222,7 +222,8 @@ class BuildQSP():
 				include_scripts = None
 
 			# Build TXT2GAM-file
-			qsp.construct_file(build_files, exit_txt, self.root["preprocessor"], pp_markers)
+			code_system = ('utf-8' if self.converter == "qsps_to_qsp" else 'utf-16-le')
+			qsp.construct_file(build_files, exit_txt, self.root["preprocessor"], pp_markers, code_system=code_system)
 			# Run Postprocessor if include scripts are exists.
 			if include_scripts is not None:
 				for script in include_scripts:

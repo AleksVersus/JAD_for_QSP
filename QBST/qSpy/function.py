@@ -52,7 +52,7 @@ def gen_files_paths(files_array):
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
-def construct_file(build_list, new_file, pponoff, pp_markers):
+def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-16-le'):
 	# получив список файлов, из которых мы собираем выходной файл, делаем следующее
 	text="" # выходной текст
 	for path in build_list:
@@ -85,8 +85,8 @@ def construct_file(build_list, new_file, pponoff, pp_markers):
 	if os.path.exists(path_folder)!=True:
 		os.makedirs(path_folder)
 	# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
-	text=text.encode('utf-16-le', 'ignore').decode('utf-16-le','ignore')
-	with open(new_file,"w",encoding="utf-16-le") as file:
+	text=text.encode(code_system, 'ignore').decode(code_system,'ignore')
+	with open(new_file,"w",encoding=code_system) as file:
 		file.write(text)
 
 def search_project_folder(path):

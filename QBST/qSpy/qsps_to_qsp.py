@@ -36,6 +36,7 @@ class NewQspsFile():
 		self.locations = []
 		self.locations_id = {}
 		self.QSP_CODREMOV = 5
+		self.file_strings = []
 		if os.path.isfile(self.input_file):
 			with open(self.input_file, 'r', encoding='utf-8') as file:
 				self.file_strings = file.readlines()
