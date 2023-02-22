@@ -164,6 +164,10 @@ class QspSplitter():
 		else:
 			print('Error. File "game.txt" is not found!')
 
+def main():
+	args = {}
+	QspSplitter(args=args).split_file()
+
 if __name__=="__main__":
 	# local start of script
-	QspSplitter().split_file()
+	main()

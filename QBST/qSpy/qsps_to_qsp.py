@@ -102,6 +102,9 @@ class NewQspsFile():
 		with open(self.output_file, 'w', encoding='utf-16le') as file:
 			file.write(''.join(new_file_strings))
 
-if __name__ == "__main__": 
+def main():
 	file = NewQspsFile(input_file="drive-.qsps")
 	file.convert()
+
+if __name__ == "__main__": 
+	main()

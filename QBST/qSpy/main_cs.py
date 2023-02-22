@@ -42,5 +42,9 @@ class FinderSplitter():
 		else:
 			QspSplitter().split_file()
 
+def main():
+	folder_path = "."
+	FinderSplitter(folder_path=folder_path)
+
 if __name__ == "__main__":
-	FinderSplitter(folder_path=".")
+	main()
