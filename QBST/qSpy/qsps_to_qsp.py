@@ -6,7 +6,7 @@ import sys
 import os
 import re
 
-class NewQspLocations():
+class NewQspLocation():
 	"""
 		qsp-locations from qsps-file
 	"""
@@ -44,7 +44,7 @@ class NewQspsFile():
 				location_name = re.match(r'^\#\s?(.*?)$', string)
 				close_location = re.match(r'^\-.*?$', string)
 				if (mode['location-name'] == "") and (location_name is not None):
-					location = NewQspLocations(location_name.group(1))
+					location = NewQspLocation(location_name.group(1))
 					code_strings = []
 					self.locations.append(location)
 					self.locations_id[location_name.group(1)] = self.locations_count

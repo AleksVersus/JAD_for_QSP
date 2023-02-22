@@ -5,7 +5,7 @@ import json
 
 # Importing my modules.
 import qSpy.function as qsp
-from qSpy.qsps_to_qsp import NewQspFile, NewQspLocation
+from qSpy.qsps_to_qsp import NewQspsFile, NewQspLocation
 # import qSpy.pp as pp
 
 class BuildQSP():
