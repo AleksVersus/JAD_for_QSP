@@ -1,5 +1,7 @@
-import sys, os
-import pp
+import sys
+import os
+
+import qSpy.pp as pp
 
 def write_error_log(file, string):
 	""" Write message in error.log file. """
