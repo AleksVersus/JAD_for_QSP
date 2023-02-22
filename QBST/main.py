@@ -15,8 +15,8 @@ import json
 import re
 
 # Importing my modules.
-import function as qsp
-import pp
+import qSpy.function as qsp
+import qSpy.pp as pp
 
 class BuildQSP():
 	"""
