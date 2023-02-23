@@ -4,6 +4,8 @@ JAD — Joint Application Development,
 
 или по-русски: Совместная Разработка Приложений. В нашем случае совместная разработка игр на QSP.
 
+> Если вы не имели дела с интерпретатором Python и SublimeText, есть краткая пошаговая инструкция по первому запуску игры с нуля: [Краткая инструкция по установке JAD_QBST для SublimeText с нуля](https://github.com/AleksVersus/JAD_for_QSP/blob/master/siaiz.md)
+
 ## Разработка QSP-игр в Sublime Text
 
 ### Выбор редактора, или Почему Sublime Text?
