@@ -54,7 +54,7 @@ class BuildQSP():
 
 			with open(self.work_dir+"\\project.json", "w", encoding="utf-8") as file:
 				file.write(project_json)
-			qsp.write_error_log("error.log", f"[100] File '{work_dir}\\project.json' was created.\n")
+			qsp.write_error_log("error.log", f"[100] File '{self.work_dir}\\project.json' was created.\n")
 
 	def set_work_dir(self, work_dir):
 		self.work_dir = work_dir
