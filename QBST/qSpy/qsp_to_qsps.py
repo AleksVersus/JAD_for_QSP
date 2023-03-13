@@ -155,6 +155,6 @@ def main():
 
 if __name__ == "__main__":
 	# 
-	main()
+	# main()
 	# if you need choose converter for decode gamepass:
-	print(QspToQsps().decode_string(f'jiI`rGj^'))
+	print(QspToQsps().decode_string(f'2230/4.31'))

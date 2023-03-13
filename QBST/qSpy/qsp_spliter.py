@@ -5,7 +5,7 @@ import os
 import re
 import codecs
 
-from qSpy.qsp_to_qsps import QspToQsps
+from qsp_to_qsps import QspToQsps
 
 class QspSplitter():
 	"""
@@ -149,13 +149,15 @@ class QspSplitter():
 					path=location_dict[location_name]
 				else:
 					# в противном случае сохраняем локацию в текущей папке
-					path=location_name+".qsps"
+					path = self.replace_bad_symbols(location_name)+".qsps"
 				folder=os.path.split(path)[0]
 				if not os.path.isdir(f"{export_fold}\\{folder}"):
 					# если дирректория не существует, создаём
 					os.mkdir(f"{export_fold}\\{folder}")
 				if os.path.isfile(f"{export_fold}\\{path}"):
-					path+="_%i" %count
+					name, ext = os.path.splitext(path)
+					path=f"{name}_{count}{ext}"
+				# print(f"[160] {path}")
 				with open(f"{export_fold}\\{path}","w",encoding="utf-8") as file:
 					# теперь сохраняем файлы
 					file.write(location_array[location_name])
@@ -165,7 +167,7 @@ class QspSplitter():
 			print('Error. File "game.txt" is not found!')
 
 def main():
-	args = {}
+	args = {'qsps-file':'D:\\my\\projects\\nonQSP-video\\flat_earth\\lastbugs.qsps'}
 	QspSplitter(args=args).split_file()
 
 if __name__=="__main__":
