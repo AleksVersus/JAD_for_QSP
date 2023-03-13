@@ -40,24 +40,75 @@ class NewQspsFile():
 		if os.path.isfile(self.input_file):
 			with open(self.input_file, 'r', encoding='utf-8') as file:
 				self.file_strings = file.readlines()
-			mode = {"location-name": ""}
-			for string in self.file_strings:
-				location_name = re.match(r'^\#\s?(.*?)$', string)
-				close_location = re.match(r'^\-.*?$', string)
-				if (mode['location-name'] == "") and (location_name is not None):
-					location = NewQspLocation(location_name.group(1))
-					code_strings = []
-					self.locations.append(location)
-					self.locations_id[location_name.group(1)] = self.locations_count
-					self.locations_count += 1
-					mode['location-name'] = location_name.group(1)
-				elif (mode['location-name'] != "") and (close_location is None):
-					code_strings.append(string)
-				elif (mode['location-name'] != "") and (close_location is not None):
-					location.change_code(code_strings)
-					mode['location-name']=""
+			self.split_to_locations(self.file_strings)
 		else:
 			print(f"File '{self.input_file}' is not exist")
+
+	def split_to_locations(self, string_lines):
+		input_text = ''.join(string_lines)
+		code_text = ""
+		mode = {'location-name': ""}
+		count =0
+		while len(input_text)>0:
+			count+=1
+			scope_type, prev_text, scope_regexp_obj, post_text = self.find_overlap_main(input_text)
+			if scope_type=='location-start' and mode['location-name']=='':
+				location = NewQspLocation(scope_regexp_obj.group(1).replace('\r',''))
+				code_text = ""
+				self.locations.append(location)
+				self.locations_id[scope_regexp_obj.group(1)] = self.locations_count
+				self.locations_count += 1
+				mode['location-name'] = scope_regexp_obj.group(1)
+				input_text = post_text
+			elif scope_type=='location-end' and mode['location-name']!='':
+				code_text += prev_text
+				input_text = post_text
+				location.change_code(code_text.replace('\n','\n\r').split('\r')[1:-1])
+				mode['location-name']=""
+			elif scope_type=="string" and mode['location-name']!='':
+				# adding code work where location is open
+				code_text += prev_text + scope_regexp_obj.group(0)
+				input_text = post_text
+			else:
+				if input_text!=post_text:
+					input_text = post_text
+				else:
+					input_text = ''
+
+	def find_overlap_main(self, string_line:str):
+		maximal = len(string_line)+1
+		mini_data_base = {
+			"scope-name": [
+				'location-start',
+				'location-end',
+				'string'
+			],
+			"scope-regexp":
+			[
+				re.search(r'^\#\s?(.*?)$', string_line, flags=re.MULTILINE),
+				re.search(r'^\-.*$', string_line, flags=re.MULTILINE),
+				re.search(r'("|\')[\S\s]*?(\1)', string_line, flags=re.MULTILINE)
+			],
+			"scope-instring":
+			[]
+		}
+		for string_id in mini_data_base['scope-name']:
+			i = mini_data_base['scope-name'].index(string_id)
+			match_in = mini_data_base['scope-regexp'][i]
+			mini_data_base['scope-instring'].append(
+				string_line.index(match_in.group(0)) if match_in is not None else maximal)
+		minimal = min(mini_data_base['scope-instring'])
+		if minimal!=maximal:
+			i = mini_data_base['scope-instring'].index(minimal)
+			scope_type = mini_data_base['scope-name'][i]
+			scope_regexp_obj = mini_data_base['scope-regexp'][i]
+			scope = scope_regexp_obj.group(0)
+			q = string_line.index(scope)
+			prev_line = string_line[0:q]
+			post_line = string_line[q+len(scope):]
+			return scope_type, prev_line, scope_regexp_obj, post_line
+		else:
+			return None, '', '', string_line
 
 	def print_locations_names(self):
 		print(f'Locations number: {len(self.locations)}')
