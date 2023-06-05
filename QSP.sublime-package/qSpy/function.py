@@ -1,7 +1,7 @@
 import sys
 import os
 
-import qSpy.pp as pp
+from . import pp as pp
 
 def write_error_log(file, string):
 	""" Write message in error.log file. """
@@ -18,9 +18,9 @@ def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 		for file in files:
 			sp = os.path.splitext(file)
 			if len(filters)==0 or (sp[1] in filters):
-				build_files.append(f'{abs_path}\\{file}')
+				build_files.append(abs_path+"\\"+file)
 	if len(build_files)==0:
-		write_error_log("error.log", f"[201] Folder is empty. Prove path '{folder}'.\n")
+		write_error_log("error.log", "[201] Folder is empty. Prove path '"+folder+"'.\n")
 	return build_files
 
 def compare_paths(path1, path2):
@@ -48,7 +48,7 @@ def gen_files_paths(files_array):
 		if os.path.isfile(file_path):
 			files_paths.append(file_path)
 		else:
-			write_error_log("error.log", f"[202] File don't exist. Prove path {file_path}.\n")
+			write_error_log("error.log", "[202] File don't exist. Prove path "+file_path+".\n")
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
@@ -97,9 +97,9 @@ def search_project_folder(path):
 	error=path
 	if os.path.isfile(path):
 		path=os.path.split(path)[0]
-	while not os.path.isfile(f"{path}\\project.json"):
+	while not os.path.isfile(path+"\\project.json"):
 		if os.path.ismount(path):
-			write_error_log("error.log", f"[203] not found 'project.json' file for this project. Prove path {error}.\n")
+			write_error_log("error.log", "[203] not found 'project.json' file for this project. Prove path "+error+".\n")
 			break
 		path=os.path.split(path)[0]
 	else:

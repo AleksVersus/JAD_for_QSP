@@ -1,21 +1,11 @@
-# QSP-builder
-
-# Sorry My BAD English!!!
-
-# Build the game-files in ".qsp"-format from text-files in TXT2GAM-format.
-# Собирает файлы игр формата ".qsp" из текстовых файлов формата TXT2GAM.
-
-# Don't use this script as module! Не используйте этот скрипт, как модуль!
-
-# Importing standart modules.
-import sys, os
-
 import sublime
 import sublime_plugin
 
+import sys, os
+
 # Importing my modules from qSpy package.
-from qSpy.function import parse_args
-from qSpy.builder import BuildQSP
+from .qSpy.function import parse_args
+from .qSpy.builder import BuildQSP
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 
@@ -25,7 +15,8 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		player = "C:\\Program Files\\QSP\\qsp580\\qspgui.exe"
 
 		# Three commands from arguments.
-		args = parse_args([qsp_mode, self.view.file_name()])
+		argv = self.window.extract_variables()
+		args = parse_args([qsp_mode, argv['file']])
 
 		# -----------------------------------------------------------------------
 		# args["point_file"] - start point for search `project.json`

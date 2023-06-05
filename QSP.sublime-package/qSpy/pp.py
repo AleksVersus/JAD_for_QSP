@@ -46,9 +46,9 @@ def metCondition(vares,direct):
 		trim_var=re.search(r'\b'+var+r'\b',direct)
 		if (var in direct) and (trim_var!=None):
 			if type(vares[var])==str:
-				direct=direct.replace(var,f"'{vares[var]}'")
+				direct=direct.replace(var, "'"+str(vares[var])+"'")
 			else:
-				direct=direct.replace(var,f"{vares[var]}")
+				direct=direct.replace(var, "'"+str(vares[var])+"'")
 	direct=direct.replace("''","'")
 	direct=direct.replace('""','"')
 	direct="out=(True if "+direct+" else False)"

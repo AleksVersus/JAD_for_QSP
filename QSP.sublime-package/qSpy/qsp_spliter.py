@@ -5,7 +5,7 @@ import os
 import re
 import codecs
 
-from qsp_to_qsps import QspToQsps
+from .qsp_to_qsps import QspToQsps
 
 class QspSplitter():
 	"""
@@ -74,8 +74,8 @@ class QspSplitter():
 			encoding='utf-8'
 			bt=b''
 			if raw.startswith(codecs.BOM_UTF8):
-			    encoding='utf-8'
-			    bt=codecs.BOM_UTF8
+				encoding='utf-8'
+				bt=codecs.BOM_UTF8
 			elif raw.startswith(codecs.BOM_UTF16):
 				encoding='utf-16'
 				bt=codecs.BOM_UTF16

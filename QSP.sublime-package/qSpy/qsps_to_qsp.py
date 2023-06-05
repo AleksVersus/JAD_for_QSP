@@ -31,7 +31,7 @@ class NewQspsFile():
 		if output_file != "":
 			self.output_file = os.path.abspath(output_file)
 		else:
-			self.output_file = f"{self.output_folder}\\{self.file_name}.qsp"
+			self.output_file = self.output_folder+"\\"+self.file_name+".qsp"
 		self.locations_count = 0
 		self.locations = []
 		self.locations_id = {}
@@ -42,7 +42,7 @@ class NewQspsFile():
 				self.file_strings = file.readlines()
 			self.split_to_locations(self.file_strings)
 		else:
-			print(f"File '{self.input_file}' is not exist")
+			print("File '"+self.input_file+"' is not exist")
 
 	def split_to_locations(self, string_lines):
 		input_text = ''.join(string_lines)
@@ -111,7 +111,7 @@ class NewQspsFile():
 			return None, '', '', string_line
 
 	def print_locations_names(self):
-		print(f'Locations number: {len(self.locations)}')
+		print('Locations number: '+str(len(self.locations)))
 		for location in self.locations:
 			print(location.name)
 
@@ -123,7 +123,7 @@ class NewQspsFile():
 			location_name = self.locations[self.locations_id[name]].name
 			location_code = self.locations[self.locations_id[name]].code
 		if location_name is not None:
-			print(f"'{location_name}'")
+			print("'"+location_name+"'")
 			print(location_code)
 
 	def decode_qsps_line(self, qsps_line):

@@ -4,7 +4,7 @@ import os
 
 import re
 
-from qsp_spliter import QspSplitter
+from .qsp_spliter import QspSplitter
 
 class FinderSplitter():
 	"""autotranslate:
