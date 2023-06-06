@@ -2,6 +2,10 @@
 
 **Включает в себя:**
 
+* `qSpy` и `QSP.py` - python-скрипты, реализующие билдер qsp-игр в виде плагина для ST.
+* `Snippets` - папка со стандартными сниппетами (фрагментами кода) для QSP.
+* `.python-version` - версия встроенного интерпретатора python, в которой будет запускаться плагин
+* `Comment Intendation.tmPreferences` - настройка поведения для вставки комментариев.
 * `Default.sublime-keymap` - файл настройки сочетаний клавиш при работе с QSP-файлом
 * `Indentation Rules.tmPreferences` - файл настройки поведения отступов
 * `Location in Goto-List.tmPreferences` - файл настройки распознавания локаций в проекте
@@ -13,7 +17,5 @@
 
 **Для установки пакета:**
 
-1. Отредактируйте файлы "`Default.sublime-keymap`" и "`QSP.sublime-build`" (подробнее читайте на [https://github.com/AleksVersus/JAD_for_QSP](https://github.com/AleksVersus/JAD_for_QSP));
-2. Упакуйте всё содержимое данной папки в zip-архив и переименуйте его так, чтобы он назывался "`QSP.sublime-package`";
-3. Скопируйте файл "`QSP.sublime-package`" в папку Packages установленного у вас Sublime Text (например, у меня она расположена по пути "`C:\Program Files\Sublime Text\Packages`").
-4. Перезагрузите Sublime Text - подсветка, сниппеты и билдер будут работать.
+1. Скопируйте файл "`QSP.sublime-package`" в папку Packages установленного у вас Sublime Text (например, у меня она расположена по пути "`C:\Program Files\Sublime Text\Packages`").
+2. Перезагрузите Sublime Text - подсветка, сниппеты и билдер будут работать.
