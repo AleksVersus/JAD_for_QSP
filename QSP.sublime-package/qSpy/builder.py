@@ -246,6 +246,7 @@ class BuildQSP():
 
 		if not os.path.isfile(self.player):
 			qsp.write_error_log("error.log", "[109] Path at player is wrong. Prove path '"+self.player+"'.\n")
+			return None
 		if not os.path.isfile(self.start_file):
 			qsp.write_error_log("error.log", "[110] Start-file is wrong. Don't start the player.\n")
 		else:
