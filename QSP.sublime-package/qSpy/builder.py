@@ -48,7 +48,7 @@ class BuildQSP():
 		if qsp.need_project_file(self.work_dir, point_file, self.player):
 			# If project-file's folder is not found, but other
 			# conditional is right, generate the new project-file.
-			self.set_work_dir(os.path.abspath('.'))
+			self.set_work_dir(os.path.split(point_file)[0])
 
 			project_json = qsp.get_standart_project(point_file, self.player)
 			project_json = project_json.replace('\\', '\\\\')

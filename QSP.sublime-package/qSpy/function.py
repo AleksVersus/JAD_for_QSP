@@ -94,14 +94,14 @@ def search_project_folder(path):
 		Find project-file and return folder path whith project.
 		In other return None.
 	"""
-	error=path
+	error = path
 	if os.path.isfile(path):
-		path=os.path.split(path)[0]
+		path = os.path.split(path)[0]
 	while not os.path.isfile(path+"\\project.json"):
 		if os.path.ismount(path):
 			write_error_log("error.log", "[203] not found 'project.json' file for this project. Prove path "+error+".\n")
 			break
-		path=os.path.split(path)[0]
+		path = os.path.split(path)[0]
 	else:
 		return path
 
