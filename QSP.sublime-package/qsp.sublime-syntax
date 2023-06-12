@@ -13,10 +13,29 @@ file_extensions: # расширения файлов
 first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
 scope: source.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(exec|set|let|local|view|inclib|freelib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg))
-  oprtms: (?i:(act|if|elseif|else|loop|while|step|end)) # support.type
-  oprttxt: (?i:(pl?|nl|clr|clear))
-  sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
+  # qsp_declarators: |- # keyword.declaration.qsp
+  #   (?ix:
+  #     set|let|local
+  #   )
+  qsp_operators: |- # keyword.operator
+    (?ix:
+      set|let|local|
+      inclib|freelib|addqst|killqst|openqst|opengame|savegame|
+      addobj|delobj|killobj|unsel|unselect|
+      cls|
+      cla|delact|
+      cmdclr|cmdclear|
+      play|close|all|
+      jump|dynamic|goto|gt|xgoto|xgt|gosub|gs|menu|exit|
+      showobjs|showstat|showacts|showinput|refint|
+      copyarr|killvar|killall|
+      view|msg|
+      settimer|wait|
+      exec
+    )
+  qsp_controls: (?i:act|if|elseif|else|loop|while|step|end) # keyword.control
+  qsp_text_operators: (?i:(pl?|nl|clr|clear)) # keyword.operator
+  qsp_system_var_num: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
   sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
   sysvarot: (?i:(args|result))
   fncnum: (?i:obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|r(a)?nd|arrsize|arrpos|arrcomp|strcomp|strpos)
@@ -70,13 +89,14 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs.error avs.wrongelseif
     - include: preprocessor
     - include: comments
-    - include: markers
+    - include: labels
     - include: operators
     - include: operacion
-    - include: sysvar
+    - include: system_variables
     - include: functions
     - include: numeric
     - include: strings
+    - include: separator_continuation
 
   # неявный вызов функций
   sugarfunc:
@@ -248,29 +268,29 @@ contexts: # теперь необходимо определить "контек
     - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные
       scope: invalid.illegal.qsp avs-error avs-wrongvar
     - match: \b[0-9]+\b
-      scope: constant.numeric avs-numberic
+      scope: constant.numeric avs_numberic
     
   operators:
     # подсветка операторов
-    - match: \b({{oprt}}|{{oprttxt}})\b
+    - match: \b({{qsp_operators}}|{{qsp_text_operators}})\b
       scope: support.function.qsp avs.operators
-    - match: (\*)(?={{oprttxt}}\b)
+    - match: (\*)(?={{qsp_text_operators}}\b)
       scope: support.function.qsp avs.operators
-    - match: \b{{oprtms}}\b
+    - match: \b{{qsp_controls}}\b
       scope: support.type avs.operators-multiline
-    - match: (\*)(?={{oprt}}\b)
+    - match: (\*)(?={{qsp_operators}}\b)
       scope: invalid.illegal.qsp avs.error
-    - match: (\*)(?={{oprtms}}\b)
+    - match: (\*)(?={{qsp_controls}}\b)
       scope: invalid.illegal.qsp avs.error
 
-  sysvar:
+  system_variables:
     - match: (?<!\$)(\b{{sysvartxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
       scope: invalid.illegal.qsp avs.error
     - match: (\$)(?=(\b{{sysvartxt}}|{{sysvarot}}\b))
-      scope: keyword.qsp avs.sysvar
-    - match: \b({{sysvarnum}}|{{sysvartxt}}|{{sysvarot}})\b
-      scope: keyword.qsp avs.sysvar
-    - match: (\$)(?={{sysvarnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
+      scope: variable.language.qsp avs_sysvar
+    - match: \b({{qsp_system_var_num}}|{{sysvartxt}}|{{sysvarot}})\b
+      scope: variable.language.qsp avs_sysvar
+    - match: (\$)(?={{qsp_system_var_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.qsp avs.error
 
   functions:
@@ -283,9 +303,9 @@ contexts: # теперь необходимо определить "контек
     - match: (\$)(?=\b{{fncnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.qsp avs.error
 
-  markers:
+  labels:
     - match: ^(\s*?\:|\:)[^&'"]+
-      scope: entity.name avs-markup
+      scope: entity.name avs_jumps_labels
 
   # # # ------------------- строки ------------------------ # # #
   strings:
@@ -325,7 +345,7 @@ contexts: # теперь необходимо определить "контек
     - match: (\n\r|\r|\r\n|\n)
       scope: invalid.illegal.qsp avs.error avs.wrongenter
     - include: opinse
-    - include: sysvar
+    - include: system_variables
     - include: functions
     - include: numeric
     - include: strings
@@ -370,7 +390,7 @@ contexts: # теперь необходимо определить "контек
     - match: (?<=\{)((\s*?)|(\&\s*?))(!)
       captures:
         3: support.function.qsp
-        4: comment.qsp
+        4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: (\n\r|\r|\r\n|\n)
@@ -382,7 +402,7 @@ contexts: # теперь необходимо определить "контек
     - match: ((^\s*?)|(\&\s*?))(!)
       captures:
         3: support.function.qsp
-        4: comment.qsp
+        4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: (\n\r|\r|\r\n|\n)
@@ -445,12 +465,12 @@ contexts: # теперь необходимо определить "контек
 
   speccomments:
     - match: (?<=\!)@.*?(?={{nr}})
-      scope: comment markup.italic speccomments.avs
+      scope: comment.qsp markup.italic avs-speccomments
 
   preprocessor:
     - match: ^(\!@pp\:.*?)$
       captures:
-        1: diff.deleted preprocessor.avs
+        1: meta.preprocessor.qsp diff.deleted.qsp avs-preprocessor
         #2: markup.bold preprocessor.avs
 
   # # # ---------- фигурные скобки --------------- # # #
@@ -475,3 +495,7 @@ contexts: # теперь необходимо определить "контек
         - match: (?i:</qhtml>)
           scope: message.error avs.html
           pop: true
+
+  separator_continuation:
+    - match: \s_(?=$)
+      scope: punctuation.separator.continuation avs_longstring
