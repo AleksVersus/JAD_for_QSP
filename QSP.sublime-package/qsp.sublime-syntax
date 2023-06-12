@@ -5,13 +5,13 @@
 # Quest Soft Player 5.8.0 Language:
 # https://qsp.org/
 
-name: QSP # название языка
+name: qsp # название языка
 file_extensions: # расширения файлов
   - qsps
   - qsp-txt
   - txt-qsp
 first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
-scope: source.QSP
+scope: source.qsp
 variables: # назначаем переменные для удобства
   # qsp_declarators: |- # keyword.declaration.qsp
   #   (?ix:

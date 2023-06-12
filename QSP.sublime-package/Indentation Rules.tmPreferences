@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
 	<key>scope</key>
-	<string>source.QSP</string>
+	<string>source.qsp</string>
 	<key>settings</key>
 	<dict>
 		<key>decreaseIndentPattern</key>
