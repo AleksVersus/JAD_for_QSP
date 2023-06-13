@@ -17,7 +17,7 @@ variables: # назначаем переменные для удобства
   #   (?ix:
   #     set|let|local
   #   )
-  qsp_operators: |- # keyword.operator
+  kw_operators: |- # keyword.operator
     (?ix:
       set|let|local|
       inclib|freelib|addqst|killqst|openqst|opengame|savegame|
@@ -33,25 +33,43 @@ variables: # назначаем переменные для удобства
       settimer|wait|
       exec
     )
-  qsp_controls: (?i:act|if|elseif|else|loop|while|step|end) # keyword.control
-  qsp_text_operators: (?i:(pl?|nl|clr|clear)) # keyword.operator
-  qsp_system_var_num: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
-  sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
-  sysvarot: (?i:(args|result))
-  fncnum: (?i:obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|r(a)?nd|arrsize|arrpos|arrcomp|strcomp|strpos)
-  fnctxt: (?i:(input|user_text|usrtxt|desc|maintxt|stattxt|qspver|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|strfind))
-  fncot: (?i:(iif|dyneval|func|max|min|arritem))
-  figop: '\{'
-  figcls: '\}'
+  kw_controls: (?i:act|if|elseif|else|loop|while|step|end) # keyword.control
+  kw_text_operators: (?i:pl?|nl|clr|clear) # keyword.operator
+  system_vars_num: (?i:nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize)
+  system_vars_string: (?i:counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage)
+  system_vars: (?i:args|result)
+  functions_num: |- # variable.function
+    (?ix:
+      no|and|or|mod|loc|obj|isnum|isplay|
+      len|val|instr|strcomp|strpos|
+      arrsize|arrpos|arrcomp|
+      msecscount|
+      rgb|
+      countobj|
+      r(a)?nd
+    )
+  functions_string: |- # variable.function
+    (?ix:
+      desc|user_text|usrtxt|maintxt|stattxt|
+      curloc|selobj|selact|
+      mid|(u|l)case|trim|replace|str|strfind|
+      input|
+      qspver|
+      curacts|
+      getobj
+    )
+  functions_both_type: (?i:iif|dyneval|func|max|min|arritem) # variable.function
+  braces_open: '\{'
+  braces_close: '\}'
   quote: '"'
   ap: "'"
-  opener: '{{figop}}{{quote}}{{ap}}'
-  closer: '{{figcls}}{{quote}}{{ap}}'
+  opener: '{{braces_open}}{{quote}}{{ap}}'
+  closer: '{{braces_close}}{{quote}}{{ap}}'
   left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\w|\d)'
   right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?|\@)'
   nr: (\n\r|\r|\r\n|\n)
   oprcid: (<=|>=|\+=|-=|\*=|\/=|<>)
-  rightvar: (\$?[A-Za-zА-Яа-я_][\w\.]*)
+  users_variables: (\$?[A-Za-zА-Яа-я_][\w\.]*)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -59,27 +77,29 @@ contexts: # теперь необходимо определить "контек
       push: # всё вытесняется подсветкой
         - include: preprocessor
         - match: ".*" # любое множество символов подсвечивается как комментарий
-          scope: meta.diff avs-mainscope
+          scope: meta.diff meta.gametext.qsp # TODO: заменить meta.diff на comment.block
       with_prototype:
-        - match: ^(\s*?)(#)\s?.+$
-          scope: constant.character.qsp avs-locstart
+        - match: ^(\s*?)(#)\s?(.+)$
+          captures:
+            2: keyword.declaration.location.qsp
+            3: entity.name.location.qsp meta.start_location.qsp
           push:
-            - meta_scope: avs-location-body
+            - meta_scope: meta.location.qsp
             - match: ^\1(-)(.*?)$
               pop: true
               captures:
-                1: markup.heading punctuation.definition.heading avs-locend
-                2: entity.name avs.locend.comments
+                1: punctuation.definition.keyword keyword.control
+                2: entity.name meta.end_location.qsp
             - include: locations
             - match: ^(\s*?)(-)(.*?)$
-              scope: invalid.illegal.qsp avs.error avs.wronglocend
-    
+              scope: invalid.illegal.qsp avs_wronglocend
+
   locations:
     - include: figurebrack
     - include: actions
     - include: conditions
     - include: loop
-    - include: setvars
+    - include: kw_declarations
     - include: sugarfunc
     - match: (?i:(\bend\b)) # подсветка лишнего end'а
       scope: invalid.illegal.qsp avs.error avs.wrongend
@@ -219,13 +239,13 @@ contexts: # теперь необходимо определить "контек
         2: invalid.illegal.qsp avs.error avs.wrongelse1
 
   # set и local
-  setvars:
+  kw_declarations:
       # ([A-Za-zА-Яа-я_][\w\.]*)
-    - match: \b(?i:(local))\b(?=\s+{{rightvar}}(\[.*?\])?(\,\s*{{rightvar}}(\[.*?\])?)*(\s*\=\s*.+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
+    - match: \b(?i:(local))\b(?=\s+{{users_variables}}(\[.*?\])?(\,\s*{{users_variables}}(\[.*?\])?)*(\s*\=\s*.+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
       scope: support.function.qsp
-    - match: \b(?i:(set|let))\b(?=\s+{{rightvar}}(\[.*?\])?(\,\s*{{rightvar}}(\[.*?\])?)*(\s*\=\s*.+)\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
+    - match: \b(?i:(set|let))\b(?=\s+{{users_variables}}(\[.*?\])?(\,\s*{{users_variables}}(\[.*?\])?)*(\s*\=\s*.+)\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
       scope: support.function.qsp
-    - match: \b(?i:(set|local|let))\b
+    - match: \b(?i:set|local|let)\b
       scope: invalid.illegal.qsp
 
   # операции
@@ -272,35 +292,35 @@ contexts: # теперь необходимо определить "контек
     
   operators:
     # подсветка операторов
-    - match: \b({{qsp_operators}}|{{qsp_text_operators}})\b
+    - match: \b({{kw_operators}}|{{kw_text_operators}})\b
       scope: support.function.qsp avs.operators
-    - match: (\*)(?={{qsp_text_operators}}\b)
+    - match: (\*)(?={{kw_text_operators}}\b)
       scope: support.function.qsp avs.operators
-    - match: \b{{qsp_controls}}\b
+    - match: \b{{kw_controls}}\b
       scope: support.type avs.operators-multiline
-    - match: (\*)(?={{qsp_operators}}\b)
+    - match: (\*)(?={{kw_operators}}\b)
       scope: invalid.illegal.qsp avs.error
-    - match: (\*)(?={{qsp_controls}}\b)
+    - match: (\*)(?={{kw_controls}}\b)
       scope: invalid.illegal.qsp avs.error
 
   system_variables:
-    - match: (?<!\$)(\b{{sysvartxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
+    - match: (?<!\$)(\b{{system_vars_string}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
       scope: invalid.illegal.qsp avs.error
-    - match: (\$)(?=(\b{{sysvartxt}}|{{sysvarot}}\b))
+    - match: (\$)(?=(\b{{system_vars_string}}|{{system_vars}}\b))
       scope: variable.language.qsp avs_sysvar
-    - match: \b({{qsp_system_var_num}}|{{sysvartxt}}|{{sysvarot}})\b
+    - match: \b({{system_vars_num}}|{{system_vars_string}}|{{system_vars}})\b
       scope: variable.language.qsp avs_sysvar
-    - match: (\$)(?={{qsp_system_var_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
+    - match: (\$)(?={{system_vars_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.qsp avs.error
 
   functions:
-    - match: (?<!\$)(\b{{fnctxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
+    - match: (?<!\$)(\b{{functions_string}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
       scope: invalid avs.error
-    - match: (\$)(?=({{fnctxt}}\b|{{fncot}}\b))
+    - match: (\$)(?=({{functions_string}}\b|{{functions_both_type}}\b))
       scope: markup.heading punctuation.definition.heading avs.function
-    - match: \b({{fncnum}}|{{fnctxt}}|{{fncot}})\b
+    - match: \b({{functions_num}}|{{functions_string}}|{{functions_both_type}})\b
       scope: markup.heading punctuation.definition.heading avs.function
-    - match: (\$)(?=\b{{fncnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
+    - match: (\$)(?=\b{{functions_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.qsp avs.error
 
   labels:
