@@ -136,26 +136,26 @@ contexts: # теперь необходимо определить "контек
     - match: '(?<=\{)(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       scope: meta.begin_action.qsp
       captures:
-        2: keyword.control.action.begin.qsp markup.italic
+        2: keyword.control.action.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\}\n\r]*)
           scope: meta.end-action.qsp
           captures:
-            2: keyword.control.action.end.qsp markup.italic
-            3: comment.line.qsp markup.italic
+            2: keyword.control.action.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       captures:
-        2: keyword.control.action.begin.qsp markup.italic
+        2: keyword.control.action.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\n\r]*)
           scope: meta.end-action.qsp
           captures:
-            2: keyword.control.action.end.qsp markup.italic
-            3: comment.line.qsp markup.italic
+            2: keyword.control.action.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -164,25 +164,27 @@ contexts: # теперь необходимо определить "контек
   # циклы
   loop:
     - match: '(?<=\{)(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
+      scope: meta.begin_cycle.qsp
       captures:
-        2: support.type avs-startloop
+        2: keyword.control.cycle.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\}\n\r]*)
           captures:
-            2: support.type avs-endloop
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
+            2: keyword.control.cycle.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp avs-endloopcomm
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
+      scope: meta.begin_cycle.qsp
       captures:
         2: support.type avs-startloop
       push:
         - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\n\r]*)
           captures:
             2: support.type avs-endloop
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
+            3: constant.numeric.line-number.find-in-files markup.italic.qsp avs-endloopcomm
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -199,7 +201,7 @@ contexts: # теперь необходимо определить "контек
         - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\}\n\r]*)
           captures:
             2: support.type avs-endif
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
+            3: constant.numeric.line-number.find-in-files markup.italic.qsp avs-endifcomm
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
@@ -212,7 +214,7 @@ contexts: # теперь необходимо определить "контек
         - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\n\r]*)
           captures:
             2: support.type avs-endif
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
+            3: constant.numeric.line-number.find-in-files markup.italic.qsp avs-endifcomm
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -304,7 +306,7 @@ contexts: # теперь необходимо определить "контек
     - match: (\*)(?={{kw_text_operators}}\b)
       scope: support.function.qsp avs.operators
     - match: \b{{kw_controls}}\b
-      scope: keyword.control.qsp
+      scope: keyword.control.qsp markup.italic.qsp
     - match: (\*)(?={{kw_operators}}\b)
       scope: invalid.illegal.qsp avs.error
     - match: (\*)(?={{kw_controls}}\b)
@@ -492,7 +494,7 @@ contexts: # теперь необходимо определить "контек
 
   speccomments:
     - match: (?<=\!)@.*?(?={{nr}})
-      scope: comment.qsp markup.italic avs-speccomments
+      scope: comment.qsp markup.italic.qsp avs-speccomments
 
   preprocessor:
     - match: ^(\!@pp\:.*?)$
