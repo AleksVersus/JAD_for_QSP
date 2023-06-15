@@ -258,4 +258,3 @@ class BuildQSP():
 				proc.wait(0.1)
 			except subprocess.TimeoutExpired:
 				pass
-
