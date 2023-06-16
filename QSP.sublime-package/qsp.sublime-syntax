@@ -370,11 +370,13 @@ contexts: # теперь необходимо определить "контек
 
   subexpression:
     - match: '<<'
-      scope: entity.name avs-markup
+      scope: constant.character.escape.qsp punctuation.section.interpolation.begin.qsp avs_begin_subexpression
       push:
         - clear_scopes: true
+        - meta_scope: meta.interpolation.qsp
+        - meta_content_scope: source.qsp.embedded
         - match: '>>'
-          scope: entity.name avs-markup
+          scope: constant.character.escape.qsp punctuation.section.interpolation.end.qsp avs_end_subexpression
           pop: true
         - include: subex
 
