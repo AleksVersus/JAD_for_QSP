@@ -271,11 +271,11 @@ contexts: # теперь необходимо определить "контек
     - match: \b{{operacion_word}}\b 
       scope: keyword.operator.word.qsp
     # подсветка двузнаковых операторов
-    - match: (?<={{left_operand}})\s*{{operacion_two_signs}}(?!\s*?{{right_operand}})
+    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_right
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{operacion_two_signs}}(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_left
-    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?=\s*?{{right_operand}}) 
+    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?=\s*?{{right_operand}})
       scope: keyword.operator.two-signs.qsp
     # подсветка для однознаковых операторов
     - match: (?<={{left_operand}})\s*?{{operacion_one_sign}}(?!\s*?{{right_operand}})
@@ -397,6 +397,7 @@ contexts: # теперь необходимо определить "контек
     - include: strings
 
   operacion_subex:
+    # TODO: слить повторяющиеся определения для операций в подвыражениях и других
     # подсветка словарных операторов
     - match: (?<={{left_operand}})\s*\b{{operacion_word}}\b(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_word_with_out_right
@@ -404,21 +405,21 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs_wrong_word_with_out_left
     - match: \b{{operacion_word}}\b 
       scope: keyword.operator.word.qsp
-    # двузнаковые операторы
+    # подсветка двузнаковых операторов
     - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_right
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{operacion_two_signs}}(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_left
     - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?=\s*?{{right_operand}})
       scope: keyword.operator.two-signs.qsp
-    # однознаковые операторы
+    # подсветка однознаковых операторов
     - match: (?<={{left_operand}})\s*?{{operacion_one_sign}}(?!(>|\s*?{{right_operand}}))
       scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_right
     - match: (?<=(<|\&|\(|\{|\[))\s*?{{operacion_one_sign}}(?=\s*?{{right_operand}}*)
       scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_left
     - match: '{{operacion_one_sign}}'
       scope: keyword.operator.one-sign.qsp
-    # запятые
+    # Правила для запятых
     - match: (?<={{left_operand}})\s*?(,)(?!\s*?{{right_operand}})
       scope: iinvalid.illegal.qsp avs_wrong_comma_with_out_right
     - match: (?<=(<|\&|\(|\{|\[))\s*?(,)(?=\s*?{{right_operand}}*)
@@ -440,7 +441,7 @@ contexts: # теперь необходимо определить "контек
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
     - match: (?<=\{)((\s*?)|(\&\s*?))(!)
       captures:
-        3: support.function.qsp
+        3: support.function.builtin.qsp
         4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
@@ -452,7 +453,7 @@ contexts: # теперь необходимо определить "контек
         - include: speccomments
     - match: ((^\s*?)|(\&\s*?))(!)
       captures:
-        3: support.function.qsp
+        3: support.function.builtin.qsp
         4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
@@ -527,12 +528,35 @@ contexts: # теперь необходимо определить "контек
   # # # ---------- фигурные скобки --------------- # # #
   figurebrack:
     - match: '\{'
-      scope: support.function.qsp avs.figopen
+      scope: punctuation.section.block.begin.qsp avs_brace_begin
       push:
+        - meta_content_scope: meta.block
+        
         - include: htmlsupport
-        - include: locations
+        - include: figurebrack
+        - include: actions
+        - include: conditions
+        - include: loop
+        - include: kw_declarations
+        - include: sugarfunc
+        - match: (?i:(\bend\b)) # подсветка лишнего end'а
+          scope: invalid.illegal.qsp
+        - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
+          scope: invalid.illegal.qsp
+        - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
+          scope: invalid.illegal.qsp
+        - include: preprocessor
+        - include: comments
+        - include: labels
+        - include: operators
+        - include: operacion
+        - include: system_variables
+        - include: functions
+        - include: numeric
+        - include: strings
+        - include: separator_continuation
         - match: '\}'
-          scope: support.function.qsp avs.figclose
+          scope: punctuation.section.block.end.qsp avs_brace_end
           pop: true
 
   htmlsupport:
