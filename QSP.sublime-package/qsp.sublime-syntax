@@ -42,7 +42,7 @@ variables: # назначаем переменные для удобства
   system_vars: (?i:args|result)
   functions_num: |- # variable.function
     (?ix:
-      no|and|or|mod|loc|obj|isnum|isplay|
+      loc|obj|isnum|isplay|
       len|val|instr|strcomp|strpos|
       arrsize|arrpos|arrcomp|
       msecscount|
@@ -72,6 +72,7 @@ variables: # назначаем переменные для удобства
   nr: (\n\r|\r|\r\n|\n)
   operacion_two_signs: (<=|>=|\+=|-=|\*=|\/=|<>)
   operacion_one_sign: (\+|-|<|>|=|\/|\*|!)
+  operacion_word: (?i:and|or|mod)
   users_variables: (\$?[A-Za-zА-Яа-я_][\w\.]*)
 
 contexts: # теперь необходимо определить "контексты" подсветки
@@ -262,6 +263,13 @@ contexts: # теперь необходимо определить "контек
 
   # операции
   operacion:
+    # подсветка словарных операторов
+    - match: (?<={{left_operand}})\s*\b{{operacion_word}}\b(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_right
+    - match: (?<=^|\&|\(|\{|\[)\s*\b{{operacion_word}}\b(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_left
+    - match: \b{{operacion_word}}\b 
+      scope: keyword.operator.word.qsp
     # подсветка двузнаковых операторов
     - match: (?<={{left_operand}})\s*{{operacion_two_signs}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_right
@@ -288,6 +296,11 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
     - match: \&
       scope: keyword.operator.ampersand.qsp
+    # Правила для no
+    - match: (\bno\b)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: (\bno\b)
+      scope: keyword.operator.word.qsp
 
   numeric:
     - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные, начинающиеся с цифр
@@ -384,6 +397,13 @@ contexts: # теперь необходимо определить "контек
     - include: strings
 
   operacion_subex:
+    # подсветка словарных операторов
+    - match: (?<={{left_operand}})\s*\b{{operacion_word}}\b(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_right
+    - match: (?<=^|\&|\(|\{|\[)\s*\b{{operacion_word}}\b(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_left
+    - match: \b{{operacion_word}}\b 
+      scope: keyword.operator.word.qsp
     # двузнаковые операторы
     - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_right
@@ -410,6 +430,11 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
     - match: \&
       scope: keyword.operator.ampersand.qsp
+    # Правила для no
+    - match: (\bno\b)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: (\bno\b)
+      scope: keyword.operator.word.qsp
 
   # # # ------------------------ Подсветка комментариев ------------------------  # # #
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
