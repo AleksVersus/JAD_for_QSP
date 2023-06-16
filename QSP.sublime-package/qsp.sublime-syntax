@@ -12,6 +12,9 @@ file_extensions: # расширения файлов
   - txt-qsp
 first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
 scope: source.qsp
+version: 2
+# TODO: если возможно попытаться вынести часть подсветки в qsp_locations и расширить с помощью текущей подсветки, или наоборот
+# extends: # можно расширить уже имеющуюся синтаксическую подсветку 
 variables: # назначаем переменные для удобства
   # qsp_declarators: |- # keyword.declaration.qsp
   #   (?ix:
@@ -304,11 +307,11 @@ contexts: # теперь необходимо определить "контек
     - match: (\b({{kw_operators}}|{{kw_text_operators}})\b)(?!\()
       scope: keyword.operator.other.qsp avs_operators
     - match: (\b({{kw_operators}})\b)(?=\()
-      scope: variable.function.other.qsp avs_operators
+      scope: support.function.other.qsp avs_operators
     - match: (\*)(\b({{kw_text_operators}})\b)(?=\()
       captures:
-        1: variable.function.star.qsp punctuation.definition.function
-        2: variable.function.other.qsp avs_operators
+        1: support.function.star.qsp punctuation.definition.function
+        2: support.function.other.qsp avs_operators
     - match: (\*)(?={{kw_text_operators}}\b)
       scope: keyword.operator.star.qsp punctuation.definition.keyword avs_star
     - match: \b{{kw_controls}}\b
@@ -332,38 +335,38 @@ contexts: # теперь необходимо определить "контек
     - match: (?<!\$)(\b{{functions_string}}\b) # подсвечивает все функции текстового типа без $
       scope: invalid.illegal.function.qsp avs_illegal_function
     - match: (\$)(?=({{functions_string}}\b|{{functions_both_type}}\b))
-      scope: variable.function.qsp punctuation.definition.function avs.function
+      scope: support.function.qsp punctuation.definition.function avs.function
     - match: \b({{functions_num}}|{{functions_string}}|{{functions_both_type}})\b
-      scope: variable.function.qsp avs_function
+      scope: support.function.qsp avs_function
     - match: (\$)(?=\b{{functions_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
       scope: invalid.illegal.qsp avs_illegal_function_$
 
   labels:
     - match: ^(\s*?\:|\:)[^&'"]+
-      scope: entity.name avs_jumps_labels
+      scope: entity.name.label.qsp avs_jumps_labels
 
   # # # ------------------- строки ------------------------ # # #
   strings:
     - match: '"'
       push:
-        - meta_scope: string.qsp
+        - meta_scope: string.quoted.double.qsp
         - match: '""'
-          scope: string.qsp
+          scope: constant.character.escape.qsp
         - match: '"'
           pop: true
         - include: preprocessor
         - include: subexpression
-        - include: htmlsupport      
+        - include: htmlsupport
     - match: "'"
       push:
-        - meta_scope: string.qsp
+        - meta_scope: string.quoted.double.qsp
         - match: "''"
-          scope: string.qsp
+          scope: constant.character.escape.qsp
         - match: "'"
           pop: true
         - include: preprocessor
         - include: subexpression
-        - include: htmlsupport   
+        - include: htmlsupport
 
   subexpression:
     - match: '<<'
