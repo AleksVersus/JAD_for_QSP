@@ -127,13 +127,13 @@ contexts: # теперь необходимо определить "контек
     - match: (\@)([\w\.\#]+)(?=\s*\()
       captures:
         1: punctuation.definition.function.qsp support.function.builtin.qsp
-        2: variable.function.qsp
+        2: variable.function.qsp markup.italic.qsp
     - match: (\@[\w\.\#]+\s+{{right_operand}})
-      scope: invalid.illegal.qsp
+      scope: invalid.illegal.qsp markup.italic.qsp
     - match: (\@)([\w\.\#]+)
       captures:
         1: punctuation.definition.function.qsp support.function.builtin.qsp
-        2: variable.function.qsp
+        2: variable.function.qsp markup.italic.qsp
 
   # действия
   actions:
