@@ -8,6 +8,7 @@ from .qSpy.function import parse_args
 from .qSpy.builder import BuildQSP
 from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
+from .qSpy.qsp_splitter import QspSplitter
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
@@ -48,8 +49,19 @@ class QspsToQspCommand(sublime_plugin.WindowCommand):
 
 	def run(self):
 		argv = self.window.extract_variables()
-		if argv['file_extension'] == 'qsps':
+		if argv['file_extension'] in ('qsps', 'qsp-txt', 'txt-qsp'):
 			file = NewQspsFile(input_file = argv['file'])
 			file.convert()
+		else:
+			print('Wrong extension of file. Can not convert.')
+
+class QspSplitterCommand(sublime_plugin.WindowCommand):
+
+	def run(self):
+		argv = self.window.extract_variables()
+		if argv['file_extension'] in ('qsps', 'qsp-txt', 'txt-qsp'):
+			QspSplitter(args = {'qsps-file': argv['file']}).split_file()
+		elif argv['file_extension'] == 'qsp':
+			QspSplitter(args = {'game-file': argv['file']}).split_file()
 		else:
 			print('Wrong extension of file. Can not convert.')
