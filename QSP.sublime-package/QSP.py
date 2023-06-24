@@ -9,6 +9,7 @@ from .qSpy.builder import BuildQSP
 from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
 from .qSpy.qsp_splitter import QspSplitter
+from .qSpy.main_cs import FinderSplitter
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
@@ -65,3 +66,9 @@ class QspSplitterCommand(sublime_plugin.WindowCommand):
 			QspSplitter(args = {'game-file': argv['file']}).split_file()
 		else:
 			print('Wrong extension of file. Can not convert.')
+
+class QspSplitProjectCommand(sublime_plugin.WindowCommand):
+
+	def run(self):
+		argv = self.window.extract_variables()
+		FinderSplitter(folder_path = argv['file_path'])
