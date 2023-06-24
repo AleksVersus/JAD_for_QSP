@@ -80,5 +80,3 @@ QSP-Game Testgame
 ## Другая информация
 
 Подробнее о настройке "`project.json`" можно прочитать в полной инструкции: [**README.md**](https://github.com/AleksVersus/JAD_for_QSP/blob/master/README.md)
-
-О том, как пользоваться конвертером-разделителем, есть отдельная инструкция: [**простой запуск конвертера разделителя**](https://github.com/AleksVersus/JAD_for_QSP/blob/master/QSP.sublime-package/qSpy/readme.md#простой-запуск-конвертера-разделителя-скрипт-main_cspy).
