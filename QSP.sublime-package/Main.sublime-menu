@@ -1,0 +1,45 @@
+[
+	{
+		"id": "tools",
+		"children": [
+			{
+				"id": "qsp_tools",
+				"caption": "QSP tools",
+				"children": [
+					{
+						"id": "qsp_tools_converters",
+						"caption": "Converters (single files)",
+						"children": [
+							{
+								"id": "qsp_tools_converter_qsps_to_game",
+								"caption": "Game to QSPS",
+								"command": "qsp_to_qsps"
+							},
+							{
+								"id": "qsp_tools_converter_game_to_qsp",
+								"caption": "QSPS to game",
+								"command": "qsps_to_qsp"
+							}
+						]
+					},
+					{
+						"id": "qsp_tools_splitters",
+						"caption": "Splitters",
+						"children": [
+							{
+								"id": "qsp_tools_splitter_current",
+								"caption": "Split Current File",
+								"command": "qsp_splitter"
+							},
+							{
+								"id": "qsp_tools_splitter_project",
+								"caption": "Split Project",
+								"command": "qsp_split_project"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]
