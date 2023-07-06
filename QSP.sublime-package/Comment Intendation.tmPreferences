@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
    <key>scope</key>
-   <string>source.qsp</string>
+   <string>source.QSP</string>
    <key>settings</key>
    <dict>
       <key>shellVariables</key>

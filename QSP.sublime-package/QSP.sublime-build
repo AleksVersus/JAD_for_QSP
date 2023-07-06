@@ -1,6 +1,6 @@
 {
     "target": "qsp_build",
-    "selector": "source.qsp",
+    "selector": "source.QSP",
     "variants":
     [
     	{

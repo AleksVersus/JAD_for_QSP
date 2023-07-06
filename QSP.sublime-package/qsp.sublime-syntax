@@ -11,7 +11,7 @@ file_extensions: # расширения файлов
   - qsp-txt
   - txt-qsp
 first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
-scope: source.qsp
+scope: source.QSP
 version: 2
 # TODO: если возможно попытаться вынести часть подсветки в qsp_locations и расширить с помощью текущей подсветки, или наоборот
 # extends: # можно расширить уже имеющуюся синтаксическую подсветку 
@@ -349,7 +349,7 @@ contexts: # теперь необходимо определить "контек
 
   labels:
     - match: ^(\s*?\:|\:)[^&'"]+
-      scope: entity.name.label.qsp avs_jumps_labels
+      scope: entity.name.qlabel.qsp avs_jumps_labels
 
   # # # ------------------- строки ------------------------ # # #
   strings:
@@ -380,7 +380,7 @@ contexts: # теперь необходимо определить "контек
       push:
         - clear_scopes: true
         - meta_scope: meta.interpolation.qsp
-        - meta_content_scope: source.qsp.embedded
+        - meta_content_scope: source.QSP.embedded
         - match: '>>'
           scope: punctuation.section.interpolation.end.qsp avs_end_subexpression
           pop: true

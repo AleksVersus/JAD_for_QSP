@@ -7,7 +7,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -17,7 +17,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -27,7 +27,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -37,7 +37,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -47,7 +47,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -57,7 +57,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -67,7 +67,7 @@
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     {
@@ -76,7 +76,7 @@
         "args": {"contents": "\t& !@ $1"},
         "context": [
             { "key": "setting.auto_match_enabled"},
-            { "key": "selector", "operand": "source.qsp" }
+            { "key": "selector", "operand": "source.QSP" }
         ]
     },
     // Build-System
