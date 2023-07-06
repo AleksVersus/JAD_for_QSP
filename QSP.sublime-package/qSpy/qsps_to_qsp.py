@@ -134,11 +134,14 @@ class NewQspsFile():
 		return exit_line
 
 	def decode_location(self, code):
-		exit_line = ""
-		last_line = code.pop()[:-1]
-		for string in code:
-			exit_line += string.replace('\n', '\r\n')
-		return self.decode_qsps_line(exit_line)+self.decode_qsps_line(last_line)
+		if len(code)>0:
+			exit_line = ""
+			last_line = code.pop()[:-1]
+			for string in code:
+				exit_line += string.replace('\n', '\r\n')
+			return self.decode_qsps_line(exit_line)+self.decode_qsps_line(last_line)
+		else:
+			return ""
 
 	def convert(self):
 		new_file_strings = []
