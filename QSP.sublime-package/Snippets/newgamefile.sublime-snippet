@@ -7,6 +7,6 @@ ${3:!@ Код, выполняемый при посещении локации}
 --- $2 ---------------------------------
 $0]]></content>
 	<tabTrigger>qspgame</tabTrigger>
-	<scope>source.QSP meta.gametext.qsp</scope>
+	<scope>source.qsp meta.gametext.qsp</scope>
 	<description>Новый файл</description>
 </snippet>

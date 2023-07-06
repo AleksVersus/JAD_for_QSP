@@ -2,7 +2,7 @@
 <plist version="1.0">
 <dict>
 	<key>scope</key>
-	<string>source.QSP avs-location-body avs-markup</string>
+	<string>source.qsp avs-location-body avs-markup</string>
 	<key>settings</key>
 	<dict>
 		<key>name</key>

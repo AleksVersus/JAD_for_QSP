@@ -5,13 +5,13 @@
 # Quest Soft Player 5.8.0 Language:
 # https://qsp.org/
 
-name: qsp # название языка
+name: QSP # название языка
 file_extensions: # расширения файлов
   - qsps
   - qsp-txt
   - txt-qsp
 first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
-scope: source.QSP
+scope: source.qsp
 version: 2
 # TODO: если возможно попытаться вынести часть подсветки в qsp_locations и расширить с помощью текущей подсветки, или наоборот
 # extends: # можно расширить уже имеющуюся синтаксическую подсветку 
@@ -380,7 +380,7 @@ contexts: # теперь необходимо определить "контек
       push:
         - clear_scopes: true
         - meta_scope: meta.interpolation.qsp
-        - meta_content_scope: source.QSP.embedded
+        - meta_content_scope: source.qsp.embedded
         - match: '>>'
           scope: punctuation.section.interpolation.end.qsp avs_end_subexpression
           pop: true
