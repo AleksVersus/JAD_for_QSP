@@ -66,10 +66,10 @@ def openCondition(command,condition,args):
 		if i=="exclude" and condition==False:
 			prev_args["include"]=args["include"]
 			args["include"]=True
-		elif i=="include" and condition==True:
+		elif i=="include" and condition==False:
 			prev_args["include"]=args["include"]
 			args["include"]=True
-		elif i=="include" and condition==False:
+		elif i=="include" and condition==True:
 			prev_args["include"]=args["include"]
 			args["include"]=False
 		elif i=="nopp" and condition==True:
