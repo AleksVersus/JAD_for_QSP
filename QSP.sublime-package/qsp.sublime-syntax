@@ -236,8 +236,10 @@ contexts: # теперь необходимо определить "контек
       pop: true
 
   elseifelse:
-    - match: ^(?i:(\s*?\belse\b(\:?)\s*?))$ # правильный else
-      scope: keyword.control.conditional.resume.qsp markup.italic.qsp
+    - match: ^(?i:\s*?\b(else)\b(\:?)\s*?)$ # правильный else
+      captures:
+        1: keyword.control.conditional.resume.qsp markup.italic.qsp
+        2: punctuation.definition.keyword
     - match: ^\s*?(?i:(\belse\b))([^\:]*)(\:?)\s*?([^\n\r]*)$
       captures:
         1: keyword.control.conditional.resume.qsp markup.italic.qsp
