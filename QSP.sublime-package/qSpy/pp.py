@@ -93,8 +93,9 @@ def close_condition(args):
 	args["pp"]=prev_args["pp"]
 	args["savecomm"]=prev_args["savecomm"]
 
-# функция переназначающая локальные для текущего файла режимы из глобальных
+
 def replace_args(arguments, args):
+	""" функция переназначающая локальные для текущего файла режимы из глобальных """
 	if "include" in args:
 		arguments["include"] = args["include"]
 	if "pp" in args:
@@ -102,80 +103,153 @@ def replace_args(arguments, args):
 	if "savecomm" in args:
 		arguments["savecomm"] = args["savecomm"]
 
-# обработка строки. Поиск спецкомментариев
-def pp_string(text_lines,string,args):
-	if args["include"]==True:
+def find_speccom_scope(string_line:str):
+	maximal = len(string_line)+1
+	mini_data_base = {
+		"scope-name": [
+			'simple-speccom',
+			'strong-speccom',
+			'apostrophe',
+			'quote',
+			'brace-open',
+			'brace-close'
+		],
+		"scope-regexp":
+		[
+			re.search(r'!@(?!\<)', string_line),
+			re.search(r'!@<', string_line),
+			re.search(r'"', string_line),
+			re.search(r"'", string_line),
+			re.search(r'\{', string_line),
+			re.search(r'\}', string_line)
+		],
+		"scope-instring":
+		[]
+	}
+	for i, string_id in enumerate(mini_data_base['scope-name']):
+		match_in = mini_data_base['scope-regexp'][i]
+		mini_data_base['scope-instring'].append(
+			string_line.index(match_in.group(0)) if match_in is not None else maximal)
+	minimal = min(mini_data_base['scope-instring'])
+	if minimal != maximal:
+		i = mini_data_base['scope-instring'].index(minimal)
+		scope_type = mini_data_base['scope-name'][i]
+		scope_regexp_obj = mini_data_base['scope-regexp'][i]
+		scope = scope_regexp_obj.group(0)
+		q = string_line.index(scope)
+		prev_line = string_line[0:q]
+		post_line = string_line[q+len(scope):]
+		return scope_type, prev_line, scope_regexp_obj, post_line
+	else:
+		return None, '', re.match(r'^\s*$', ''), string_line
+
+
+def pp_string(text_lines, string, args):
+	""" обработка строки. Поиск спецкомментариев """
+	if args["include"] == True:
 		# обработка
-		result=string
-		if args["pp"]==True and args["savecomm"]==False:
-			i=0
-			for s in string:
-				if args["openquote"]==False:
-					if s=="'":
-						args["openquote"]=True
-						args["quote"]="apostrophes"
-					elif s=='"':
-						args["openquote"]=True
-						args["quote"]="quotes"
-					elif s=="{":
-						args["openquote"]=True
-						args["quote"]="brackets"
-					elif s=="!" and i<len(string)-1:
-						if i<len(string)-2 and s+string[i+1]+string[i+2]=="!@<":
-							# если это удаляющий комментарий
+		result = ""
+		if args["pp"] == True and args["savecomm"] == False:
+			while len(string) > 0:
+				scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
+				if args["openquote"] == False:
+					if scope_type == "apostrophe":
+						args["openquote"] = True
+						args["quote"] = "apostrophes"
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					elif scope_type == 'quote':
+						args["openquote"] = True
+						args["quote"] = "quotes"
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					elif scope_type == "brace-open":
+						args["openquote"] = True
+						args["quote"] = "brackets"
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					elif scope_type == "brace-close":
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					elif scope_type == "simple-speccom":
+						# если это не удаляющий комментарий, но специальный
+						# необходимо удалить его из строки
+						if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
+							# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
+							result += prev_text
+							result = re.sub(r'\s*?\&\s*?$', '', result) + '\n'
+							if re.match(r'^\s*?$',result) != None:
+								result = ""
+							break
+						else:
+							# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
+							result += prev_text + scope_regexp_obj.group(0)
+							string = post_text
+					elif scope_type == "strong-speccom":
+						# если это удаляющий комментарий
+						if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
+							# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
 							result="" # строка удаляется из списка
 							break
-						elif i<len(string)-1 and s+string[i+1]=="!@":
-							# если это не удаляющий комментарий, но специальный
-							# необходимо удалить его из строки
-							result=string[:i]
-							result=re.sub(r'\s*?\&\s*?$','',result)+'\n'
-							if re.match(r'^\s*?$',result)!=None:
-								result=""
-							break
+						else:
+							# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
+							result += prev_text + scope_regexp_obj.group(0)
+							string = post_text
+					else:
+						result += string
+						break
 				else:
-					if s=="'" and args["quote"]=="apostrophes":
+					if scope_type == "apostrophe" and args["quote"] == "apostrophes":
+						args["openquote"] = False
+						args["quote"] = ""
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					elif scope_type == "quote" and args["quote"] == "quotes":
+						args["openquote"] = False
+						args["quote"] = ""
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					elif scope_type == "brace-close" and args["quote"] == "brackets":
 						args["openquote"]=False
-						args["quote"]=""
-					elif s=='"' and args["quote"]=="quotes":
-						args["openquote"]=False
-						args["quote"]=""
-					elif s=="}" and args["quote"]=="brackets":
-						args["openquote"]=False
-						args["quote"]=""
-				i+=1
-	elif args["include"]==False:
+						args["quote"] = ""
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+					else:
+						result += string
+						break
+	elif args["include"] == False:
 		# строки исключаются
-		result=""
-	if result!="":
-		if re.match(r'^\s*?$',result)!=None and args["openquote"]==False:
-			result=""
+		result = ""
+	if result != "":
+		if re.match(r'^\s*?$', result) != None and args["openquote"] == False:
+			result = ""
 		text_lines.append(result)
 
 # основная функция
 def pp_this_file(file_path, args, variables = None):
 	""" эта функция будет обрабатывать файл и возвращать результат после препроцессинга """
-	if variables is None: variables = {"Initial":True,"True":True,"False":False} # стандартные значения, если не указаны
-	result_text=[] # результат обработки: список строк
-	output_text="" # возвращаемый функцией текст
-	arguments={
-		"include":True, # пока включен этот режим, строки добавляются в результат
-		"pp":True, # пока включен этот режим, строки обрабатываются парсером
-		"openif":False, # отметка о том, что открыт блок условия
-		"savecomm":False, # отметка о том, что не нужно удалять специальные комментарии
-		"openquote":False, # отметка, что были открыты кавычки
-		"quote":"", # тип открытых кавычек
-		"if":{"include":True, "pp":True, "savecomm":False} # список инструкций до выполнения блока условий
-	} # словарь режимов
+	if variables is None: variables = { "Initial": True, "True": True, "False": False } # стандартные значения, если не указаны
+	result_text = [] # результат обработки: список строк
+	output_text = "" # возвращаемый функцией текст
+	arguments = {
+		# словарь режимов (текущих аргументов):
+		"include": True, # пока включен этот режим, строки добавляются в результат
+		"pp": True, # пока включен этот режим, строки обрабатываются парсером
+		"openif": False, # отметка о том, что открыт блок условия
+		"savecomm": False, # отметка о том, что не нужно удалять специальные комментарии
+		"openquote": False, # отметка, что были открыты кавычки
+		"quote": "", # тип открытых кавычек
+		"if": { "include": True, "pp": True, "savecomm": False } # список инструкций до выполнения блока условий
+	}
 	replace_args(arguments, args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
-	with open(file_path,'r',encoding='utf-8') as pp_file:
+	with open(file_path, 'r', encoding='utf-8') as pp_file:
 		file_lines = pp_file.readlines() # получаем список всех строк файла
 	# перебираем строки в файле
 	for line in file_lines:
-		command=re.match(r'^!@pp:',line) # проверяем является ли строка командой
-		if command==None:
+		command = re.match(r'^!@pp:', line) # проверяем является ли строка командой
+		if command == None:
 			# если это не команда, обрабатываем строку
-			pp_string(result_text,line,arguments)
+			pp_string(result_text, line, arguments)
 		else:
 			# если это команда, распарсим её
 			comm_list=re.split(r':',line)
@@ -214,11 +288,11 @@ def pp_this_file(file_path, args, variables = None):
 				if strfind(r'^endif\n$',comm_list[1])!="":
 					# закрываем условие.
 					close_condition(arguments)
-		if arguments["openif"]==True:
-			close_condition(arguments)
-		for line in result_text:
-			output_text+=line
-		return output_text
+	if arguments["openif"]==True:
+		close_condition(arguments)
+	for line in result_text:
+		output_text+=line
+	return output_text
 
 # main
 def main():
