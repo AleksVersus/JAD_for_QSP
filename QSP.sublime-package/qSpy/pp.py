@@ -214,6 +214,9 @@ def pp_string(text_lines, string, args):
 						args["quote"] = ""
 						result += prev_text + scope_regexp_obj.group(0)
 						string = post_text
+					elif scope_type != None:
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
 					else:
 						result += string
 						break
