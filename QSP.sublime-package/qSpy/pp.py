@@ -59,6 +59,7 @@ def met_condition(vares,direct):
 def open_condition(command,condition,args):
 	i_list=re.split(r'\s+',command.strip())
 	prev_args=args['if']
+	print([command, condition, args])
 	for i in i_list:
 		if i=="exclude" and condition==True:
 			prev_args["include"]=args["include"]
@@ -146,10 +147,11 @@ def find_speccom_scope(string_line:str):
 
 def pp_string(text_lines, string, args):
 	""" обработка строки. Поиск спецкомментариев """
+	result = string
 	if args["include"] == True:
 		# обработка
-		result = ""
 		if args["pp"] == True and args["savecomm"] == False:
+			result = ""
 			while len(string) > 0:
 				scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
 				if args["openquote"] == False:
@@ -249,6 +251,7 @@ def pp_this_file(file_path, args, variables = None):
 		file_lines = pp_file.readlines() # получаем список всех строк файла
 	# перебираем строки в файле
 	for line in file_lines:
+		print(['argument pp', arguments["pp"]])
 		command = re.match(r'^!@pp:', line) # проверяем является ли строка командой
 		if command == None:
 			# если это не команда, обрабатываем строку
@@ -256,6 +259,7 @@ def pp_this_file(file_path, args, variables = None):
 		else:
 			# если это команда, распарсим её
 			comm_list=re.split(r':',line)
+			print(comm_list)
 			if arguments["pp"]:
 				# только при включенном препроцессоре выполняются все команды
 				# проверяем, что за команда
@@ -282,6 +286,7 @@ def pp_this_file(file_path, args, variables = None):
 					# если мы имеем дело с проверкой условия
 					direct=get_direct(comm_list[1],'if') # получаем содержимое скобок
 					condition=met_condition(variables,direct) # проверяем условие
+					print([direct, condition])
 					open_condition(comm_list[2],condition,arguments)
 				else:
 					# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
@@ -291,6 +296,8 @@ def pp_this_file(file_path, args, variables = None):
 				if strfind(r'^endif\n$',comm_list[1])!="":
 					# закрываем условие.
 					close_condition(arguments)
+				else:
+					result_text.append(line)
 	if arguments["openif"]==True:
 		close_condition(arguments)
 	for line in result_text:
