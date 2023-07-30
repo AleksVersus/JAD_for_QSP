@@ -11,12 +11,12 @@ def strfind(regex,string):
 		return instr.group(0)
 
 # функция, извлекающая директиву в скобках
-def getDirect(string,direct):
+def get_direct(string,direct):
 	result=string.replace(direct,'',1).strip()[1:-1]
 	return result
 
 # функция, добавляющая метку и значение
-def addVariable(vares,direct):
+def add_variable(vares,direct):
 	# vares - ссылка на словарь
 	if "=" in direct:
 		# делим по знаку равенства
@@ -27,7 +27,7 @@ def addVariable(vares,direct):
 		vares[direct]=True
 
 # функция распарсивает строку условия на элементы
-def parseCondition(vares,direct):
+def parse_condition(vares,direct):
 	operand_list=re.split(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>',direct)
 	for i in operand_list:
 		if len(operand_list)>1:
@@ -38,9 +38,9 @@ def parseCondition(vares,direct):
 			vares[i]=False
 
 # функция, которая проверяет, выполняется ли условие
-def metCondition(vares,direct):
+def met_condition(vares,direct):
 	result=dict()
-	parseCondition(vares,direct)
+	parse_condition(vares,direct)
 	# следующий цикл формирует условие с действительными значениями вместо элементов
 	for var in vares:
 		trim_var=re.search(r'\b'+var+r'\b',direct)
@@ -56,7 +56,7 @@ def metCondition(vares,direct):
 	return result['out']
 
 # функция, которая правильно открывает блок условия
-def openCondition(command,condition,args):
+def open_condition(command,condition,args):
 	i_list=re.split(r'\s+',command.strip())
 	prev_args=args['if']
 	for i in i_list:
@@ -87,23 +87,23 @@ def openCondition(command,condition,args):
 	args["openif"]=True
 
 # функция, которая правильно закрывает условие
-def closeCondition(args):
+def close_condition(args):
 	prev_args=args["if"]
 	args["include"]=prev_args["include"]
 	args["pp"]=prev_args["pp"]
 	args["savecomm"]=prev_args["savecomm"]
 
 # функция переназначающая локальные для текущего файла режимы из глобальных
-def replaceArgs(arguments,args):
+def replace_args(arguments, args):
 	if "include" in args:
-		arguments["include"]=args["include"]
+		arguments["include"] = args["include"]
 	if "pp" in args:
-		arguments["pp"]=args["pp"]
+		arguments["pp"] = args["pp"]
 	if "savecomm" in args:
-		arguments["savecomm"]=args["savecomm"]
+		arguments["savecomm"] = args["savecomm"]
 
 # обработка строки. Поиск спецкомментариев
-def ppString(text_lines,string,args):
+def pp_string(text_lines,string,args):
 	if args["include"]==True:
 		# обработка
 		result=string
@@ -153,9 +153,9 @@ def ppString(text_lines,string,args):
 		text_lines.append(result)
 
 # основная функция
-def ppThisFile(file_path,args,variables):
-	# эта функция будет обрабатывать файл
-	# и возвращать результат после препроцессинга
+def pp_this_file(file_path, args, variables = None):
+	""" эта функция будет обрабатывать файл и возвращать результат после препроцессинга """
+	if variables is None: variables = {"Initial":True,"True":True,"False":False} # стандартные значения, если не указаны
 	result_text=[] # результат обработки: список строк
 	output_text="" # возвращаемый функцией текст
 	arguments={
@@ -167,55 +167,55 @@ def ppThisFile(file_path,args,variables):
 		"quote":"", # тип открытых кавычек
 		"if":{"include":True, "pp":True, "savecomm":False} # список инструкций до выполнения блока условий
 	} # словарь режимов
-	replaceArgs(arguments,args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
+	replace_args(arguments, args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
 	with open(file_path,'r',encoding='utf-8') as pp_file:
-		file_lines=pp_file.readlines() # получаем список всех строк файла
-		# перебираем строки в файле
-		for line in file_lines:
-			command=re.match(r'^!@pp:',line) # проверяем является ли строка командой
-			if command==None:
-				# если это не команда, обрабатываем строку
-				ppString(result_text,line,arguments)
-			else:
-				# если это команда, распарсим её
-				comm_list=re.split(r':',line)
-				if arguments["pp"]:
-					# только при включенном препроцессоре выполняются все команды
-					# проверяем, что за команда
-					if strfind(r'^on\n$',comm_list[1])!="":
-						# на данном этапе данная команда уже не актуальна
-						ppString(result_text,line,arguments)
-					elif strfind(r'^off\n$',comm_list[1])!="":
-						# на данном этапе данная команда уже не актуальна
-						ppString(result_text,line,arguments)
-					elif strfind(r'^savecomm\n$',comm_list[1])!="":
-						# данная команда включает режим сохранения спецкомментариев
-						arguments["savecomm"]=True
-					elif strfind(r'^nosavecomm\n$',comm_list[1])!="":
-						# данная команда выключает режим сохранения спецкомментариев
-						arguments["savecomm"]=False
-					elif strfind(r'^endif\n$',comm_list[1])!="":
-						# закрываем условие
-						closeCondition(arguments)
-					elif strfind(r'^var\(.*?\)',comm_list[1])!="":
-						# если мы имеем дело с присвоением значения переменной
-						direct=getDirect(comm_list[1],'var') # получаем содержимое скобок
-						addVariable(variables,direct) # добавляем метку в словарь
-					elif strfind(r'^if\(.*?\)',comm_list[1])!="":
-						# если мы имеем дело с проверкой условия
-						direct=getDirect(comm_list[1],'if') # получаем содержимое скобок
-						condition=metCondition(variables,direct) # проверяем условие
-						openCondition(comm_list[2],condition,arguments)
-					else:
-						# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
-						pass
+		file_lines = pp_file.readlines() # получаем список всех строк файла
+	# перебираем строки в файле
+	for line in file_lines:
+		command=re.match(r'^!@pp:',line) # проверяем является ли строка командой
+		if command==None:
+			# если это не команда, обрабатываем строку
+			pp_string(result_text,line,arguments)
+		else:
+			# если это команда, распарсим её
+			comm_list=re.split(r':',line)
+			if arguments["pp"]:
+				# только при включенном препроцессоре выполняются все команды
+				# проверяем, что за команда
+				if strfind(r'^on\n$',comm_list[1])!="":
+					# на данном этапе данная команда уже не актуальна
+					pp_string(result_text,line,arguments)
+				elif strfind(r'^off\n$',comm_list[1])!="":
+					# на данном этапе данная команда уже не актуальна
+					pp_string(result_text,line,arguments)
+				elif strfind(r'^savecomm\n$',comm_list[1])!="":
+					# данная команда включает режим сохранения спецкомментариев
+					arguments["savecomm"]=True
+				elif strfind(r'^nosavecomm\n$',comm_list[1])!="":
+					# данная команда выключает режим сохранения спецкомментариев
+					arguments["savecomm"]=False
+				elif strfind(r'^endif\n$',comm_list[1])!="":
+					# закрываем условие
+					close_condition(arguments)
+				elif strfind(r'^var\(.*?\)',comm_list[1])!="":
+					# если мы имеем дело с присвоением значения переменной
+					direct=get_direct(comm_list[1],'var') # получаем содержимое скобок
+					add_variable(variables,direct) # добавляем метку в словарь
+				elif strfind(r'^if\(.*?\)',comm_list[1])!="":
+					# если мы имеем дело с проверкой условия
+					direct=get_direct(comm_list[1],'if') # получаем содержимое скобок
+					condition=met_condition(variables,direct) # проверяем условие
+					open_condition(comm_list[2],condition,arguments)
 				else:
-					# при отключенном препроцессоре выполняется только команда endif
-					if strfind(r'^endif\n$',comm_list[1])!="":
-						# закрываем условие.
-						closeCondition(arguments)
+					# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
+					pass
+			else:
+				# при отключенном препроцессоре выполняется только команда endif
+				if strfind(r'^endif\n$',comm_list[1])!="":
+					# закрываем условие.
+					close_condition(arguments)
 		if arguments["openif"]==True:
-			closeCondition(arguments)
+			close_condition(arguments)
 		for line in result_text:
 			output_text+=line
 		return output_text
@@ -223,8 +223,8 @@ def ppThisFile(file_path,args,variables):
 # main
 def main():
 	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
-	file=".\\preprocessor-docs\\test.qsps"
-	print(ppThisFile(file,args))
+	file="../../[disdocs]/example_project/[pp-test]/pptest.qsps"
+	print(pp_this_file(file, args))
 
 if __name__ == '__main__':
     main()

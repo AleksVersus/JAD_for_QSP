@@ -67,7 +67,7 @@ def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-1
 				if first_string=="!@pp:on\n" or second_string=="!@pp:on\n":
 					arguments={"include":True, "pp":True, "savecomm":False}
 					# файл отправляется на препроцессинг
-					text_file=pp.ppThisFile(path,arguments,pp_markers)+'\r\n'
+					text_file=pp.pp_this_file(path,arguments,pp_markers)+'\r\n'
 				else:
 					text_file=file.read()+"\r\n"
 			elif pponoff=="On":
@@ -78,7 +78,7 @@ def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-1
 					text_file=file.read()+"\r\n"
 				else:
 					arguments={"include":True, "pp":True, "savecomm":False}
-					text_file=pp.ppThisFile(path,arguments,pp_markers)+'\r\n'
+					text_file=pp.pp_this_file(path,arguments,pp_markers)+'\r\n'
 			text+=text_file
 	# если папка не создана, нужно её создать
 	path_folder=os.path.split(new_file)[0]
