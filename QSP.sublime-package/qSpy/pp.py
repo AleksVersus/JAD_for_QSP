@@ -17,12 +17,21 @@ def get_direct(string, direct):
 
 # функция, добавляющая метку и значение
 def add_variable(vares, direct):
+	temp = [False, False]
 	# vares - ссылка на словарь
 	if "=" in direct:
 		# делим по знаку равенства
 		direct_list = direct.split("=")
-		vares[direct_list[0]] = direct_list[1]
-		vares[direct_list[1]] = direct_list[1]
+		temp[0] = vares[direct_list[0]] if direct_list[0] in vares else direct_list[0]
+		temp[1] = vares[direct_list[1]] if direct_list[1] in vares else direct_list[1]
+		if direct_list[0] in vares and type(vares[direct_list[0]]) == bool:
+			...
+		else:
+			vares[direct_list[0]] = temp[1]
+		if direct_list[1] in vares and type(vares[direct_list[1]]) == bool:
+			...
+		else:
+			vares[direct_list[1]] = temp[1]
 	else:
 		vares[direct] = True
 
@@ -48,7 +57,7 @@ def met_condition(vares, direct):
 			if type(vares[var]) == str:
 				direct = direct.replace(var, "'" + str(vares[var]) + "'")
 			else:
-				direct = direct.replace(var, "'" + str(vares[var]) + "'")
+				direct = direct.replace(var, str(vares[var]))
 	direct = direct.replace("''", "'")
 	direct = direct.replace('""', '"')
 	direct = "out=(True if " + direct + " else False)"
