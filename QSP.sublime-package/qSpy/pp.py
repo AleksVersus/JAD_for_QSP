@@ -64,15 +64,15 @@ def open_condition(command,condition,args):
 		if i=="exclude" and condition==True:
 			prev_args["include"]=args["include"]
 			args["include"]=False
-		if i=="exclude" and condition==False:
+		elif i=="exclude" and condition==False:
 			prev_args["include"]=args["include"]
 			args["include"]=True
 		elif i=="include" and condition==False:
 			prev_args["include"]=args["include"]
-			args["include"]=True
+			args["include"]=False
 		elif i=="include" and condition==True:
 			prev_args["include"]=args["include"]
-			args["include"]=False
+			args["include"]=True
 		elif i=="nopp" and condition==True:
 			prev_args["pp"]=args["pp"]
 			args["pp"]=False
@@ -307,8 +307,11 @@ def pp_this_file(file_path, args, variables = None):
 # main
 def main():
 	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
-	file="../../[disdocs]/example_project/[pp-test]/pptest.qsps"
-	print(pp_this_file(file, args))
+	#file="../../[disdocs]/example_project/[pp-test]/pptest.qsps"
+	file = "./easy.math.txt"
+	output = pp_this_file(file, args)
+	with open('output.qsps', 'w', encoding='utf-8') as fp:
+		fp.write(output)
 
 if __name__ == '__main__':
     main()
