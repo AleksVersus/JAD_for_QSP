@@ -59,7 +59,6 @@ def met_condition(vares,direct):
 def open_condition(command,condition,args):
 	i_list=re.split(r'\s+',command.strip())
 	prev_args=args['if']
-	print([command, condition, args])
 	for i in i_list:
 		if i=="exclude" and condition==True:
 			prev_args["include"]=args["include"]
@@ -251,7 +250,6 @@ def pp_this_file(file_path, args, variables = None):
 		file_lines = pp_file.readlines() # получаем список всех строк файла
 	# перебираем строки в файле
 	for line in file_lines:
-		print(['argument pp', arguments["pp"]])
 		command = re.match(r'^!@pp:', line) # проверяем является ли строка командой
 		if command == None:
 			# если это не команда, обрабатываем строку
@@ -259,7 +257,6 @@ def pp_this_file(file_path, args, variables = None):
 		else:
 			# если это команда, распарсим её
 			comm_list=re.split(r':',line)
-			print(comm_list)
 			if arguments["pp"]:
 				# только при включенном препроцессоре выполняются все команды
 				# проверяем, что за команда
@@ -286,7 +283,6 @@ def pp_this_file(file_path, args, variables = None):
 					# если мы имеем дело с проверкой условия
 					direct=get_direct(comm_list[1],'if') # получаем содержимое скобок
 					condition=met_condition(variables,direct) # проверяем условие
-					print([direct, condition])
 					open_condition(comm_list[2],condition,arguments)
 				else:
 					# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
@@ -307,11 +303,11 @@ def pp_this_file(file_path, args, variables = None):
 # main
 def main():
 	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
-	#file="../../[disdocs]/example_project/[pp-test]/pptest.qsps"
-	file = "./easy.math.txt"
-	output = pp_this_file(file, args)
-	with open('output.qsps', 'w', encoding='utf-8') as fp:
-		fp.write(output)
+	source_file_path = "../../[disdocs]/example_project/[pp-test]/pptest.qsps"
+	output_file_path = "../../[disdocs]/example_game/pp-test/pptest.qsps"
+	output_text = pp_this_file(source_file_path, args)
+	with open(output_file_path, 'w', encoding='utf-8') as fp:
+		fp.write(output_text)
 
 if __name__ == '__main__':
     main()
