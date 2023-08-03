@@ -3,95 +3,95 @@ import os
 import re
 
 # возвращает вхождение регэкспа или пустую строку
-def strfind(regex,string):
-	instr=re.search(regex,string)
-	if instr==None:
+def strfind(regex, string):
+	instr = re.search(regex, string)
+	if instr == None:
 		return ""
 	else:
 		return instr.group(0)
 
 # функция, извлекающая директиву в скобках
-def get_direct(string,direct):
-	result=string.replace(direct,'',1).strip()[1:-1]
+def get_direct(string, direct):
+	result = string.replace(direct, '', 1).strip()[1:-1]
 	return result
 
 # функция, добавляющая метку и значение
-def add_variable(vares,direct):
+def add_variable(vares, direct):
 	# vares - ссылка на словарь
 	if "=" in direct:
 		# делим по знаку равенства
-		direct_list=direct.split("=")
-		vares[direct_list[0]]=direct_list[1]
-		vares[direct_list[1]]=direct_list[1]
+		direct_list = direct.split("=")
+		vares[direct_list[0]] = direct_list[1]
+		vares[direct_list[1]] = direct_list[1]
 	else:
-		vares[direct]=True
+		vares[direct] = True
 
 # функция распарсивает строку условия на элементы
-def parse_condition(vares,direct):
-	operand_list=re.split(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>',direct)
+def parse_condition(vares, direct):
+	operand_list = re.split(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>', direct)
 	for i in operand_list:
-		if len(operand_list)>1:
-			i=i.strip()
-			if i!="" and (not i in vares):
-				vares[i]=i
+		if len(operand_list) > 1:
+			i = i.strip()
+			if i != "" and (not i in vares):
+				vares[i] = i
 		elif not i in vares:
-			vares[i]=False
+			vares[i] = False
 
 # функция, которая проверяет, выполняется ли условие
-def met_condition(vares,direct):
-	result=dict()
-	parse_condition(vares,direct)
+def met_condition(vares, direct):
+	result = dict()
+	parse_condition(vares, direct)
 	# следующий цикл формирует условие с действительными значениями вместо элементов
 	for var in vares:
-		trim_var=re.search(r'\b'+var+r'\b',direct)
-		if (var in direct) and (trim_var!=None):
-			if type(vares[var])==str:
-				direct=direct.replace(var, "'"+str(vares[var])+"'")
+		trim_var = re.search(r'\b'+var+r'\b', direct)
+		if (var in direct) and (trim_var != None):
+			if type(vares[var]) == str:
+				direct = direct.replace(var, "'" + str(vares[var]) + "'")
 			else:
-				direct=direct.replace(var, "'"+str(vares[var])+"'")
-	direct=direct.replace("''","'")
-	direct=direct.replace('""','"')
-	direct="out=(True if "+direct+" else False)"
-	exec(direct,result)
+				direct = direct.replace(var, "'" + str(vares[var]) + "'")
+	direct = direct.replace("''", "'")
+	direct = direct.replace('""', '"')
+	direct = "out=(True if " + direct + " else False)"
+	exec(direct, result)
 	return result['out']
 
 # функция, которая правильно открывает блок условия
-def open_condition(command,condition,args):
-	i_list=re.split(r'\s+',command.strip())
-	prev_args=args['if']
+def open_condition(command, condition, args):
+	i_list = re.split(r'\s+', command.strip())
+	prev_args = args['if']
 	for i in i_list:
-		if i=="exclude" and condition==True:
-			prev_args["include"]=args["include"]
-			args["include"]=False
-		elif i=="exclude" and condition==False:
-			prev_args["include"]=args["include"]
-			args["include"]=True
-		elif i=="include" and condition==False:
-			prev_args["include"]=args["include"]
-			args["include"]=False
-		elif i=="include" and condition==True:
-			prev_args["include"]=args["include"]
-			args["include"]=True
-		elif i=="nopp" and condition==True:
-			prev_args["pp"]=args["pp"]
-			args["pp"]=False
-		elif i=="nopp" and condition==False:
-			prev_args["pp"]=args["pp"]
-			args["pp"]=True
-		elif i=="savecomm" and condition==True:
-			prev_args["savecomm"]=args["savecomm"]
-			args["savecomm"]=True
-		elif i=="savecomm" and condition==False:
-			prev_args["savecomm"]=args["savecomm"]
-			args["savecomm"]=False
-	args["openif"]=True
+		if i == "exclude" and condition == True:
+			prev_args["include"] = args["include"]
+			args["include"] = False
+		elif i == "exclude" and condition == False:
+			prev_args["include"] = args["include"]
+			args["include"] = True
+		elif i == "include" and condition == False:
+			prev_args["include"] = args["include"]
+			args["include"] = False
+		elif i == "include" and condition == True:
+			prev_args["include"] = args["include"]
+			args["include"] = True
+		elif i == "nopp" and condition == True:
+			prev_args["pp"] = args["pp"]
+			args["pp"] = False
+		elif i == "nopp" and condition == False:
+			prev_args["pp"] = args["pp"]
+			args["pp"] = True
+		elif i == "savecomm" and condition == True:
+			prev_args["savecomm"] = args["savecomm"]
+			args["savecomm"] = True
+		elif i == "savecomm" and condition == False:
+			prev_args["savecomm"] = args["savecomm"]
+			args["savecomm"] = False
+	args["openif"] = True
 
 # функция, которая правильно закрывает условие
 def close_condition(args):
-	prev_args=args["if"]
-	args["include"]=prev_args["include"]
-	args["pp"]=prev_args["pp"]
-	args["savecomm"]=prev_args["savecomm"]
+	prev_args = args["if"]
+	args["include"] = prev_args["include"]
+	args["pp"] = prev_args["pp"]
+	args["savecomm"] = prev_args["savecomm"]
 
 
 def replace_args(arguments, args):
@@ -256,48 +256,48 @@ def pp_this_file(file_path, args, variables = None):
 			pp_string(result_text, line, arguments)
 		else:
 			# если это команда, распарсим её
-			comm_list=re.split(r':',line)
+			comm_list = re.split(r':', line)
 			if arguments["pp"]:
 				# только при включенном препроцессоре выполняются все команды
 				# проверяем, что за команда
-				if strfind(r'^on\n$',comm_list[1])!="":
+				if strfind(r'^on\n$', comm_list[1]) != "":
 					# на данном этапе данная команда уже не актуальна
-					pp_string(result_text,line,arguments)
-				elif strfind(r'^off\n$',comm_list[1])!="":
+					pp_string(result_text, line, arguments)
+				elif strfind(r'^off\n$', comm_list[1]) != "":
 					# на данном этапе данная команда уже не актуальна
-					pp_string(result_text,line,arguments)
-				elif strfind(r'^savecomm\n$',comm_list[1])!="":
+					pp_string(result_text, line, arguments)
+				elif strfind(r'^savecomm\n$', comm_list[1]) != "":
 					# данная команда включает режим сохранения спецкомментариев
-					arguments["savecomm"]=True
-				elif strfind(r'^nosavecomm\n$',comm_list[1])!="":
+					arguments["savecomm"] = True
+				elif strfind(r'^nosavecomm\n$', comm_list[1]) != "":
 					# данная команда выключает режим сохранения спецкомментариев
-					arguments["savecomm"]=False
-				elif strfind(r'^endif\n$',comm_list[1])!="":
+					arguments["savecomm"] = False
+				elif strfind(r'^endif\n$', comm_list[1]) != "":
 					# закрываем условие
 					close_condition(arguments)
-				elif strfind(r'^var\(.*?\)',comm_list[1])!="":
+				elif strfind(r'^var\(.*?\)', comm_list[1]) != "":
 					# если мы имеем дело с присвоением значения переменной
-					direct=get_direct(comm_list[1],'var') # получаем содержимое скобок
-					add_variable(variables,direct) # добавляем метку в словарь
-				elif strfind(r'^if\(.*?\)',comm_list[1])!="":
+					direct = get_direct(comm_list[1], 'var') # получаем содержимое скобок
+					add_variable(variables, direct) # добавляем метку в словарь
+				elif strfind(r'^if\(.*?\)', comm_list[1]) != "":
 					# если мы имеем дело с проверкой условия
-					direct=get_direct(comm_list[1],'if') # получаем содержимое скобок
-					condition=met_condition(variables,direct) # проверяем условие
-					open_condition(comm_list[2],condition,arguments)
+					direct = get_direct(comm_list[1], 'if') # получаем содержимое скобок
+					condition = met_condition(variables, direct) # проверяем условие
+					open_condition(comm_list[2], condition, arguments)
 				else:
 					# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
 					pass
 			else:
 				# при отключенном препроцессоре выполняется только команда endif
-				if strfind(r'^endif\n$',comm_list[1])!="":
+				if strfind(r'^endif\n$', comm_list[1]) != "":
 					# закрываем условие.
 					close_condition(arguments)
 				else:
 					result_text.append(line)
-	if arguments["openif"]==True:
+	if arguments["openif"] == True:
 		close_condition(arguments)
 	for line in result_text:
-		output_text+=line
+		output_text += line
 	return output_text
 
 # main
