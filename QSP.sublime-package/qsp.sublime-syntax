@@ -299,9 +299,9 @@ contexts: # теперь необходимо определить "контек
     - match: \&
       scope: keyword.operator.ampersand.qsp
     # Правила для no
-    - match: (\bno\b)(?!\s*?{{right_operand}})
+    - match: (?i:\bno\b)(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
-    - match: (\bno\b)
+    - match: (?i:\bno\b)
       scope: keyword.operator.word.qsp
 
   numeric:
