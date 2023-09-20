@@ -48,9 +48,7 @@ class NewQspsFile():
 		input_text = ''.join(string_lines)
 		code_text = ""
 		mode = {'location-name': ""}
-		count =0
-		while len(input_text)>0:
-			count+=1
+		while len(input_text) > 0:
 			scope_type, prev_text, scope_regexp_obj, post_text = self.find_overlap_main(input_text)
 			if scope_type=='location-start' and mode['location-name']=='':
 				location = NewQspLocation(scope_regexp_obj.group(1).replace('\r',''))
@@ -64,13 +62,17 @@ class NewQspsFile():
 				code_text += prev_text
 				input_text = post_text
 				location.change_code(code_text.replace('\n','\n\r').split('\r')[1:-1])
-				mode['location-name']=""
-			elif scope_type=="string" and mode['location-name']!='':
+				mode['location-name'] = ""
+			elif scope_type == "string" and mode['location-name']!='':
 				# adding code work where location is open
 				code_text += prev_text + scope_regexp_obj.group(0)
 				input_text = post_text
+			elif scope_type == 'string' and mode['location-name']=='':
+				# open string between locations
+				# change input text from next symbol
+				input_text = input_text[scope_regexp_obj.start()+1:]
 			else:
-				if input_text!=post_text:
+				if input_text != post_text:
 					input_text = post_text
 				else:
 					input_text = ''
@@ -157,7 +159,7 @@ class NewQspsFile():
 			file.write(''.join(new_file_strings))
 
 def main():
-	file = NewQspsFile(input_file="drive-.qsps")
+	file = NewQspsFile(input_file="example.qsps")
 	file.convert()
 
 if __name__ == "__main__": 
