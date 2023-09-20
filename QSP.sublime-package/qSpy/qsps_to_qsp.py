@@ -10,9 +10,9 @@ class NewQspLocation():
 	"""
 		qsp-locations from qsps-file
 	"""
-	def __init__(self, name, code=[]):
+	def __init__(self, name, code=None):
 		self.name = name
-		self.code = code
+		self.code = ([] if code == None else code)
 
 	def change_name(self, name):
 		self.name = name
