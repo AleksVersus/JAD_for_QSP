@@ -44,33 +44,33 @@ class NewQspsFile():
 		else:
 			print("File '"+self.input_file+"' is not exist")
 
-	def split_to_locations(self, string_lines):
+	def split_to_locations(self, string_lines:list):
 		input_text = ''.join(string_lines)
-		code_text = ""
+		location_code = ""
 		mode = {'location-name': ""}
 		while len(input_text) > 0:
 			scope_type, prev_text, scope_regexp_obj, post_text = self.find_overlap_main(input_text)
 			if scope_type=='location-start' and mode['location-name']=='':
 				location = NewQspLocation(scope_regexp_obj.group(1).replace('\r',''))
-				code_text = ""
+				location_code = ""
 				self.locations.append(location)
 				self.locations_id[scope_regexp_obj.group(1)] = self.locations_count
 				self.locations_count += 1
 				mode['location-name'] = scope_regexp_obj.group(1)
 				input_text = post_text
 			elif scope_type=='location-end' and mode['location-name']!='':
-				code_text += prev_text
+				location_code += prev_text
 				input_text = post_text
-				location.change_code(code_text.replace('\n','\n\r').split('\r')[1:-1])
+				location.change_code(location_code.replace('\n','\n\r').split('\r')[1:-1])
 				mode['location-name'] = ""
 			elif scope_type == "string" and mode['location-name']!='':
 				# adding code work where location is open
-				code_text += prev_text + scope_regexp_obj.group(0)
+				location_code += prev_text + scope_regexp_obj.group(0)
 				input_text = post_text
 			elif scope_type == 'string' and mode['location-name']=='':
 				# open string between locations
 				# change input text from next symbol
-				input_text = input_text[scope_regexp_obj.start()+1:]
+				input_text = input_text[scope_regexp_obj.end()+1:]
 			else:
 				if input_text != post_text:
 					input_text = post_text
@@ -94,18 +94,17 @@ class NewQspsFile():
 			"scope-instring":
 			[]
 		}
-		for string_id in mini_data_base['scope-name']:
-			i = mini_data_base['scope-name'].index(string_id)
+		for i, string_id in enumerate(mini_data_base['scope-name']):
 			match_in = mini_data_base['scope-regexp'][i]
 			mini_data_base['scope-instring'].append(
-				string_line.index(match_in.group(0)) if match_in is not None else maximal)
+				match_in.start() if match_in is not None else maximal)
 		minimal = min(mini_data_base['scope-instring'])
 		if minimal!=maximal:
 			i = mini_data_base['scope-instring'].index(minimal)
 			scope_type = mini_data_base['scope-name'][i]
 			scope_regexp_obj = mini_data_base['scope-regexp'][i]
 			scope = scope_regexp_obj.group(0)
-			q = string_line.index(scope)
+			q = scope_regexp_obj.start()
 			prev_line = string_line[0:q]
 			post_line = string_line[q+len(scope):]
 			return scope_type, prev_line, scope_regexp_obj, post_line
