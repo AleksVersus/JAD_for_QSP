@@ -3,7 +3,7 @@
     {
         "keys": ["ctrl+alt+b"],
         "command": "insert_snippet",
-        "args": {"contents": "<b>${0:$SELECTION}</b>"},
+        "args": {"contents": "<strong>${0:$SELECTION}</strong>"},
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
@@ -13,7 +13,7 @@
     {
         "keys": ["ctrl+alt+i"],
         "command": "insert_snippet",
-        "args": {"contents": "<i>${0:$SELECTION}</i>"},
+        "args": {"contents": "<em>${0:$SELECTION}</em>"},
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
