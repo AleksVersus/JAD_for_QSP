@@ -9,26 +9,64 @@ name: QSP # название языка
 hidden: true
 scope: source.locations.QSP
 variables: # назначаем переменные для удобства
-  oprt: (?i:(exec|set|let|local|view|inclib|freelib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg))
-  oprtms: (?i:(act|if|elseif|else|loop|while|step|end)) # support.type
-  oprttxt: (?i:(pl?|nl|clr|clear))
-  sysvarnum: (?i:(nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize))
-  sysvartxt: (?i:(counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage))
-  sysvarot: (?i:(args|result))
-  fncnum: (?i:obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|r(a)?nd|arrsize|arrpos|arrcomp|strcomp|strpos)
-  fnctxt: (?i:(input|user_text|usrtxt|desc|maintxt|stattxt|qspver|curloc|selobj|selact|curacts|mid|(u|l)case|trim|replace|getobj|str|strfind))
-  fncot: (?i:(iif|dyneval|func|max|min|arritem))
-  figop: '\{'
-  figcls: '\}'
+  # qsp_declarators: |- # keyword.declaration.qsp
+  #   (?ix:
+  #     set|let|local
+  #   )
+  kw_operators: |- # keyword.operator
+    (?ix:
+      inclib|freelib|addqst|killqst|openqst|opengame|savegame|
+      addobj|delobj|killobj|unsel|unselect|
+      cls|
+      cla|delact|
+      cmdclr|cmdclear|
+      play|close|all|
+      jump|dynamic|goto|gt|xgoto|xgt|gosub|gs|menu|exit|
+      showobjs|showstat|showacts|showinput|refint|
+      copyarr|killvar|killall|
+      view|msg|
+      settimer|wait|
+      exec
+    )
+  kw_controls: (?i:act|if|elseif|else|loop|while|step|end) # keyword.control
+  kw_text_operators: (?i:pl?|nl|clr|clear) # keyword.operator
+  system_vars_num: (?i:nosave|disablescroll|disablesubex|debug|usehtml|(b|f|l)color|fsize)
+  system_vars_string: (?i:counter|ongload|ongsave|onnewloc|onactsel|onobjsel|onobjadd|onobjdel|usercom|fname|backimage)
+  system_vars: (?i:args|result)
+  functions_num: |- # variable.function
+    (?ix:
+      loc|obj|isnum|isplay|
+      len|val|instr|strcomp|strpos|
+      arrsize|arrpos|arrcomp|
+      msecscount|
+      rgb|
+      countobj|
+      r(a)?nd
+    )
+  functions_string: |- # variable.function
+    (?ix:
+      desc|user_text|usrtxt|maintxt|stattxt|
+      curloc|selobj|selact|
+      mid|(u|l)case|trim|replace|str|strfind|
+      input|
+      qspver|
+      curacts|
+      getobj
+    )
+  functions_both_type: (?i:iif|dyneval|func|max|min|arritem) # variable.function
+  braces_open: '\{'
+  braces_close: '\}'
   quote: '"'
   ap: "'"
-  opener: '{{figop}}{{quote}}{{ap}}'
-  closer: '{{figcls}}{{quote}}{{ap}}'
+  opener: '{{braces_open}}{{quote}}{{ap}}'
+  closer: '{{braces_close}}{{quote}}{{ap}}'
   left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\w|\d)'
   right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?|\@)'
   nr: (\n\r|\r|\r\n|\n)
-  oprcid: (<=|>=|\+=|-=|<>)
-  rightvar: (\$?[A-Za-zА-Яа-я_][\w\.]*)
+  operacion_two_signs: (<=|>=|\+=|-=|\*=|\/=|<>)
+  operacion_one_sign: (\+|-|<|>|=|\/|\*|!)
+  operacion_word: (?i:and|or|mod)
+  users_variables: (\$?[A-Za-zА-Яа-я_][\w\.]*)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -45,55 +83,63 @@ contexts: # теперь необходимо определить "контек
     - include: actions
     - include: conditions
     - include: loop
-    - include: setvars
+    - include: kw_declarations
     - include: sugarfunc
     - match: (?i:(\bend\b)) # подсветка лишнего end'а
-      scope: invalid.qsp avs.error avs.wrongend
+      scope: invalid.illegal.qsp
     - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
-      scope: invalid.qsp avs.error avs.wrongelse
+      scope: invalid.illegal.qsp
     - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
-      scope: invalid.qsp avs.error avs.wrongelseif
+      scope: invalid.illegal.qsp
     - include: preprocessor
     - include: comments
-    - include: markers
+    - include: labels
     - include: operators
     - include: operacion
-    - include: sysvar
+    - include: system_variables
     - include: functions
     - include: numeric
     - include: strings
+    - include: separator_continuation
 
   # неявный вызов функций
   sugarfunc:
-    - match: (\@[\w\.\#]+)(?=\s*\()
-      scope: entity.other.inherited-class
+    - match: (\@)([\w\.\#]+)(?=\s*\()
+      captures:
+        1: punctuation.definition.function.qsp support.function.builtin.qsp
+        2: variable.function.qsp markup.italic.qsp
     - match: (\@[\w\.\#]+\s+{{right_operand}})
-      scope: invalid
-    - match: (\@[\w\.\#]+)
-      scope: entity.other.inherited-class
+      scope: invalid.illegal.qsp markup.italic.qsp
+    - match: (\@)([\w\.\#]+)
+      captures:
+        1: punctuation.definition.function.qsp support.function.builtin.qsp
+        2: variable.function.qsp markup.italic.qsp
 
-  # действия и условия
+  # действия
   actions:
     - match: '(?<=\{)(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
+      scope: meta.begin_action.qsp
       captures:
-        2: support.type avs-startact
+        2: keyword.control.action.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\}\n\r]*)
+          scope: meta.end-action.qsp
           captures:
-            2: support.type avs-endact
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
+            2: keyword.control.action.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs-startact
+        2: keyword.control.action.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\n\r]*)
+          scope: meta.end-action.qsp
           captures:
-            2: support.type avs-endact
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endactcomm
+            2: keyword.control.action.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -102,42 +148,44 @@ contexts: # теперь необходимо определить "контек
   # циклы
   loop:
     - match: '(?<=\{)(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
+      scope: meta.begin_cycle.qsp
       captures:
-        2: support.type avs-startloop
+        2: keyword.control.cycle.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\}\n\r]*)
           captures:
-            2: support.type avs-endloop
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
+            2: keyword.control.cycle.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
+      scope: meta.begin_cycle.qsp
       captures:
-        2: support.type avs-startloop
+        2: keyword.control.cycle.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\n\r]*)
           captures:
-            2: support.type avs-endloop
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endloopcomm
+            2: keyword.control.cycle.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
         - include: locations
     - match: '(?i:(\bloop\b))(?!.*(?i:(\bwhile\b)))'
-      scope: invalid
+      scope: invalid.illegal.qsp
 
   # конструкции условий
   conditions:
     - match: '(?<=\{)(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs-startif
+        2: keyword.control.conditional.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\}\n\r]*)
           captures:
-            2: support.type avs-endif
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
+            2: keyword.control.conditional.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongcloseinscope
         - include: wrongclose
@@ -145,12 +193,12 @@ contexts: # теперь необходимо определить "контек
         - include: locations
     - match: '^(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
       captures:
-        2: support.type avs-startif
+        2: keyword.control.conditional.begin.qsp markup.italic.qsp
       push:
         - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\n\r]*)
           captures:
-            2: support.type avs-endif
-            3: constant.numeric.line-number.find-in-files markup.italic avs-endifcomm
+            2: keyword.control.conditional.end.qsp markup.italic.qsp
+            3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
         - include: wrongcloseinscope
@@ -159,201 +207,224 @@ contexts: # теперь необходимо определить "контек
 
   wrongclose:
     - match: ^\s*?(-)(.*)({{nr}}$|$)
-      scope: invalid.qsp avs.error avs.wrongelse1
+      scope: invalid.illegal.qsp
       pop: true
 
   wrongcloseinscope:
     - match: \}(.*)({{nr}}$|$)
-      scope: invalid.qsp avs.error avs.wrongelse1
+      scope: invalid.illegal.qsp avs.error avs.wrongelse1
       pop: true
 
   elseifelse:
-    - match: ^(?i:(\s*?\belse\b(\:?)\s*?))$ # правильный else
-      scope: support.type avs.else
+    - match: ^(?i:\s*?\b(else)\b(\:?)\s*?)$ # правильный else
+      captures:
+        1: keyword.control.conditional.resume.qsp markup.italic.qsp
+        2: punctuation.definition.keyword
     - match: ^\s*?(?i:(\belse\b))([^\:]*)(\:?)\s*?([^\n\r]*)$
       captures:
-        1: support.type avs.else
-        2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
-        3: support.type avs.else
-        4: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse2
+        1: keyword.control.conditional.resume.qsp markup.italic.qsp
+        2: invalid.illegal.qsp
+        3: keyword.control.conditional.resume.qsp markup.italic.qsp
+        4: invalid.illegal.qsp
     - match: ^(?i:(?:\s*?)\belseif\b(?=\s+\S.*?\:\s*?{{nr}}))
-      scope: support.type avs.elseif
+      scope: keyword.control.conditional.resume-begin.qsp markup.italic.qsp
     - match: ^(?:\s*?)(?i:(\belseif\b))(\s+\S.*?\:\s*?[^\n\r]*)$
       captures:
-        1: support.type avs.else
-        2: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongelse1
+        1: keyword.control.conditional.resume-begin.qsp markup.italic.qsp
+        2: invalid.illegal.qsp
 
   # set и local
-  setvars:
+  kw_declarations:
       # ([A-Za-zА-Яа-я_][\w\.]*)
-    - match: \b(?i:(set|local))\b(?=\s+{{rightvar}}(\,\s*{{rightvar}})*(\s*\=[^=]+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
-      scope: support.function.qsp
-    - match: \b(?i:(set|local))\b
-      scope: invalid.qsp
+    - match: \b(?i:(local))\b(?=\s+{{users_variables}}(\[.*?\])?(\,\s*{{users_variables}}(\[.*?\])?)*(\s*\=\s*.+)?\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
+      scope: keyword.declaration.variables.qsp
+    - match: \b(?i:(set|let))\b(?=\s+{{users_variables}}(\[.*?\])?(\,\s*{{users_variables}}(\[.*?\])?)*(\s*\=\s*.+)\s*(?i:(\&|{{nr}}|\}|\bwhile\b)))
+      scope: keyword.declaration.variables.qsp
+    - match: \b(?i:set|local|let)\b
+      scope: invalid.illegal.qsp
 
   # операции
   operacion:
-    # ошибка записи операторов операций без правого операнда
-    - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
-      scope: invalid.qsp avs.error avs.wrongoperator1
-    # ошибка записи операторов больше-равно и меньше-равно без правого операнда
-    - match: (?<={{left_operand}})\s*{{oprcid}}(?!\s*?{{right_operand}})
-      scope: invalid.qsp avs.error avs.wrongoperator2
-    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{oprcid}}(?=\s*?{{right_operand}}*)
-      scope: invalid.qsp avs.error avs.wrongoperator3
-    # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (?<={{left_operand}})\s*?{{oprcid}}(?=\s*?{{right_operand}}) 
-      scope: support.function.qsp avs.operacion1 # допустимые в QSP => и =< в данной подсветке не поддерживаются
-    # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!\s*?{{right_operand}})
-      scope: invalid.qsp avs.error avs.wrongoperator5
-    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(<|>|=)(?=\s*?{{right_operand}}*)
-      scope: invalid.qsp avs.error avs.wrongoperator6
-    # подсветка правильно записанных операторов > < =
-    - match: (\+|-|<|>|=)
-      scope: support.function.qsp avs.operacion5 
-    # ошибка записи запятых без правого операнда
-    - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
-      scope: invalid.qsp avs.error avs.wrongcomma2
-    # ошибка записи запятых без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\/|\*|=|,)(?=\s*?{{right_operand}}*)
-      scope: invalid.qsp avs.error avs.wrongcomma3
-    # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (\/|\*|=|,) # допустимые в QSP => и =< в данной подсветке не поддерживаются
-      scope: support.function.qsp avs.comma1
-    # подсветка всех операторов для операций, в т.ч. скобок и прочего
-    - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\&|\+|-|(>|<)=?|=?(>|<)))'
-      scope: support.function.qsp avs.operacion9
+    # подсветка словарных операторов
+    - match: (?<={{left_operand}})\s*\b{{operacion_word}}\b(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_right
+    - match: (?<=^|\&|\(|\{|\[)\s*\b{{operacion_word}}\b(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_left
+    - match: \b{{operacion_word}}\b 
+      scope: keyword.operator.word.qsp
+    # подсветка двузнаковых операторов
+    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_right
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{operacion_two_signs}}(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_left
+    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?=\s*?{{right_operand}})
+      scope: keyword.operator.two-signs.qsp
+    # подсветка для однознаковых операторов
+    - match: (?<={{left_operand}})\s*?{{operacion_one_sign}}(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_right
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{operacion_one_sign}}(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_left
+    - match: '{{operacion_one_sign}}'
+      scope: keyword.operator.one-sign.qsp
+    # Правила для запятых
+    - match: (?<={{left_operand}})\s*?(,)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_right
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K(,)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: (,)
+      scope: punctuation.separator.comma.qsp
+    # Правила для амперсандов
+    - match: (^\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\&)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: \&
+      scope: keyword.operator.ampersand.qsp
+    # Правила для no
+    - match: (?i:\bno\b)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: (?i:\bno\b)
+      scope: keyword.operator.word.qsp
 
   numeric:
-    - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongvar
+    - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные, начинающиеся с цифр
+      scope: invalid.illegal.qsp avs_wrong_numeric
     - match: \b[0-9]+\b
-      scope: constant.numeric avs-numberic
+      scope: constant.numeric avs_numeric
     
   operators:
     # подсветка операторов
-    - match: \b({{oprt}}|{{oprttxt}})\b
-      scope: support.function.qsp avs.operators
-    - match: (\*)(?={{oprttxt}}\b)
-      scope: support.function.qsp avs.operators
-    - match: \b{{oprtms}}\b
-      scope: support.type avs.operators-multiline
-    - match: (\*)(?={{oprt}}\b)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error
-    - match: (\*)(?={{oprtms}}\b)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: (\b({{kw_operators}}|{{kw_text_operators}})\b)(?!\()
+      scope: keyword.operator.other.qsp avs_operators
+    - match: (\b({{kw_operators}})\b)(?=\()
+      scope: support.function.other.qsp avs_operators
+    - match: (\*)(\b({{kw_text_operators}})\b)(?=\()
+      captures:
+        1: support.function.star.qsp punctuation.definition.function
+        2: support.function.other.qsp avs_operators
+    - match: (\*)(?={{kw_text_operators}}\b)
+      scope: keyword.operator.star.qsp punctuation.definition.keyword avs_star
+    - match: \b{{kw_controls}}\b
+      scope: keyword.control.qsp markup.italic.qsp
+    - match: (\*)(?={{kw_operators}}\b)
+      scope: invalid.illegal.qsp avs_wrong_star_operators
+    - match: (\*)(?={{kw_controls}}\b)
+      scope: invalid.illegal.qsp avs_wrong_star_controls
 
-  sysvar:
-    - match: (?<!\$)(\b{{sysvartxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error
-    - match: (\$)(?=(\b{{sysvartxt}}|{{sysvarot}}\b))
-      scope: keyword.qsp avs.sysvar
-    - match: \b({{sysvarnum}}|{{sysvartxt}}|{{sysvarot}})\b
-      scope: keyword.qsp avs.sysvar
-    - match: (\$)(?={{sysvarnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+  system_variables:
+    - match: (?<!\$)(\b{{system_vars_string}}\b) # подсвечивает все системные переменные текстового типа без символа $
+      scope: invalid.illegal.qsp avs_illegal_textvariables
+    - match: (\$)(?=(\b{{system_vars_string}}|{{system_vars}}\b))
+      scope: variable.language.qsp punctuation.definition.variable avs_sysvar
+    - match: \b({{system_vars_num}}|{{system_vars_string}}|{{system_vars}})\b
+      scope: variable.language.qsp avs_sysvar
+    - match: (\$)(?={{system_vars_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
+      scope: invalid.illegal.qsp avs_illegal_$
 
   functions:
-    - match: (?<!\$)(\b{{fnctxt}}\b) # подсвечивает все системные переменные текстового типа, перед названием которых нет символа $
-      scope: invalid avs.error
-    - match: (\$)(?=({{fnctxt}}\b|{{fncot}}\b))
-      scope: markup.heading punctuation.definition.heading avs.function
-    - match: \b({{fncnum}}|{{fnctxt}}|{{fncot}})\b
-      scope: markup.heading punctuation.definition.heading avs.function
-    - match: (\$)(?=\b{{fncnum}}\b) # подсвечивает символ доллара перед названием числовых переменных
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error
+    - match: (?<!\$)(\b{{functions_string}}\b) # подсвечивает все функции текстового типа без $
+      scope: invalid.illegal.function.qsp avs_illegal_function
+    - match: (\$)(?=({{functions_string}}\b|{{functions_both_type}}\b))
+      scope: support.function.qsp punctuation.definition.function avs.function
+    - match: \b({{functions_num}}|{{functions_string}}|{{functions_both_type}})\b
+      scope: support.function.qsp avs_function
+    - match: (\$)(?=\b{{functions_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
+      scope: invalid.illegal.qsp avs_illegal_function_$
 
-  markers:
+  labels:
     - match: ^(\s*?\:|\:)[^&'"]+
-      scope: entity.name avs-markup
+      scope: entity.name.qlabel.qsp avs_jumps_labels
 
   # # # ------------------- строки ------------------------ # # #
   strings:
     - match: '"'
       push:
-        - meta_scope: string.qsp
+        - meta_scope: string.quoted.double.qsp
         - match: '""'
-          scope: string.qsp
+          scope: constant.character.escape.qsp
         - match: '"'
           pop: true
         - include: preprocessor
         - include: subexpression
-        - include: htmlsupport      
+        - include: htmlsupport
     - match: "'"
       push:
-        - meta_scope: string.qsp
+        - meta_scope: string.quoted.double.qsp
         - match: "''"
-          scope: string.qsp
+          scope: constant.character.escape.qsp
         - match: "'"
           pop: true
         - include: preprocessor
         - include: subexpression
-        - include: htmlsupport   
+        - include: htmlsupport
 
   subexpression:
     - match: '<<'
-      scope: entity.name avs-markup
+      scope: punctuation.section.interpolation.begin.qsp avs_begin_subexpression
       push:
         - clear_scopes: true
+        - meta_scope: meta.interpolation.qsp
+        - meta_content_scope: source.qsp.embedded
         - match: '>>'
-          scope: entity.name avs-markup
+          scope: punctuation.section.interpolation.end.qsp avs_end_subexpression
           pop: true
         - include: subex
 
   subex:
     - include: figurebrack
     - match: (\n\r|\r|\r\n|\n)
-      scope: invalid.qsp avs.error avs.wrongenter
-    - include: opinse
-    - include: sysvar
+      scope: invalid.illegal.qsp avs_wrongenter
+    - include: operacion_subex
+    - include: system_variables
     - include: functions
     - include: numeric
     - include: strings
 
-  opinse:
-    # ошибка записи операторов операций без правого операнда
-    - match: (?<={{left_operand}})\s*?(\!|\/|\*)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator1
-    # ошибка записи операторов больше-равно и меньше-равно без правого операнда
-    - match: (?<={{left_operand}})\s*?{{oprcid}}(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator2
-    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{oprcid}}(?=\s*?{{right_operand}}*)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator3
-    # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (?<={{left_operand}})\s*?{{oprcid}}(?=\s*?{{right_operand}})
-      scope: support.function.qsp avs.operacion1 # допустимые в QSP => и =< в данной подсветке не поддерживаются
-    # ошибка записи операторов > < =  без правого операнда
-    - match: (?<={{left_operand}})\s*?(\+|-|<|>|=)(?!(>|\s*?{{right_operand}}))
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator5
-    # ошибка записи операторов больше-равно и меньше-равно без левого операнда или отдельной строкой
-    - match: (?<=(<|\&|\(|\{|\[))\s*?(<|>|=)(?=\s*?{{right_operand}}*)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongoperator6
-    # подсветка правильно записанных операторов > < =
-    - match: (\+|-|<|>|=)
-      scope: support.function.qsp avs.operacion5 
-    # ошибка записи запятых без правого операнда
-    - match: (?<={{left_operand}})\s*?(\/|\*|=|,)(?!\s*?{{right_operand}})
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma2
-    # ошибка записи запятых без левого операнда или отдельной строкой
-    - match: (?<=(<|\&|\(|\{|\[))\s*?(\/|\*|=|,)(?=\s*?{{right_operand}}*)
-      scope: invalid.illegal.expected-mapping-key.qsp avs.error avs.wrongcomma3
-    # подсветка правильно записанных операторов больше-равно и меньше-равно
-    - match: (\/|\*|=|,) # допустимые в QSP => и =< в данной подсветке не поддерживаются
-      scope: support.function.qsp avs.comma1
-    # подсветка всех операторов для операций, в т.ч. скобок и прочего
-    - match: '(?i:(!|\:|\;|\[|\]|\(|\)|\&|\+|-|(>|<)=?|=?(>|<)))'
-      scope: support.function.qsp avs.operacion9
+  operacion_subex:
+    # TODO: слить повторяющиеся определения для операций в подвыражениях и других
+    # подсветка словарных операторов
+    - match: (?<={{left_operand}})\s*\b{{operacion_word}}\b(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_right
+    - match: (?<=^|\&|\(|\{|\[)\s*\b{{operacion_word}}\b(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_word_with_out_left
+    - match: \b{{operacion_word}}\b 
+      scope: keyword.operator.word.qsp
+    # подсветка двузнаковых операторов
+    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_right
+    - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{operacion_two_signs}}(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_two_signs_with_out_left
+    - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?=\s*?{{right_operand}})
+      scope: keyword.operator.two-signs.qsp
+    # подсветка однознаковых операторов
+    - match: (?<={{left_operand}})\s*?{{operacion_one_sign}}(?!(>|\s*?{{right_operand}}))
+      scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_right
+    - match: (?<=(<|\&|\(|\{|\[))\s*?{{operacion_one_sign}}(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_left
+    - match: '{{operacion_one_sign}}'
+      scope: keyword.operator.one-sign.qsp
+    # Правила для запятых
+    - match: (?<={{left_operand}})\s*?(,)(?!\s*?{{right_operand}})
+      scope: iinvalid.illegal.qsp avs_wrong_comma_with_out_right
+    - match: (?<=(<|\&|\(|\{|\[))\s*?(,)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: (,)
+      scope: punctuation.separator.comma.qsp
+    # Правила для амперсандов
+    - match: (^\s*?|\(\s*?|\{\s*?|\[\s*?)\K(\&)(?=\s*?{{right_operand}}*)
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: \&
+      scope: keyword.operator.ampersand.qsp
+    # Правила для no
+    - match: (\bno\b)(?!\s*?{{right_operand}})
+      scope: invalid.illegal.qsp avs_wrong_comma_with_out_left
+    - match: (\bno\b)
+      scope: keyword.operator.word.qsp
 
   # # # ------------------------ Подсветка комментариев ------------------------  # # #
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
     - match: (?<=\{)((\s*?)|(\&\s*?))(!)
       captures:
-        3: support.function.qsp
-        4: comment.qsp
+        3: support.function.builtin.qsp
+        4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: (\n\r|\r|\r\n|\n)
@@ -364,8 +435,8 @@ contexts: # теперь необходимо определить "контек
         - include: speccomments
     - match: ((^\s*?)|(\&\s*?))(!)
       captures:
-        3: support.function.qsp
-        4: comment.qsp
+        3: support.function.builtin.qsp
+        4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
         - match: (\n\r|\r|\r\n|\n)
@@ -394,7 +465,7 @@ contexts: # теперь необходимо определить "контек
           scope: comment.qsp
           pop: true
     - match: '{{quote}}'
-      scope: invalid.qsp
+      scope: invalid.illegal.qsp
 
   apinbrack:
     - match: '{{ap}}'
@@ -404,7 +475,7 @@ contexts: # теперь необходимо определить "контек
           scope: comment.qsp
           pop: true
     - match: '{{ap}}'
-      scope: invalid.qsp
+      scope: invalid.illegal.qsp
 
   cominquotes:
     - match: '[^{{opener}}]*?\"'
@@ -428,23 +499,46 @@ contexts: # теперь необходимо определить "контек
 
   speccomments:
     - match: (?<=\!)@.*?(?={{nr}})
-      scope: comment markup.italic speccomments.avs
+      scope: comment.qsp markup.italic.qsp avs-speccomments
 
   preprocessor:
     - match: ^(\!@pp\:.*?)$
       captures:
-        1: diff.deleted preprocessor.avs
+        1: meta.preprocessor.qsp diff.deleted.qsp avs-preprocessor
         #2: markup.bold preprocessor.avs
 
   # # # ---------- фигурные скобки --------------- # # #
   figurebrack:
     - match: '\{'
-      scope: support.function.qsp avs.figopen
+      scope: punctuation.section.block.begin.qsp avs_brace_begin
       push:
+        - meta_content_scope: meta.block
+        
         - include: htmlsupport
-        - include: locations
+        - include: figurebrack
+        - include: actions
+        - include: conditions
+        - include: loop
+        - include: kw_declarations
+        - include: sugarfunc
+        - match: (?i:(\bend\b)) # подсветка лишнего end'а
+          scope: invalid.illegal.qsp
+        - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
+          scope: invalid.illegal.qsp
+        - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
+          scope: invalid.illegal.qsp
+        - include: preprocessor
+        - include: comments
+        - include: labels
+        - include: operators
+        - include: operacion
+        - include: system_variables
+        - include: functions
+        - include: numeric
+        - include: strings
+        - include: separator_continuation
         - match: '\}'
-          scope: support.function.qsp avs.figclose
+          scope: punctuation.section.block.end.qsp avs_brace_end
           pop: true
 
   htmlsupport:
@@ -458,3 +552,7 @@ contexts: # теперь необходимо определить "контек
         - match: (?i:</qhtml>)
           scope: message.error avs.html
           pop: true
+
+  separator_continuation:
+    - match: \s_(?=$)
+      scope: punctuation.separator.continuation avs_longstring
