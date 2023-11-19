@@ -7,6 +7,11 @@
 				"caption": "QSP tools",
 				"children": [
 					{
+						"id": "qsp_tools_new_project",
+						"caption": "Make Quick Project",
+						"command": "qsp_new_project"
+					},
+					{
 						"id": "qsp_tools_converters",
 						"caption": "Converters (single files)",
 						"children": [

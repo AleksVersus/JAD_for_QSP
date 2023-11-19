@@ -11,6 +11,10 @@ from .qSpy.qsps_to_qsp import NewQspsFile
 from .qSpy.qsp_splitter import QspSplitter
 from .qSpy.main_cs import FinderSplitter
 
+def safe_mk_fold(new_path):
+	if not os.path.isdir(new_path):
+		os.mkdir(new_path)
+
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
 		QSP-Game Builder. Build and run QSP-game from sources. Need a project.json.
@@ -72,3 +76,47 @@ class QspSplitProjectCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		argv = self.window.extract_variables()
 		FinderSplitter(folder_path = argv['file_path'])
+
+class QspNewProjectCommand(sublime_plugin.WindowCommand):
+
+	def run(self):
+		argv = self.window.extract_variables()
+		if 'folder' in argv:
+			safe_mk_fold(argv['folder'] + '\\[disdocs]')
+			safe_mk_fold(argv['folder'] + '\\[output_game]')
+			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets')
+			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets\\img')
+			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets\\snd')
+			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets\\vid')
+			safe_mk_fold(argv['folder'] + '\\[output_game]\\lib')
+			safe_mk_fold(argv['folder'] + '\\[source]')
+			# crete project.json
+			if not os.path.isfile(argv['folder']+'\\project.json'):
+				project_json = [
+					'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":".\\\\[output_game]\\\\game_start.qsp"',
+					',\n\t\t\t"folders":\n\t\t\t[\n\t\t\t\t{"path":".\\\\[source]"}\n\t\t\t]\n\t\t}',
+					'\n\t],\n\t"start":".\\\\[output_game]\\\\game_start.qsp"',
+					',\n\t"player":"C:\\\\Program Files\\\\QSP\\\\qsp580\\\\qspgui.exe"\n}'
+				]
+				with open(argv['folder']+'\\project.json', 'w', encoding='utf-8') as file:
+					file.writelines(project_json)
+			# create sublime-project
+			path, fname = os.path.split(argv['folder'])
+			if not os.path.isfile(argv['folder']+'\\'+fname+'.sublime-project'):
+				sublime_project = [
+					'{\n\t"folders":\n\t[\n\t\t{\n\t\t\t"path": ".",\n\t\t}\n\t]\n}'
+				]
+				with open(argv['folder']+'\\'+fname+'.sublime-project', 'w', encoding='utf-8') as file:
+					file.writelines(sublime_project)
+			# create startfile
+			if not os.path.isfile(argv['folder']+'\\[source]\\00_start.qsps'):
+				start_file = [
+					'QSP-Game Start game from this location\n\n',
+					'# [start]\n',
+					'*pl "Quick project start location. Edit this file, and appending new."\n',
+					'*pl "Стартовая локация быстрого проекта. Отредактируйте этот файл и добавьте новые."\n',
+					'--- [start] ---\n'
+				]
+				with open(argv['folder']+'\\[source]\\00_start.qsps', 'w', encoding='utf-8') as file:
+					file.writelines(start_file)
+				self.window.open_file(argv['folder']+'\\[source]\\00_start.qsps')
