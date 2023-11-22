@@ -332,7 +332,7 @@ contexts: # теперь необходимо определить "контек
   system_variables:
     - match: (?<!\$)(\b{{system_vars_string}}\b) # подсвечивает все системные переменные текстового типа без символа $
       scope: invalid.illegal.qsp avs_illegal_textvariables
-    - match: (\$)(?=(\b{{system_vars_string}}|{{system_vars}}\b))
+    - match: (\$)(?=\b({{system_vars_string}}|{{system_vars}})\b)
       scope: variable.language.qsp punctuation.definition.variable avs_sysvar
     - match: \b({{system_vars_num}}|{{system_vars_string}}|{{system_vars}})\b
       scope: variable.language.qsp avs_sysvar

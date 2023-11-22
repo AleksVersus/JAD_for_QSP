@@ -114,7 +114,8 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 					'QSP-Game Start game from this location\n\n',
 					'# [start]\n',
 					'*pl "Quick project start location. Edit this file, and appending new."\n',
-					'*pl "Стартовая локация быстрого проекта. Отредактируйте этот файл и добавьте новые."\n',
+					'*pl "Стартовая локация быстрого проекта. ',
+					'Отредактируйте этот файл и добавьте новые."\n',
 					'--- [start] ---\n'
 				]
 				with open(argv['folder']+'\\[source]\\00_start.qsps', 'w', encoding='utf-8') as file:
