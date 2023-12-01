@@ -70,7 +70,7 @@ class NewQspsFile():
 			elif scope_type == 'string' and mode['location-name']=='':
 				# open string between locations
 				# change input text from next symbol
-				input_text = input_text[scope_regexp_obj.end()+1:]
+				input_text = input_text[scope_regexp_obj.end():]
 			else:
 				if input_text != post_text:
 					input_text = post_text
