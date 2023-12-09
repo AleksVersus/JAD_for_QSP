@@ -566,7 +566,7 @@ contexts: # теперь необходимо определить "контек
       scope: message.error avs.html
       push:
         - clear_scopes: true
-        - meta_scope: markup.raw avs.htmlsupport
+        - meta_scope: markup.raw avs.htmlsupport text.html
         - include: Packages/HTML/HTML.sublime-syntax
       with_prototype:
         - match: (?i:</qhtml>)
