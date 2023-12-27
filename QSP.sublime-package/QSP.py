@@ -91,14 +91,14 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 			safe_mk_fold(argv['folder'] + '\\[output_game]\\lib')
 			safe_mk_fold(argv['folder'] + '\\[source]')
 			# crete project.json
-			if not os.path.isfile(argv['folder']+'\\project.json'):
+			if not os.path.isfile(argv['folder']+'\\[source]\\project.json'):
 				project_json = [
-					'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":".\\\\[output_game]\\\\game_start.qsp"',
-					',\n\t\t\t"folders":\n\t\t\t[\n\t\t\t\t{"path":".\\\\[source]"}\n\t\t\t]\n\t\t}',
-					'\n\t],\n\t"start":".\\\\[output_game]\\\\game_start.qsp"',
+					'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":"..\\\\[output_game]\\\\game_start.qsp"',
+					',\n\t\t\t"folders":\n\t\t\t[\n\t\t\t\t{"path":"."}\n\t\t\t]\n\t\t}',
+					'\n\t],\n\t"start":"..\\\\[output_game]\\\\game_start.qsp"',
 					',\n\t"player":"C:\\\\Program Files\\\\QSP\\\\qsp580\\\\qspgui.exe"\n}'
 				]
-				with open(argv['folder']+'\\project.json', 'w', encoding='utf-8') as file:
+				with open(argv['folder']+'\\[source]\\project.json', 'w', encoding='utf-8') as file:
 					file.writelines(project_json)
 			# create sublime-project
 			path, fname = os.path.split(argv['folder'])
