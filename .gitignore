@@ -7,3 +7,4 @@
 *.sublime-project
 */__pycache__/
 /**/__pycache__
+*/QSP.Sublime-Package.exe
