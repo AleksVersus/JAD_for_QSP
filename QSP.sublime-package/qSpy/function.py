@@ -4,9 +4,10 @@ import os
 from . import pp as pp
 
 def write_error_log(file, string):
-	""" Write message in error.log file. """
-	with open(file,"a",encoding="utf-8") as error_file:
-		error_file.write(string)
+	""" Write message in console. """
+	# with open(file,"a",encoding="utf-8") as error_file:
+	# 	error_file.write(string)
+	print(string)
 
 def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 	"""
@@ -147,7 +148,7 @@ def need_project_file(work_dir, point_file, player):
 	"""
 	cond = all((
 		work_dir is None,
-		os.path.splitext(point_file)[1]=='.qsps',
+		os.path.splitext(point_file)[1] == '.qsps',
 		os.path.isfile(player)
 		))
 	return (True if cond else False)
