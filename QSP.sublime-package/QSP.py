@@ -121,3 +121,13 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 				with open(argv['folder']+'\\[source]\\00_start.qsps', 'w', encoding='utf-8') as file:
 					file.writelines(start_file)
 				self.window.open_file(argv['folder']+'\\[source]\\00_start.qsps')
+
+class QspNewGameHeadCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		self.view.insert(edit, 0, 'QSP-Game .New qsps-file.\n\n')
+
+class QspNewGameCommand(sublime_plugin.WindowCommand):
+	def run(self):
+		new_view = self.window.new_file(syntax='Packages/QSP/qsp.sublime-syntax')
+		self.window.focus_view(new_view)
+		self.window.run_command('qsp_new_game_head')

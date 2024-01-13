@@ -7,6 +7,11 @@
 				"caption": "QSP tools",
 				"children": [
 					{
+						"id": "qsp_tools_new_game",
+						"caption": "Make New Game",
+						"command": "qsp_new_game"
+					},
+					{
 						"id": "qsp_tools_new_project",
 						"caption": "Make Quick Project",
 						"command": "qsp_new_project"

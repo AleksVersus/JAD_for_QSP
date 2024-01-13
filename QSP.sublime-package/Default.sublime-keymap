@@ -98,4 +98,7 @@
         {"build_system": "Packages/QSP/QSP.sublime-build",
         "variant":"qsp-run"}
     },
+    { "keys": ["ctrl+alt+n"],
+        "command": "qsp_new_game",
+    }
 ]
