@@ -1,0 +1,83 @@
+{
+    "scope": "meta.location.qsp",
+    "completions": [
+        {
+            "trigger": "inclib",
+            "contents": "inclib '${1:path to file}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Подключение модуля",
+            "details": "INCLIB [$путь к файлу игры]"
+        },
+        {
+            "trigger": "goto",
+            "contents": "goto '${1:location name}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Переход на локацию.",
+            "details": "GOTO [$локация],[аргумент 0],[аргумент 1], ... ,[аргумент 18]"
+        },
+        {
+            "trigger": "xgoto",
+            "contents": "xgoto '${1:location name}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Переход без очистки описания",
+            "details": "XGOTO [$локация],[аргумент 0],[аргумент 1], ... ,[аргумент 18]"
+        },
+        {
+            "trigger": "freelib",
+            "contents": "freelib",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Отключение модулей",
+            "details": "FREELIB"
+        },
+        {
+            "trigger": "openqst",
+            "contents": "openqst '${1:path to file}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Открыть игру",
+            "details": "OPENQST [$путь к файлу игры]"
+        },
+        {
+            "trigger": "opengame",
+            "contents": "opengame '${1:path to file}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Загрузить сохранение",
+            "details": "OPENGAME [$путь к сохранению]"
+        },
+        {
+            "trigger": "savegame",
+            "contents": "savegame '${1:path to file}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Сохранение игры",
+            "details": "SAVEGAME [$путь к сохранению]"
+        },
+        {
+            "trigger": "addobj",
+            "contents": "addobj '${1:Название предмета}','${2:путь к файлу картинки/picture.jpg}',${3:позиция}$0",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Добавить предмет (полный)",
+            "details": "ADDOBJ [$название],[$путь к файлу изображения],[#позиция]"
+        },
+        {
+            "trigger": "addobj",
+            "contents": "addobj '${1:Название предмета}'$0",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Добавить предмет",
+            "details": "ADDOBJ [$название]"
+        },
+        {
+            "trigger": "delobj",
+            "contents": "delobj '${1:Название предмета}'$0",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Удалить предмет по названию",
+            "details": "DELOBJ [$название]"
+        },
+        {
+            "trigger": "killobj",
+            "contents": "killobj ${1:0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Удалить предмет по номеру",
+            "details": "KILLOBJ [#номер]"
+        },
+
+    ],
+}

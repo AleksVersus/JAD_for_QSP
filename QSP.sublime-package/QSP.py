@@ -2,6 +2,7 @@ import sublime
 import sublime_plugin
 
 import sys, os
+import re
 
 # Importing my modules from qSpy package.
 from .qSpy.function import parse_args
@@ -10,6 +11,19 @@ from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
 from .qSpy.qsp_splitter import QspSplitter
 from .qSpy.main_cs import FinderSplitter
+
+CMD_TEMPLATES = {
+	"inclib": "Добавить к игре локации из указанного файла QSP.",
+	"goto": "Переход на локацию с указанным названием.",
+	"xgoto": "Переход на локацию без очистки основного описания.",
+	"freelib": "Удаление из игры всех локаций, загруженных с помощью inclib.",
+	"openqst": "Замена всех локаций текущей игры локациями из укзанного файла QSP.",
+	"opengame": "Загрузка указанного файла сохранения.",
+	"savegame": "Запись состояния игры в указанный файл сохранения.",
+	"addobj": "Добавление предмета с картинкой в указанную позицию.",
+	"delobj": "Удаление предмета с указанным названием из окна предметов.",
+	"killobj": "Удаление предмета, расположенного в заданной позиции.",
+}
 
 def safe_mk_fold(new_path):
 	if not os.path.isdir(new_path):
@@ -131,3 +145,15 @@ class QspNewGameCommand(sublime_plugin.WindowCommand):
 		new_view = self.window.new_file(syntax='Packages/QSP/qsp.sublime-syntax')
 		self.window.focus_view(new_view)
 		self.window.run_command('qsp_new_game_head')
+
+class QspWordSelectionCommand(sublime_plugin.TextCommand):
+	def run(self, edit):
+		word = self.view.substr(self.view.word(self.view.sel()[0].begin())).lower()
+		if (re.match(r'^\b\w+\b$', word) is not None) and (word in CMD_TEMPLATES.keys()):
+			sublime.status_message(CMD_TEMPLATES[word])
+
+class QspAutocomplete(sublime_plugin.EventListener):
+	def on_selection_modified(self, view):
+		if view.syntax().name == 'QSP':
+			view.run_command('qsp_word_selection')
+		
