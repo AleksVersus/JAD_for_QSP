@@ -278,6 +278,21 @@ class QspNewGameCommand(sublime_plugin.WindowCommand):
 		self.window.focus_view(new_view)
 		self.window.run_command('qsp_new_game_head')
 
+def get_all_qsp_locations(view, pf_folder=None):
+	qsp_locations = []
+	for s in view.symbols():
+		_, name = s
+		if name.startswith('Локация: '):
+			qsp_locations.append(name[9:])
+	if pf_folder is not None and os.path.isfile(pf_folder + '\\qsp-project-workspace.json'):
+		with open(pf_folder + '\\qsp-project-workspace.json',"r",encoding="utf-8") as ws_file:
+			root = json.load(ws_file)
+		all_locations = set(root['locations'])
+	else:
+		all_locations = set()
+		root = {}
+	all_locations.update(set(qsp_locations))
+	return (all_locations, root)
 
 class QspAutocomplete(sublime_plugin.EventListener):
 	def on_selection_modified(self, view):
@@ -297,26 +312,36 @@ class QspAutocomplete(sublime_plugin.EventListener):
 				match = re.match(r'^\w+\b$', word)
 			if (match is not None) and (word in keywords):
 				sublime.status_message(CMD_TEMPLATES[word])
+	def on_query_completions(self, view, prefix, locations):
+		if view.syntax() is not None and view.syntax().name == 'QSP':
+			if not view.match_selector(locations[0]-1, 'variable.function.qsp'):
+				return []
+			pf_folder = search_project_folder(view.file_name(), print_error=False)
+			all_locations, root = get_all_qsp_locations(view, pf_folder=pf_folder) # set, dic
+			qsp_locations = []
+			prefix = prefix.lower()
+			for qsp_loc in list(all_locations):
+				if qsp_loc.lower().startswith(prefix):
+					d = sublime.CompletionItem(
+						qsp_loc,
+						annotation="Локация",
+						completion=qsp_loc,
+						completion_format=sublime.COMPLETION_FORMAT_TEXT,
+						kind=sublime.KIND_FUNCTION
+					)
+					qsp_locations.append(d)
+			return qsp_locations
+		else:
+			return []
 
 def save_location_names(view):
 	if view.syntax() is not None and view.syntax().name == 'QSP':
-		locations = []
-		for s in view.symbols():
-			_, name = s
-			if name.startswith('Локация: '):
-				locations.append(name[9:])
 		pf_folder = search_project_folder(view.file_name(), print_error=False)
-		if os.path.isfile(pf_folder + '\\qsp-project-workspace.json'):
-			with open(pf_folder + '\\qsp-project-workspace.json',"r",encoding="utf-8") as ws_file:
-				root = json.load(ws_file)
-			all_locations = set(root['locations'])
-		else:
-			all_locations = set()
-			root = {}
-		all_locations.update(set(locations))
+		all_locations, root = get_all_qsp_locations(view, pf_folder=pf_folder) # set, dict
 		root['locations'] = list(all_locations)
-		with open(pf_folder + '\\qsp-project-workspace.json',"w",encoding="utf-8") as ws_file:
-			json.dump(root, ws_file)
+		if pf_folder is not None:
+			with open(pf_folder + '\\qsp-project-workspace.json',"w",encoding="utf-8") as ws_file:
+				json.dump(root, ws_file)
 
 class QspSaveLocationNames(sublime_plugin.EventListener):
 	def on_close(self, view):
