@@ -3,9 +3,11 @@ import sublime_plugin
 
 import sys, os
 import re
+import json
 
 # Importing my modules from qSpy package.
 from .qSpy.function import parse_args
+from .qSpy.function import search_project_folder
 from .qSpy.builder import BuildQSP
 from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
@@ -295,4 +297,29 @@ class QspAutocomplete(sublime_plugin.EventListener):
 				match = re.match(r'^\w+\b$', word)
 			if (match is not None) and (word in keywords):
 				sublime.status_message(CMD_TEMPLATES[word])
-		
+
+def save_location_names(view):
+	if view.syntax() is not None and view.syntax().name == 'QSP':
+		locations = []
+		for s in view.symbols():
+			_, name = s
+			if name.startswith('Локация: '):
+				locations.append(name[9:])
+		pf_folder = search_project_folder(view.file_name(), print_error=False)
+		if os.path.isfile(pf_folder + '\\qsp-project-workspace.json'):
+			with open(pf_folder + '\\qsp-project-workspace.json',"r",encoding="utf-8") as ws_file:
+				root = json.load(ws_file)
+			all_locations = set(root['locations'])
+		else:
+			all_locations = set()
+			root = {}
+		all_locations.update(set(locations))
+		root['locations'] = list(all_locations)
+		with open(pf_folder + '\\qsp-project-workspace.json',"w",encoding="utf-8") as ws_file:
+			json.dump(root, ws_file)
+
+class QspSaveLocationNames(sublime_plugin.EventListener):
+	def on_close(self, view):
+		save_location_names(view)
+	def on_pre_save(self, view):
+		save_location_names(view)
