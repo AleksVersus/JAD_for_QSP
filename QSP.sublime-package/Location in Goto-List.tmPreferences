@@ -11,13 +11,13 @@
 	    <integer>1</integer>
 	    <key>symbolTransformation</key>
 	    <string>
-	        s/^\s*?\#\s?(.+)$/Локация: \1/g;
+	        s/(.+)/Локация: \1/g;
 	    </string>
 	    <key>showInIndexedSymbolList</key>
 	    <integer>1</integer>
 	    <key>symbolIndexTransformation</key>
 	    <string>
-	        s/^\s*?\#\s?(.+)$/Локация: \1/g;
+	        s/(.+)/Локация: \1/g;
 	    </string>
 	</dict>
 </dict>

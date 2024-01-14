@@ -378,7 +378,7 @@ if $cvar[$cvar['chest']]='':
 	$cvar['manage'+$cvar['chest']]	=	$args[1]
 end
 ! ---------------------------------------- Обязательная конструкция -------------------------------------------
-if ($args[1]='' or $strfind($args[1],'') ! '') or $strfind($args[1],'get.exposition')!'':
+if ($args[1]='' or $strfind($args[1],'') <> '') or $strfind($args[1],'get.exposition')<>'':
 	$args['локация.исходник.описание']={}
 end
 
