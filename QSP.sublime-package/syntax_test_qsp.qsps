@@ -556,7 +556,7 @@ end
 ! при попадании на эту локацию должно так же создаваться сохранение, чтобы в случае случайного выбора действия "начать игру заново", можно было
 ! загрузиться на локации и проверить, нет ли способа воскреснуть.
 ! операторы
-exec|local|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg
+exec|view|inclib|addqst|openqst|opengame|savegame|killqst|cmdclr|cmdclear|all|close|exit|play|settimer|menu|unsel|unselect|jump|copyarr|delact|wait|killall|dynamic|killvar|delobj|addobj|killobj|cls|cla|gs|xgt|gt|goto|gosub|xgoto|refint|showobjs|showstat|showacts|showinput|msg
 ! текстовые
 pl|nl|clr|clear|p
 *pl|*nl|*clr|*clear|*p
