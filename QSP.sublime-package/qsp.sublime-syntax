@@ -350,8 +350,9 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs_illegal_function_$
 
   labels:
-    - match: ^(\s*?\:|\:)[^&'"]+
-      scope: entity.name.qlabel.qsp avs_jumps_labels
+    - match: ^(\s*?\:|\:)([^&'"\n]+)
+      captures:
+        2: entity.name.qlabel.qsp avs_jumps_labels
 
   # # # ------------------- строки ------------------------ # # #
   strings:
