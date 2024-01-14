@@ -90,7 +90,7 @@ def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-1
 	with open(new_file,"w",encoding=code_system) as file:
 		file.write(text)
 
-def search_project_folder(path):
+def search_project_folder(path, print_error=True):
 	"""
 		Find project-file and return folder path whith project.
 		In other return None.
@@ -100,7 +100,8 @@ def search_project_folder(path):
 		path = os.path.split(path)[0]
 	while not os.path.isfile(path+"\\project.json"):
 		if os.path.ismount(path):
-			write_error_log("error.log", "[203] not found 'project.json' file for this project. Prove path "+error+".\n")
+			if print_error:
+				write_error_log("error.log", "[203] not found 'project.json' file for this project. Prove path "+error+".\n")
 			break
 		path = os.path.split(path)[0]
 	else:
