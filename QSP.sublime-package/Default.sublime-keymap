@@ -1,69 +1,9 @@
 [
     // Auto-pair underscore
     {
-        "keys": ["ctrl+alt+b"],
-        "command": "insert_snippet",
-        "args": {"contents": "<strong>${0:$SELECTION}</strong>"},
-        "context": [
-            { "key": "setting.auto_match_enabled"},
-            { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
-        ]
-    },
-    {
-        "keys": ["ctrl+alt+i"],
-        "command": "insert_snippet",
-        "args": {"contents": "<em>${0:$SELECTION}</em>"},
-        "context": [
-            { "key": "setting.auto_match_enabled"},
-            { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
-        ]
-    },
-    {
         "keys": ["alt+h"],
         "command": "insert_snippet",
         "args": {"contents": "<qhtml>${0:$SELECTION}</qhtml>"},
-        "context": [
-            { "key": "setting.auto_match_enabled"},
-            { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
-        ]
-    },
-    {
-        "keys": ["ctrl+alt+p"],
-        "command": "insert_snippet",
-        "args": {"contents": "<p>${0:$SELECTION}</p>"},
-        "context": [
-            { "key": "setting.auto_match_enabled"},
-            { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
-        ]
-    },
-    {
-        "keys": ["ctrl+alt+f"],
-        "command": "insert_snippet",
-        "args": {"contents": "<font color=#${1:000000} size=${2:0}>${0:$SELECTION}</font>"},
-        "context": [
-            { "key": "setting.auto_match_enabled"},
-            { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
-        ]
-    },
-    {
-        "keys": ["ctrl+alt+d"],
-        "command": "insert_snippet",
-        "args": {"contents": "<div>${0:$SELECTION}</div>"},
-        "context": [
-            { "key": "setting.auto_match_enabled"},
-            { "key": "selection_empty", "operand": false, "match_all": true },
-            { "key": "selector", "operand": "source.qsp" }
-        ]
-    },
-    {
-        "keys": ["ctrl+alt+h"],
-        "command": "insert_snippet",
-        "args": {"contents": "<h${1:1}>${0:$SELECTION}</h$1>"},
         "context": [
             { "key": "setting.auto_match_enabled"},
             { "key": "selection_empty", "operand": false, "match_all": true },
