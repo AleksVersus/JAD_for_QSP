@@ -316,7 +316,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
 			if not view.match_selector(locations[0]-1, 'variable.function.qsp'):
 				return []
-			pf_folder = search_project_folder(view.file_name(), print_error=False)
+			pf_folder = search_project_folder(view.file_name(), print_error=False) if view.file_name() is not None else None
 			all_locations, root = get_all_qsp_locations(view, pf_folder=pf_folder) # set, dic
 			qsp_locations = []
 			prefix = prefix.lower()
@@ -336,7 +336,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 
 def save_location_names(view):
 	if view.syntax() is not None and view.syntax().name == 'QSP':
-		pf_folder = search_project_folder(view.file_name(), print_error=False)
+		pf_folder = search_project_folder(view.file_name(), print_error=False) if view.file_name() is not None else None
 		all_locations, root = get_all_qsp_locations(view, pf_folder=pf_folder) # set, dict
 		root['locations'] = list(all_locations)
 		if pf_folder is not None:
