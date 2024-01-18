@@ -1,0 +1,278 @@
+{
+    "scope": "meta.location.qsp",
+    "completions": [
+        {
+            "trigger": "curacts",
+            "contents": "curacts",
+            "kind": "Function",
+            "annotation": "Текущие действия",
+            "details": "$CURACTS"
+        },
+        {
+            "trigger": "curloc",
+            "contents": "curloc",
+            "kind": "Function",
+            "annotation": "Текущая локация",
+            "details": "$CURLOC"
+        },
+        {
+            "trigger": "desc",
+            "contents": "desc",
+            "kind": "Function",
+            "annotation": "Базовое описание локации",
+            "details": "$DESC"
+        },
+        {
+            "trigger": "dyneval",
+            "contents": "dyneval(${1:\\$code}${2})${0}",
+            "kind": "Function",
+            "annotation": "Выполнение кода из строки текста",
+            "details": "DYNEVAL([$код], [аргументы...])"
+        },
+        {
+            "trigger": "func",
+            "contents": "func('${1:локация.функция}'${2})${0}",
+            "kind": "Function",
+            "annotation": "Выполнение кода из локации",
+            "details": "FUNC('локация', [args...])"
+        },
+        {
+            "trigger": "getobj",
+            "contents": "getobj(${1:0})",
+            "kind": "Function",
+            "annotation": "Получить название предмета",
+            "details": "$GETOBJ([#номер предмета])"
+        },
+        {
+            "trigger": "iif",
+            "contents": "iif(${1:a > b},${2:yes},${3:no})${0}",
+            "kind": "Function",
+            "annotation": "Тернарный оператор",
+            "details": "IIF([#условие], [выр_да], [выр_нет])"
+        },
+        {
+            "trigger": "input",
+            "contents": "input '${1:сообщение}'",
+            "kind": "Function",
+            "annotation": "Вызов окна ввода",
+            "details": "$INPUT([$сообщение])"
+        },
+        {
+            "trigger": "lcase",
+            "contents": "lcase('${1:ТеКсТ}')${0}",
+            "kind": "Function",
+            "annotation": "Текст в нижний регистр",
+            "details": "$LCASE([$текст])"
+        },
+        {
+            "trigger": "maintxt",
+            "contents": "maintxt",
+            "kind": "Function",
+            "annotation": "Текст из окна осн. описания",
+            "details": "$MAINTXT"
+        },
+        {
+            "trigger": "max",
+            "contents": "max(${1}${2})${0}",
+            "kind": "Function",
+            "annotation": "Максимальное из значений",
+            "details": "MAX([значение], ...)"
+        },
+        {
+            "trigger": "mid",
+            "contents": "mid(${1:\\$string},${2:start},${3:len(${1})})${0}",
+            "kind": "Function",
+            "annotation": "Вырезать часть строки",
+            "details": "$MID([$строка],[#начало],[#длина])"
+        },
+        {
+            "trigger": "min",
+            "contents": "min(${1}${2})${0}",
+            "kind": "Function",
+            "annotation": "Минимальное из значений",
+            "details": "MIN([значение], ...)"
+        },
+        {
+            "trigger": "qspver",
+            "contents": "qspver",
+            "kind": "Function",
+            "annotation": "Версия плеера",
+            "details": "$QSPVER"
+        },
+        {
+            "trigger": "replace",
+            "contents": "replace(${1:\\$string},${2:\\$old},${3:\\$new})${0}",
+            "kind": "Function",
+            "annotation": "Замена в строке",
+            "details": "$REPLACE([$строка],[$старое],[$новое])"
+        },
+        {
+            "trigger": "selact",
+            "contents": "selact",
+            "kind": "Function",
+            "annotation": "Выделенное действие",
+            "details": "$SELACT"
+        },
+        {
+            "trigger": "selobj",
+            "contents": "selobj",
+            "kind": "Function",
+            "annotation": "Выделенный предмет",
+            "details": "$SELOBJ"
+        },
+        {
+            "trigger": "stattxt",
+            "contents": "stattxt",
+            "kind": "Function",
+            "annotation": "Текст в окне доп. описания",
+            "details": "$STATTXT"
+        },
+        {
+            "trigger": "str",
+            "contents": "str(${1:9})",
+            "kind": "Function",
+            "annotation": "Приведение к строке",
+            "details": "$STR([#число])"
+        },
+        {
+            "trigger": "strfind",
+            "contents": "strfind(${1:\\$string},${2:\\$regexp},${3:0})${0}",
+            "kind": "Function",
+            "annotation": "Подстрока по регулярке",
+            "details": "$STRFIND([$строка],[$шаблон],[#номер])"
+        },
+        {
+            "trigger": "trim",
+            "contents": "trim(${1:\\$string})",
+            "kind": "Function",
+            "annotation": "Удаление прилегающих пробелов",
+            "details": "$TRIM([$строка])"
+        },
+        {
+            "trigger": "ucase",
+            "contents": "ucase('${1:ТеКсТ}')${0}",
+            "kind": "Function",
+            "annotation": "Текст в верхний регистр",
+            "details": "$UCASE([$текст])"
+        },
+        {
+            "trigger": "user_text",
+            "contents": "user_text",
+            "kind": "Function",
+            "annotation": "Текст из поля ввода",
+            "details": "$USER_TEXT"
+        },
+        {
+            "trigger": "usrtxt",
+            "contents": "usrtxt",
+            "kind": "Function",
+            "annotation": "Текст из поля ввода",
+            "details": "$USRTXT"
+        },
+        {
+            "trigger": "arrcomp",
+            "contents": "arrcomp(${1:\\$array_name},${2:\\$regexp},${3:0})${0}",
+            "kind": "Function",
+            "annotation": "Поиск по массиву с регуляркой",
+            "details": "ARRCOMP([$имя_массива],[$шаблон],[#начало])"
+        },
+        {
+            "trigger": "arrpos",
+            "contents": "arrpos(${1:\\$array_name},${2:value},${3:0})${0}",
+            "kind": "Function",
+            "annotation": "Поиск значения по массиву",
+            "details": "ARRCOMP([$имя_массива],[$шаблон],[#начало])"
+        },
+        {
+            "trigger": "arrsize",
+            "contents": "arrsize(${1:\\$array_name})${0}",
+            "kind": "Function",
+            "annotation": "Размер массива",
+            "details": "ARRSIZE([$имя_массива])"
+        },
+        {
+            "trigger": "countobj",
+            "contents": "countobj",
+            "kind": "Function",
+            "annotation": "Число предметов",
+            "details": "COUNTOBJ"
+        },
+        {
+            "trigger": "instr",
+            "contents": "instr(${1:\\$string},${2:\\$substr},${3:0})${0}",
+            "kind": "Function",
+            "annotation": "Вхождение подстроки в строку",
+            "details": "INSTR([$строка],[$подстрока],[#начало])"
+        },
+        {
+            "trigger": "isnum",
+            "contents": "isnum(${1:\\$string})${0}",
+            "kind": "Function",
+            "annotation": "Строка — число?",
+            "details": "ISNUM([$строка])"
+        },
+        {
+            "trigger": "isplay",
+            "contents": "isplay('${1:путь к файлу}')${0}",
+            "kind": "Function",
+            "annotation": "Этот звук проигрывается?",
+            "details": "ISPLAY([$путь_к_файлу])"
+        },
+        {
+            "trigger": "len",
+            "contents": "len(${1:\\$string})${0}",
+            "kind": "Function",
+            "annotation": "Длина строки",
+            "details": "LEN([$строка])"
+        },
+        {
+            "trigger": "msecscount",
+            "contents": "msecscount",
+            "kind": "Function",
+            "annotation": "Время с начала игры",
+            "details": "MSECSCOUNT"
+        },
+        {
+            "trigger": "rand",
+            "contents": "rand(${1:0},${2:1})${0}",
+            "kind": "Function",
+            "annotation": "Случайное число из интервала",
+            "details": "RAND([#выражение 1],[#выражение 2])"
+        },
+        {
+            "trigger": "rgb",
+            "contents": "rgb(${1:red},${2:green},${3:blue})${0}",
+            "kind": "Function",
+            "annotation": "Числовой код цвета",
+            "details": "RGB([#красный],[#зелёный],[#синий])"
+        },
+        {
+            "trigger": "rnd",
+            "contents": "rnd",
+            "kind": "Function",
+            "annotation": "Случайное число от 1 до 1000",
+            "details": "RND"
+        },
+        {
+            "trigger": "strcomp",
+            "contents": "strcomp(${1:\\$string},${2:\\$regexp})${0}",
+            "kind": "Function",
+            "annotation": "Совпадение строки с регуляркой",
+            "details": "STRCOMP([$строка],[$шаблон])"
+        },
+        {
+            "trigger": "strpos",
+            "contents": "strpos(${1:\\$string},${2:\\$regexp},${3:1})${0}",
+            "kind": "Function",
+            "annotation": "Вхождение пдстроки по регулярке",
+            "details": "STRPOS([$строка],[$шаблон],[#номер])"
+        },
+        {
+            "trigger": "val",
+            "contents": "val(${1:\\$string})${0}",
+            "kind": "Function",
+            "annotation": "Приведение к числу",
+            "details": "VAL([$строка])"
+        },
+    ],
+}

@@ -1,0 +1,131 @@
+{
+    "scope": "meta.location.qsp",
+    "completions": [
+        {
+            "trigger": "backimage",
+            "contents": "backimage = '${1:path to file}'",
+            "kind": "Variable",
+            "annotation": "Фоновое изображение",
+            "details": "Путь к файлу фонового изображения"
+        },
+        {
+            "trigger": "counter",
+            "contents": "counter = '${1:path to file}'",
+            "kind": "Variable",
+            "annotation": "Локация-счётчик",
+            "details": "Название локации-счётчика"
+        },
+        {
+            "trigger": "fname",
+            "contents": "fname = '${1:Consolas}'",
+            "kind": "Variable",
+            "annotation": "Основной шрифт",
+            "details": "Название установленного в системе шрифта"
+        },
+        {
+            "trigger": "onactsel",
+            "contents": "onactsel = '${1:onActSel}'",
+            "kind": "Variable",
+            "annotation": "Обработчик выделения действия",
+            "details": "Название локации-обработчика выделения действия"
+        },
+        {
+            "trigger": "ongload",
+            "contents": "ongload = '${1:onGameLoad}'",
+            "kind": "Variable",
+            "annotation": "Обработчик загрузки сохранения",
+            "details": "Название локации-обработчика загрузки сохранения игры"
+        },
+        {
+            "trigger": "ongsave",
+            "contents": "ongsave = '${1:onGameSave}'",
+            "kind": "Variable",
+            "annotation": "Обработчик сохранения игры",
+            "details": "Название локации-обработчика, запускаемой после сохранения игры"
+        },
+        {
+            "trigger": "onnewloc",
+            "contents": "onnewloc = '${1:onNewLoc}'",
+            "kind": "Variable",
+            "annotation": "Обработчик перехода на локацию",
+            "details": "Название локации-обработчика перехода на локацию по GOTO/XGOTO"
+        },
+        {
+            "trigger": "onobjadd",
+            "contents": "onobjadd = '${1:onObjAdd}'",
+            "kind": "Variable",
+            "annotation": "Обработчик добавления предмета",
+            "details": "Название локации-обработчика добавления предмета в окно предметов"
+        },
+        {
+            "trigger": "onobjdel",
+            "contents": "onobjdel = '${1:onObjDel}'",
+            "kind": "Variable",
+            "annotation": "Обработчик удаления предмета",
+            "details": "Название локации-обработчика удаления предмета из окна предметов"
+        },
+        {
+            "trigger": "onobjsel",
+            "contents": "onobjsel = '${1:onObjSel}'",
+            "kind": "Variable",
+            "annotation": "Обработчик выделения предмета",
+            "details": "Название локации-обработчика выделения предмета в окне предметов"
+        },
+        {
+            "trigger": "usercom",
+            "contents": "usercom = '${1:userCommand}'",
+            "kind": "Variable",
+            "annotation": "Обработчик строки ввода",
+            "details": "Название локации-обработчика строки ввода"
+        },
+        {
+            "trigger": "bcolor",
+            "contents": "bcolor = rgb(${1:red},${2:green},${3:blue})${0}",
+            "kind": "Variable",
+            "annotation": "Цвет фона игры"
+        },
+        {
+            "trigger": "debug",
+            "contents": "debug = ${1:1}",
+            "kind": "Variable",
+            "annotation": "Режим отладки",
+        },
+        {
+            "trigger": "disablescroll",
+            "contents": "disablescroll = ${1:1}",
+            "kind": "Variable",
+            "annotation": "Отключить принудительную прокрутку",
+        },
+        {
+            "trigger": "fcolor",
+            "contents": "fcolor = rgb(${1:red},${2:green},${3:blue})${0}",
+            "kind": "Variable",
+            "annotation": "Цвет шрифта игры"
+        },
+        {
+            "trigger": "fsize",
+            "contents": "fsize = ${1:14}${0}",
+            "kind": "Variable",
+            "annotation": "Размер шрифта игры"
+        },
+        {
+            "trigger": "lcolor",
+            "contents": "lcolor = rgb(${1:red},${2:green},${3:blue})${0}",
+            "kind": "Variable",
+            "annotation": "Цвет ссылок игры"
+        },
+        {
+            "trigger": "nosave",
+            "contents": "nosave = ${1:1}",
+            "kind": "Variable",
+            "annotation": "Запрет сохранения игры",
+        },
+        {
+            "trigger": "usehtml",
+            "contents": "usehtml = ${1:1}",
+            "kind": "Variable",
+            "annotation": "Режим распознавания HTML",
+        },
+        
+    ],
+}

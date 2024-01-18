@@ -336,11 +336,10 @@ class QspInvalidInput(sublime_plugin.EventListener):
 			if begin == end and scope_region is not None:
 				input_text = view.substr(scope_region)
 				pf_folder = search_project_folder(view.file_name(), print_error=False) if view.file_name() is not None else None
-				if pf_folder is not None:
-					all_locations = get_all_qsplocs(view, pf_folder=pf_folder, exclude_inputting=scope_region) # set, dict
-					if input_text in all_locations:
-						content = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>%s</span> уже существует в проекте." % input_text
-						view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
+				all_locations = get_all_qsplocs(view, pf_folder=pf_folder, exclude_inputting=scope_region) # set, dict
+				if input_text in all_locations:
+					content = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>%s</span> уже существует в проекте." % input_text
+					view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
 
 class QspAutocomplete(sublime_plugin.EventListener):
 	def on_selection_modified(self, view):

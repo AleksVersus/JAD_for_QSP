@@ -23,6 +23,20 @@
             "details": "XGOTO [$локация],[аргумент 0],[аргумент 1], ... ,[аргумент 18]"
         },
         {
+            "trigger": "gt",
+            "contents": "gt '${1:location name}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Переход на локацию.",
+            "details": "GT [$локация],[аргументы...]"
+        },
+        {
+            "trigger": "xgt",
+            "contents": "xgt '${1:location name}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Переход без очистки описания",
+            "details": "XGT [$локация],[аргументы...]"
+        },
+        {
             "trigger": "freelib",
             "contents": "freelib",
             "kind": ["keyword", "o", "Operator"],
@@ -59,14 +73,14 @@
         },
         {
             "trigger": "addobj",
-            "contents": "addobj '${1:Название предмета}'$0",
+            "contents": "addobj '${1:Название предмета}'",
             "kind": ["keyword", "o", "Operator"],
             "annotation": "Добавить предмет",
             "details": "ADDOBJ [$название]"
         },
         {
             "trigger": "delobj",
-            "contents": "delobj '${1:Название предмета}'$0",
+            "contents": "delobj '${1:Название предмета}'",
             "kind": ["keyword", "o", "Operator"],
             "annotation": "Удалить предмет по названию",
             "details": "DELOBJ [$название]"
@@ -78,6 +92,250 @@
             "annotation": "Удалить предмет по номеру",
             "details": "KILLOBJ [#номер]"
         },
-
+        {
+            "trigger": "act",
+            "contents": "act '${1:Название действия}', '${2:путь к картинке.png}': ${3:!@ Код действия}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Действие с изображением однострочное",
+            "details": "ACT [$название], [$путь к файлу изображения]: [оператор...]"
+        },
+        {
+            "trigger": "act",
+            "contents": "act '${1:Название действия}':\\n${2/.+/\\t/}${2:!@ Код действия}\\nend",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Действие многострочное",
+            "details": "ACT [$название]:<br>   [оператор...]<br>end"
+        },
+        {
+            "trigger": "act",
+            "contents": "act '${1:Название действия}': ${2:!@ Код действия}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Действие однострочное",
+            "details": "ACT [$название]: [операторы...]"
+        },
+        {
+            "trigger": "act",
+            "contents": "act '${1:Название действия}', '${2:путь к картинке.png}':\\n${3/.+/\\t/}${3:!@ Код действия}\\nend",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Действие с изображением многострочное",
+            "details": "ACT [$название], [$путь к файлу изображения]:<br>   [оператор...]<br>end"
+        },
+        {
+            "trigger": "close",
+            "contents": "close '${1:путь к звуковому файлу.mp3}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Остановить звук",
+            "details": "CLOSE [$путь к звуковому файлу]"
+        },
+        {
+            "trigger": "close all",
+            "contents": "close all",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Остановить все звуки",
+            "details": "CLOSE ALL"
+        },
+        {
+            "trigger": "cla",
+            "contents": "cla",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Очистка действий",
+            "details": "CLA"
+        },
+        {
+            "trigger": "clr",
+            "contents": "clr",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Очистка окна",
+            "details": "*CLR — осн. описание, CLR — доп. описание"
+        },
+        {
+            "trigger": "clear",
+            "contents": "clear",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Очистка окна",
+            "details": "*CLEAR — осн. описание, CLEAR — доп. описание"
+        },
+        {
+            "trigger": "cls",
+            "contents": "cls",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Очистка всех окон, кроме инвентаря",
+            "details": "CLS"
+        },
+        {
+            "trigger": "cmdclear",
+            "contents": "cmdclear",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Очистка строки ввода",
+            "details": "CMDCLEAR"
+        },
+        {
+            "trigger": "copyarr",
+            "contents": "copyarr '${1:\\$новый_массив}','${2:\\$старый_массив}'${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Копирование массива",
+            "details": "COPYARR [$приёмник],[$источник],[#начало],[#количество]"
+        },
+        {
+            "trigger": "delact",
+            "contents": "delact '${1:\\$название действия}'${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Удаление действия",
+            "details": "DELACT [$название]"
+        },
+        {
+            "trigger": "delact",
+            "contents": "dynamic ${1:\\$code}${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Выполнение кода из строки текста",
+            "details": "DYNAMIC [$код], [аргументы...]"
+        },
+        {
+            "trigger": "exit",
+            "contents": "exit",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Выход из локации",
+            "details": "EXIT - прервать выполнение кода локации"
+        },
+        {
+            "trigger": "gosub",
+            "contents": "gosub '${1:название локации}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Выполнить код локации",
+            "details": "GOSUB [$локация],[аргументы...]"
+        },
+        {
+            "trigger": "gs",
+            "contents": "gs '${1:название локации}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Выполнить код локации",
+            "details": "GS [$локация],[аргументы...]"
+        },
+        {
+            "trigger": "jump",
+            "contents": "jump '${1:МЕТКА}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Переход на метку",
+            "details": "JUMP [$метка]"
+        },
+        {
+            "trigger": "killall",
+            "contents": "killall",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Уничтожить переменные и предметы",
+            "details": "KILLALL"
+        },
+        {
+            "trigger": "killvar",
+            "contents": "killvar '${1:название массива}'${2:, ${3:индекс_элемента}}${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Удалить элемент массива",
+            "details": "KILLVAR [$название массива],[индекс элемента]"
+        },
+        {
+            "trigger": "menu",
+            "contents": "menu '${1:название массива}'${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Вызвать меню",
+            "details": "MENU [$название массива]"
+        },
+        {
+            "trigger": "msg",
+            "contents": "msg '${1:текст сообщения}'${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Вывести сообщение",
+            "details": "MSG [сообщение]"
+        },
+        {
+            "trigger": "play",
+            "contents": "play '${1:путь к звуковому файлу.mp3}'${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Воспроизвести звук",
+            "details": "PLAY [$путь к звуковому файлу],[#громкость]"
+        },
+        {
+            "trigger": "refint",
+            "contents": "refint",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Обновить интерфейс",
+            "details": "REFINT"
+        },
+        {
+            "trigger": "set",
+            "contents": "set ${1:переменные} = ${2:значения}${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Установка значений переменных",
+            "details": "SET var1, var2, ... = [value1], [value2], ..."
+        },
+        {
+            "trigger": "local",
+            "contents": "local ${1:переменные} = ${2:значения}${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Установка локальных переменных",
+            "details": "LOCAL var1, var2, ... = [value1], [value2], ..."
+        },
+        {
+            "trigger": "settimer",
+            "contents": "settimer ${1:500}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Период вып. локации-счётчика",
+            "details": "SETTIMER [#миллисекунды]"
+        },
+        {
+            "trigger": "showacts",
+            "contents": "showacts ${1:0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Отображение действий",
+            "details": "SHOWACTS [0|1]"
+        },
+        {
+            "trigger": "showinput",
+            "contents": "showinput ${1:0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Отображение строки ввода",
+            "details": "SHOWINPUT [0|1]"
+        },
+        {
+            "trigger": "showobjs",
+            "contents": "showobjs ${1:0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Отображение предметов",
+            "details": "SHOWOBJS [0|1]"
+        },
+        {
+            "trigger": "showstat",
+            "contents": "showstat ${1:0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Отображение окна доп. описания",
+            "details": "SHOWSTAT [0|1]"
+        },
+        {
+            "trigger": "unselect",
+            "contents": "unselect",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Снять выделение с предмета",
+            "details": "UNSELECT"
+        },
+        {
+            "trigger": "unsel",
+            "contents": "unsel",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Снять выделение с предмета",
+            "details": "UNSEL"
+        },
+        {
+            "trigger": "view",
+            "contents": "view '${1:путь к картинке.png}'",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Отобразить картинку",
+            "details": "VIEW [$путь к графическому файлу]"
+        },
+        {
+            "trigger": "wait",
+            "contents": "wait ${1:1000}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Пауза",
+            "details": "WAIT [#миллисекунды]"
+        },
     ],
 }
