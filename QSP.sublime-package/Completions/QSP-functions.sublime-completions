@@ -1,5 +1,5 @@
 {
-    "scope": "meta.location.qsp",
+    "scope": "meta.location.qsp - meta.start_location.qsp",
     "completions": [
         {
             "trigger": "curacts",
