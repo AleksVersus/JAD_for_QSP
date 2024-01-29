@@ -159,7 +159,7 @@ CMD_TEMPLATES = {
 
 def safe_mk_fold(new_path):
 	if not os.path.isdir(new_path):
-		os.mkdir(new_path)
+		os.makedirs(new_path)
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
@@ -228,34 +228,36 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 	def run(self):
 		argv = self.window.extract_variables()
 		if 'folder' in argv:
-			safe_mk_fold(argv['folder'] + '\\[disdocs]')
-			safe_mk_fold(argv['folder'] + '\\[output_game]')
-			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets')
-			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets\\img')
-			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets\\snd')
-			safe_mk_fold(argv['folder'] + '\\[output_game]\\assets\\vid')
-			safe_mk_fold(argv['folder'] + '\\[output_game]\\lib')
-			safe_mk_fold(argv['folder'] + '\\[source]')
+			jont = os.path.join
+			safe_mk_fold(jont(argv['folder'],'[disdocs]'))
+			safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\img'))
+			safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\snd'))
+			safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\vid'))
+			safe_mk_fold(jont(argv['folder'], '[output_game]\\lib'))
+			safe_mk_fold(jont(argv['folder'], '[source]'))
 			# crete project.json
-			if not os.path.isfile(argv['folder']+'\\[source]\\project.json'):
+			project_json_path = jont(argv['folder'], '[source]\\project.json')
+			if not os.path.isfile(project_json_path):
 				project_json = [
 					'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":"..\\\\[output_game]\\\\game_start.qsp"',
 					',\n\t\t\t"folders":\n\t\t\t[\n\t\t\t\t{"path":"."}\n\t\t\t]\n\t\t}',
 					'\n\t],\n\t"start":"..\\\\[output_game]\\\\game_start.qsp"',
 					',\n\t"player":"C:\\\\Program Files\\\\QSP\\\\qsp580\\\\qspgui.exe"\n}'
 				]
-				with open(argv['folder']+'\\[source]\\project.json', 'w', encoding='utf-8') as file:
+				with open(project_json_path, 'w', encoding='utf-8') as file:
 					file.writelines(project_json)
 			# create sublime-project
 			path, fname = os.path.split(argv['folder'])
-			if not os.path.isfile(argv['folder']+'\\'+fname+'.sublime-project'):
+			sublproj_path = jont(argv['folder'], fname + '.sublime-project')
+			if not os.path.isfile(sublproj_path):
 				sublime_project = [
 					'{\n\t"folders":\n\t[\n\t\t{\n\t\t\t"path": ".",\n\t\t}\n\t]\n}'
 				]
-				with open(argv['folder']+'\\'+fname+'.sublime-project', 'w', encoding='utf-8') as file:
+				with open(sublproj_path, 'w', encoding='utf-8') as file:
 					file.writelines(sublime_project)
 			# create startfile
-			if not os.path.isfile(argv['folder']+'\\[source]\\00_start.qsps'):
+			start_file_path = jont(argv['folder'], '[source]\\00_start.qsps')
+			if not os.path.isfile(start_file_path):
 				start_file = [
 					'QSP-Game Start game from this location\n\n',
 					'# [start]\n',
@@ -264,9 +266,9 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 					'Отредактируйте этот файл и добавьте новые."\n',
 					'--- [start] ---\n'
 				]
-				with open(argv['folder']+'\\[source]\\00_start.qsps', 'w', encoding='utf-8') as file:
+				with open(start_file_path, 'w', encoding='utf-8') as file:
 					file.writelines(start_file)
-				self.window.open_file(argv['folder']+'\\[source]\\00_start.qsps')
+				self.window.open_file(start_file_path)
 
 class QspNewGameHeadCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -294,8 +296,9 @@ def get_qsp_workspace(view, pf_folder=None):
 	"""
 		Return qsp-workspace if file is exist, or empty workspace.
 	"""
-	if pf_folder is not None and os.path.isfile(pf_folder + '\\qsp-project-workspace.json'):
-		with open(pf_folder + '\\qsp-project-workspace.json',"r",encoding="utf-8") as ws_file:
+	ws_path = os.path.join(pf_folder,'qsp-project-workspace.json')
+	if pf_folder is not None and os.path.isfile(ws_path):
+		with open(ws_path,"r",encoding="utf-8") as ws_file:
 			qsp_ws = json.load(ws_file)
 	else:
 		# empty workspace
@@ -318,14 +321,18 @@ def get_all_qsplocs(view, pf_folder=None, exclude_inputting=None):
 
 def save_location_names(view):
 	current_qsps = view.file_name()
-	if current_qsps is not None:
-		pf_folder = search_project_folder(current_qsps, print_error=False)
-		if pf_folder is not None:
-			current_qsplocs = get_qsplocs_from_symbols(view)
-			qsp_workspace = get_qsp_workspace(view, pf_folder=pf_folder) # dict
-			qsp_workspace['locations'][current_qsps] = list(current_qsplocs)
-			with open(pf_folder + '\\qsp-project-workspace.json',"w",encoding="utf-8") as ws_file:
-				json.dump(qsp_workspace, ws_file)
+	if current_qsps is None:
+		return None
+	args = sublime.active_window().extract_variables()
+	pf_folder = (args['folder'] if 'folder' in args else None) # first folder at project
+	if pf_folder is None:
+		return None
+	current_qsplocs = get_qsplocs_from_symbols(view) # qsp-locations in open view
+	qsp_workspace = get_qsp_workspace(view, pf_folder=pf_folder) # dict of workspace
+	curqsps_relpath = os.path.relpath(current_qsps, args['folder'])
+	qsp_workspace['locations'][curqsps_relpath] = list(current_qsplocs)
+	with open(os.path.join(pf_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
+		json.dump(qsp_workspace, ws_file)
 
 class QspInvalidInput(sublime_plugin.EventListener):
 	def on_modified(self, view):
@@ -335,8 +342,9 @@ class QspInvalidInput(sublime_plugin.EventListener):
 			scope_region = view.expand_to_scope(begin, 'meta.start_location.qsp')
 			if begin == end and scope_region is not None:
 				input_text = view.substr(scope_region)
-				pf_folder = search_project_folder(view.file_name(), print_error=False) if view.file_name() is not None else None
-				all_locations = get_all_qsplocs(view, pf_folder=pf_folder, exclude_inputting=scope_region) # set, dict
+				args = sublime.active_window().extract_variables()
+				pf_folder = (args['folder'] if 'folder' in args else None)
+				all_locations = get_all_qsplocs(view, pf_folder=pf_folder, exclude_inputting=scope_region) # list
 				if input_text in all_locations:
 					content = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>%s</span> уже существует в проекте." % input_text
 					view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
@@ -363,8 +371,8 @@ class QspAutocomplete(sublime_plugin.EventListener):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
 			if not view.match_selector(locations[0]-1, 'variable.function.qsp'):
 				return []
-			current_qsps = view.file_name()
-			pf_folder = search_project_folder(current_qsps, print_error=False) if current_qsps is not None else None
+			args = sublime.active_window().extract_variables()
+			pf_folder = (args['folder'] if 'folder' in args else None)
 			all_locations = get_all_qsplocs(view, pf_folder=pf_folder) # -> list
 			qsp_locations = []
 			prefix = prefix.lower()
