@@ -158,6 +158,9 @@ CMD_TEMPLATES = {
 }
 
 def safe_mk_fold(new_path):
+	"""
+		Safe make dir with making all chain of dir
+	"""
 	if not os.path.isdir(new_path):
 		os.makedirs(new_path)
 
@@ -291,6 +294,7 @@ def get_qsplocs_from_symbols(view, exclude_inputting=None): # View, Region -> li
 			if name.startswith('Локация: '):
 				qsp_locations.append(name[9:])
 	return(qsp_locations)
+
 def get_qsplabels_from_symbols(view, exclude_inputting=None): # View, Region -> list
 	"""
 		Return list of QSP-labels created on this view
@@ -331,16 +335,20 @@ def get_all_qsplocs(view, pf_folder=None, exclude_inputting=None):
 	return list(all_locations)
 
 def save_location_names(view):
+	# если вью для существующего файла, а не для просто окна
 	current_qsps = view.file_name()
 	if current_qsps is None:
 		return None
+	# сохранить можно только если в проекте есть хотя бы одна папка
 	args = sublime.active_window().extract_variables()
 	pf_folder = (args['folder'] if 'folder' in args else None) # first folder at project
 	if pf_folder is None:
 		return None
+	# получаем список имён локаций во вью
 	current_qsplocs = get_qsplocs_from_symbols(view) # qsp-locations in open view
+	# получаем сохранённый воркспейс
 	qsp_workspace = get_qsp_workspace(view, pf_folder=pf_folder) # dict of workspace
-	curqsps_relpath = os.path.relpath(current_qsps, args['folder'])
+	curqsps_relpath = os.path.relpath(current_qsps, args['folder']) # путь к файлу с локациями относительно воркспейса
 	qsp_workspace['locations'][curqsps_relpath] = list(current_qsplocs)
 	with open(os.path.join(pf_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
 		json.dump(qsp_workspace, ws_file)
@@ -407,7 +415,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 						kind=sublime.KIND_FUNCTION
 					)
 					qsp_locations.append(d)
-			return qsp_locations
+			return (qsp_locations, 24)
 		# if calable operator call location
 		elif view.match_selector(locations[0]-1, 'callable_locs.qsp'):
 			qsp_locations = []
@@ -423,7 +431,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 						kind=sublime.KIND_FUNCTION
 					)
 					qsp_locations.append(d)
-			return qsp_locations
+			return (qsp_locations, 24)
 		elif view.match_selector(locations[0]-1, 'label_to_jump.qsp'):
 			all_labels = get_qsplabels_from_symbols(view)
 			scope_region = view.expand_to_scope(locations[0]-1, 'label_to_jump.qsp')
@@ -439,7 +447,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 						kind=sublime.KIND_MARKUP
 					)
 					qsp_labels.append(d)
-			return qsp_labels
+			return (qsp_labels, 24)
 		else:
 			return []
 
@@ -450,3 +458,9 @@ class QspSaveLocationNames(sublime_plugin.EventListener):
 	def on_pre_save(self, view):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
 			save_location_names(view)
+
+class QspHidePopup(sublime_plugin.TextChangeListener):
+	def on_text_changed(self, changes):
+		view = sublime.active_window().active_view()
+		if view.syntax() is not None and view.syntax().name == 'QSP':
+			view.hide_popup()
