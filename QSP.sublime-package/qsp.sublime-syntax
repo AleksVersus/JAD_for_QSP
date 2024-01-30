@@ -113,6 +113,7 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp
     - include: preprocessor
     - include: comments
+    - include: location_call
     - include: labels
     - include: operators
     - include: operacion
@@ -121,6 +122,15 @@ contexts: # теперь необходимо определить "контек
     - include: numeric
     - include: strings
     - include: separator_continuation
+
+  # вызовы локаций
+  location_call:
+    - match: (goto|gt|xgoto|xgt|gosub|gs)(?=\s*($|&))
+      scope: invalid.illegal.qsp
+    - match: (goto|gt|xgoto|xgt|gosub|gs)\s*(('|").*?\3)
+      captures:
+        1: keyword.operator.other.qsp avs_operators
+        2: string.quoted.double.qsp callable_locs.qsp
 
   # неявный вызов функций
   sugarfunc:

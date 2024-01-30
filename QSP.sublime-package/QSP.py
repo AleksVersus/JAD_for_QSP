@@ -368,16 +368,34 @@ class QspAutocomplete(sublime_plugin.EventListener):
 			if (match is not None) and (word in keywords):
 				sublime.status_message(CMD_TEMPLATES[word])
 	def on_query_completions(self, view, prefix, locations):
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			if not view.match_selector(locations[0]-1, 'variable.function.qsp'):
-				return []
-			args = sublime.active_window().extract_variables()
-			pf_folder = (args['folder'] if 'folder' in args else None)
-			all_locations = get_all_qsplocs(view, pf_folder=pf_folder) # -> list
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return []
+		# extract all datas
+		args = sublime.active_window().extract_variables()
+		pf_folder = (args['folder'] if 'folder' in args else None)
+		all_locations = get_all_qsplocs(view, pf_folder=pf_folder) # -> list
+		# if syntshugarfunc
+		if view.match_selector(locations[0]-1, 'variable.function.qsp'):
 			qsp_locations = []
 			prefix = prefix.lower()
 			for qsp_loc in all_locations:
 				if qsp_loc.lower().startswith(prefix):
+					d = sublime.CompletionItem(
+						qsp_loc,
+						annotation="Локация",
+						completion=qsp_loc,
+						completion_format=sublime.COMPLETION_FORMAT_TEXT,
+						kind=sublime.KIND_FUNCTION
+					)
+					qsp_locations.append(d)
+			return qsp_locations
+		# if calable operator call location
+		elif view.match_selector(locations[0]-1, 'callable_locs.qsp'):
+			qsp_locations = []
+			scope_region = view.expand_to_scope(locations[0]-1, 'callable_locs.qsp')
+			input_text = view.substr(scope_region)
+			for qsp_loc in all_locations:
+				if qsp_loc.lower().startswith(input_text[1:-1]):
 					d = sublime.CompletionItem(
 						qsp_loc,
 						annotation="Локация",
