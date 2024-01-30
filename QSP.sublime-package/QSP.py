@@ -291,6 +291,17 @@ def get_qsplocs_from_symbols(view, exclude_inputting=None): # View, Region -> li
 			if name.startswith('Локация: '):
 				qsp_locations.append(name[9:])
 	return(qsp_locations)
+def get_qsplabels_from_symbols(view, exclude_inputting=None): # View, Region -> list
+	"""
+		Return list of QSP-labels created on this view
+	"""
+	qsp_labels = []
+	for s in view.symbols():
+		region, name = s
+		if exclude_inputting is None or region != exclude_inputting:
+			if name.startswith('Метка: '):
+				qsp_labels.append(name[7:])
+	return(qsp_labels)
 
 def get_qsp_workspace(view, pf_folder=None):
 	"""
@@ -336,18 +347,26 @@ def save_location_names(view):
 
 class QspInvalidInput(sublime_plugin.EventListener):
 	def on_modified(self, view):
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			begin = view.sel()[0].begin()
-			end = view.sel()[0].end()
-			scope_region = view.expand_to_scope(begin, 'meta.start_location.qsp')
-			if begin == end and scope_region is not None:
-				input_text = view.substr(scope_region)
-				args = sublime.active_window().extract_variables()
-				pf_folder = (args['folder'] if 'folder' in args else None)
-				all_locations = get_all_qsplocs(view, pf_folder=pf_folder, exclude_inputting=scope_region) # list
-				if input_text in all_locations:
-					content = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>%s</span> уже существует в проекте." % input_text
-					view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		begin = view.sel()[0].begin()
+		end = view.sel()[0].end()
+		sr_locname = view.expand_to_scope(begin, 'meta.start_location.qsp')
+		sr_lblname = view.expand_to_scope(begin, 'entity.name.qlabel.qsp')
+		if begin == end and sr_locname is not None:
+			input_text = view.substr(sr_locname)
+			args = sublime.active_window().extract_variables()
+			pf_folder = (args['folder'] if 'folder' in args else None)
+			all_locations = get_all_qsplocs(view, pf_folder=pf_folder, exclude_inputting=sr_locname) # list
+			if input_text in all_locations:
+				content = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>%s</span> уже существует в проекте." % input_text
+				view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
+		if begin == end and sr_lblname is not None:
+			input_text = view.substr(sr_lblname)
+			qsp_labels = get_qsplabels_from_symbols(view, exclude_inputting=sr_lblname)
+			if input_text in qsp_labels:
+				content = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>%s</span> уже есть на локации." % input_text
+				view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
 
 class QspAutocomplete(sublime_plugin.EventListener):
 	def on_selection_modified(self, view):
@@ -405,6 +424,22 @@ class QspAutocomplete(sublime_plugin.EventListener):
 					)
 					qsp_locations.append(d)
 			return qsp_locations
+		elif view.match_selector(locations[0]-1, 'label_to_jump.qsp'):
+			all_labels = get_qsplabels_from_symbols(view)
+			scope_region = view.expand_to_scope(locations[0]-1, 'label_to_jump.qsp')
+			input_text = view.substr(scope_region)
+			qsp_labels = []
+			for qsp_lb in all_labels:
+				if qsp_lb.lower().startswith(input_text[1:-1]):
+					d = sublime.CompletionItem(
+						qsp_lb,
+						annotation="Метка",
+						completion=qsp_lb,
+						completion_format=sublime.COMPLETION_FORMAT_TEXT,
+						kind=sublime.KIND_MARKUP
+					)
+					qsp_labels.append(d)
+			return qsp_labels
 		else:
 			return []
 
