@@ -14,6 +14,91 @@ from .qSpy.qsps_to_qsp import NewQspsFile
 from .qSpy.qsp_splitter import QspSplitter
 from .qSpy.main_cs import FinderSplitter
 
+# inner classes and functions
+def safe_mk_fold(new_path:str) -> None:
+	""" Safe make dir with making all chain of dir """
+	if not os.path.isdir(new_path):
+		os.makedirs(new_path)
+
+class QspWorkspace:
+	def __init__(self) -> None:
+		# microbase of locations
+		self.loc_names = [] # names of location [str]
+		self.loc_regions = [] # regions of locs initiate list[start, end]
+		self.loc_places = [] # file path, where is qsp_locs [str]
+
+	def add_loc(self, name:str, region:tuple, place:str) -> int:
+		self.loc_names.append(name)
+		self.loc_regions.append(region)
+		self.loc_places.append(place)
+		return len(self.loc_names)-1
+
+	def del_by_place(self, loc_place:str) -> None:
+		""" del location by place """
+		if loc_place in self.loc_places:
+			i = self.loc_places.index(loc_place)
+			del self.loc_places[i]
+			del self.loc_names[i]
+			del self.loc_regions[i]
+
+	def del_all_by_place(self, loc_place:str) -> None:
+		""" del all locations by place """
+		while loc_place in self.loc_places:
+			i = self.loc_places.index(loc_place)
+			del self.loc_places[i]
+			del self.loc_names[i]
+			del self.loc_regions[i]
+
+	def extract_from_file(self, project_folder=None) -> None:
+		print('get qsp workspace')
+		if project_folder is None:
+			return None
+		ws_path = os.path.join(project_folde,'qsp-project-workspace.json')
+		if not os.path.isfile(ws_path):
+			return None
+		with open(ws_path, "r", encoding="utf-8") as ws_file:
+			qsp_ws = json.load(ws_file)
+		if len(self.loc_names)>0:
+			self.__init__()
+			print('Error: QSP WORKSPACE already initialised!!!')
+		for path, qsp_locs in qsp_ws['locations'].items():
+			for name, region in qsp_locs:
+				self.add_loc(name, region, path)
+
+	def refresh_from_symbols(self, view) -> None:
+		"""	Return list of QSP-locations created on this view """
+		current_qsps = view.file_name()
+		if current_qsps is None:
+			return None
+		argv = sublime.active_window().extract_variables()
+		project_folder = (argv['folder'] if 'folder' in argv else None) # first folder at project
+		if project_folder is None:
+			return None
+		qsps_relpath = os.path.relpath(current_qsps, argv['folder'])
+		self.del_all_by_place(qsps_relpath)
+		for s in view.symbols():
+			region, name = s
+			if name.startswith('Локация: '):
+				self.add_loc(name[9:], [region.begin(), region.end()], qsps_relpath)
+
+	def get_json_struct(self) -> dict:
+		qsp_ws_out = { 'locations': {} }
+		qsp_locs = qsp_ws_out['locations']
+		for i, path in enumerate(self.loc_places):
+			if not path in qsp_locs: qsp_locs[path] = []
+			qsp_locs[path].append([self.loc_names[i], self.loc_regions[i]])
+		return qsp_ws_out
+
+	def save_to_file(self, view):
+		argv = sublime.active_window().extract_variables()
+		project_folder = (argv['folder'] if 'folder' in argv else None) # first folder at project
+		if project_folder is None:
+			return None
+		qsp_workspace = self.get_json_struct()
+		with open(os.path.join(project_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
+			json.dump(qsp_workspace, ws_file, indent=4)
+
+# constants
 CMD_TEMPLATES = {
 	# operators
 	"inclib": "INCLIB [$путь к игре] — добавить к игре локации из указанного файла QSP.",
@@ -157,12 +242,8 @@ CMD_TEMPLATES = {
 	"$backimage": "$BACKIMAGE - переменная содержит путь к фоновому изображению",
 }
 
-def safe_mk_fold(new_path):
-	"""
-		Safe make dir with making all chain of dir
-	"""
-	if not os.path.isdir(new_path):
-		os.makedirs(new_path)
+# variables
+QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
@@ -189,7 +270,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		builder.build_and_run()
 
 class QspToQspsCommand(sublime_plugin.WindowCommand):
-
+	""" Command to start converting QSP-file to qsps """
 	def run(self):
 		argv = self.window.extract_variables()
 		file = argv['file']
@@ -283,18 +364,6 @@ class QspNewGameCommand(sublime_plugin.WindowCommand):
 		self.window.focus_view(new_view)
 		self.window.run_command('qsp_new_game_head')
 
-def get_qsplocs_from_symbols(view, exclude_inputting=None): # View, Region -> list
-	"""
-		Return list of QSP-locations created on this view
-	"""
-	qsp_locations = []
-	for s in view.symbols():
-		region, name = s
-		if exclude_inputting is None or region != exclude_inputting:
-			if name.startswith('Локация: '):
-				qsp_locations.append(name[9:])
-	return(qsp_locations)
-
 def get_qsplabels_from_symbols(view, exclude_inputting=None): # View, Region -> list
 	"""
 		Return list of QSP-labels created on this view
@@ -307,7 +376,7 @@ def get_qsplabels_from_symbols(view, exclude_inputting=None): # View, Region -> 
 				qsp_labels.append(name[7:])
 	return(qsp_labels)
 
-def get_qsp_workspace(view, pf_folder=None):
+def get_qsp_workspace(pf_folder=None):
 	"""
 		Return qsp-workspace if file is exist, or empty workspace.
 	"""
@@ -328,30 +397,30 @@ def get_all_qsplocs(view, pf_folder=None, exclude_inputting=None):
 	all_locations.update(set(get_qsplocs_from_symbols(view, exclude_inputting=exclude_inputting)))
 	# get saved locations
 	if pf_folder is not None:
-		qsp_workspace = get_qsp_workspace(view, pf_folder=pf_folder)
+		qsp_workspace = get_qsp_workspace(pf_folder=pf_folder)
 		for qsplocs in qsp_workspace['locations'].values():
 			for qsp_loc in qsplocs:
 				all_locations.add(qsp_loc)
 	return list(all_locations)
 
-def save_location_names(view):
+def save_qsplocs_to_workspace(view):
 	# если вью для существующего файла, а не для просто окна
 	current_qsps = view.file_name()
 	if current_qsps is None:
 		return None
 	# сохранить можно только если в проекте есть хотя бы одна папка
-	args = sublime.active_window().extract_variables()
-	pf_folder = (args['folder'] if 'folder' in args else None) # first folder at project
-	if pf_folder is None:
+	argv = sublime.active_window().extract_variables()
+	project_folder = (argv['folder'] if 'folder' in argv else None) # first folder at project
+	if project_folder is None:
 		return None
-	# получаем список имён локаций во вью
-	current_qsplocs = get_qsplocs_from_symbols(view) # qsp-locations in open view
-	# получаем сохранённый воркспейс
-	qsp_workspace = get_qsp_workspace(view, pf_folder=pf_folder) # dict of workspace
-	curqsps_relpath = os.path.relpath(current_qsps, args['folder']) # путь к файлу с локациями относительно воркспейса
-	qsp_workspace['locations'][curqsps_relpath] = list(current_qsplocs)
-	with open(os.path.join(pf_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
-		json.dump(qsp_workspace, ws_file)
+	if project_folder in QSP_WORKSPACES:
+		# if ws exist in dict of wss
+		qsp_ws = QSP_WORKSPACES[project_folder]
+	else:
+		# if ws dont exist in dict of wss
+		qsp_ws = QSP_WORKSPACES[project_folder] = QspWorkspace()
+	qsp_ws.refresh_from_symbols(view)
+	qsp_ws.save_to_file(view)
 
 class QspInvalidInput(sublime_plugin.EventListener):
 	def on_modified(self, view):
@@ -452,12 +521,27 @@ class QspAutocomplete(sublime_plugin.EventListener):
 			return []
 
 class QspSaveLocationNames(sublime_plugin.EventListener):
+
+	def _extract_qsp_ws(self):
+		argv = sublime.active_window().extract_variables()
+		project_folder = (argv['folder'] if 'folder' in argv else None)
+		if project_folder is None:
+			return None
+		if os.path.isfile(os.path.join(project_folder, 'qsp-project-workspace.json')):
+			qws = QSP_WORKSPACES[project_folder] = QspWorkspace()
+			qws.extract_from_file(project_folder=project_folder)
+
 	def on_close(self, view):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
-			save_location_names(view)
+			save_qsplocs_to_workspace(view)
 	def on_pre_save(self, view):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
-			save_location_names(view)
+			save_qsplocs_to_workspace(view)
+	def on_init(self, views):
+		self._extract_qsp_ws()
+	def on_load_project(self, window):
+		self._extract_qsp_ws()
+
 
 class QspHidePopup(sublime_plugin.TextChangeListener):
 	def on_text_changed(self, changes):
