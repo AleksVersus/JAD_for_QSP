@@ -123,6 +123,12 @@ contexts: # теперь необходимо определить "контек
     - include: numeric
     - include: strings
     - include: separator_continuation
+    - include: users_variables
+
+  # пользовательские переменные
+  users_variables:
+    - match: '{{users_variables}}'
+      scope: meta.user-variables.qsp
 
   # Прыжок на метку
   jump_to_label:

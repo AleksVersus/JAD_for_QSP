@@ -133,7 +133,6 @@ class QspWorkspace:
 				if name.startswith('Метка: '):
 					qsp_labels.append(name[7:])
 		return(qsp_labels)
-		
 
 # constants
 CMD_TEMPLATES = {
@@ -281,6 +280,7 @@ CMD_TEMPLATES = {
 
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
+QSP_TRYER = True
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
@@ -434,8 +434,7 @@ class QspInvalidInput(sublime_plugin.EventListener):
 				content = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>%s</span> уже есть на локации." % input_text
 				view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
 
-class QspAutocomplete(sublime_plugin.EventListener):
-	""" Autocomplete and helptips """
+class QspTips(sublime_plugin.EventListener):
 
 	def on_selection_modified(self, view):
 		""" Show tips in statusbar """
@@ -455,6 +454,25 @@ class QspAutocomplete(sublime_plugin.EventListener):
 				match = re.match(r'^\w+\b$', word)
 			if (match is not None) and (word in keywords):
 				sublime.status_message(CMD_TEMPLATES[word])
+
+# class QspAddLighting(sublime_plugin.EventListener):
+
+# 	def on_selection_modified(self, view):
+# 		""" HighLight- """
+# 		global QSP_TRYER
+# 		if view.syntax() is not None and view.syntax().name == 'QSP':
+# 			if QSP_TRYER:
+# 				user_variable = r'\$?[A-Za-zА-Яа-я_][\w\.]*'
+# 				regions = view.find_all(user_variable, 2)
+# 				variables = set()
+# 				for r in regions:
+# 					if view.match_selector(r.begin(), 'meta.user-variables.qsp'):
+# 						variables.add(view.substr(r))
+# 				print(list(variables))
+# 				QSP_TRYER = False
+
+class QspAutocomplete(sublime_plugin.EventListener):
+	""" Autocomplete and helptips """
 
 	def on_query_completions(self, view, prefix, locations):
 		""" append completions in editor """
