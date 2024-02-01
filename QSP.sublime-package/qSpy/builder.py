@@ -53,9 +53,9 @@ class BuildQSP():
 			project_json = qsp.get_standart_project(point_file, self.player)
 			project_json = project_json.replace('\\', '\\\\')
 
-			with open(self.work_dir+"\\project.json", "w", encoding="utf-8") as file:
+			with open(os.path.join(self.work_dir, "project.json"), "w", encoding="utf-8") as file:
 				file.write(project_json)
-			qsp.write_error_log("error.log", "[100] File '"+self.work_dir+"\\project.json' was created.\n")
+			qsp.write_error_log("error.log", "[100] File '"+os.path.join(self.work_dir, 'project.json')+"' was created.\n")
 
 	def set_work_dir(self, work_dir):
 		self.work_dir = work_dir

@@ -23,7 +23,7 @@ class FinderSplitter():
 		self.search_n_split()
 
 	def search_n_split(self):
-		path_list = [f"{self.folder_path}\\{path}" for path in os.listdir(self.folder_path)]
+		path_list = [os.path.join(self.folder_path, path) for path in os.listdir(self.folder_path)]
 		qsp_files_list = []
 		qsps_files_list = []
 		for path in path_list:

@@ -19,7 +19,7 @@ def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 		for file in files:
 			sp = os.path.splitext(file)
 			if len(filters)==0 or (sp[1] in filters):
-				build_files.append(abs_path+"\\"+file)
+				build_files.append(os.path.join(abs_path, file))
 	if len(build_files)==0:
 		write_error_log("error.log", "[201] Folder is empty. Prove path '"+folder+"'.\n")
 	return build_files
@@ -28,15 +28,9 @@ def compare_paths(path1, path2):
 	"""
 		Compare two paths and return tail relative to shared folder. 
 	"""
-	path1_list=path1.split('\\')
-	path2_list=path2.split('\\')
-	while path1_list[0]==path2_list[0]:
-		path2_list.pop(0)
-		path1_list.pop(0)
-		if (len(path1_list)==0 or len(path2_list)==0):
-			break
-	path1='\\'.join(path1_list)
-	path2='\\'.join(path2_list)
+	start = os.path.commonprefix(path1, path2)
+	path1 = os.path.relpath(path1, start)
+	path2 = os.path.relpath(path2, start)
 	return path1, path2
 
 def gen_files_paths(files_array):
@@ -98,7 +92,7 @@ def search_project_folder(path, print_error=True):
 	error = path
 	if os.path.isfile(path):
 		path = os.path.split(path)[0]
-	while not os.path.isfile(path+"\\project.json"):
+	while not os.path.isfile(os.path.join(path, "project.json")):
 		if os.path.ismount(path):
 			if print_error:
 				write_error_log("error.log", "[203] not found 'project.json' file for this project. Prove path "+error+".\n")
@@ -128,7 +122,7 @@ def parse_args(arguments):
 	if not "run" in args:
 		args["run"]=False
 	if not "point_file" in args:
-		args["point_file"]=os.getcwd()+"\\"+sys.argv[0]
+		args["point_file"]=os.path.join(os.getcwd(), sys.argv[0])
 	return args
 
 def exit_files(game_path):

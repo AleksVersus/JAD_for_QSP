@@ -23,16 +23,16 @@ class QspSplitter():
 			self.file_name = os.path.splitext(full_file_name)[0]
 			self.qsp_to_qsps = QspToQsps({'game-file':self.qsp_game_path})
 			self.qsps_file = self.qsp_to_qsps.convert()
-			self.qsp_project_file = f"{self.root_folder_path}\\{self.file_name}.qproj"
-			self.output_folder = f"{self.root_folder_path}\\{self.file_name}"
+			self.qsp_project_file = os.path.join(self.root_folder_path, self.file_name+".qproj")
+			self.output_folder = os.path.join(self.root_folder_path, self.file_name)
 			self.mode = 'game'
 		elif 'qsps-file' in self.args:
 			# Split other qsps-file
 			self.qsps_file = os.path.abspath(self.args['qsps-file'])
 			self.root_folder_path, full_file_name = os.path.split(self.qsps_file)
 			self.file_name= os.path.splitext(full_file_name)[0]
-			self.qsp_project_file = f"{self.root_folder_path}\\{self.file_name}.qproj"
-			self.output_folder = f"{self.root_folder_path}\\{self.file_name}"
+			self.qsp_project_file = os.path.join(self.root_folder_path, self.file_name+".qproj")
+			self.output_folder = os.path.join(self.root_folder_path, self.file_name)
 			self.mode = 'txt'
 		else:
 			self.mode = ''
@@ -106,7 +106,7 @@ class QspSplitter():
 							if folder_path=="":
 								location_dict[name]=file_name+".qsps"
 							else:
-								location_dict[name]=folder_path+"\\"+file_name+".qsps"
+								location_dict[name]=os.path.join(folder_path, file_name+".qsps")
 						if folder!=None:
 							name=re.search(r'name=".*?"', i).group(0)
 							name=name[6:len(name)-1]
@@ -151,14 +151,14 @@ class QspSplitter():
 					# в противном случае сохраняем локацию в текущей папке
 					path = self.replace_bad_symbols(location_name)+".qsps"
 				folder=os.path.split(path)[0]
-				if not os.path.isdir(f"{export_fold}\\{folder}"):
+				if not os.path.isdir(os.path.join(export_fold, folder)):
 					# если дирректория не существует, создаём
-					os.mkdir(f"{export_fold}\\{folder}")
-				if os.path.isfile(f"{export_fold}\\{path}"):
+					os.mkdir(os.path.join(export_fold, folder))
+				if os.path.isfile(os.path.join(export_fold, path)):
 					name, ext = os.path.splitext(path)
 					path=f"{name}_{count}{ext}"
 				# print(f"[160] {path}")
-				with open(f"{export_fold}\\{path}","w",encoding="utf-8") as file:
+				with open(os.path.join(export_fold, path),"w",encoding="utf-8") as file:
 					# теперь сохраняем файлы
 					file.write(location_array[location_name])
 			# удаляем исходный файл. delete qsps
@@ -167,7 +167,7 @@ class QspSplitter():
 			print('Error. File "game.txt" is not found!')
 
 def main():
-	args = {'qsps-file':'D:\\my\\projects\\nonQSP-video\\flat_earth\\lastbugs.qsps'}
+	args = {'qsps-file':'..\\flat_earth\\lastbugs.qsps'}
 	QspSplitter(args=args).split_file()
 
 if __name__=="__main__":

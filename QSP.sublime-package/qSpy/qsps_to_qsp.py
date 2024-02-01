@@ -31,7 +31,7 @@ class NewQspsFile():
 		if output_file != "":
 			self.output_file = os.path.abspath(output_file)
 		else:
-			self.output_file = self.output_folder+"\\"+self.file_name+".qsp"
+			self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
 		self.locations_count = 0
 		self.locations = []
 		self.locations_id = {}

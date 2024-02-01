@@ -27,7 +27,7 @@ class QspToQsps():
 			with open(self.input_file, 'r', encoding='utf-16le') as file:
 				self.qsp_source_text = file.read()
 			self.read_qsp()
-			output_file = f'{self.output_folder}\\{self.file_name}.qsps'
+			output_file = os.path.join(self.output_folder, self.file_name+'.qsps')
 			with open(output_file, 'w', encoding='utf-8') as file:
 				file.write(self.to_qsps())
 			return output_file
