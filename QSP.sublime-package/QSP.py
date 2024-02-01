@@ -50,7 +50,6 @@ class QspWorkspace:
 			del self.loc_regions[i]
 
 	def extract_from_file(self, project_folder=None) -> None:
-		print('get qsp workspace')
 		if project_folder is None:
 			return None
 		ws_path = os.path.join(project_folder,'qsp-project-workspace.json')
@@ -121,6 +120,19 @@ class QspWorkspace:
 				if name.startswith('Локация: '):
 					all_qsplocs.add_loc((name[9:], [region.begin(), region.end()], ''))
 		return all_qsplocs
+
+	@staticmethod
+	def get_qsplabels_from_symbols(view, exclude_inputting=None): # View, Region -> list
+		"""
+			Return list of QSP-labels created on this view
+		"""
+		qsp_labels = []
+		for s in view.symbols():
+			region, name = s
+			if exclude_inputting is None or region != exclude_inputting:
+				if name.startswith('Метка: '):
+					qsp_labels.append(name[7:])
+		return(qsp_labels)
 		
 
 # constants
@@ -389,18 +401,6 @@ class QspNewGameCommand(sublime_plugin.WindowCommand):
 		self.window.focus_view(new_view)
 		self.window.run_command('qsp_new_game_head')
 
-def get_qsplabels_from_symbols(view, exclude_inputting=None): # View, Region -> list
-	"""
-		Return list of QSP-labels created on this view
-	"""
-	qsp_labels = []
-	for s in view.symbols():
-		region, name = s
-		if exclude_inputting is None or region != exclude_inputting:
-			if name.startswith('Метка: '):
-				qsp_labels.append(name[7:])
-	return(qsp_labels)
-
 class QspInvalidInput(sublime_plugin.EventListener):
 	def on_modified(self, view):
 		if view.syntax() is None or view.syntax().name != 'QSP':
@@ -429,7 +429,7 @@ class QspInvalidInput(sublime_plugin.EventListener):
 			view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
 		if begin == end and sr_lblname is not None:
 			input_text = view.substr(sr_lblname)
-			qsp_labels = get_qsplabels_from_symbols(view, exclude_inputting=sr_lblname)
+			qsp_labels = QspWorkspace.get_qsplabels_from_symbols(view, exclude_inputting=sr_lblname)
 			if input_text in qsp_labels:
 				content = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>%s</span> уже есть на локации." % input_text
 				view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
@@ -494,7 +494,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 					qsp_locations.append(d)
 			return (qsp_locations, 24)
 		elif view.match_selector(locations[0]-1, 'label_to_jump.qsp'):
-			all_labels = get_qsplabels_from_symbols(view)
+			all_labels = QspWorkspace.get_qsplabels_from_symbols(view)
 			scope_region = view.expand_to_scope(locations[0]-1, 'label_to_jump.qsp')
 			input_text = view.substr(scope_region)
 			qsp_labels = []
