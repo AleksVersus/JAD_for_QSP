@@ -127,7 +127,7 @@ contexts: # теперь необходимо определить "контек
 
   # пользовательские переменные
   users_variables:
-    - match: '{{users_variables}}(?=(\s+{{users_variables}}|\s*\({{users_variables}}))'
+    - match: '{{users_variables}}(?=(\s+{{right_operand}}|\s*\({{right_operand}}))'
       scope: invalid.illegal.qsp
     - match: '{{users_variables}}'
       scope: meta.user-variables.qsp
