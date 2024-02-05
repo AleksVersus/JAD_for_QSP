@@ -22,6 +22,7 @@
 	$maintext_backimage	& !@ backimage в составе другой переменной не подсвечивается
 	backimage	& !@ backimage неверно написанная подсвечивается
 	$new_curloc
+	new_curloc fffff & !@ Подсветка ошибки неизвестное действие
 	curloc
 	clr & clear
 	p "Текст для вывода в окно дополнительного описания"
