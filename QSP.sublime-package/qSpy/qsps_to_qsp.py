@@ -40,9 +40,10 @@ class NewQspsFile():
 		if os.path.isfile(self.input_file):
 			with open(self.input_file, 'r', encoding='utf-8') as file:
 				self.file_strings = file.readlines()
+			self.file_body = ''.join(self.file_strings)
 			self.split_to_locations(self.file_strings)
 		else:
-			print("File '"+self.input_file+"' is not exist")
+			print(f'File «{self.input_file}» is not exist')
 
 	def split_to_locations(self, string_lines:list):
 		input_text = ''.join(string_lines)
@@ -110,6 +111,30 @@ class NewQspsFile():
 			return scope_type, prev_line, scope_regexp_obj, post_line
 		else:
 			return None, '', '', string_line
+
+	def get_qsplocs(self):
+		qsp_locs = []
+		for location in self.locations:
+			re_name = (location.name.replace('\\', '\\\\')
+				.replace('[', r'\[')
+				.replace(']', r'\]')
+				.replace('(', r'\(')
+				.replace(')', r'\)')
+				.replace('.', r'\.')
+				.replace('#', r'\#')
+				.replace('$', r'\$')
+				.replace('&', r'\&')
+				.replace('*', r'\*')
+				.replace('+', r'\+')
+				.replace('-', r'\-')
+				.replace('?', r'\?')
+				.replace('|', r'\|')
+				.replace('/', r'\/')
+				)
+			match = re.search(r'^\#\s*('+re_name+')$', self.file_body, flags=re.MULTILINE)
+			if not match is None:
+				qsp_locs.append([location.name, [match.start(1), match.end(1)]])
+		return qsp_locs
 
 	def print_locations_names(self):
 		print('Locations number: '+str(len(self.locations)))

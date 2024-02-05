@@ -9,10 +9,11 @@ def write_error_log(file, string):
 	# 	error_file.write(string)
 	print(string)
 
-def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
+def get_files_list(folder, filters=None):
 	"""
 		Create list of files in folder and includes folders.
 	"""
+	if filters is None: filters = [".qsps",'.qsp-txt','.txt-qsp']
 	build_files=[]
 	tree=os.walk(folder)
 	for abs_path, folders, files in tree:
@@ -21,7 +22,7 @@ def get_files_list(folder, filters=[".qsps",'.qsp-txt','.txt-qsp']):
 			if len(filters)==0 or (sp[1] in filters):
 				build_files.append(os.path.join(abs_path, file))
 	if len(build_files)==0:
-		write_error_log("error.log", "[201] Folder is empty. Prove path '"+folder+"'.\n")
+		write_error_log("error.log", f'[201] Folder is empty. Prove path «{folder}».')
 	return build_files
 
 def compare_paths(path1, path2):
@@ -62,7 +63,7 @@ def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-1
 				if first_string=="!@pp:on\n" or second_string=="!@pp:on\n":
 					arguments={"include":True, "pp":True, "savecomm":False}
 					# файл отправляется на препроцессинг
-					text_file=pp.pp_this_file(path,arguments,pp_markers)+'\r\n'
+					text_file = pp.pp_this_file(path, arguments, pp_markers)+'\r\n'
 				else:
 					text_file=file.read()+"\r\n"
 			elif pponoff=="On":
@@ -178,11 +179,11 @@ def print_builder_mode(build, run):
 		Unloading code.
 		Print builder's work mode.
 	"""
-	if build==True and run==True:
+	if build and run:
 		print("Build and Run Mode")
-	elif build==True:
+	elif build:
 		print("Build Mode")
-	elif run==True:
+	elif run:
 		print("Run Mode")
 
 if __name__=="__main__":

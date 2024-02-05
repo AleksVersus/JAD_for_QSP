@@ -8,6 +8,7 @@ import json
 # Importing my modules from qSpy package.
 from .qSpy.function import parse_args
 from .qSpy.function import search_project_folder
+from .qSpy.function import get_files_list
 from .qSpy.builder import BuildQSP
 from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
@@ -26,6 +27,11 @@ class QspWorkspace:
 		self.loc_names = [] # names of location [str]
 		self.loc_regions = [] # regions of locs initiate list[start, end]
 		self.loc_places = [] # file path, where is qsp_locs [str]
+		self.files_paths = [] # all files in project
+
+	def hold_init(self, project_folder=None):
+		if not project_folder is None:
+			self.refresh_files_paths()
 
 	def add_loc(self, name:str, region:tuple, place:str) -> int:
 		self.loc_names.append(name)
@@ -63,6 +69,35 @@ class QspWorkspace:
 		for path, qsp_locs in qsp_ws['locations'].items():
 			for name, region in qsp_locs:
 				self.add_loc(name, region, path)
+		self.files_paths = qsp_ws['files_paths']
+
+	def refresh_files_paths(self):
+		project_folder = QspWorkspace.get_cur_pf()
+		if project_folder is None:
+			return None
+		project_data = sublime.active_window().project_data()
+		old = self.files_paths[:]
+		new = []
+		folders = project_data['folders']
+		for pf in folders:
+			if os.path.abspath(os.path.join(project_folder, pf['path'])) == project_folder:
+				pf_ = project_folder
+			else:
+				pf_ = pf['path']
+			if os.path.commonprefix([project_folder, pf_]) == '':
+				break
+			new.extend(get_files_list(pf_))
+		self.files_paths = new
+		old_set = set(old)
+		new_set = set(new)
+		to_del = list(old_set - new_set)
+		to_add = list(new_set - old_set)
+		for path in to_del:
+			self.del_all_locs_by_place(os.path.relpath(path, project_folder))
+		for path in to_add:
+			relpath = os.path.relpath(path, project_folder)
+			for loc_name, loc_region in NewQspsFile(path).get_qsplocs():
+				self.add_loc(loc_name, loc_region, relpath)
 
 	def refresh_locs_from_symbols(self, view) -> None:
 		"""	Return list of QSP-locations created on this view """
@@ -77,16 +112,15 @@ class QspWorkspace:
 				self.add_loc(name[9:], [region.begin(), region.end()], qsps_relpath)
 
 	def get_json_struct(self) -> dict:
-		qsp_ws_out = { 'locations': {} }
+		qsp_ws_out = { 'locations': {}, 'files_paths': self.files_paths }
 		qsp_locs = qsp_ws_out['locations']
 		for i, path in enumerate(self.loc_places):
 			if not path in qsp_locs: qsp_locs[path] = []
 			qsp_locs[path].append([self.loc_names[i], self.loc_regions[i]])
 		return qsp_ws_out
 
-	def save_to_file(self, view):
-		argv = sublime.active_window().extract_variables()
-		project_folder = (argv['folder'] if 'folder' in argv else None) # first folder at project
+	def save_to_file(self, project_folder=None):
+		project_folder = QspWorkspace.get_cur_pf(project_folder)
 		if project_folder is None:
 			return None
 		qsp_workspace = self.get_json_struct()
@@ -95,6 +129,13 @@ class QspWorkspace:
 
 	def get_locs(self):
 		return zip(self.loc_names, self.loc_regions, self.loc_places)
+
+	@staticmethod
+	def get_cur_pf(project_folder=None): # -> str or None 
+		if not project_folder is None:
+			return project_folder
+		argv = sublime.active_window().extract_variables()
+		return (argv['folder'] if 'folder' in argv else None)
 
 	@staticmethod
 	def get_main_pathes(view):
@@ -281,6 +322,7 @@ CMD_TEMPLATES = {
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
 QSP_TRYER = True
+QSP_TEMP = {}
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
@@ -424,14 +466,13 @@ class QspInvalidInput(sublime_plugin.EventListener):
 				qsps_relpath = ''
 			if sr_locname.intersects(region) and qsps_relpath == loc_paths[i]:
 				return None
-			print('input:', input_text, 'i:', i, 'locr:', region, 'locnamer', sr_locname, 'curqsps:', qsps_relpath, 'project_folder:', project_folder)
 			content = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>%s</span> уже существует в проекте." % input_text
-			view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
+			view.show_popup(content, flags=32+8, location=begin+5, max_width=250)
 		if begin == end and sr_lblname is not None:
 			input_text = view.substr(sr_lblname)
 			qsp_labels = QspWorkspace.get_qsplabels_from_symbols(view, exclude_inputting=sr_lblname)
 			if input_text in qsp_labels:
-				content = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>%s</span> уже есть на локации." % input_text
+				content = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>%s</span> уже есть в этом файле." % input_text
 				view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
 
 class QspTips(sublime_plugin.EventListener):
@@ -539,9 +580,13 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		project_folder = (argv['folder'] if 'folder' in argv else None)
 		if project_folder is None:
 			return None
+		qws = QSP_WORKSPACES[project_folder] = QspWorkspace()
 		if os.path.isfile(os.path.join(project_folder, 'qsp-project-workspace.json')):
-			qws = QSP_WORKSPACES[project_folder] = QspWorkspace()
+			# если файл существует, извлекаем из файла
 			qws.extract_from_file(project_folder=project_folder)
+		else:
+			# холодная инициализация проекта
+			qws.hold_init(project_folder=project_folder)
 
 	def _save_qsp_ws(self, view):
 		""" save ws from ram in file """
@@ -559,7 +604,7 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 			# if ws dont exist in dict of wss
 			qsp_ws = QSP_WORKSPACES[project_folder] = QspWorkspace()
 		qsp_ws.refresh_locs_from_symbols(view)
-		qsp_ws.save_to_file(view)
+		qsp_ws.save_to_file(project_folder)
 
 	def on_close(self, view):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
@@ -572,8 +617,11 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 	def on_load_project(self, window):
 		self._extract_qsp_ws()
 
-class QspHidePopup(sublime_plugin.TextChangeListener):
-	def on_text_changed(self, changes):
-		view = sublime.active_window().active_view()
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			view.hide_popup()
+	def on_post_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
+		if command_name in ('delete_file', 'rename_path'):
+			project_folder = QspWorkspace.get_cur_pf()
+			if project_folder is None or not project_folder in QSP_WORKSPACES:
+				return None
+			qsp_ws = QSP_WORKSPACES[project_folder]
+			qsp_ws.refresh_files_paths()
+		return None
