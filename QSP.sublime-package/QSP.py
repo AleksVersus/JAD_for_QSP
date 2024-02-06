@@ -16,7 +16,7 @@ from .qSpy.qsp_splitter import QspSplitter
 from .qSpy.main_cs import FinderSplitter
 
 # inner classes and functions
-def safe_mk_fold(new_path:str) -> None:
+def _safe_mk_fold(new_path:str) -> None:
 	""" Safe make dir with making all chain of dir """
 	if not os.path.isdir(new_path):
 		os.makedirs(new_path)
@@ -71,7 +71,7 @@ class QspWorkspace:
 				self.add_loc(name, region, path)
 		self.files_paths = qsp_ws['files_paths']
 
-	def refresh_files_paths(self):
+	def refresh_files_paths(self) -> None:
 		project_folder = QspWorkspace.get_cur_pf()
 		if project_folder is None:
 			return None
@@ -392,12 +392,12 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 		argv = self.window.extract_variables()
 		if 'folder' in argv:
 			jont = os.path.join
-			safe_mk_fold(jont(argv['folder'],'[disdocs]'))
-			safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\img'))
-			safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\snd'))
-			safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\vid'))
-			safe_mk_fold(jont(argv['folder'], '[output_game]\\lib'))
-			safe_mk_fold(jont(argv['folder'], '[source]'))
+			_safe_mk_fold(jont(argv['folder'],'[disdocs]'))
+			_safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\img'))
+			_safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\snd'))
+			_safe_mk_fold(jont(argv['folder'], '[output_game]\\assets\\vid'))
+			_safe_mk_fold(jont(argv['folder'], '[output_game]\\lib'))
+			_safe_mk_fold(jont(argv['folder'], '[source]'))
 			# crete project.json
 			project_json_path = jont(argv['folder'], '[source]\\project.json')
 			if not os.path.isfile(project_json_path):
@@ -574,6 +574,8 @@ class QspAutocomplete(sublime_plugin.EventListener):
 class QspWorkspaceLoader(sublime_plugin.EventListener):
 	""" Manage a qsp-workspace in ram and in files """
 
+	commands_log = {'current': '', 'last': ''}
+
 	def _extract_qsp_ws(self):
 		""" extract ws from file if file is exist, and load in ram """
 		argv = sublime.active_window().extract_variables()
@@ -606,22 +608,32 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		qsp_ws.refresh_locs_from_symbols(view)
 		qsp_ws.save_to_file(project_folder)
 
-	def on_close(self, view):
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			self._save_qsp_ws(view)
-	def on_pre_save(self, view):
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			self._save_qsp_ws(view)
-	def on_init(self, views):
-		self._extract_qsp_ws()
-	def on_load_project(self, window):
-		self._extract_qsp_ws()
-
-	def on_post_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
-		if command_name in ('delete_file', 'rename_path'):
+	def _after_replace(self, command_name:str = ''):
+		print('commands_log', self.commands_log)
+		self.commands_log['last'], self.commands_log['current'] = self.commands_log['current'], command_name
+		if self.commands_log['last'] in ('delete_file', 'rename_path'):
 			project_folder = QspWorkspace.get_cur_pf()
 			if project_folder is None or not project_folder in QSP_WORKSPACES:
 				return None
 			qsp_ws = QSP_WORKSPACES[project_folder]
-			qsp_ws.refresh_files_paths()
-		return None
+			sublime.set_timeout_async(lambda: qsp_ws.refresh_files_paths(), 180)
+
+	def on_close(self, view):
+		if view.syntax() is not None and view.syntax().name == 'QSP':
+			self._save_qsp_ws(view)
+
+	def on_pre_save(self, view):
+		if view.syntax() is not None and view.syntax().name == 'QSP':
+			self._save_qsp_ws(view)
+
+	def on_init(self, views):
+		self._extract_qsp_ws()
+
+	def on_load_project(self, window:sublime.Window) -> None:
+		self._extract_qsp_ws()
+
+	def on_post_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
+		self._after_replace(command_name)
+
+	def on_post_text_command(self, view:sublime.View, command_name:str, args:dict) -> None:
+		self._after_replace(command_name)
