@@ -586,9 +586,6 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		if os.path.isfile(os.path.join(project_folder, 'qsp-project-workspace.json')):
 			# если файл существует, извлекаем из файла
 			qws.extract_from_file(project_folder=project_folder)
-		else:
-			# холодная инициализация проекта
-			qws.hold_init(project_folder=project_folder)
 
 	def _save_qsp_ws(self, view):
 		""" save ws from ram in file """
@@ -631,9 +628,3 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 
 	def on_load_project(self, window:sublime.Window) -> None:
 		self._extract_qsp_ws()
-
-	def on_post_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
-		self._after_replace(command_name)
-
-	def on_post_text_command(self, view:sublime.View, command_name:str, args:dict) -> None:
-		self._after_replace(command_name)
