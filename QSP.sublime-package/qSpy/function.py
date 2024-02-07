@@ -1,7 +1,12 @@
 import sys
 import os
 
-from . import pp as pp
+from . import pp
+
+def safe_mk_fold(new_path:str) -> None:
+	""" Safe make dir with making all chain of dir """
+	if not os.path.isdir(new_path):
+		os.makedirs(new_path)
 
 def write_error_log(file, string):
 	""" Write message in console. """
