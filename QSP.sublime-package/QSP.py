@@ -146,12 +146,8 @@ class QspInvalidInput(sublime_plugin.EventListener):
 				qsps_relpath = os.path.relpath(current_qsps, project_folder)
 			else:
 				qsps_relpath = ''
-			def _filting_qsplocs(qsp_loc:tuple): # -> object filter
-				if qsp_loc[1] == input_region and qsp_loc[2] == qsps_relpath:
-					return False
-				return True
-			all_locations = QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES) # list
-			all_locations = list(filter(_filting_qsplocs, all_locations))
+			_filting_qsplocs = lambda qsp_loc: not qsp_loc[1] == input_region and qsp_loc[2] == qsps_relpath
+			all_locations = list(filter(_filting_qsplocs, QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES)))
 			loc_names, _, _ = zip(*all_locations)
 			if not input_text in loc_names:
 				return None
