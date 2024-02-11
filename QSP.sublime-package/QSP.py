@@ -141,8 +141,10 @@ class QspInvalidInput(sublime_plugin.EventListener):
 			input_region = [sr_locname.begin(), sr_locname.end()]
 			input_text = view.substr(sr_locname)
 			current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
-			if not (current_qsps is None or project_folder is None or os.path.commonprefix([current_qsps, project_folder]) == ''):
-				# if project folder exist, file exist, and they on one mount point
+			if not any((
+				current_qsps is None,
+				project_folder is None,
+				os.path.commonprefix([current_qsps, project_folder]) == '')):
 				qsps_relpath = os.path.relpath(current_qsps, project_folder)
 			else:
 				qsps_relpath = ''
