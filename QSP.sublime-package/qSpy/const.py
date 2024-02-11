@@ -3,8 +3,7 @@ __all__ = [
 	'QSP_START_TEMPLATE',
 	'QSP_PROJECT_JSON',
 	'QSP_SUBLIME_PROJECT',
-	'QSP_WRONG_LBL_MSG',
-	'QSP_WRONG_LOC_MSG']
+	'QSP_MSG']
 
 from types import MappingProxyType
 
@@ -192,8 +191,8 @@ QSP_SUBLIME_PROJECT = MappingProxyType(_t)
 class _Qsp_Message:
 
 	def __init__(self):
-		self._lbl = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>${input_text}</span> уже есть в этом файле."
-		self._loc = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>${input_text}</span> уже существует в проекте."
+		self._lbl = "Метка с именем «${input_text}» уже есть в этом файле."
+		self._loc = "Локация с именем «${input_text}» уже существует в проекте."
 
 	@property
 	def WRONG_LBL(self):

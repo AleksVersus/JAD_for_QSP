@@ -132,8 +132,16 @@ class QspWorkspace:
 		return current_qsps, project_folder
 
 	@staticmethod
-	def get_all_qsplocs(view:sublime.View, all_workspaces:dict=None):
-		""" Extract all qsp-locations from ws. """
+	def get_all_qsplocs(view:sublime.View, all_workspaces:dict=None) -> list:
+		"""
+			Extract all qsp-locations from ws.
+			Return →
+			list[tuple(
+				loc_name:str,
+				loc_region:list[begin:int, end:int],
+				loc_place:path_to_qsps_file:str
+			)]
+		"""
 		if all_workspaces is None: all_workspaces = {}
 		all_qsplocs = []
 		project_folder = QspWorkspace.get_cur_pf()
