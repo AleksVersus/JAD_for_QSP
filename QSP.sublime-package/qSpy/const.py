@@ -189,6 +189,18 @@ _t = {"folders":[{"path": "."}]}
 QSP_SUBLIME_PROJECT = MappingProxyType(_t)
 
 # Message's Texts
+class _Qsp_Message:
 
-QSP_WRONG_LBL_MSG = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>${input_text}</span> уже есть в этом файле."
-QSP_WRONG_LOC_MSG = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>${input_text}</span> уже существует в проекте."
+	def __init__(self):
+		self._lbl = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>${input_text}</span> уже есть в этом файле."
+		self._loc = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>${input_text}</span> уже существует в проекте."
+
+	@property
+	def WRONG_LBL(self):
+		return self._lbl
+
+	@property
+	def WRONG_LOC(self):
+		return self._loc
+
+QSP_MSG = _Qsp_Message()
