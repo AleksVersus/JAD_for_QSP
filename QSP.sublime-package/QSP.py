@@ -245,60 +245,50 @@ class QspAutocomplete(sublime_plugin.EventListener):
 class QspWorkspaceLoader(sublime_plugin.EventListener):
 	""" Manage a qsp-workspace in ram and in files """
 
-	commands_log = {'current': '', 'last': ''}
+	def _get_qsp_ws(self, project_folder:str, all_workspaces:dict) -> QspWorkspace:
+		""" Create qsp workspace or return already exists """
+		if project_folder in all_workspaces:
+			# if ws exist in dict of wss
+			qsp_ws = all_workspaces[project_folder]
+		else:
+			# if ws dont exist in dict of wss
+			qsp_ws = all_workspaces[project_folder] = QspWorkspace(all_workspaces)
+		return qsp_ws
 
 	def _extract_qsp_ws(self):
 		""" extract ws from file if file is exist, and load in ram """
-		argv = sublime.active_window().extract_variables()
-		project_folder = (argv['folder'] if 'folder' in argv else None)
-		if project_folder is None:
-			return None
-		qws = QSP_WORKSPACES[project_folder] = QspWorkspace(QSP_WORKSPACES)
+		project_folder = QspWorkspace.get_cur_pf()
+		if project_folder is None: return None
 		if os.path.isfile(os.path.join(project_folder, 'qsp-project-workspace.json')):
-			# если файл существует, извлекаем из файла
+			# если файл существует, извлекаем из файла ws
+			qws = QSP_WORKSPACES[project_folder] = QspWorkspace(QSP_WORKSPACES)
 			qws.extract_from_file(project_folder=project_folder)
 
-	def _save_qsp_ws(self, view):
+	def _save_qsp_ws(self, view:sublime.View) -> None:
 		""" save ws from ram in file """
-		current_qsps = view.file_name()
-		if current_qsps is None:
-			return None
-		argv = sublime.active_window().extract_variables()
-		project_folder = (argv['folder'] if 'folder' in argv else None)
-		if project_folder is None:
-			return None
-		if project_folder in QSP_WORKSPACES:
-			# if ws exist in dict of wss
-			qsp_ws = QSP_WORKSPACES[project_folder]
-		else:
-			# if ws dont exist in dict of wss
-			qsp_ws = QSP_WORKSPACES[project_folder] = QspWorkspace(QSP_WORKSPACES)
-		qsp_ws.refresh_locs_from_symbols(view)
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		if current_qsps is None or project_folder is None: return None
+		qsp_ws = self._get_qsp_ws(QSP_WORKSPACES)
+		qsp_ws.refresh_qsplocs(view)
+		qsp_ws.refresh_files()
 		qsp_ws.save_to_file(project_folder)
 
-	def _after_replace(self, command_name:str = ''):
-		print('commands_log', self.commands_log)
-		self.commands_log['last'], self.commands_log['current'] = self.commands_log['current'], command_name
-		if self.commands_log['last'] in ('delete_file', 'rename_path'):
-			project_folder = QspWorkspace.get_cur_pf()
-			if project_folder is None or not project_folder in QSP_WORKSPACES:
-				return None
-			qsp_ws = QSP_WORKSPACES[project_folder]
-			sublime.set_timeout_async(lambda: qsp_ws.refresh_files_paths(), 180)
 
-	def on_close(self, view):
+	def on_pre_save_async(self, view):
 		if view.syntax() is not None and view.syntax().name == 'QSP':
 			self._save_qsp_ws(view)
 
-	def on_pre_save(self, view):
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			self._save_qsp_ws(view)
-
+	# on start work, try to extract workspace from file
 	def on_init(self, views):
 		self._extract_qsp_ws()
 
-	def on_load_project(self, window:sublime.Window) -> None:
+	def on_load_project_aync(self, window:sublime.Window) -> None:
 		self._extract_qsp_ws()
+
+	# 
+	def on_close(self, view):
+		window = sublime.active_window()
+		print(window.folders())
 
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
