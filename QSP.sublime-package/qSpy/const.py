@@ -1,4 +1,10 @@
-__all__ = ['QSP_CMD_TIPS']
+__all__ = [
+	'QSP_CMD_TIPS',
+	'QSP_START_TEMPLATE',
+	'QSP_PROJECT_JSON',
+	'QSP_SUBLIME_PROJECT',
+	'QSP_WRONG_LBL_MSG',
+	'QSP_WRONG_LOC_MSG']
 
 from types import MappingProxyType
 
@@ -144,8 +150,7 @@ _t = {
 	"lcolor": "LCOLOR - переменная содержит основной цвет ссылок",
 	"fsize": "FSIZE - переменная содержит основной размер шрифта",
 	"$fname": "$FNAME - переменная содержит название основного шрифта",
-	"$backimage": "$BACKIMAGE - переменная содержит путь к фоновому изображению",
-}
+	"$backimage": "$BACKIMAGE - переменная содержит путь к фоновому изображению",}
 
 QSP_CMD_TIPS = MappingProxyType(_t)
 
@@ -157,5 +162,33 @@ QSP_START_TEMPLATE = (
 	'*pl "Quick project start location. Edit this file, and appending new."\n',
 	'*pl "Стартовая локация быстрого проекта. ',
 	'Отредактируйте этот файл и добавьте новые."\n',
-	'--- [start] ---\n'
-)
+	'--- [start] ---\n')
+
+# No changable dict for project.json simple file
+
+_t = {
+		"project":
+		[
+			{
+				"build": "..\\[output_game]\\game_start.qsp",
+				"folders":
+				[
+					{"path": "."}
+				]
+			}
+		],
+		"start": "..\\[output_game]\\game_start.qsp",
+		"player": "C:\\Program Files\\QSP\\qsp580\\qspgui.exe"}
+
+QSP_PROJECT_JSON = MappingProxyType(_t)
+
+# No changable dict for sublimetext-project file
+
+_t = {"folders":[{"path": "."}]}
+
+QSP_SUBLIME_PROJECT = MappingProxyType(_t)
+
+# Message's Texts
+
+QSP_WRONG_LBL_MSG = "<style>.lbl_name {color:#99ff55;font-weight:bold;}</style>Метка с именем <span class='lbl_name'>${input_text}</span> уже есть в этом файле."
+QSP_WRONG_LOC_MSG = "<style>.location_name {color:#ff8888;font-weight:bold;}</style>Локация с именем <span class='location_name'>${input_text}</span> уже существует в проекте."
