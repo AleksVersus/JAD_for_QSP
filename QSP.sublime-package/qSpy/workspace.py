@@ -92,10 +92,9 @@ class QspWorkspace:
 			return None
 		qsps_relpath = os.path.relpath(current_qsps, project_folder)
 		self.del_all_locs_by_place(qsps_relpath)
-		for s in view.symbols():
-			region, name = s
-			if name.startswith('Локация: '):
-				self.add_loc(name[9:], [region.begin(), region.end()], qsps_relpath)
+		for s in view.symbol_regions():
+			if s.name.startswith('Локация: '):
+				self.add_loc(s.name[9:], [s.region.begin(), s.region.end()], qsps_relpath)
 
 	def get_json_struct(self) -> dict:
 		qsp_ws_out = { 'locations': {}, 'files_paths': self.files_paths }
@@ -113,7 +112,8 @@ class QspWorkspace:
 		with open(os.path.join(project_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
 			json.dump(qsp_workspace, ws_file, indent=4)
 
-	def get_locs(self):
+	def get_locs(self) -> list:
+		""" Return List of qsp-locations from ws. See .get_all_qsplocs """
 		return zip(self.loc_names, self.loc_regions, self.loc_places)
 
 	@staticmethod
@@ -132,9 +132,9 @@ class QspWorkspace:
 		return current_qsps, project_folder
 
 	@staticmethod
-	def get_all_qsplocs(view:sublime.View, all_workspaces:dict=None) -> list:
+	def get_all_qsplocs(view:sublime.View, all_workspaces:dict=None, only=None) -> list:
 		"""
-			Extract all qsp-locations from ws.
+			Extract all qsp-locations from ws and view.
 			Return →
 			list[tuple(
 				loc_name:str,
@@ -149,13 +149,15 @@ class QspWorkspace:
 			# if ws exist in dict of wss
 			qsp_ws = all_workspaces[project_folder]
 			qsp_ws.refresh_locs_from_symbols(view)
-			all_qsplocs = qsp_ws.get_locs()
+			all_qsplocs = (qsp_ws.loc_names if only == 'names' else qsp_ws.get_locs())
 		else:
 			# if ws dont exist in dict of wss
-			for s in view.symbols():
-				region, name = s
-				if name.startswith('Локация: '):
-					all_qsplocs.append((name[9:], [region.begin(), region.end()], ''))
+			for s in view.symbol_regions():
+				if s.name.startswith('Локация: '):
+					if only == 'names':
+						all_qsplocs.append(s.name[9:])
+					else:
+						all_qsplocs.append((s.name[9:], [s.region.begin(), s.region.end()], ''))
 		return all_qsplocs
 
 	@staticmethod
@@ -164,9 +166,8 @@ class QspWorkspace:
 			Return list of QSP-labels created on this view
 		"""
 		qsp_labels = []
-		for s in view.symbols():
-			region, name = s
-			if exclude_inputting is None or region != exclude_inputting:
-				if name.startswith('Метка: '):
-					qsp_labels.append(name[7:])
+		for s in view.symbol_regions():
+			if exclude_inputting is None or s.region != exclude_inputting:
+				if s.name.startswith('Метка: '):
+					qsp_labels.append(s.name[7:])
 		return qsp_labels

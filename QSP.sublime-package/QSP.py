@@ -129,7 +129,6 @@ class QspInvalidInput(sublime_plugin.EventListener):
 	"""
 		Wrong input of qsp-locs names or labels names
 	"""
-
 	def on_modified(self, view):
 		if view.syntax() is None or view.syntax().name != 'QSP':
 			return None
@@ -165,41 +164,26 @@ class QspInvalidInput(sublime_plugin.EventListener):
 				sublime.message_dialog(content)
 
 class QspTips(sublime_plugin.EventListener):
-
+	""" Listener of stand caret to keyword of QSP-syntax """
 	def on_selection_modified(self, view):
 		""" Show tips in statusbar """
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			word_coords = view.word(view.sel()[0].begin()) # Region
-			word = view.substr(word_coords).lower() # str
-			p = word_coords.begin()-1 # int (Point)
-			pref = (view.substr(word_coords.begin()-1) if p > -1 else '') # str
-			keywords = const.QSP_CMD_TIPS.keys()
-			if pref == '*' and ('*' + word in keywords):
-				word = '*' + word
-				match = re.match(r'^\*\w+\b$', word)
-			elif pref == '$' and ('$' + word in keywords):
-				word = '$' + word
-				match = re.match(r'^\$\w+\b$', word)
-			else:
-				match = re.match(r'^\w+\b$', word)
-			if (match is not None) and (word in keywords):
-				sublime.status_message(const.QSP_CMD_TIPS[word])
-
-# class QspAddLighting(sublime_plugin.EventListener):
-
-# 	def on_selection_modified(self, view):
-# 		""" HighLight- """
-# 		global QSP_TRYER
-# 		if view.syntax() is not None and view.syntax().name == 'QSP':
-# 			if QSP_TRYER:
-# 				user_variable = r'\$?[A-Za-zА-Яа-я_][\w\.]*'
-# 				regions = view.find_all(user_variable, 2)
-# 				variables = set()
-# 				for r in regions:
-# 					if view.match_selector(r.begin(), 'meta.user-variables.qsp'):
-# 						variables.add(view.substr(r))
-# 				print(list(variables))
-# 				QSP_TRYER = False
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		word_coords = view.word(view.sel()[0].begin()) # Region
+		word = view.substr(word_coords).lower() # str
+		p = word_coords.begin()-1 # int (Point)
+		pref = (view.substr(word_coords.begin()-1) if p > -1 else '') # str
+		keywords = const.QSP_CMD_TIPS.keys()
+		if pref == '*' and ('*' + word in keywords):
+			word = '*' + word
+			match = re.match(r'^\*\w+\b$', word)
+		elif pref == '$' and ('$' + word in keywords):
+			word = '$' + word
+			match = re.match(r'^\$\w+\b$', word)
+		else:
+			match = re.match(r'^\w+\b$', word)
+		if (match is not None) and (word in keywords):
+			sublime.status_message(const.QSP_CMD_TIPS[word])
 
 class QspAutocomplete(sublime_plugin.EventListener):
 	""" Autocomplete and helptips """
@@ -208,13 +192,12 @@ class QspAutocomplete(sublime_plugin.EventListener):
 		""" append completions in editor """
 		if view.syntax() is None or view.syntax().name != 'QSP':
 			return []
-		# extract all datas
-		all_locations = QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES) # -> list of locations
+		qsp_completions = []
 		# if syntshugarfunc
 		if view.match_selector(locations[0]-1, 'variable.function.qsp'):
-			qsp_locations = []
+			qsp_loc_names = QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES, only='names') # -> list of loc names
 			prefix = prefix.lower()
-			for loc_name, loc_region, loc_path in all_locations:
+			for loc_name in qsp_loc_names:
 				if loc_name.lower().startswith(prefix):
 					d = sublime.CompletionItem(
 						loc_name,
@@ -223,14 +206,14 @@ class QspAutocomplete(sublime_plugin.EventListener):
 						completion_format=sublime.COMPLETION_FORMAT_TEXT,
 						kind=sublime.KIND_FUNCTION
 					)
-					qsp_locations.append(d)
-			return (qsp_locations, 24)
+					qsp_completions.append(d)
+			return (qsp_completions, 24)
 		# if calable operator call location
 		elif view.match_selector(locations[0]-1, 'callable_locs.qsp'):
-			qsp_locations = []
+			qsp_loc_names = QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES, only='names') # -> list of loc names
 			scope_region = view.expand_to_scope(locations[0]-1, 'callable_locs.qsp')
 			input_text = view.substr(scope_region)
-			for loc_name, loc_region, loc_path in all_locations:
+			for loc_name in qsp_loc_names:
 				if loc_name.lower().startswith(input_text[1:-1]):
 					d = sublime.CompletionItem(
 						loc_name,
@@ -239,14 +222,13 @@ class QspAutocomplete(sublime_plugin.EventListener):
 						completion_format=sublime.COMPLETION_FORMAT_TEXT,
 						kind=sublime.KIND_FUNCTION
 					)
-					qsp_locations.append(d)
-			return (qsp_locations, 24)
+					qsp_completions.append(d)
+			return (qsp_completions, 24)
 		elif view.match_selector(locations[0]-1, 'label_to_jump.qsp'):
-			all_labels = QspWorkspace.get_qsplbls(view)
+			qsp_all_lbls = QspWorkspace.get_qsplbls(view)
 			scope_region = view.expand_to_scope(locations[0]-1, 'label_to_jump.qsp')
 			input_text = view.substr(scope_region)
-			qsp_labels = []
-			for qsp_lb in all_labels:
+			for qsp_lb in qsp_all_lbls:
 				if qsp_lb.lower().startswith(input_text[1:-1]):
 					d = sublime.CompletionItem(
 						qsp_lb,
@@ -255,8 +237,8 @@ class QspAutocomplete(sublime_plugin.EventListener):
 						completion_format=sublime.COMPLETION_FORMAT_TEXT,
 						kind=sublime.KIND_MARKUP
 					)
-					qsp_labels.append(d)
-			return (qsp_labels, 24)
+					qsp_completions.append(d)
+			return (qsp_completions, 24)
 		else:
 			return []
 
