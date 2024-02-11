@@ -242,3 +242,7 @@ class QspWorkspace:
 
 	@staticmethod
 	def reling_path(project_folder:str, other_path:str) -> str: # rel other path, or abs if not possible
+		if os.path.commonprefix(project_folder, other_path) != '':
+			return os.path.relpath(other_path, project_folder)
+		else:
+			return other_path
