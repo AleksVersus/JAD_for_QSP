@@ -34,7 +34,7 @@ def compare_paths(path1, path2):
 	"""
 		Compare two paths and return tail relative to shared folder. 
 	"""
-	start = os.path.commonprefix(path1, path2)
+	start = os.path.commonprefix([path1, path2])
 	path1 = os.path.relpath(path1, start)
 	path2 = os.path.relpath(path2, start)
 	return path1, path2

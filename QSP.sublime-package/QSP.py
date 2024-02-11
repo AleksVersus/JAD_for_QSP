@@ -147,9 +147,9 @@ class QspInvalidInput(sublime_plugin.EventListener):
 				qsps_relpath = os.path.relpath(current_qsps, project_folder)
 			else:
 				qsps_relpath = ''
-			_filting_qsplocs = lambda qsp_loc: not qsp_loc[1] == input_region and qsp_loc[2] == qsps_relpath
+			_filting_qsplocs = lambda qsp_loc: not (qsp_loc[1] == input_region and qsp_loc[2] == qsps_relpath)
 			all_locations = list(filter(_filting_qsplocs, QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES)))
-			loc_names, _, _ = zip(*all_locations)
+			loc_names, _, _ = zip(*all_locations) if len(all_locations)>0 else ([], [], [])
 			if not input_text in loc_names:
 				return None
 			content = sublime.expand_variables(const.QSP_MSG.WRONG_LOC, {"input_text": input_text})
@@ -259,38 +259,63 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		""" extract ws from file if file is exist, and load in ram """
 		project_folder = QspWorkspace.get_cur_pf()
 		if project_folder is None: return None
-		if os.path.isfile(os.path.join(project_folder, 'qsp-project-workspace.json')):
+		ws_file_path = os.path.join(project_folder, 'qsp-project-workspace.json')
+		if os.path.isfile(ws_file_path):
 			# если файл существует, извлекаем из файла ws
 			qws = QSP_WORKSPACES[project_folder] = QspWorkspace(QSP_WORKSPACES)
-			qws.extract_from_file(project_folder=project_folder)
+			qws.extract_from_file(ws_file_path)
+			return qws
+		return None
 
-	def _save_qsp_ws(self, view:sublime.View) -> None:
-		""" save ws from ram in file """
+	def on_load_async(self, view:sublime.View) -> None:
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
 		if current_qsps is None or project_folder is None: return None
-		qsp_ws = self._get_qsp_ws(QSP_WORKSPACES)
-		qsp_ws.refresh_qsplocs(view)
-		qsp_ws.refresh_files()
+		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
+		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
+		if len(qsp_ws.files_paths) == 0:
+			qsp_ws.refresh_files()
+
+	def on_close(self, view:sublime.View) -> None:
+		""" only save ws, not refresh. Because closed is not saving """
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		if current_qsps is None or project_folder is None: return None
+		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
 		qsp_ws.save_to_file(project_folder)
 
+	def on_post_save_async(self, view:sublime.View) -> None:
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		if current_qsps is None or project_folder is None: return None
+		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
+		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
+		if QSP_MARKERS['files_is_renamed']:
+			qsp_ws.refresh_files()
+			QSP_MARKERS['files_is_renamed'] = False
+		else:
+			qsp_ws.refresh_md5(current_qsps, project_folder)
+		qsp_ws.save_to_file(project_folder)
 
-	def on_pre_save_async(self, view):
-		if view.syntax() is not None and view.syntax().name == 'QSP':
-			self._save_qsp_ws(view)
-
-	# on start work, try to extract workspace from file
+	# on start work, try to extract workspace from file:
 	def on_init(self, views):
 		self._extract_qsp_ws()
 
-	def on_load_project_aync(self, window:sublime.Window) -> None:
-		self._extract_qsp_ws()
+	def on_load_project_async(self, window:sublime.Window) -> None:
+		qsp_ws = self._extract_qsp_ws()
+		if not qsp_ws is None: qsp_ws.refresh_files()
 
-	# 
-	def on_close(self, view):
-		window = sublime.active_window()
-		print(window.folders())
+	def on_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
+		if command_name == 'rename_path':
+			QSP_MARKERS['files_is_renamed'] = True
+
+	# def on_close(self, view):
+	# 	window = sublime.active_window()
+	# 	print(window.folders())
 
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
-QSP_TRYER = True
-QSP_TEMP = {}
+QSP_MARKERS = {'files_is_renamed': False}
