@@ -16,7 +16,7 @@ from .qSpy.qsps_to_qsp import NewQspsFile
 from .qSpy.qsp_splitter import QspSplitter
 from .qSpy.main_cs import FinderSplitter
 # Import constants
-from .qSpy.const import QSP_CMD_TIPS
+from .qSpy import const
 
 class QspWorkspace:
 	def __init__(self) -> None:
@@ -172,11 +172,6 @@ class QspWorkspace:
 					qsp_labels.append(name[7:])
 		return(qsp_labels)
 
-# variables
-QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
-QSP_TRYER = True
-QSP_TEMP = {}
-
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
 		QSP-Game Builder. Build and run QSP-game from sources. Need a project.json.
@@ -274,16 +269,8 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 			# create startfile
 			start_file_path = jont(argv['folder'], '[source]\\00_start.qsps')
 			if not os.path.isfile(start_file_path):
-				start_file = [
-					'QSP-Game Start game from this location\n\n',
-					'# [start]\n',
-					'*pl "Quick project start location. Edit this file, and appending new."\n',
-					'*pl "Стартовая локация быстрого проекта. ',
-					'Отредактируйте этот файл и добавьте новые."\n',
-					'--- [start] ---\n'
-				]
 				with open(start_file_path, 'w', encoding='utf-8') as file:
-					file.writelines(start_file)
+					file.writelines(const.QSP_START_TEMPLATE)
 				self.window.open_file(start_file_path)
 
 class QspNewGameHeadCommand(sublime_plugin.TextCommand):
@@ -337,7 +324,7 @@ class QspTips(sublime_plugin.EventListener):
 			word = view.substr(word_coords).lower() # str
 			p = word_coords.begin()-1 # int (Point)
 			pref = (view.substr(word_coords.begin()-1) if p > -1 else '') # str
-			keywords = QSP_CMD_TIPS.keys()
+			keywords = const.QSP_CMD_TIPS.keys()
 			if pref == '*' and ('*' + word in keywords):
 				word = '*' + word
 				match = re.match(r'^\*\w+\b$', word)
@@ -347,7 +334,7 @@ class QspTips(sublime_plugin.EventListener):
 			else:
 				match = re.match(r'^\w+\b$', word)
 			if (match is not None) and (word in keywords):
-				sublime.status_message(QSP_CMD_TIPS[word])
+				sublime.status_message(const.QSP_CMD_TIPS[word])
 
 # class QspAddLighting(sublime_plugin.EventListener):
 
@@ -481,3 +468,8 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 
 	def on_load_project(self, window:sublime.Window) -> None:
 		self._extract_qsp_ws()
+
+# variables
+QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
+QSP_TRYER = True
+QSP_TEMP = {}
