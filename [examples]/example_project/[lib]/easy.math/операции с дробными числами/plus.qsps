@@ -2,17 +2,17 @@
 i_easy_math_plus=0
 :initial
 if i_easy_math_plus<9:
-	if $args[i_easy_math_plus]='': $args[i_easy_math_plus]=str(args[i_easy_math_plus]) else $args[i_easy_math_plus]=$args[i_easy_math_plus]
+	if $args[i_easy_math_plus]='': $args[i_easy_math_plus]=$str(args[i_easy_math_plus]) else $args[i_easy_math_plus]=$args[i_easy_math_plus]
 	if instr($args[i_easy_math_plus],'-')=1: $args[i_easy_math_plus]=$replace($args[i_easy_math_plus],'-') & minus_easy_math_plus[i_easy_math_plus]=1
 	if instr($args[i_easy_math_plus],'.')=0: $args[i_easy_math_plus]+='.0'
-	if len(mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))>len_easy_math_plus['pos']: len_easy_math_plus['pos']=len(mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))
+	if len($mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))>len_easy_math_plus['pos']: len_easy_math_plus['pos']=len($mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))
 	i_easy_math_plus+=1
 	jump 'initial'
 end
 i_easy_math_plus=0
 :к_целому
 if i_easy_math_plus<9:
-	$args[i_easy_math_plus]=$replace($args[i_easy_math_plus]+$func('#zero#',len_easy_math_plus['pos']-len(mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))),'.')
+	$args[i_easy_math_plus]=$replace($args[i_easy_math_plus]+$func('#zero#',len_easy_math_plus['pos']-len($mid($args[i_easy_math_plus],instr($args[i_easy_math_plus],'.')+1))),'.')
 	i_easy_math_plus+=1
 	jump 'к_целому'
 end
@@ -33,7 +33,7 @@ if i_easy_math_plus<9:
 		jump 'logic'
 	end
 	$args['sum']=$func('#add#',$args['1'],$args['0'])
-	if val(mid($args['sum'],1,1))>0:
+	if val($mid($args['sum'],1,1))>0:
 		$args['sum']=$func('#dev#',$func('#zero#',args['max_len']+2,'9'),$args['sum'])
 		minus_easy_math_plus[i_easy_math_plus+1]=1
 	else
@@ -44,7 +44,7 @@ if i_easy_math_plus<9:
 	i_easy_math_plus+=1
 	jump 'for'
 else
-	$result=mid($args[9],1,len($args[9])-len_easy_math_plus['pos'])+'.'+mid($args[9],len($args[9])-len_easy_math_plus['pos']+1)
+	$result=$mid($args[9],1,len($args[9])-len_easy_math_plus['pos'])+'.'+$mid($args[9],len($args[9])-len_easy_math_plus['pos']+1)
 	$result=$func('#dz#',$result)
 	if minus_easy_math_plus[9]=1 and $result!'0': $result='-'+$result
 end

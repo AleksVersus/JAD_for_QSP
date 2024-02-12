@@ -1,4 +1,3 @@
-# титры.побуквенно
 ! "
 args[0] - выводимая строка
 args[1] - начальный цвет в формате rrggbb
@@ -8,6 +7,7 @@ args[4] - если не указан - слева направо, в проти�
 args[5] - ширина в процентах
 args[6] - выравнивание по горизонтали
 "
+# титры.побуквенно
 $args[0] = $args[0]
 $args[1] = $args[1]
 $args[2] = $args[2]
@@ -15,24 +15,24 @@ args[3] = args[3]
 $args[4] = $args[4]
 args[5] = args[5]
 $args[6] = $args[6]
-if maintxt='': string_titles=0
+if $maintxt='': string_titles=0
 string_titles+=1
 if args[5]=0: tvar_titles["width"]=50 else tvar_titles["width"]=args[5]
 if $args[6]='': $tvar_titles["align"]="left" else $tvar_titles["align"]=$args[6]
 if $args[2]!'' and len($args[0])!0:
 	! период изменения цвета
 	if len($args[0])<257:
-		if func('#hex-dec#',mid($args[1],1,2))>func('#hex-dec#',mid($args[2],1,2)): tvar_titles['r']=(func('#hex-dec#',mid($args[1],1,2))-func('#hex-dec#',mid($args[2],1,2)))/len($args[0]) else tvar_titles['r']=(func('#hex-dec#',mid($args[2],1,2))-func('#hex-dec#',mid($args[1],1,2)))/len($args[0])
-		if func('#hex-dec#',mid($args[1],3,2))>func('#hex-dec#',mid($args[2],3,2)): tvar_titles['g']=(func('#hex-dec#',mid($args[1],3,2))-func('#hex-dec#',mid($args[2],3,2)))/len($args[0]) else tvar_titles['g']=(func('#hex-dec#',mid($args[2],3,2))-func('#hex-dec#',mid($args[1],3,2)))/len($args[0])
-		if func('#hex-dec#',mid($args[1],5,2))>func('#hex-dec#',mid($args[2],5,2)): tvar_titles['b']=(func('#hex-dec#',mid($args[1],5,2))-func('#hex-dec#',mid($args[2],5,2)))/len($args[0]) else tvar_titles['b']=(func('#hex-dec#',mid($args[2],5,2))-func('#hex-dec#',mid($args[1],5,2)))/len($args[0])
+		if func('#hex-dec#',$mid($args[1],1,2))>func('#hex-dec#',$mid($args[2],1,2)): tvar_titles['r']=(func('#hex-dec#',$mid($args[1],1,2))-func('#hex-dec#',$mid($args[2],1,2)))/len($args[0]) else tvar_titles['r']=(func('#hex-dec#',$mid($args[2],1,2))-func('#hex-dec#',$mid($args[1],1,2)))/len($args[0])
+		if func('#hex-dec#',$mid($args[1],3,2))>func('#hex-dec#',$mid($args[2],3,2)): tvar_titles['g']=(func('#hex-dec#',$mid($args[1],3,2))-func('#hex-dec#',$mid($args[2],3,2)))/len($args[0]) else tvar_titles['g']=(func('#hex-dec#',$mid($args[2],3,2))-func('#hex-dec#',$mid($args[1],3,2)))/len($args[0])
+		if func('#hex-dec#',$mid($args[1],5,2))>func('#hex-dec#',$mid($args[2],5,2)): tvar_titles['b']=(func('#hex-dec#',$mid($args[1],5,2))-func('#hex-dec#',$mid($args[2],5,2)))/len($args[0]) else tvar_titles['b']=(func('#hex-dec#',$mid($args[2],5,2))-func('#hex-dec#',$mid($args[1],5,2)))/len($args[0])
 	else
 		tvar_titles['r']=1
 		tvar_titles['g']=1
 		tvar_titles['b']=1
 	end
-	tvar_titles['rr']=func('#hex-dec#',mid($args[1],1,2))
-	tvar_titles['gg']=func('#hex-dec#',mid($args[1],3,2))
-	tvar_titles['bb']=func('#hex-dec#',mid($args[1],5,2))
+	tvar_titles['rr']=func('#hex-dec#',$mid($args[1],1,2))
+	tvar_titles['gg']=func('#hex-dec#',$mid($args[1],3,2))
+	tvar_titles['bb']=func('#hex-dec#',$mid($args[1],5,2))
 end
 ! ------------------------ набор титров -----------------------------
 $tvar_titles['string']='<string:<<string_titles>> ><center><table width=<<tvar_titles["width"]>>% cellpadding=0 cellspacing=0 border=0><tr><td><div align='+$tvar_titles['align']+'>'
@@ -40,22 +40,22 @@ i_titles = 1
 :next_letter
 if no i_titles > len($args[0]):
 	if $args[2]='':
-		$tvar_titles['string']=$tvar_titles['string']+'<font color=#'+'i<<i_titles>>:'+$args[1]+'>'+mid($args[0],i_titles,1)+'</font>'
+		$tvar_titles['string']=$tvar_titles['string']+'<font color=#'+'i<<i_titles>>:'+$args[1]+'>'+$mid($args[0],i_titles,1)+'</font>'
 		if $args[4]='сверху' or $args[4]='снизу': $tvar_titles['string']=$tvar_titles['string']+'<br>'
 	else
-		if func('#hex-dec#',mid($args[1],1,2))<func('#hex-dec#',mid($args[2],1,2)) and tvar_titles['rr']<func('#hex-dec#',mid($args[2],1,2)):
+		if func('#hex-dec#',$mid($args[1],1,2))<func('#hex-dec#',$mid($args[2],1,2)) and tvar_titles['rr']<func('#hex-dec#',$mid($args[2],1,2)):
 			tvar_titles['rr']+=tvar_titles['r']
-		elseif func('#hex-dec#',mid($args[1],1,2))>func('#hex-dec#',mid($args[2],1,2)) and tvar_titles['rr']>func('#hex-dec#',mid($args[2],1,2)):
+		elseif func('#hex-dec#',$mid($args[1],1,2))>func('#hex-dec#',$mid($args[2],1,2)) and tvar_titles['rr']>func('#hex-dec#',$mid($args[2],1,2)):
 			tvar_titles['rr']-=tvar_titles['r']
 		end
-		if func('#hex-dec#',mid($args[1],3,2))<func('#hex-dec#',mid($args[2],3,2)) and tvar_titles['gg']<func('#hex-dec#',mid($args[2],3,2)):
+		if func('#hex-dec#',$mid($args[1],3,2))<func('#hex-dec#',$mid($args[2],3,2)) and tvar_titles['gg']<func('#hex-dec#',$mid($args[2],3,2)):
 			tvar_titles['gg']+=tvar_titles['g']
-		elseif func('#hex-dec#',mid($args[1],3,2))>func('#hex-dec#',mid($args[2],3,2)) and tvar_titles['gg']>func('#hex-dec#',mid($args[2],3,2)):
+		elseif func('#hex-dec#',$mid($args[1],3,2))>func('#hex-dec#',$mid($args[2],3,2)) and tvar_titles['gg']>func('#hex-dec#',$mid($args[2],3,2)):
 			tvar_titles['gg']-=tvar_titles['g']
 		end
-		if func('#hex-dec#',mid($args[1],5,2))<func('#hex-dec#',mid($args[2],5,2)) and tvar_titles['bb']<func('#hex-dec#',mid($args[2],5,2)):
+		if func('#hex-dec#',$mid($args[1],5,2))<func('#hex-dec#',$mid($args[2],5,2)) and tvar_titles['bb']<func('#hex-dec#',$mid($args[2],5,2)):
 			tvar_titles['bb']+=tvar_titles['b']
-		elseif func('#hex-dec#',mid($args[1],5,2))>func('#hex-dec#',mid($args[2],5,2)) and tvar_titles['bb']>func('#hex-dec#',mid($args[2],5,2)):
+		elseif func('#hex-dec#',$mid($args[1],5,2))>func('#hex-dec#',$mid($args[2],5,2)) and tvar_titles['bb']>func('#hex-dec#',$mid($args[2],5,2)):
 			tvar_titles['bb']-=tvar_titles['b']
 		end
 		$tvar_titles['string']=$tvar_titles['string']+'<font color=#'+'i<<i_titles>>:'+$func('#dec-col#',tvar_titles['rr'])+$func('#dec-col#',tvar_titles['gg'])+$func('#dec-col#',tvar_titles['bb'])+'>'+mid($args[0],i_titles,1)+'</font>'
@@ -72,12 +72,12 @@ if $args[4]='' or $args[4]='слева' or $args[4]='сверху':
 	i_titles = 1
 	:next_pulse
 	if no i_titles > len($args[0]):
-		if strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')='':
+		if $strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')='':
 			*p $tvar_titles['string']
 		else
-			$tvar_titles['string']=strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
+			$tvar_titles['string']=$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
 			$tvar_titles['string']=$replace($tvar_titles['string'],'i<<i_titles>>:')
-			$tvar_titles['screen']=$replace(maintxt,strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
+			$tvar_titles['screen']=$replace($maintxt,$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
 			*clr
 			*p $tvar_titles['screen']
 			if args[3]=0: wait 250 else wait args[3]
@@ -89,12 +89,12 @@ else
 	i_titles = len($args[0])
 	:next_flash
 	if i_titles > 0:
-		if strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')='':
+		if $strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')='':
 			*p $tvar_titles['string']
 		else
-			$tvar_titles['string']=strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
+			$tvar_titles['string']=$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
 			$tvar_titles['string']=$replace($tvar_titles['string'],'i<<i_titles>>:')
-			$tvar_titles['screen']=$replace(maintxt,strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
+			$tvar_titles['screen']=$replace($maintxt,$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
 			*clr
 			*p $tvar_titles['screen']
 			if args[3]=0: wait 250 else wait args[3]

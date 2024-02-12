@@ -16,8 +16,8 @@ if $args[1]<>'':
 	:for
 	if len($args[1])>0 and args['i']>0:
 		if len($args[1])>1:
-			$args['1'] = mid ($args[1],1,1)
-			$args[1] = mid ($args[1],2)
+			$args['1'] = $mid($args[1],1,1)
+			$args[1] = $mid($args[1],2)
 		else
 			$args['1']=$args[1]
 			$args[1]=''
@@ -30,7 +30,7 @@ end
 if $args[2]<>'': $args['symbols']+=$args[2]
 :while
 if args[0]>0:
-	$result['rndstr']+=(mid($args['symbols'],rand(1,len($args['symbols'])),1))
+	$result['rndstr']+=($mid($args['symbols'],rand(1,len($args['symbols'])),1))
 	args[0]-=1
 	if args[0]>0: jump 'while'
 end

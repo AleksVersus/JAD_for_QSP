@@ -4,7 +4,7 @@ $args[1] = $args[1] & ! направление
 if $args[1]='down' or $args[1]='':
 	:for
 	if args[0]>0:
-		if $title_string[args[0]-1]<>'': *pl $func('forHTML',$title_string[args[0]-1])
+		if $title_string[args[0]-1]<>'': *pl @forHTML($title_string[args[0]-1])
 		args[0]-=1
 		jump 'for'
 	end
@@ -15,7 +15,7 @@ elseif $args[1]='up':
 		if args[0]>arrsize('$title_string'):
 			*pl
 		else
-			$func('forHTML',$title_string[args[9]])
+			@forHTML($title_string[args[9]])
 			args[9]+=1
 		end
 		args[0]-=1
@@ -24,7 +24,7 @@ elseif $args[1]='up':
 elseif $args[1]='stright':
 	:loop
 	if args[0]>0:
-		$func('forHTML',$title_string[args[0]-1])
+		@forHTML($title_string[args[0]-1])
 		args[0]-=1
 		jump 'loop'
 	end

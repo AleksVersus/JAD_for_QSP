@@ -27,7 +27,7 @@ else
 end
 ! выводим содержимое массива
 *clr
-$func('rabbithole.print',args[1],'')
+@rabbithole.print(args[1],'')
 wait 40
 if args['u']<2500: jump 'generatio'
 --- rabbithole ---------------------------------

@@ -32,7 +32,7 @@ if args['i']<>0:
 	jump 'generatio'
 end
 *clr
-$func('rabbithole.print',args[1],'stright')
+*pl @rabbithole.print(args[1],'stright')
 wait 40
 args['u']+=1
 if args['u']<2500: jump 'still'

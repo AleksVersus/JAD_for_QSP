@@ -3,19 +3,19 @@ $args[0] = $args[0]
 args[1] = args[1]
 if args[1]<1: args[1]=1
 if instr($args[0],'.')=0: $result=$args[0] & exit
-$args['start'] = mid($args[0],1,instr($args[0],'.')-1)
-$args['end'] = mid($args[0],instr($args[0],'.')+1)
-args['len']=len(str(args[1]))-1
+$args['start'] = $mid($args[0],1,instr($args[0],'.')-1)
+$args['end'] = $mid($args[0],instr($args[0],'.')+1)
+args['len']=len($str(args[1]))-1
 :for
 args['i']=len($args['end'])
-if len($args['end'])>args['len'] and mid($args['end'],args['i'],1)='0':
-	$args['end']=mid($args['end'],1,args['i']-1)
+if len($args['end'])>args['len'] and $mid($args['end'],args['i'],1)='0':
+	$args['end']=$mid($args['end'],1,args['i']-1)
 	jump 'for'
 end
 if $args['end']!'': $result=$args['start']+'.'+$args['end'] else $result=$args['start']
 :for2
 if instr($result,'0')=1 and instr($result,'.')!2:
-	$result=mid($result,2)
+	$result=$mid($result,2)
 	jump 'for2'
 end
 if $result='': $result='0'

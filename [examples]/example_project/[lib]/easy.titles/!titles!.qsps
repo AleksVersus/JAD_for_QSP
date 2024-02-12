@@ -1,5 +1,5 @@
 # !titles.easy!
-Bcolor=rgb(0,0,0)
+bcolor=rgb(0,0,0)
 fcolor=rgb(0,200,0)
 SHOWACTS 1
 SHOWINPUT 1
@@ -7,11 +7,11 @@ SHOWOBJS 0
 SHOWSTAT 1
 usehtml = 1
 $usercom='uc'
-addqst 'easy.math.qsp'
+inclib 'easy.math.qsp'
 act 'Кроличья нора':
-	gosub 'rabbithole'
+	@rabbithole
 end
 act 'Кроличья нора 2':
-	gosub 'rabbithole.left','right'
+	@rabbithole.left('right')
 end
 --- !titles.easy! ---------------------------------

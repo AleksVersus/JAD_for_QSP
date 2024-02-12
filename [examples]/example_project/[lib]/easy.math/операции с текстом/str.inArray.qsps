@@ -1,5 +1,5 @@
 # #str.inArray#
-$args[3] = UCASE($args[3])
+$args[3] = $UCASE($args[3])
 if $args[2] = '':
 $args[2]='
 '
@@ -31,8 +31,8 @@ if len($args[0])>0:
 	if ($args['vs']<>'' and $strfind($args[3],'NOTSPACE')<>'') or $strfind($args[3],'NOTSPACE')='':
 		if $strfind($args[3],'LEFT')='LEFT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['l']=$args[2]
 		if $strfind($args[3],'RIGHT')='RIGHT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['r']=$args[2]
-		if $strfind($args[3],'LCASE')='LCASE': $args['vs']=LCASE($args['vs'])
-		if $strfind($args[3],'UCASE')='UCASE': $args['vs']=UCASE($args['vs'])
+		if $strfind($args[3],'LCASE')='LCASE': $args['vs']=$LCASE($args['vs'])
+		if $strfind($args[3],'UCASE')='UCASE': $args['vs']=$UCASE($args['vs'])
 		$easy_math_copy_array[]=$args['l']+$args['vs']+$args['r']
 	end
 	jump 'for'

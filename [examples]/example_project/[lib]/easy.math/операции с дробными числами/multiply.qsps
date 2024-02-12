@@ -3,14 +3,14 @@ i_easy_math_um = 0
 :initial
 if i_easy_math_um<9:
 	if len($args[i_easy_math_um])=0:
-		if args[i_easy_math_um]=0: $args[i_easy_math_um]='1' else $args[i_easy_math_um]=str(args[i_easy_math_um])
+		if args[i_easy_math_um]=0: $args[i_easy_math_um]='1' else $args[i_easy_math_um]=$str(args[i_easy_math_um])
 	else
 		$args[i_easy_math_um] = $args[i_easy_math_um]
 		if $args[i_easy_math_um]='0': $result='0' & exit
 	end
 	if instr($args[i_easy_math_um],',')!0: $args[i_easy_math_um]=$replace($args[i_easy_math_um],',','.')
 	if instr($args[i_easy_math_um],'-')=1: $args[i_easy_math_um]=$replace($args[i_easy_math_um],'-')	&	args[11]=1-args[11]
-	if instr($args[i_easy_math_um],'.')!0: args[10]+=len(mid($args[i_easy_math_um],instr($args[i_easy_math_um],'.')+1))
+	if instr($args[i_easy_math_um],'.')!0: args[10]+=len($mid($args[i_easy_math_um],instr($args[i_easy_math_um],'.')+1))
 	$args[i_easy_math_um]=$replace($args[i_easy_math_um],'.')
 	i_easy_math_um+=1
 	jump 'initial'
@@ -28,13 +28,13 @@ if i_easy_math_um>0:
 		$args['result']=$func('#zero#',len($args[i_easy_math_um-1])-j_easy_math_um)
 		:умножение
 		if a_easy_math_um>0:
-			args['is']=val(mid($args[i_easy_math_um],a_easy_math_um,1))*val(mid($args[i_easy_math_um-1],j_easy_math_um,1))
+			args['is']=val($mid($args[i_easy_math_um],a_easy_math_um,1))*val($mid($args[i_easy_math_um-1],j_easy_math_um,1))
 			args['is']+=args['last']
 			args['last']=args['is']/10
 			args['is']=args['is'] mod 10
-			$args['result']=str(args['is'])+$args['result']
+			$args['result']=$str(args['is'])+$args['result']
 			a_easy_math_um-=1
-			if a_easy_math_um=0: $args['result']=str(args['last'])+$args['result']
+			if a_easy_math_um=0: $args['result']=$str(args['last'])+$args['result']
 			jump 'умножение'
 		end
 		$args['summ']=$func('#+#',$args['summ'],$args['result'])
@@ -46,7 +46,7 @@ if i_easy_math_um>0:
 	jump 'for'
 end
 $result=$args[i_easy_math_um]
-$result=$func('#dz#',mid($result,1,len($result)-args[10])+'.'+mid($result,len($result)-args[10]+1))
+$result=$func('#dz#',$mid($result,1,len($result)-args[10])+'.'+$mid($result,len($result)-args[10]+1))
 if args[11]=1: $result='-'+$result
 killvar 'i_easy_math_um'
 killvar 'j_easy_math_um'

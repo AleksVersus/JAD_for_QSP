@@ -1,7 +1,7 @@
 # #array.prnt.few#
 args['last']=arrsize('$args')-1
 if $strfind($args[args['last']],'\S+\s+\S+')!'':
-	$args['construct']=UCASE($args[args['last']])
+	$args['construct']=$UCASE($args[args['last']])
 	if instr($args['construct'],'[NO TABLE]')!0: $args['table']='' else $args['table']='yep'
 	if instr($args['construct'],'[ONLY RESULT]')!0: $args['table']='' & $args['only result']='only result'
 	jump 'print'

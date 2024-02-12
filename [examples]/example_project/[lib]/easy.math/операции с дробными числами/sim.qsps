@@ -4,8 +4,8 @@ $args[1]=$func('#dz#',$args[1],'1')
 if instr($args[0],'.')=0: $args[0]+='.0'
 if instr($args[1],'.')=0: $args[1]+='.0'
 if $args[0]=$args[1]: $result=$func('#dz#',$args[0]) & exit
-args['0']=val(mid($args[0],1,instr($args[0],'.')-1))
-args['1']=val(mid($args[1],1,instr($args[1],'.')-1))
+args['0']=val($mid($args[0],1,instr($args[0],'.')-1))
+args['1']=val($mid($args[1],1,instr($args[1],'.')-1))
 if args['0']>args['1']:
 	$result=$func('#dz#',$args[0])
 	exit
@@ -13,10 +13,10 @@ elseif args['0']<args['1']:
 	$result=$func('#dz#',$args[1])
 	exit
 end
-$args['00']=mid($args[0],instr($args[0],'.')+1)
+$args['00']=$mid($args[0],instr($args[0],'.')+1)
 if instr($args[0],'-'): $args['00']='-'+$args['00']
 if instr($args[0],'-'): $args['00']='-'+$args['00']
-$args['11']=mid($args[1],instr($args[1],'.')+1)
+$args['11']=$mid($args[1],instr($args[1],'.')+1)
 args['max']=max(func('#razdiv#',$args['00']),func('#razdiv#',$args['11']))
 if func('#undiv#',$args['00'],args['max'])>func('#undiv#',$args['11'],args['max']):
 	$result=$args[0]

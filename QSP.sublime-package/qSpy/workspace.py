@@ -61,9 +61,10 @@ class QspWorkspace:
 		for path, qsp_locs in qsp_ws['locations'].items():
 			for name, region in qsp_locs:
 				self.add_loc(name, region, path)
+		# print(ws_path, 'files_paths' in qsp_ws)
 		for path, md5 in qsp_ws['files_paths'].items():
 			self.files_paths.append(path)
-			self.files_hashs.append(md5) 
+			self.files_hashs.append(md5)
 
 	def refresh_files(self) -> None:
 		""" refresh files mb in ws """

@@ -7,13 +7,13 @@ if args[0]<0: args[0]=-args[0]
 if args[1]<0: args[1]=-args[1]
 if args[1]=0: args[1]=100
 if args[2]=0: args[2]=1000000000
-$args[2] = str(args[2])
+$args[2] = $str(args[2])
 args['i']=0
 :for
 args['rez']=args[0]/args[1]
 args['ost']=args[0] mod args[1]
 if args['i']=1: $args['res.indiv']+='.'
-$args['res.indiv']+=str(args['rez'])
+$args['res.indiv']+=$str(args['rez'])
 args[0]=args['ost']*10
 args['i']+=1
 if args['i']<len($args[2]): jump 'for'

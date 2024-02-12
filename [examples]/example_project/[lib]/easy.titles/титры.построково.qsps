@@ -12,20 +12,20 @@ if args[2]=0: args[2]=480
 if $args[4]='': $args[4]=$args[3]
 if args[5]=0: fsize=14 else fsize=args[5]
 if $args[4]!$args[3] and args[2]/fsize>8:
-	tvar_titles['r_base']=func('#hex-dec#',mid($args[3],1,2)) & ! составляющие цвета в дексаметрической системе
-	tvar_titles['g_base']=func('#hex-dec#',mid($args[3],3,2))
-	tvar_titles['b_base']=func('#hex-dec#',mid($args[3],5,2))
-	tvar_titles['r_edge']=func('#hex-dec#',mid($args[4],1,2))
-	tvar_titles['g_edge']=func('#hex-dec#',mid($args[4],3,2))
-	tvar_titles['b_edge']=func('#hex-dec#',mid($args[4],5,2))
+	tvar_titles['r_base']=func('#hex-dec#',$mid($args[3],1,2)) & ! составляющие цвета в дексаметрической системе
+	tvar_titles['g_base']=func('#hex-dec#',$mid($args[3],3,2))
+	tvar_titles['b_base']=func('#hex-dec#',$mid($args[3],5,2))
+	tvar_titles['r_edge']=func('#hex-dec#',$mid($args[4],1,2))
+	tvar_titles['g_edge']=func('#hex-dec#',$mid($args[4],3,2))
+	tvar_titles['b_edge']=func('#hex-dec#',$mid($args[4],5,2))
 	if tvar_titles['r_base']>tvar_titles['r_edge']: tvar_titles['rr']=(tvar_titles['r_base']-tvar_titles['r_edge'])/4 else tvar_titles['rr']=(tvar_titles['r_edge']-tvar_titles['r_base'])/4
 	if tvar_titles['g_base']>tvar_titles['g_edge']: tvar_titles['gg']=(tvar_titles['g_base']-tvar_titles['g_edge'])/4 else tvar_titles['gg']=(tvar_titles['g_edge']-tvar_titles['g_base'])/4
 	if tvar_titles['b_base']>tvar_titles['b_edge']: tvar_titles['bb']=(tvar_titles['b_base']-tvar_titles['b_edge'])/4 else tvar_titles['bb']=(tvar_titles['b_edge']-tvar_titles['b_base'])/4
 end
 ! -----------------------------формируем выводимый блок----------------------------
-	if maintxt='': string_titles=0
+	if $maintxt='': string_titles=0
 	string_titles+=1
-	$tvar_titles['screen']='<string:<<string_titles>> ><table cellpadding=0 cellcpacing=0 width='+str(args[1])+' height='+str(args[2])+'><tr><td width='+str(args[1])+' height='+str(args[2])+'>'
+	$tvar_titles['screen']='<string:<<string_titles>> ><table cellpadding=0 cellcpacing=0 width='+$str(args[1])+' height='+$str(args[2])+'><tr><td width='+$str(args[1])+' height='+$str(args[2])+'>'
 	tvar_titles['width']=args[1]/fsize & ! максимальное количество знаков в выводимой строке (немного меньше, чем позволяет таблица такой ширины)
 	tvar_titles['height']=args[2]/fsize & ! максимальное количество строк в выводимом блоке (немного меньше, чем позволяет таблица такой ширины)
 		j_titles=0
@@ -49,25 +49,25 @@ end
 if $args[0]!'':
 	i_titles=1
 	:string
-	if strfind($args[0],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth>')!'':
-		$lenth_titles[i_titles]=$replace($replace(strfind($args[0],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth>'),'<lenth:<<i_titles>> >'),'< <<i_titles>>:lenth>') & ! основной текст
+	if $strfind($args[0],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth>')!'':
+		$lenth_titles[i_titles]=$replace($replace($strfind($args[0],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth>'),'<lenth:<<i_titles>> >'),'< <<i_titles>>:lenth>') & ! основной текст
 		if len($lenth_titles[i_titles])<=tvar_titles['width']:
 			if $strfind($lenth_titles[i_titles],'<center>')!'' or ($strfind($lenth_titles[i_titles],'<right>')='' and $strfind($lenth_titles[i_titles],'<left>')=''):
 				$lenth_titles[i_titles]=$replace($lenth_titles[i_titles],'<center>') 
-				$lenth_titles[i_titles]=mid($tvar_titles['space'],1,(len($tvar_titles['space'])-len($lenth_titles[i_titles]))/2)+$lenth_titles[i_titles]+mid($tvar_titles['space'],1,(len($tvar_titles['space'])-len($lenth_titles[i_titles]))/2)
+				$lenth_titles[i_titles]=$mid($tvar_titles['space'],1,(len($tvar_titles['space'])-len($lenth_titles[i_titles]))/2)+$lenth_titles[i_titles]+$mid($tvar_titles['space'],1,(len($tvar_titles['space'])-len($lenth_titles[i_titles]))/2)
 			elseif $strfind($lenth_titles[i_titles],'<left>')!'':
 				$lenth_titles[i_titles]=$replace($lenth_titles[i_titles],'<left>') 
-				$lenth_titles[i_titles]=$lenth_titles[i_titles]+mid($tvar_titles['space'],1,len($tvar_titles['space'])-len($lenth_titles[i_titles]))
+				$lenth_titles[i_titles]=$lenth_titles[i_titles]+$mid($tvar_titles['space'],1,len($tvar_titles['space'])-len($lenth_titles[i_titles]))
 			elseif $strfind($lenth_titles[i_titles],'<right>')!'':
 				$lenth_titles[i_titles]=$replace($lenth_titles[i_titles],'<right>') 
-				$lenth_titles[i_titles]=mid($tvar_titles['space'],1,len($tvar_titles['space'])-len($lenth_titles[i_titles]))+$lenth_titles[i_titles]
+				$lenth_titles[i_titles]=$mid($tvar_titles['space'],1,len($tvar_titles['space'])-len($lenth_titles[i_titles]))+$lenth_titles[i_titles]
 			end
 		else
-			$lenth_titles[i_titles]=mid($lenth_titles[i_titles],1,tvar_titles['width']-3)+'...'
+			$lenth_titles[i_titles]=$mid($lenth_titles[i_titles],1,tvar_titles['width']-3)+'...'
 		end
 		if len($lenth_titles[i_titles])<tvar_titles['width']: $lenth_titles[i_titles]=$lenth_titles[i_titles]+' '
 		i_titles+=1
-		if strfind($args[0],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth>')!'': jump 'string'
+		if $strfind($args[0],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth>')!'': jump 'string'
 	end
 end
 ! ----------------------------заполняем массив строк-------------------------------
@@ -80,10 +80,10 @@ end
 	j_titles = x_titles & ! позиция выводимой строки в массиве строк $lenth_titles
 	:следующая_строка
 	if $lenth_titles[j_titles]='':
-		$tvar_titles['string']=$strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
+		$tvar_titles['string']=$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
 		$tvar_titles['lenth']=$strfind($tvar_titles['string'],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth><br>')
 		$tvar_titles['string']=$replace($tvar_titles['string'],$tvar_titles['lenth'],'<lenth:<<i_titles>> >'+$tvar_titles['space']+'< <<i_titles>>:lenth><br>')
-		$tvar_titles['screen']=$replace(maintxt,$strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
+		$tvar_titles['screen']=$replace($maintxt,$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
 		*clr
 		*p $tvar_titles['screen']
 	else
@@ -104,10 +104,10 @@ end
 		else
 			$tvar_titles['font']='<font color=#'+$args[3]+'>'
 		end
-		$tvar_titles['string']=$strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
+		$tvar_titles['string']=$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>')
 		$tvar_titles['lenth']=$strfind($tvar_titles['string'],'<lenth:<<i_titles>> >[\s\S]+< <<i_titles>>:lenth><br>')
 		$tvar_titles['string']=$replace($tvar_titles['string'],$tvar_titles['lenth'],'<lenth:<<i_titles>> >'+$tvar_titles['font']+$lenth_titles[j_titles]+'</font>< <<i_titles>>:lenth><br>')
-		$tvar_titles['screen']=$replace(maintxt,$strfind(maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
+		$tvar_titles['screen']=$replace($maintxt,$strfind($maintxt,'<string:<<string_titles>> >[\s\S]+< <<string_titles>>:string>'),$tvar_titles['string'])
 		*clr
 		*p $tvar_titles['screen']
 	end

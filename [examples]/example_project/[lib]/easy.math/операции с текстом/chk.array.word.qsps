@@ -5,20 +5,12 @@ $args[2] = $args[2]
  args[3] = args[3]
 if args[4] = 0: args[4] = arrsize($args[0])
 if $args[2]='first' or $args[2]='':
-	if $AVS_PLAYERTYPE = 'QN':
-		args['b']=arrcomp($args[0],'[\s\S]*'+$args[1]+'[\s\S]*',args[3])
-	else
-		args['b']=arrcomp(args[3],$args[0],'[\s\S]*'+$args[1]+'[\s\S]*')
-	end
+	args['b']=arrcomp($args[0],'[\s\S]*'+$args[1]+'[\s\S]*',args[3])
 	if args['b']>args[4]: result=-1 else result=args['b']
 elseif $args[2]='last':
 	args['i']=args[3]
 	:for
-	if $AVS_PLAYERTYPE = 'QN':
-		args['b']=arrcomp($args[0],'[\s\S]*'+$args[1]+'[\s\S]*',args['i'])
-	else
-		args['b']=arrcomp(args['i'],$args[0],'[\s\S]*'+$args[1]+'[\s\S]*')
-	end
+	args['b']=arrcomp($args[0],'[\s\S]*'+$args[1]+'[\s\S]*',args['i'])
 	if args['b']!-1 and args['b']<=args[4]:
 		result=args['b']
 		args['i']=result+1

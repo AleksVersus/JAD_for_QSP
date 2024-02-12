@@ -29,10 +29,10 @@ args[9]=arrsize($args[0])-1
 :for_you
 if args[9]>-1:
 	if instr($args[2],'conc')!0:
-		$result['array.simp']=DYNEVAL("if arrpos('<<$args[0]>>',<<$args[1]>>[args[0]])!-1: $result['dyn']='true' else $result['dyn']='false'",args[9])
+		$result['array.simp']=$DYNEVAL("if arrpos('<<$args[0]>>',<<$args[1]>>[args[0]])!-1: $result['dyn']='true' else $result['dyn']='false'",args[9])
 		if $result['array.simp']!'false': jump 'overkill_and_exit'
 	else
-		$result['array.simp']=DYNEVAL("if <<$args[0]>>[args[0]]=<<$args[1]>>[args[0]]: $result['dyn']='true' else $result['dyn']='false'",args[9])
+		$result['array.simp']=$DYNEVAL("if <<$args[0]>>[args[0]]=<<$args[1]>>[args[0]]: $result['dyn']='true' else $result['dyn']='false'",args[9])
 		if $result['array.simp']='false': jump 'overkill_and_exit'
 	end
 	args[9]-=1
