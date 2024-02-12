@@ -28,9 +28,9 @@
 
 ## Этап 3. Установка пакета QSP в SublimeText
 
-1. Скачайте последний релиз [пакета QSP для Sublime Text](https://github.com/AleksVersus/JAD_for_QSP/releases) в виде rar-архива;
-2. Извлеките из архива файл "`install.QSP.sublime-package.exe`"
-3. Запустите "`install.QSP.sublime-package.exe`" и следуйте инструкциям. Пакет автоматически установится в SublimeText.
+1. Скачайте установочный файл из [последнего релиза](https://github.com/AleksVersus/JAD_for_QSP/releases). Файл будет называться "`install.QSP.sublime-package.XX.exe`", где `XX` — номер версии.
+2. Запустите "`install.QSP.sublime-package.XX.exe`" и следуйте инструкциям. Пакет автоматически установится в SublimeText.
+3. Перезагрузите Sublime Text, если он был запущен.
 
 ## Этап 4. Первая игра в SublimeText
 

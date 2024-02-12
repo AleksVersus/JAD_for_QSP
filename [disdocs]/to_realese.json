@@ -1,0 +1,5 @@
+{
+	"installer": "QSP.sublime-package.XX.exe",
+	"manuals and examples": "manuals and examples.zip",
+	"source of package": "QSP.sublime-package.src.zip"
+}
