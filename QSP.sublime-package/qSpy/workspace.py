@@ -145,6 +145,7 @@ class QspWorkspace:
 		qsp_locs = qsp_ws_out['locations']
 		qsp_files = qsp_ws_out['files_paths']
 		for i, path in enumerate(self.loc_places):
+			if path == '': continue
 			if not path in qsp_locs: qsp_locs[path] = []
 			qsp_locs[path].append([self.loc_names[i], self.loc_regions[i]])
 		for i, path in enumerate(self.files_paths):
