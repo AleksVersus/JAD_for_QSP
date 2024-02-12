@@ -131,8 +131,11 @@ class QspWorkspace:
 
 	def refresh_qsplocs(self, view:sublime.View, current_qsps:str, project_folder:str) -> None:
 		"""	Return list of QSP-locations created on this view """
-		qsps_relpath = self.reling_path(project_folder, current_qsps)
-		self.del_all_locs_by_place(qsps_relpath)
+		if not current_qsps is None:
+			qsps_relpath = self.reling_path(project_folder, current_qsps)
+			self.del_all_locs_by_place(qsps_relpath)
+		else:
+			qsps_relpath = ''
 		for s in view.symbol_regions():
 			if s.name.startswith('Локация: '):
 				self.add_loc(s.name[9:], [s.region.begin(), s.region.end()], qsps_relpath)
@@ -216,7 +219,7 @@ class QspWorkspace:
 		if project_folder in all_workspaces:
 			# if ws exist in dict of wss
 			qsp_ws = all_workspaces[project_folder]
-			qsp_ws.refresh_qsplocs(view, current_qsps,project_folder)
+			qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
 			all_qsplocs = (qsp_ws.loc_names if only == 'names' else qsp_ws.get_locs())
 		else:
 			# if ws dont exist in dict of wss
