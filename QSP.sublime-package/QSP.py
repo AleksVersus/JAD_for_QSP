@@ -293,9 +293,9 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		if current_qsps is None or project_folder is None: return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
 		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
-		if QSP_MARKERS['files_is_renamed']:
+		if QSP_MARKERS['files_is_changed']:
 			qsp_ws.refresh_files()
-			QSP_MARKERS['files_is_renamed'] = False
+			QSP_MARKERS['files_is_changed'] = False
 		else:
 			qsp_ws.refresh_md5(current_qsps, project_folder)
 		qsp_ws.save_to_file(project_folder)
@@ -309,8 +309,8 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		if not qsp_ws is None: qsp_ws.refresh_files()
 
 	def on_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
-		if command_name == 'rename_path':
-			QSP_MARKERS['files_is_renamed'] = True
+		if command_name in ('rename_path', 'delete_file'):
+			QSP_MARKERS['files_is_changed'] = True
 
 	# def on_close(self, view):
 	# 	window = sublime.active_window()
@@ -318,4 +318,4 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
-QSP_MARKERS = {'files_is_renamed': False}
+QSP_MARKERS = {'files_is_changed': False}
