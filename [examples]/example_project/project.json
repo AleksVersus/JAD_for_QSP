@@ -3,10 +3,6 @@
 	[
 		{
 			"build":"..\\example_game\\game.sam.qsp",
-			"files":
-			[
-				{"path":"main\\обязательные локации\\[start].start"}
-			],
 			"folders":
 			[
 				{

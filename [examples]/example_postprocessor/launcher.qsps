@@ -2,7 +2,7 @@ QSP-Game Лаунчер для запуска тестов
 # [launcher]
 if $QSPVER<'5.8.0':
 	fsize=18
-else
+else:
 	fsize=24
 end
 $fname="Times New Roman"

@@ -5,26 +5,20 @@ QSP-Game <= это слово первой строкой файла (после
 обработаны автоматически
 
 # [start]
-!"--  Волшебство и Сталь. На базе движка  Magicon.FB v 0.10   --"!
-!"-- Стандартная локация для любой игры на движке Magicon.FB --"!
-! Подключаем движок, базы и необходимые бибилотеки
-! --------- рабочие команды для QSP 5.7.0
-addqst	'drive.qsp'	&	!	игра Steel & Magic использует те же драйвер и базы, что и игра fantastic battles
-addqst	'bases.qsp'
-addqst	'intro.qsp'
-addqst	'lib/easy.titles.qsp'
-addqst	'lib/easy.math.qsp'
-! "--------- рабочие команды для Quest Navigator ---------
-inclib 'drive.qsp'
+!@ --  Волшебство и Сталь. На базе движка  Magicon.FB v 0.10   --
+!@ --  Стандартная локация для любой игры на движке Magicon.FB --
+!@ Подключаем движок, базы и необходимые бибилотеки
+!@ --------- рабочие команды для QSP 5.8.0
+inclib	'drive.qsp'	&	!@	игра Steel & Magic использует те же драйвер и базы, что и игра fantastic battles
 inclib	'bases.qsp'
-inclib	'intro.sam.qsp'
+inclib	'intro.qsp'
 inclib	'lib/easy.titles.qsp'
 inclib	'lib/easy.math.qsp'
-! --------------------------------------------------------"
-! Очищаем всё
-if $cur[0]='':
+
+!@ Очищаем всё
+if $GAME_VALUE['no_restart'] = 0:
 	KILLALL
-	! Настройка интерфейса
+	!@ Настройка интерфейса
 	$GAME_INTERFACE['обучение']="show"
 	$GAME_INTERFACE['подсказки']="show"
 	$GAME_INTERFACE['show.input']="show"
@@ -33,24 +27,22 @@ if $cur[0]='':
 	$GAME_INTERFACE['show.stat']="show"
 	$GAME_INTERFACE['hero.stat']='hide'
 	$GAME_INTERFACE['obj.image.stat']='hide'
-	gosub 'setScreen','black-green'
+	GAME_VALUE['no_restart']= 1
+	@setScreen('black-green')
 end
-! инициализируем переменные
+!@ инициализируем переменные
 usehtml = 1
-! Инициализируем обработчики
+!@ Инициализируем обработчики
 $onnewloc = 'onNewLoc'
 $onobjsel = 'onObjSel'
 $usercom = 'inputText'
-! Инициализируем переменные переходов
-$cur[2] = '[0.1_game_info]'
-$cur[1] = '[1.0_game_start]'
-$cur[0] = '[0.2_drive_info]'
-! Выводим на экран необходимый текст
+
+!@ Выводим на экран необходимый текст
 "<center><table width=720><tr><td align=center><h1><font color=#dddd00>ВОЛШЕБСТВО И СТАЛЬ</font></h1><div align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Игра собрана на движке <font color=#ff8800>MAGICON.FB v 0.10</font>. Это демонстрационная версия игры, предназначенная для ознакомления с основными возможностями и принципами задействованной механики. Вы увидите вводный текст из полной версии игры а так же текст обучения.</div>
 
-<div align=center><a href='exec: goto $cur[0]' class=plain>о Движке</a>
-<a href='exec: goto $cur[2]' class=plain>об Игре</a>
+<div align=center><a href=""exec: goto '[0.2_drive_info]'"" class=plain>о Движке</a>
+<a href=""exec: goto '[0.1_game_info]'"" class=plain>об Игре</a>
 
-<a href='exec: goto $cur[1]' class=plain>начать</a></div></td></tr></table></center>
+<a href=""exec: goto '[1.0_game_start]'"" class=plain>начать</a></div></td></tr></table></center>
 "
 --- [start] ---------------------------------
