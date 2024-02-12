@@ -198,9 +198,8 @@ class QspAutocomplete(sublime_plugin.EventListener):
 		# if syntshugarfunc
 		if view.match_selector(locations[0]-1, 'variable.function.qsp'):
 			qsp_loc_names = QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES, only='names') # -> list of loc names
-			prefix = prefix.lower()
 			for loc_name in qsp_loc_names:
-				if str(input_text[1:-1].lower()) in loc_name.lower():
+				if prefix.lower() in loc_name.lower():
 					d = sublime.CompletionItem(
 						loc_name,
 						annotation="Локация",
