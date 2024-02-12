@@ -198,7 +198,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 			qsp_loc_names = QspWorkspace.get_all_qsplocs(view, QSP_WORKSPACES, only='names') # -> list of loc names
 			prefix = prefix.lower()
 			for loc_name in qsp_loc_names:
-				if loc_name.lower().startswith(prefix):
+				if str(input_text[1:-1].lower()) in qsp_lb.lower():
 					d = sublime.CompletionItem(
 						loc_name,
 						annotation="Локация",
@@ -214,7 +214,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 			scope_region = view.expand_to_scope(locations[0]-1, 'callable_locs.qsp')
 			input_text = view.substr(scope_region)
 			for loc_name in qsp_loc_names:
-				if loc_name.lower().startswith(input_text[1:-1]):
+				if str(input_text[1:-1].lower()) in qsp_lb.lower():
 					d = sublime.CompletionItem(
 						loc_name,
 						annotation="Локация",
@@ -229,7 +229,7 @@ class QspAutocomplete(sublime_plugin.EventListener):
 			scope_region = view.expand_to_scope(locations[0]-1, 'label_to_jump.qsp')
 			input_text = view.substr(scope_region)
 			for qsp_lb in qsp_all_lbls:
-				if qsp_lb.lower().startswith(input_text[1:-1]):
+				if str(input_text[1:-1].lower()) in qsp_lb.lower():
 					d = sublime.CompletionItem(
 						qsp_lb,
 						annotation="Метка",
