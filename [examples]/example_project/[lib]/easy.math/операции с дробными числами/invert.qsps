@@ -1,4 +1,0 @@
-# #invert#
-if instr($args[0],'-')=1: $result=$mid($args[0],2) else $result='-'+$args[0]
-if $result = '-': $result=''
---- #invert# ---------------------------------

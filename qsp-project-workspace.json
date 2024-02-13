@@ -143,15 +143,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.s (\u043d\u043e\u0432\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
-            [
-                "b.d.s",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\game.help (\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c).qsps": [
             [
                 "game.help",
@@ -201,15 +192,6 @@
                 [
                     1862,
                     1879
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.t.qsps": [
-            [
-                "b.d.t",
-                [
-                    2,
-                    7
                 ]
             ]
         ],
@@ -292,15 +274,6 @@
                 [
                     11586,
                     11606
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.screen.qsps": [
-            [
-                "base.word.screen",
-                [
-                    2,
-                    18
                 ]
             ]
         ],
@@ -896,15 +869,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.uron.qsps": [
-            [
-                "base.word.uron",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": [
             [
                 "menu.in.inventory",
@@ -1365,15 +1329,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430 \u0438 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b\\base.new.property.qsps": [
-            [
-                "base.new.property",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0430.qsps": [
             [
                 "int.hero.property",
@@ -1605,22 +1560,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\main\\[start].qsps": [
-            [
-                "[start]",
-                [
-                    350,
-                    357
-                ]
-            ],
-            [
-                "[start]",
-                [
-                    350,
-                    357
-                ]
-            ]
-        ],
         "[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[chest].qsps": [
             [
                 "[chest]",
@@ -1663,15 +1602,6 @@
                 [
                     126,
                     142
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u0432\u044b\u0431\u043e\u0440 \u043f\u043e\u043b\u0430.qsps": [
-            [
-                "[1.0_game_start]",
-                [
-                    2,
-                    18
                 ]
             ]
         ],
@@ -1793,141 +1723,6 @@
                 [
                     2,
                     13
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.tag.cont.qsps": [
-            [
-                "get.tag.cont",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435\\add.qsps": [
-            [
-                "#add#",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435\\rtp.qsps": [
-            [
-                "#rtp#",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435\\dev.qsps": [
-            [
-                "#dev#",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\div.qsps": [
-            [
-                "#:#",
-                [
-                    2,
-                    5
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\invert.qsps": [
-            [
-                "#invert#",
-                [
-                    2,
-                    10
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\razdiv.qsps": [
-            [
-                "#razdiv#",
-                [
-                    2,
-                    10
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\rounddiv.qsps": [
-            [
-                "#rounddiv#",
-                [
-                    2,
-                    12
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
-            [
-                "#dz#",
-                [
-                    2,
-                    6
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\indiv.qsps": [
-            [
-                "#indiv#",
-                [
-                    2,
-                    9
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\multiply.qsps": [
-            [
-                "#*#",
-                [
-                    2,
-                    5
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\plus.qsps": [
-            [
-                "#+#",
-                [
-                    2,
-                    5
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\sim.qsps": [
-            [
-                "#sim#",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\sqrt.qsps": [
-            [
-                "#sqrt#",
-                [
-                    2,
-                    8
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\undiv.qsps": [
-            [
-                "#undiv#",
-                [
-                    2,
-                    9
                 ]
             ]
         ],
@@ -2237,21 +2032,228 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": [
-            [
-                "hero.vosst.time",
-                [
-                    2,
-                    17
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\gen.ahref.inMount.qsps": [
             [
                 "gen.ahref.inMount",
                 [
                     2,
                     19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\main\\[start].qsps": [
+            [
+                "[start]",
+                [
+                    350,
+                    357
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u0432\u044b\u0431\u043e\u0440 \u043f\u043e\u043b\u0430.qsps": [
+            [
+                "[1.0_game_start]",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430 \u0438 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b\\base.new.property.qsps": [
+            [
+                "base.new.property",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.screen.qsps": [
+            [
+                "base.word.screen",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.uron.qsps": [
+            [
+                "base.word.uron",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.s (\u043d\u043e\u0432\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
+            [
+                "b.d.s",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.t.qsps": [
+            [
+                "b.d.t",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\time.output.addition.qsps": [
+            [
+                "time.output.addition",
+                [
+                    67,
+                    87
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": [
+            [
+                "hero.vosst.time",
+                [
+                    247,
+                    262
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\sqrt.qsps": [
+            [
+                "#sqrt#",
+                [
+                    2,
+                    8
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\multiply.qsps": [
+            [
+                "#*#",
+                [
+                    2,
+                    5
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\plus.qsps": [
+            [
+                "#+#",
+                [
+                    2,
+                    5
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435\\add.qsps": [
+            [
+                "#add#",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435\\dev.qsps": [
+            [
+                "#dev#",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u043b\u043e\u0433\u0438\u0447\u0435\u0441\u043a\u0438\u0435\\rtp.qsps": [
+            [
+                "#rtp#",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\div.qsps": [
+            [
+                "#:#",
+                [
+                    2,
+                    5
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\sim.qsps": [
+            [
+                "#sim#",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\invert.qsps": [
+            [
+                "#invert#",
+                [
+                    2,
+                    10
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\rounddiv.qsps": [
+            [
+                "#rounddiv#",
+                [
+                    2,
+                    12
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\razdiv.qsps": [
+            [
+                "#razdiv#",
+                [
+                    2,
+                    10
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\undiv.qsps": [
+            [
+                "#undiv#",
+                [
+                    2,
+                    9
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.tag.cont.qsps": [
+            [
+                "get.tag.cont",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
+            [
+                "#dz#",
+                [
+                    390,
+                    394
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\indiv.qsps": [
+            [
+                "#indiv#",
+                [
+                    298,
+                    305
                 ]
             ]
         ]
