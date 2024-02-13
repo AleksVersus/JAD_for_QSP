@@ -1,4 +1,4 @@
-# b.d.s
+QSP-Game
 ! тексты в окно основного описания реплики торговцев с голосами
 $args[0] = $args[0]	&	!	ключевое слово
 $args[1] = $args[1]	&	!	идентификатор торговца
@@ -6,56 +6,57 @@ $args[2] = $args[2]	&	!	дополнительные данные
 $args[3] = $args[3]	&	!	дополнительные данные
 $args[9] = $args[9]	&	!	дополнительные данные
 
+# b.d.s
+local $seller_, $res_, r
 if $args[1]<>'':
-	$args['seller']=$func('get.obj.id',$args[1])
-	$args['s.name']=$func('get.word.padez',$func('em.tag.getCont',$args['seller'],'tname'),'И')
-	$args['s.sex']=$func('em.tag.getCont',$args['seller'],'sex')
-	$args['color']=$func('em.tag.getNum',$args['seller'],'color')
-	$args['np']=$func('em.tag.getCont',$args['seller'],'np')
+	$seller_['body'] = @get.obj.id($args[1])
+	$seller_['name'] = @get.word.padez(@em.tag.getCont($seller_['body'],'tname'),'И')
+	$seller_['sex'] = @em.tag.getCont($seller_['body'],'sex')
+	$seller_['color'] = @em.tag.getNum($seller_['body'],'color')
+	$seller_['fs_set'] = @em.tag.getCont($seller_['body'],'np')	& !@ features sets
 end
-if $args['color']='': $args['color']='006600'	&	!	не забыть вытащить цвет в базу
-if $args['s.name']='': $args['s.name']=$func('b.d.t','place.neverland')
+if $seller_['color'] = '': $seller_['color'] = '006600'	&	!	не забыть вытащить цвет в базу
+if $seller_['name'] = '': $seller_['name'] = @b.d.t('place.neverland')
 
 :noMoney
-if $args[0]='noMoney':
-	if instr($args['np'],'[чурка]')<>0:
-		$args['b.d.s'] += 'Нээт. Дажи тэбэ в долг нэ отпушщу.'
-	else
-		$args['b.d.s'] += 'Не-ет. Я не отдаю вещи бесплатно.'
+if $args[0] = 'noMoney':
+	if instr($seller_['fs_set'],'[чурка]') <> 0:
+		$res_ += 'Нээт. Дажи тэбэ в долг нэ отпушщу.'
+	else:
+		$res_ += 'Не-ет. Я не отдаю вещи бесплатно.'
 	end
 	jump 'end_keep'
 end
 :приветствие
-if instr($args[0],'приветствие')<>0:
-	if instr($args['np'],'[чурка]')<>0:
-		args['rand']=rand(1,5)
-		if args['rand']=1: $args['b.d.s']+=$func('int.din.text','[th]Доброе утро|Добрый день|Добрый вечер|Доброй ночи[/th], (дарагой/дарагая)!')
-		if args['rand']=2: $args['b.d.s']+=$func('int.din.text','В любое время дня и ночи я рад тэбе, (радной/радная)!')
-		if args['rand']=3: $args['b.d.s']+=$func('int.din.text','[th]Этим утром|Сегоднэ дньом|В этот вэчер|Нинче ночьу[/th] всё только для тебя, (братанъ/сэстра-братъ)!')
-		if args['rand']=4: $args['b.d.s']+=$func('int.din.text','Вах! Это ж (мой лубимый клыэнт/мая лубимая клыэнтка)!')
-		if args['rand']=5: $args['b.d.s']+=$func('int.din.text','Дасвиданьа... Ах. В смысле - прыуэт!!!')
-	else
-		args['rand']=rand(1,6)
-		if args['rand']=1: $args['b.d.s'] += 'Давай посмотрим, что у нас есть.'
-		if args['rand']=2: $args['b.d.s'] += 'Лучшие товары для лучшего клиента.'
-		if args['rand']=3: $args['b.d.s'] += 'Всегда к твоим услугам!'
-		if args['rand']=4: $args['b.d.s'] += 'У нас - товар, у вас - денежки.'
-		if args['rand']=5: $args['b.d.s'] += 'У меня есть всё, что тебе нужно!'
-		if args['rand']=6: $args['b.d.s'] += 'У меня есть всё, что тебе нужно!'
+if instr($args[0], 'приветствие')<>0:
+	if instr($seller_['fs_set'], '[чурка]')<>0:
+		r = rand(1,5)
+		if r = 1: $res_ += @int.din.text('[th]Доброе утро|Добрый день|Добрый вечер|Доброй ночи[/th], (дарагой/дарагая)!')
+		if r = 2: $res_ += @int.din.text('В любое время дня и ночи я рад тэбе, (радной/радная)!')
+		if r = 3: $res_ += @int.din.text('[th]Этим утром|Сегоднэ дньом|В этот вэчер|Нинче ночьу[/th] всё только для тебя, (братанъ/сэстра-братъ)!')
+		if r = 4: $res_ += @int.din.text('Вах! Это ж (мой лубимый клыэнт/мая лубимая клыэнтка)!')
+		if r = 5: $res_ += @int.din.text('Дасвиданьа... Ах. В смысле - прыуэт!!!')
+	else:
+		r = rand(1,6)
+		if r = 1: $res_ += 'Давай посмотрим, что у нас есть.'
+		if r = 2: $res_ += 'Лучшие товары для лучшего клиента.'
+		if r = 3: $res_ += 'Всегда к твоим услугам!'
+		if r = 4: $res_ += 'У нас - товар, у вас - денежки.'
+		if r = 5: $res_ += 'У меня есть всё, что тебе нужно!'
+		if r = 6: $res_ += 'У меня есть всё, что тебе нужно!'
 	end
 	jump 'end_keep'
 end
 
 :wtf
 if $args[0]='':
-	args['rand']=rand(1,5)
-	if args['rand']=1: $args['b.d.s'] += 'Чего?'
-	if args['rand']=2: $args['b.d.s'] += 'Повтори-ка ещё разик...'
-	if args['rand']=3: $args['b.d.s'] += 'Никак не пойму, чего ты от меня хочешь!'
-	if args['rand']=4: $args['b.d.s'] += $func('int.din.text','Вот ты сейчас сказа(л//ла) вообще непонятно.')
-	if args['rand']=5: $args['b.d.s'] += 'Несёшь какой-то бред.'
+	r = rand(1,5)
+	if r = 1: $res_ += 'Чего?'
+	if r = 2: $res_ += 'Повтори-ка ещё разик...'
+	if r = 3: $res_ += 'Никак не пойму, чего ты от меня хочешь!'
+	if r = 4: $res_ += @int.din.text('Вот ты сейчас сказа(л//ла) вообще непонятно.')
+	if r = 5: $res_ += 'Несёшь какой-то бред.'
 end
 :end_keep
-$args['b.d.s'] = '<b><font color=#'+$args['color']+'>'+$args['s.name']+':</font></b> - '+$args['b.d.s']
-$result = $args['b.d.s']
+$result = "<b><font color=#<<$seller_['color']>>><<$seller_['name']>>:</font></b> - <<$res_>>"
 --- b.d.s ---------------------------------

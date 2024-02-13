@@ -1,190 +1,232 @@
-# b.w.s
+QSP-Game
 ! тексты в окно дополнительного описания
 $args[0] = $args[0]	&	!	ключевое слово
 $args[1] = $args[1]	&	!	дополнительные данные
 $args[2] = $args[2]	&	!	дополнительные данные
 $args[3] = $args[3]	&	!	дополнительные данные
 $args[9] = $args[9]	&	!	дополнительные данные
+# b.w.s
+local $res_
+
 :loc-obj
 if $args[0] = 'loc-obj':
-	$args['res.bws']=$func('int.din.text','<b><font color=#888888>Сейчас с этим предметом ничего нельзя сделать.</font></b>')
+	$res_ = @int.din.text('<b><font color=#888888>Сейчас с этим предметом ничего нельзя сделать.</font></b>')
 	jump 'end_exit'
 end
+
 :loc-act
 if $args[0] = 'loc-obj':
-	args['i']=rand(0,2)
-	if args['i']=0: $args['f']='Сейчас этого нельзя сделать'
-	if args['i']=1: $args['f']='В настоящее время подобное действие не осуществимо'
-	if args['i']=2: $args['f']='В сложившихся обстоятельствах делать это нельзя'
-	$args['res.bws']=$func('int.din.text','<b><font color=#888888>'+$args['f']+'.</font></b>')
+	$res_ = $dyneval({
+		local i, $f = rand(0,2), ''
+		if i = 0: $f = 'Сейчас этого нельзя сделать'
+		if i = 1: $f = 'В настоящее время подобное действие не осуществимо'
+		if i = 2: $f = 'В сложившихся обстоятельствах делать это нельзя'
+		$result = @int.din.text('<b><font color=#888888><<$f>>.</font></b>')
+	})
 	jump 'end_exit'
 end
+
 :u
-! надпись, которая выводится в дополнительном описании при генерации ссылок "зарядить"
-if $args[0] = 'u': $args['res.bws'] = "<br><hr>*	Звёздочкой отмечены используемые предметы.<br>"	&	jump 'end_exit'
+!@ надпись, которая выводится в дополнительном описании при генерации ссылок "зарядить"
+if $args[0] = 'u': $res_ = "<br><hr>*	Звёздочкой отмечены используемые предметы.<br>"	&	jump 'end_exit'
+
 :dch
-if $args[0]='dch':
-	$args['arm']=$object_array[arrpos('$id_array',$args[1])]
-	$args['arm.name']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args['arm'],'color')
-	if instr($object_array[arrpos('$id_array',$args[3])],'<inventory>')!0:
-		$args['bag']='инвентарь'
-	elseif  instr($object_array[arrpos('$id_array',$args[3])],'<bag>')!0:
-		$args['bag']='рюкзак'
-	end
-	$args['res.bws']=$func('int.din.text','<font color=#880088><b>Ты разряди(л//ла) <font color=#'+$args['color']+'>'+$args['arm.name']+'</font>. Получены '+$args[2]+'помещены в '+$args['bag']+'.</font></b>')
+if $args[0] = 'dch':
+	$res_ = $dyneval({
+		local $arm_, $arm_name_, $arm_color_, $bag_
+		$arm_ = $object_array[arrpos('$id_array',$args[1])]
+		$arm_name_ = @get.word.padez(@em.tag.getCont($arm_,'name'),'В')
+		$arm_color_ = @em.tag.getNum($arm_,'color')
+		if instr($object_array[arrpos('$id_array',$args[3])],'<inventory>')!0:
+			$bag_ = 'инвентарь'
+		elseif  instr($object_array[arrpos('$id_array',$args[3])],'<bag>')!0:
+			$bag_ = 'рюкзак'
+		end
+		$result = @int.din.text('<font color=#880088><b>Ты разряди(л//ла) <font color=#<<$arm_color_>>><<$arm_name_>></font>. Получены <<$args[2]>>помещены в <<$bag_>>.</font></b>')
+	}, $args[0], $args[1], $args[2], $args[3])
 	jump 'end_exit'
 end
 :dont_spell.chest
-if $args[0]='dont_apell.chest': $args['res.bws'] = "<b><font color=#884444>просматривая хранилища, нельзя применить заклинание.</font></b> "	&	jump 'end_exit'
+if $args[0]='dont_apell.chest':
+	$res_ = "<b><font color=#884444>просматривая хранилища, нельзя применить заклинание.</font></b> "
+	jump 'end_exit'
+end
 :dont_spell.magic
-if $args[0]='dont_spell.magic': $args['res.bws'] = "<b><font color=#884444>недостаточно энергии.</font></b> " & jump 'end_exit'
+if $args[0]='dont_spell.magic': $res_ = "<b><font color=#884444>недостаточно энергии.</font></b> " & jump 'end_exit'
 :dont_spell.location
-if $args[0]='dont_spell.location': $args['res.bws'] ="<b><font color=#884444>в этом месте нельзя колдовать.</font></b> "	&	jump 'end_exit'
+if $args[0]='dont_spell.location':
+	$res_ ="<b><font color=#884444>в этом месте нельзя колдовать.</font></b> "
+	jump 'end_exit'
+end
 :nih
 if $args[0] = 'nih':
-	$args['res.bws'] = '<b><font color=#880022>Не предназначено для предметов этого типа.</font></b>'
-	if $args[1] = 'loc': $args['res.bws'] = '<b><font color=#880022>Здесь нельзя оставлять предметы такого типа.</font></b>'
+	$res_ = '<b><font color=#880022>Не предназначено для предметов этого типа.</font></b>'
+	if $args[1] = 'loc': $res_ = '<b><font color=#880022>Здесь нельзя оставлять предметы такого типа.</font></b>'
 	jump 'end_exit'
 end
 :dont_put.altar
 if $args[0]='dont_put.altar':
-	$args['obj']=$func('get.obj.id',$args[1])
-	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args['obj'],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args['obj'],'color')
-	$args['res.bws']="<b><font color=#884444>Нельзя сбросить. Разряженный предмет уже на алтаре: <font color=#"+$args['color']+'>'+$args['name']+"</font>.</font></b>"
+	$res_ = $dyneval({
+		local $obj_, $name_, $color_
+		$obj_ = @get.obj.id($args[1])
+		$name_ = @get.word.padez(@em.tag.getCont($obj_, 'name'), 'В')
+		$color_ = @em.tag.getNum($obj_, 'color')
+		$result = "<b><font color=#884444>Нельзя сбросить. Разряженный предмет уже на алтаре: <font color=#<<$color_>>><<$name_>></font>.</font></b>"
+	}, $args[0], $args[1])
 	jump 'end_exit'
 end
 :put.altar
 if $args[0]='put.altar':
-	$args['obj']=$func('get.obj.id',$args[1])
-	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args['obj'],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args['obj'],'color')
-	$args['res.bws']=$func('int.din.text',"<b><font color=#880055>Ты установи(л//ла) <font color=#"+$args['color']+'>'+$args['name']+"</font> на алтарь.</font></b>")
+	$res_ = $dyneval({
+		local $obj_, $name_, $color_
+		$obj_ = @get.obj.id($args[1])
+		$name_ = @get.word.padez(@em.tag.getCont($obj_,'name'),'В')
+		$color_ = @em.tag.getNum($obj_,'color')
+		$result = @int.din.text("<b><font color=#880055>Ты установи(л//ла) <font color=#<<$color_>>><<$name_>></font> на алтарь.</font></b>")
+	}, $args[0], $args[1])
 	jump 'end_exit'
 end
 :take.nocount
 if $args[0]='take.nocount':
-	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args[1],'color')
-	$args['res.bws']=$func('int.din.text',"<b><font color=#005588>Ты подня(л//ла) <font color=#"+$args['color']+'>'+$args['name']+"</font> ("+str(args[2])+" "+$func('get.word.end',args[2],'штука|штуки|штук')+").</font></b>")
+	$res_ = $dyneval({
+		local $obj_, $name_, $color_
+		$name_ = @get.word.padez(@em.tag.getCont($args[1],'name'),'В')
+		$color_ = @em.tag.getNum($args[1],'color')
+		$result = @int.din.text("<b><font color=#005588>Ты подня(л//ла) <font color=#<<$color_>>><<$name_>></font> (<<args[2]>> <<@get.word.end(args[2],'штука|штуки|штук')>>).</font></b>")
+	}, $args[0], $args[1], args[2])
 	jump 'end_exit'
 end
 :take.oneself
 if instr($args[0],'take.oneself')<>0:
-	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args[1],'color')
-	if instr($args[0],'[buy]')<>0:
-		$args['###']='приобр(ёл/ела)'
-	elseif instr($args[0],'[take]')<>0:
-		$args['###']='подня(л//ла)'
-	end
-	$args['res.bws']=$func('int.din.text',"<b><font color=#005588>Ты "+$args['###']+" <font color=#"+$args['color']+'>'+$args['name']+"</font> .</font></b>")
+	$res_ = $dyneval({
+		local $obj_, $name_, $color_, $word_
+		$name_ = @get.word.padez(@em.tag.getCont($args[1],'name'),'В')
+		$color_ = @em.tag.getNum($args[1],'color')
+		if instr($args[0], '[buy]') <> 0:
+			$word_ = 'приобр(ёл/ела)'
+		elseif instr($args[0], '[take]') <> 0:
+			$word_ = 'подня(л//ла)'
+		end
+		$result = @int.din.text("<b><font color=#005588>Ты <<$word_>> <font color=#<<$color_>>><<$name_>></font> .</font></b>")
+	}, $args[0], $args[1])
 	jump 'end_exit'
 end
 :take.count
 if instr($args[0],'take.count')<>0:
-	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args[1],'color')
-	args['колво']=func('em.tag.getNum',$args[1],'колво')
-	if instr($args[0],'[buy]')<>0:
-		$args['###']='приобр(ёл/ела)'
-	elseif instr($args[0],'[take]')<>0:
-		$args['###']='подня(л//ла)'
-	end
-	$args['res.bws']=$func('int.din.text','<font color=#005588><b>Ты '+$args['###']+' </b></font><font color=#'+$args['color']+'><b>'+$args['name']+"</b></font> <font color=#"+$args['color']+">(<<args['колво']>> шт.)</font><b><font color=#005588>.</font></b>")
+	$res_ = $dyneval({
+		local $obj_, $name_, $color_, $word_, quantity_
+		$name_ = @get.word.padez(@em.tag.getCont($args[1],'name'),'В')
+		$color_ = @em.tag.getNum($args[1],'color')
+		quantity_ = @em.tag.getNum($args[1],'колво')
+		if instr($args[0],'[buy]')<>0:
+			$word_ = 'приобр(ёл/ела)'
+		elseif instr($args[0],'[take]')<>0:
+			$word_ = 'подня(л//ла)'
+		end
+		$result = @int.din.text('<font color=#005588><b>Ты <<$word_>> </b></font><font color=#<<$color_>>><b><<$name_>></b></font> <font color=#<<$color_>>>(<<quantity_>> шт.)</font><b><font color=#005588>.</font></b>')
+	}, $args[0], $args[1])
 	jump 'end_exit'
 end
 :take.number
 if instr($args[0],'take.number')<>0:
-	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('em.tag.getNum',$args[1],'color')
-	args['колво']=func('em.tag.getNum',$args[1],'колво')
-	if instr($args[0],'[buy]')<>0:
-		$args['###']='приобр(ёл/ела)'
-	elseif instr($args[0],'[take]')<>0:
-		$args['###']='подня(л//ла)'
-	end
-	$args['res.bws']=$func('int.din.text','<font color=#005588><b>Ты '+$args['###']+' </b></font><font color=#'+$args['color']+'><b>'+$args['name']+"</b></font> <font color=#"+$args['color']+">(<<args['колво']>> шт.)</font><b><font color=#005588>.</font></b>")
+	$res_ = $dyneval({
+		local $obj_, $name_, $color_, $word_, quantity_
+		$name_=@get.word.padez(@em.tag.getCont($args[1],'name'),'В')
+		$color_=@em.tag.getNum($args[1],'color')
+		quantity_=func('em.tag.getNum',$args[1],'колво')
+		if instr($args[0],'[buy]')<>0:
+			$word_='приобр(ёл/ела)'
+		elseif instr($args[0],'[take]')<>0:
+			$word_='подня(л//ла)'
+		end
+		$result=@int.din.text('<font color=#005588><b>Ты <<$word_>> </b></font><font color=#<<$color_>>><b><<$name_>></b></font> <font color=#<<$color_>>>(<<quantity_>> шт.)</font><b><font color=#005588>.</font></b>')
+	}, $args[0], $args[1])
 	jump 'end_exit'
 end
 :full.pos
 if $args[0]='full.pos':
-	$args['hero']=$func('get.id.obj','<hero>')
-	$args['body.parts']=$func('get.daughter.obj',$args['hero'],'<body>','$id_temp_bodyparts')
-	if $args['body.parts']='true':
-		:for.full.pos
-		if arrsize('$id_temp_bodyparts')>0:
-			$args['obj']=$func('get.obj.id',$id_temp_bodyparts[0])
-			args['pit']=arrpos('$id_array',$id_temp_bodyparts[0])
-			$args['part']=$func('em.tag.getCont',$args['obj'])
-			if instr($args[1],$args['part'])!0:
-				if $include_array[args['pit']]!'':
-					$args['res.bws']+=$func('base.new.bodypart','[:'+$args['part']+':]','full.pos')+'<br>'
+	$res_ = $dyneval({
+		local $id_temp_bodyparts_, $hero_, $part_, $obj_, pit_, $body_parts_
+		$hero_ = @get.id.obj('<hero>')
+		$body_parts_ = @get.daughter.obj($hero_, '<body>', '$id_temp_bodyparts_')
+		if $body_parts_ = 'true':
+			loop while arrsize('$id_temp_bodyparts')>0:
+				$obj_ = @get.obj.id($id_temp_bodyparts[0])
+				pit_ = arrpos('$id_array', $id_temp_bodyparts[0])
+				$part_ = @em.tag.getCont($obj_)
+				if instr($args[1],$part_) <> 0:
+					if $include_array[pit_] <> '':
+						$result += @base.new.bodypart('[:<<$part_>>:]','full.pos')+'<br>'
+					end
 				end
+				killvar '$id_temp_bodyparts_',0
 			end
-			killvar '$id_temp_bodyparts',0
-			jump 'for.full.pos'
 		end
-	end
-	killvar '$id_temp_bodyparts'
+	}, $args[0], $args[1])
 	jump 'end_exit'
 end
 :altar.charge
 if $args[0]='altar.charge':
 	if $args[1]='dont':
-		$args['res.bws']="<b><font color=#884444>Премет полностью заряжен.</font></b>"
+		$res_="<b><font color=#884444>Премет полностью заряжен.</font></b>"
 	elseif $args[1]='full':
-		$args['res.bws']="<b><font color=#88aabb>Премет полностью заряжен.</font></b>"
+		$res_="<b><font color=#88aabb>Премет полностью заряжен.</font></b>"
 	elseif $args[1]='part':
-		$args['obj']=$func('get.obj.id',$args[2])
-		args['p']=func('em.tag.getNum',$args['obj'],'maxchrg')
-		$args['max_charge']=$func('em.indiv',args['p'],100,10)
-		$args['charge']=$func('em.indiv',charge_array[arrpos('$id_array',$args[2])],100,10)
-		$args['res.bws']="<b><font color=#88aabb>Премет заряжен не полностью <<$args['charge']>>/<<$args['max_charge']>>.</font></b>"
+		$res_ = $dyneval({
+			local $obj_, p_, max_charge_, charge_
+			$obj_ = @get.obj.id($args[2])
+			p_ = @em.tag.getNum($obj_, 'maxchrg')
+			$max_charge_ = @em.indiv(p_, 100, 10)
+			$charge_ = @em.indiv(charge_array[arrpos('$id_array', $args[2])], 100, 10)
+			$result = "<b><font color=#88aabb>Предмет заряжен не полностью <<$charge_>>/<<$max_charge_>>.</font></b>"
+		}, $args[0], $args[1], $args[2])
 	end
 	jump 'end_exit'
 end
 :altar.sacrifice
 if $args[0]='altar.sacrifice':
-	$args['text']=$func('get.word.end',args[1],'премет|предмета|предметов')
-	$args['res.bws']=$func('int.din.text',"<b><font color=#884444>Ты прин(ёс/есла) в жертву <<args[1]>> "+$args['text']+".</font></b>")
+	$res_ = $dyneval({
+		local $text_ = @get.word.end(args[1],'премет|предмета|предметов')
+		$result = @int.din.text("<b><font color=#884444>Ты прин(ёс/есла) в жертву <<args[1]>> <<$text_>>.</font></b>")
+	}, $args[0], args[1])
 	jump 'end_exit'
 end
 :dark.chest
 if $args[0]='dark.chest':
-	$args['res.bws']=$func('int.din.text','<b>В темноте ничего не видно. Может быть где-то здесь стоит сундук с сокровищами, а ты ходишь вокруг него, но не можешь найти.</b>')
+	$res_ = @int.din.text('<b>В темноте ничего не видно. Может быть где-то здесь стоит сундук с сокровищами, а ты ходишь вокруг него, но не можешь найти.</b>')
 	jump 'end_exit'
 end
 :none.obj.inPos
 if $args[0]='none.obj.inPos':
-	$args['res.bws']='<font color=#ff8888><b>Нет подходящих предметов для размещения в этой позиции.</b></font>'
+	$res_='<font color=#ff8888><b>Нет подходящих предметов для размещения в этой позиции.</b></font>'
 	jump 'end_exit'
 end
 :obj.inPos
-if $args[0]='obj.inPos':
-	$args['res.bws']='<b>Предметы в позицию:</b>'
+if $args[0] = 'obj.inPos':
+	$res_ = '<b>Предметы в позицию:</b>'
 	jump 'end_exit'
 end
 :noMoneyBag
-if $args[0]='noMoneyBag':
-	$args['res.bws']='<b><font color=#880022>У тебя нет ни денег, ни кошелька для их хранения.</font></b>'
+if $args[0] = 'noMoneyBag':
+	$res_ = '<b><font color=#880022>У тебя нет ни денег, ни кошелька для их хранения.</font></b>'
 	jump 'end_exit'
 end
 :noValute
-if $args[0]='noValute':
-	$args['res.bws']='<b><font color=#880022>Тебе нечем заплатить за эту покупку.</font></b>'
+if $args[0] = 'noValute':
+	$res_ = '<b><font color=#880022>Тебе нечем заплатить за эту покупку.</font></b>'
 	jump 'end_exit'
 end
 :end_exit
-if $GAME_INTERFACE['подсказки']='show' and $args[0]!'help':
-	$args['game_help']=$func('game.help',$args[0])
-	$args['res.bws']+='<br>'+$args['game.help']
-	$log_error+=$args['game_help']
+if $GAME_INTERFACE['подсказки'] = 'show' and $args[0] <> 'help':
+	$res_ += $dyneval({
+		local $h = @game.help($args[0])
+		$log_error += $h
+		$result = '<br>'+$h
+	}, $args[0])
 end
 :help
-if $args[0]='help' or ($GAME_INTERFACE['подсказки']='show' and $args['game_help']!''):
-	$args['res.bws']+=$func('int.din.text','<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size=1>Отключить подсказки можно в меню "Дневник странника" на вкладке "Настройки"</font>')
+if $args[0]='help' or ($GAME_INTERFACE['подсказки']='show' and $args['game_help']<>''):
+	$res_ += @int.din.text('<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font size=1>Отключить подсказки можно в меню "Дневник странника" на вкладке "Настройки"</font>')
 end
-$result = $args['res.bws']
+$result = $res_
 --- b.w.s ---------------------------------

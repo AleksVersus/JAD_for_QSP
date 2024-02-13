@@ -18,6 +18,6 @@ if	instr($args[0],'[стрелы]') <> 0: $result = 'p1:колчан:p1'
 if	instr($args[0],'[болты]') <> 0: $result = 'p1:арбалетная_сума:p1'
 if	instr($args[0],'[арбалет]') <> 0:
 	local w = @em.tag.getNum($args[1],'weight')
-	$result = iif(property['hero.power.max']/w>9, 'p1:правая_рука:p1', 'p1:правая_рука:p1 p2:левая_рука:p2')
+	$result = $iif(property['hero.power.max']/w>9, 'p1:правая_рука:p1', 'p1:правая_рука:p1 p2:левая_рука:p2')
 end
 --- get.obj.pos ---------------------------------
