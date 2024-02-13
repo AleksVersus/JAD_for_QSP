@@ -2107,15 +2107,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
-            [
-                "#dz#",
-                [
-                    390,
-                    394
-                ]
-            ]
-        ],
         "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\indiv.qsps": [
             [
                 "em.indiv",
@@ -2254,6 +2245,15 @@
                 [
                     2195,
                     2210
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
+            [
+                "em.dz",
+                [
+                    390,
+                    395
                 ]
             ]
         ]

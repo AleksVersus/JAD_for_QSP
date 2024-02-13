@@ -1,22 +1,57 @@
-# #dz#
-$args[0] = $args[0]
-args[1] = args[1]
-if args[1]<1: args[1]=1
-if instr($args[0],'.')=0: $result=$args[0] & exit
-$args['start'] = $mid($args[0],1,instr($args[0],'.')-1)
-$args['end'] = $mid($args[0],instr($args[0],'.')+1)
-args['len']=len($str(args[1]))-1
-:for
-args['i']=len($args['end'])
-if len($args['end'])>args['len'] and $mid($args['end'],args['i'],1)='0':
-	$args['end']=$mid($args['end'],1,args['i']-1)
-	jump 'for'
+QSP-Game Delete Zero - одна из основных функций, позволяющая упразднять несущественные нули в конце натурального числа, а так же все несущественные нули в начале.
+$args[0] - обрабатываемое число, только в текстовом виде!!!
+args[1] - разряд до которого требуется удалить нули. 1 - до целых, 10 - до десятых, 100 - до сотых и т.д, по умолчанию 1.
+$result - текстовое значение вида 000.000
+
+# em.dz
+local $minus_, dot_, $start_part_, $end_part_, zero_num_, $no_zeros_	& !@ инициализируем аргументы
+if instr($args[0],'-')=1:
+	$args[0]=$mid($args[0],2)
+	$minus_='-'
 end
-if $args['end']!'': $result=$args['start']+'.'+$args['end'] else $result=$args['start']
-:for2
-if instr($result,'0')=1 and instr($result,'.')!2:
-	$result=$mid($result,2)
-	jump 'for2'
+if args[1]<1:
+	args[1]=1
+else:
+	!@ ------------ этот отрезок кода можно заменить на функцию em.digs -------------
+		local base_10_=1 
+		loop while no (args[1]/base_10_<10):
+			base_10_*=10
+		end
+		args[1]=base_10_
+	!@ ------------ этот отрезок кода можно заменить на функцию em.digs ------------
 end
-if $result='': $result='0'
---- #dz# ---------------------------------
+
+if instr($args[0],'.')=0:
+	!@ если точки нет, добавляем
+	$args[0]+='.0'
+end
+dot_=instr($args[0],'.')	& !@ получаем позицию точки в строке
+$start_part_=$mid($args[0],1,dot_-1)	& !@ часть числа до точки
+$end_part_=$mid($args[0],dot_+1)	& !@ часть числа после точки
+zero_num_=len($str(args[1]))-1	& !@ число нулей в аргументе указывающем разрядность дробной части
+!@ убираем лишние нули в дробной части
+$no_zeros_=$strfind($end_part_,'(\d*?)(0*)$',1)	& !@ получаем число до нулей
+if $no_zeros_='':
+	$end_part_=''
+elseif len($no_zeros_)>=zero_num_:
+	!@ если длина строки без нулей больше числа разрядов, или равна ему
+	$end_part_=$no_zeros_	& !@ дробная часть приводится к строке без нулей
+else
+	!@ если число разрядов больше строки без нулей
+	$end_part_=$mid($end_part_,1,zero_num_)
+end
+!@ убираем лишние нули в целой части
+$start_part_=$strfind($start_part_,'(0*)(\d*)$',2)
+if $start_part_='': $start_part_='0'	& !@ если в целой части были только нули, оставляем один ноль
+! @ если дробная часть не отсеклась, возвращаем число с точкой, иначе - без
+if $end_part_<>'':
+	$result=$minus_+$start_part_+'.'+$end_part_
+elseif $start_part_<>0:
+	$result=$minus_+$start_part_
+else
+	$result='0'
+end
+--- em.dz ---------------------------------
+
+Функция не использует иных функций библиотеки
+
