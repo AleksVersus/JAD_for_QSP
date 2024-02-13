@@ -1,0 +1,6 @@
+QSP-Game дополнение выводимого на экран времени
+
+args[0] - число
+# time.output.addition
+$result = $iif(len('<<args[0]>>')) = 1, '0<<args[0]>>', '<<args[0]>>')
+--- time.output.addition ---------------------------------
