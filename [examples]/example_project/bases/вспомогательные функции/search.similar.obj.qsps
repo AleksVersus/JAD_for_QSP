@@ -1,17 +1,17 @@
-# search.similar.obj
-! программа производит поиск исключительно по массивам smithing_...
+QSP-Game ! программа производит поиск исключительно по массивам smithing_...
 ! программа не использует функций игрового движка. Только чистые функции QSP
 $args[0] = $args[0]	&	!	регулярное выражение по которому производится поиск.
-args['i'] = 0
-args['pos'] = -1
-:fortisimmo
-args['pos']=arrcomp(args['pos']+1,'$smithing_object','[\s\S]*'+$args[0]+'[\s\S]*')
-if no args['pos']<0:
-	$args['search.simillar.obj']="[id<<args['i']>>id:"+$smithing_id[args['pos']]+":id<<args['i']>>id] "
-	args['kolvo']+=smithing_kolvo[args['pos']]
-	args['i']+=1
-	jump 'fortisimmo'
+# search.similar.obj
+local $similar_, quantity_
+loop local i, run_, pos_ = 0, 1, -1 while run_ step i += 1:
+	pos_ = arrcomp('$smithing_object', '[\s\S]*<<$args[0]>>[\s\S]*', pos_+1)
+	if no pos_<0:
+		$similar_ = "[id<<i>>id:"+$smithing_id[pos_]+":id<<i>>id] "
+		quantity_ += smithing_kolvo[pos_]
+	else:
+		run_ = 0
+	end
 end
-if args['kolvo']>0: $result=$args['search.simillar.obj']+" [колво:<<args['kolvo']>>]" else $result='false'
+$result = $iif(quantity_>0, "<<$similar_>> [колво:<<quantity_>>]", 'false')
 ! результатом работы функции является перечисление всех ай-ди соответствующих элементов в новой таблице данных и общее количество.
 --- search.similar.obj ---------------------------------
