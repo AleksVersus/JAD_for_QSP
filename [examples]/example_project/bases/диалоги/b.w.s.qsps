@@ -139,8 +139,8 @@ if $args[0]='altar.charge':
 	elseif $args[1]='part':
 		$args['obj']=$func('get.obj.id',$args[2])
 		args['p']=func('get.tag.num',$args['obj'],'maxchrg')
-		$args['max_charge']=$func('#indiv#',args['p'],100,10)
-		$args['charge']=$func('#indiv#',charge_array[arrpos('$id_array',$args[2])],100,10)
+		$args['max_charge']=$func('em.indiv',args['p'],100,10)
+		$args['charge']=$func('em.indiv',charge_array[arrpos('$id_array',$args[2])],100,10)
 		$args['res.bws']="<b><font color=#88aabb>Премет заряжен не полностью <<$args['charge']>>/<<$args['max_charge']>>.</font></b>"
 	end
 	jump 'end_exit'

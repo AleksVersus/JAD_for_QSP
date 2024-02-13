@@ -17,10 +17,10 @@ $args['np'] = $func('get.tag.cont',$args['obj'],"np")
 args['stoim']=func('get.tag.num',$args['obj'],"stoim")
 if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'': args['stoim']=func('obj.sale.cost',args['stoim'],$func('get.loc.id'))
 args['weight']=func('get.tag.num',$args['obj'],"weight")
-$args['stoimost'] = $func('#indiv#',args['stoim'],100,1)
-if $args['stoimost']='0': $args['stoimost']=$func('#indiv#',args['stoim'],100,10)
-$args['weight'] = $func('#indiv#',args['weight'],100,10)
-$args['weight.all']=$func('#indiv#',args['weight']*kolvo_array[arrpos('$id_array',$args[0])],100,10)
+$args['stoimost'] = $func('em.indiv',args['stoim'],100,1)
+if $args['stoimost']='0': $args['stoimost']=$func('em.indiv',args['stoim'],100,10)
+$args['weight'] = $func('em.indiv',args['weight'],100,10)
+$args['weight.all']=$func('em.indiv',args['weight']*kolvo_array[arrpos('$id_array',$args[0])],100,10)
 $args['color'] = $func('get.tag.num',$args['obj'],"color")
 $args['pos'] = $func('get.tag.cont',$args['obj'],"pos")
 ! название предмета
@@ -42,7 +42,7 @@ if instr($args['np'],'[оружие]')!0 or instr($args['np'],'[снаряды]'
 	end
 	if $strfind($args['obj'],'\[DU:[\d\-]+\]')!'':
 		args['DU'] = func('get.tag.num',$args['obj'],'DU')
-		$args['res.021213'] = $args['res.021213'] + '<br><br><b>Дальность удара: </b>'+$func('#indiv#',args['DU'],100,10)+'<br>'
+		$args['res.021213'] = $args['res.021213'] + '<br><br><b>Дальность удара: </b>'+$func('em.indiv',args['DU'],100,10)+'<br>'
 	end
 end
 if instr($args['np'],'[доспех]')!0:
@@ -85,7 +85,7 @@ if instr($args['np'],'[огнестрельное]')!0:
 end
 if instr($args['np'],'[посох]')!0:
 	args['maxcharge']=func('get.tag.num',$args['obj'],'maxchrg')
-	$args['res.021213']+="<b>Заряд: "+str($func('#indiv#',charge_array[arrpos('$id_array',$args[0])],100,10))+"/"+str($func('#indiv#',args['maxcharge'],100,10))+"</b><br>"
+	$args['res.021213']+="<b>Заряд: "+str($func('em.indiv',charge_array[arrpos('$id_array',$args[0])],100,10))+"/"+str($func('em.indiv',args['maxcharge'],100,10))+"</b><br>"
 end
 $args['types.27122013'] = $replace($replace($args['np'],'['),']',',')
 $args['res.021213'] = $args['res.021213'] +"<br><b>Тип: </b>"+mid($args['types.27122013'],1,len($args['types.27122013'])-1)+'<br>'

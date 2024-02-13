@@ -55,7 +55,7 @@ elseif $args[2]='purchase':
 end
 ! Теперь предстоит сравнить стоимость продаваемых предметов с деньгами в банке
 ! Для этого вычисляем общую стоимость предметов в целом количестве монет
-args['stoim.coin']=val($func('#indiv#',args['stoim.exit']*args[1],100,1))
+args['stoim.coin']=val($func('em.indiv',args['stoim.exit']*args[1],100,1))
 if args['stoim.coin']>args['bank']:
 ! Если общая стоимость предметов превышает количество денег в банке, покупка/продажа невозможны.
 	if $args[2]='purchase':

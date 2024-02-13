@@ -76,22 +76,22 @@ if $args[0]='008.3':
 end
 :009.1
 if $args[0]='009.1':
-	$result['bws']="<b><font color=#00aabb>Здоровье восстанавливается на "+$func('#indiv#',args['колво'],100,10)+" единиц"+$func('get.word.end',args['колво']/100,'у|ы|')+"</font>.</b>"+$args['txt']+" "
+	$result['bws']="<b><font color=#00aabb>Здоровье восстанавливается на "+$func('em.indiv',args['колво'],100,10)+" единиц"+$func('get.word.end',args['колво']/100,'у|ы|')+"</font>.</b>"+$args['txt']+" "
 	exit
 end
 :009.2
 if $args[0]='009.2':
-	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Жизненные силы увеличиваются</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимуму здоровья)<b>.</b></font><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Жизненные силы увеличиваются</b> (+"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимуму здоровья)<b>.</b></font><<$args['txt']>> ")
 	exit
 end
 :009.3
 if $args[0]='009.3':
-	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Здоровье уменьшается на "+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>></font>.</b><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Здоровье уменьшается на "+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>></font>.</b><<$args['txt']>> ")
 	exit
 end
 :009.4
 if $args[0]='009.4':
-	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Жизненные силы ослабевают</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимума здоровья)<b>.</b></font><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Жизненные силы ослабевают</b> (-"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимума здоровья)<b>.</b></font><<$args['txt']>> ")
 	exit
 end
 :010
@@ -111,22 +111,22 @@ if $args[0]='011.2':
 end
 :012.1
 if $args[0]='012.1':
-	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Запас маны увеличивается на "+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>></font></b><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Запас маны увеличивается на "+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>></font></b><<$args['txt']>> ")
 	exit
 end
 :012.2
 if $args[0]='012.2':
-	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Духовные силы увеличиваются</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню маны)<b>.</b></font><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Духовные силы увеличиваются</b> (+"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню маны)<b>.</b></font><<$args['txt']>> ")
 	exit
 end
 :012.3
 if $args[0]='012.3':
-	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Потрачено "+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> магической энергии.</font></b><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Потрачено "+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> магической энергии.</font></b><<$args['txt']>> ")
 	exit
 end
 :012.4
 if $args[0]='012.4':
-	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Духовные силы уменьшаются</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня маны)<b>.</b></font><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Духовные силы уменьшаются</b> (-"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня маны)<b>.</b></font><<$args['txt']>> ")
 	exit
 end
 :013
@@ -211,42 +211,42 @@ if $args[0]='024':
 end
 :025.1
 if $args[0]='025.1':
-	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Удача восстанавливвается. +"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Удача восстанавливвается. +"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b><<$args['txt']>> ")
 	exit
 end
 :025.2
 if $args[0]='025.2':
-	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Везение увеличивается</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню удачи)<b>.</b></font><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Везение увеличивается</b> (+"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню удачи)<b>.</b></font><<$args['txt']>> ")
 	exit
 end
 :025.3
 if $args[0]='025.3':
-	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Удача теряется. -"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b><<$args['txt']>> ")
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Удача теряется. -"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b><<$args['txt']>> ")
 	exit
 end
 :025.4
 if $args[0]='025.4':
-	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Везение уменьшается</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня удачи)<b>.</b></font>"+$args['txt']+" ")
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Везение уменьшается</b> (-"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня удачи)<b>.</b></font>"+$args['txt']+" ")
 	exit
 end
 :026.1
 if $args[0]='026.1':
-	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Запас сил восполняется. +"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b>"+$args['txt']+" ")
+	$result['bws']=$func('int.din.text',"<b><font color=#00aabb>Запас сил восполняется. +"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b>"+$args['txt']+" ")
 	exit
 end
 :026.2
 if $args[0]='026.2':
-	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Выносливость увеличивается</b> (+"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню запаса сил)<b>.</b></font>"+$args['txt']+" ")
+	$result['bws']=$func('int.din.text',"<font color=#00aabb><b>Выносливость увеличивается</b> (+"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> к максимальному уровню запаса сил)<b>.</b></font>"+$args['txt']+" ")
 	exit
 end
 :026.3
 if $args[0]='026.3':
-	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Запас сил уменьшается. -"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b>"+$args['txt']+" ")
+	$result['bws']=$func('int.din.text',"<b><font color=#aa88bb>Запас сил уменьшается. -"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>>.</font></b>"+$args['txt']+" ")
 	exit
 end
 :026.4
 if $args[0]='026.4':
-	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Выносливость уменьшается</b> (-"+$func('#indiv#',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня запаса сил)<b>.</b></font>"+$args['txt']+" ")
+	$result['bws']=$func('int.din.text',"<font color=#aa88bb><b>Выносливость уменьшается</b> (-"+$func('em.indiv',args['колво'],100,10)+" единиц<<$func('get.word.end',args['колво']/100,'у|ы|')>> от максимального уровня запаса сил)<b>.</b></font>"+$args['txt']+" ")
 	exit
 end
 :wtf

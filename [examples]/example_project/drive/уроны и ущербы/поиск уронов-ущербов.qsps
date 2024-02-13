@@ -9,7 +9,7 @@ $args['res.021213']='<table align=left valign=top border=0 cellpadding=0 cellspa
 $args['uron_i']=$func('get.tag.cont',$args[1],'u'+$str(args['i']))
 args['power_i']=func('get.tag.num',$args[1],'p'+$str(args['i']))
 if $args['uron_i']!'':
-	if args['power_i']!0: $args['res.021213']+='<tr><td align=left><b>'+$func('base.word.uron',$args[0],$args['uron_i'])+':'+'</b></td><td align=left width=10%><font color=#'+$args[2]+'>'+$func('#indiv#',args['power_i'],100,10)+'</font></td></tr>'
+	if args['power_i']!0: $args['res.021213']+='<tr><td align=left><b>'+$func('base.word.uron',$args[0],$args['uron_i'])+':'+'</b></td><td align=left width=10%><font color=#'+$args[2]+'>'+$func('em.indiv',args['power_i'],100,10)+'</font></td></tr>'
 	$args[1]=$TRIM($replace($args[1],'u'+$str(args['i'])+':'+$args['uron_i']+':'+'u'+$str(args['i'])))
 	$args[1]=$TRIM($replace($args[1],'p'+$str(args['i'])+':'+$args['uron_i']))
 end

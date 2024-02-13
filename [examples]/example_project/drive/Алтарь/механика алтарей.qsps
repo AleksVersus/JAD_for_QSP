@@ -42,7 +42,7 @@ $args['god.id']=$func('get.id.obj','(<god>[\s\S]*\[god:'+$args['god.altar']+':go
 if $args['god.id']='false':
 	$args['god.id']=$func('add.new.obj','<god> [god:'+$args['god.altar']+':god] [name:'+$args['god.altar']+':name]','','GOD')
 end
-$args['карма+']=$func('#indiv#',kolvo_array[arrpos('$id_array',$args['god.id'])],100,10)
+$args['карма+']=$func('em.indiv',kolvo_array[arrpos('$id_array',$args['god.id'])],100,10)
 
 ! ------------------------------- выборка заряда --------------------------------
 if kolvo_array[arrpos('$id_array',$args['god.id'])]/100!0 and $args['onAltar.ID']<>'':

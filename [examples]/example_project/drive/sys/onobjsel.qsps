@@ -103,7 +103,7 @@ elseif instr($OOS['obj'],'<obj>')!0:
 		$menu_OOS[arrsize('$menu_OOS')]='-:-'
 		if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
 			args['stoim']=func('get.tag.num',$OOS['obj'],"stoim")
-			$args['stoimost']=$func('#indiv#',func('obj.sale.cost',args['stoim'],$func('get.loc.id')),100,1)
+			$args['stoimost']=$func('em.indiv',func('obj.sale.cost',args['stoim'],$func('get.loc.id')),100,1)
 			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','sale',$args['stoimost'])+':menu.obj.put'
 		elseif $strfind($func('get.loc.id'),'(\[м:[\d]+\]_[\S\s]+|place;|место;)')!'':
 			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','put')+':menu.obj.put'
