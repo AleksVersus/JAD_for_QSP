@@ -1,43 +1,56 @@
-# #str.inArray#
-$args[3] = $UCASE($args[3])
+QSP-Game Функция выбирает слова между разделителями в массив
+аналог функции split для строки в других языках.
+
+# em.str.inArr
+$args[9]=$args[9]	& !@ инициализация аргументов для защиты от дурака
+$args[3] = $lcase($args[3])
 if $args[2] = '':
 $args[2]='
-'
+'	& !@ по умолчанию разделителем является символ переноса строки
 end
-if $strfind($args[3],'REGULAR')='': $args[0] = $args[0]+$args[2] else $args[0]=$args[0]
+if $strfind($args[3],'\[regular\]')='':
+	$args[0]=$args[0]+$args[2]	& !@ если разделителем выступает не регулярка, разделитель добавляется в конец строки
+else
+	$args[0]=$args[0]	& !@ если разделителем выступает регулярка, разделитель в конец строки не добавляется
+end
 if $args[1]='':
-	exit
+	exit	& !@ если название массива не указано, функция закрывается
 elseif instr($args[1],'$')<>1:
-	$args[1]='$'+$args[1]
+	$args[1]='$'+$args[1]	& !@ если не указано, что массив текстовый, название массива изменяется на текстовый
 end
+!@ если определена инструкция left или right и инструкция regular не определена, назначаем прикрепляемые разделители:
+if $strfind($args[3],'\[left\]')='[left]' and $strfind($args[3],'\[regular\]')<>'[regular]': $args['l']=$args[2]
+if $strfind($args[3],'\[right\]')='[right]' and $strfind($args[3],'\[regular\]')<>'[regular]': $args['r']=$args[2]
+!@ удаляем массивы, чтобы старые значения не мешали:
 killvar $args[1]
-killvar '$easy_math_copy_array'
-:for
-if len($args[0])>0:
-	if $strfind($args[3],'REGULAR')='':
-		args['div']=instr($args[0],$args[2])
-		$args['div.']=$args[2]
+local $easy_math_copy_array
+loop while len($args[0])>0:
+	if $strfind($args[3],'\[regular\]')='':
+		args['div']=instr($args[0],$args[2])	& !@ с какого символа разделитель входит в строку
+		$args['div.']=$args[2]	& !@ рассматриваемый разделитель совпадает с заданным
 	else
-		args['div']=strpos($args[0],$args[2])
-		$args['div.']=$strfind($args[0],$args[2])
+		args['div']=strpos($args[0],$args[2])	& !@ с какого символа разделитель входит в строку
+		$args['div.']=$strfind($args[0],$args[2])	& !@ выбираем разделитель по регулярке
 	end
 	if args['div']>0:
-		$args['vs']=$mid($args[0],1,args['div']-1)
-		$args[0]=$mid($args[0],args['div']+len($args['div.']))
+		!@ если разделитель найден
+		$args['vs']=$mid($args[0],1,args['div']-1)	& !@ вырезаем строку до разделителя
+		$args[0]=$mid($args[0],args['div']+len($args['div.']))	& !@ вырезаем строку после разделителя
 	else
-		$args['vs']=$args[0]
-		$args[0]=''
+		!@ если разделитель не найден
+		$args['vs']=$args[0]	& !@ последняя часть строки - искомая
+		$args[0]=''	& !@ строка после разделителя пустая
 	end
-	if ($args['vs']<>'' and $strfind($args[3],'NOTSPACE')<>'') or $strfind($args[3],'NOTSPACE')='':
-		if $strfind($args[3],'LEFT')='LEFT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['l']=$args[2]
-		if $strfind($args[3],'RIGHT')='RIGHT' and $strfind($args[3],'REGULAR')<>'REGULAR': $args['r']=$args[2]
-		if $strfind($args[3],'LCASE')='LCASE': $args['vs']=$LCASE($args['vs'])
-		if $strfind($args[3],'UCASE')='UCASE': $args['vs']=$UCASE($args['vs'])
+	if instr($args[3],'[strip]')<>0: $args['vs']=$TRIM($args['vs'])	& !@ обрубаем прилегающие пробелы у строки
+	if ($args['vs']<>'' and $strfind($args[3],'\[notspace\]')<>'') or $strfind($args[3],'\[notspace\]')='':
+		!@ если найденная строка не пуста и включен режим notspace, либо режим notspace отключён:
+		if $strfind($args[3],'\[lcase\]')='[lcase]': $args['vs']=$LCASE($args['vs']) & !@ при lcase переводим строки в нижний регистр
+		if $strfind($args[3],'\[ucase\]')='[ucase]': $args['vs']=$UCASE($args['vs']) & !@ при ucase переводим строки в нижний регистр
 		$easy_math_copy_array[]=$args['l']+$args['vs']+$args['r']
 	end
-	jump 'for'
 end
-if $strfind($args[3],'TRIM')<>'':
+if $strfind($args[3],'\[trim\]')<>'':
+	!@ в режиме trim удаляем первый и последний элементы, если они пустые, либо содержат только разделители
 	if $easy_math_copy_array[0]='' or $easy_math_copy_array[0]=$args[2] or $easy_math_copy_array[0]=$args[2]+$args[2]:
 		killvar '$easy_math_copy_array',0
 	end
@@ -45,6 +58,19 @@ if $strfind($args[3],'TRIM')<>'':
 		killvar '$easy_math_copy_array',arrsize('$easy_math_copy_array')-1
 	end
 end
-copyarr $args[1],'$easy_math_copy_array'
-killvar '$easy_math_copy_array'
---- #str.inArray# ---------------------------------
+copyarr $args[1],'$easy_math_copy_array'	& !@ копируем временный массив в искомый
+--- em.str.inArr ---------------------------------
+
+Из переданного блока текста выбираются строки, находящиеся между разделителями, в том числе строка до первого разделителя и после последнего. В качестве разделителя можно задать что угодно: символ, слово, строку. Для того, чтобы задать несколько разделителей, или неявный разделитель (шаблон разделителя. Например, html-тег), можно использовать регулярные выражения.
+$args[0] - отрывок текста, который нужно разбить на строки
+$args[1] - имя массива, в который нужно поместить полученные строки
+$args[2] - разделитель, по которому нужно произвести выборку строк. По умолчанию - символ переноса строки.
+$args[3] - дополнительные опции (можно комбинировать):
+	[trim] - если строка до первого разделителя и/или строка после последнего разделителя окажутся пустыми, они не будут добавлены в массив,
+	[notspace] - будут проигнорированы все пустые строки между разделителями,
+	[left] - сохранить в результирующей строке (строке, помещённой в массив) разделитель, поместив его слева (в начале строки),
+	[right] - сохранить в результирующей строке (строке, помещённой в массив) разделитель, поместив его справа (в конце строки),
+	[regular] - указанный в $args[2] разделитель считается регулярным выражением. При использовании этой опции, опции [left] и [right] не работают.
+	[ucase] - все результирующие строки будут приведены к верхнему регистру. Имеет приоритет перед [lcase]. Не влияет на разделители.
+	[lcase] - все результирующие строки будут приведены к нижнему регистру. Не влияет на разделители.
+	[strip] - у всех значений, обнаруженных между разделителями, будут отсечены прилегающие пробелы.

@@ -45,7 +45,7 @@ elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')!'':
 	jump 'next_str'
 elseif $strfind($args[0],'\([^([]*?\/\/[^])]*?\)')!'':
 	$args['new.text']=$strfind($args[0],'\([^([]*?\/\/[^])]*?\)')
-	$args['sex']=$func('get.tag.num',$args[1],'sex')
+	$args['sex']=$func('em.tag.getNum',$args[1],'sex')
 	$args[0] = $replace($args[0],$args['new.text'],$func('int.DIN',$args['new.text'],$args['sex']))
 	jump 'next_str'
 elseif $strfind($args[0],'(\+{2,4})[^+]+(\+?[^+]+)*\1')<>'':

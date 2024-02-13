@@ -1,63 +1,158 @@
-# #array.prnt.few#
-args['last']=arrsize('$args')-1
-if $strfind($args[args['last']],'\S+\s+\S+')!'':
-	$args['construct']=$UCASE($args[args['last']])
-	if instr($args['construct'],'[NO TABLE]')!0: $args['table']='' else $args['table']='yep'
-	if instr($args['construct'],'[ONLY RESULT]')!0: $args['table']='' & $args['only result']='only result'
-	jump 'print'
-elseif arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')!-1 and arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')!arrsize('$args')-1:
-	$result="Error: array's name is not correct. args pos:<<arrcomp('$args','[\s\S]*(\S+\W+\S+)+[\s\S]*')>>"
+QSP-Game распечатка содержимого нескольких массивов. Удобно для вывода данных
+$args[0 ... 8]- имена массивов, содержимое которых необходимо просмотреть.
+$args[8 ... 1] - управляющая конструкция. Записывается последним аргументом. Можно использовать следующие конструкции в любых комбинациях:
+	[only result] - выводит только содержимое массивов, не показывая их названий и номеров ячеек. Таблица при этом на экран выводиться не будет.
+	[no table] - выводит массивы на экран, но не облекает их в таблицу.
+	[range onscreen:N-M] - указываем границы вывода
+Из-за того, что данная функция работает напрямую с данными из массивов было решено не использовать здесь локальные переменные,
+чтобы случайно не перекрыть возможные названия массивов.
+
+# em.fewArrs.print
+!@ в принципе инициализация здесь не нужна. Все аргументы являются названиями массивов.
+args['last']=arrsize('$args')-1	& !@ получаем номер последнего аргумента
+if $strfind($args[args['last']],'\[.+?\]')<>'':
+	!@ если последняя строка похожа на команду, выставляем маркер, что это команда
+	$args['command_in_last']='yep'
+else
+	!@ в противном случае не выставляем маркер
+	$args['command_in_last']=''
+end
+!@ получаем позицию неверно записанного названия массива
+args['error_name_pos']=arrcomp('$args','[\s\S]*((\b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b)|(\b[A-Za-zа-яА-Я\$\._]+[^A-Za-zа-яА-Я\$\._]+))[\s\S]*')
+!@ символ переноса строки
+$args['/n/r']='
+'
+args['start_count'] = 0
+args['end_count'] = -1
+if $args['command_in_last']='yep':
+	!@ если последний аргумент содержит хотя бы один пробел, его нельзя считать названием массива
+	!@ скорее всего это управляющая конструкция. Либо это действительно управляющая конструкция.
+	$args['construct']=$lcase($args[args['last']])	& !@ переводим в нижний регистр
+	!@ по управляющей конструкции понимаем, нужно строить таблицу или нет
+	if instr($args['construct'],'[no table]')<>0: $args['table']='' else $args['table']='yep'
+	!@ по управляющей конструкции понимаем, нужно ли выводить одни только результаты
+	if instr($args['construct'],'[only result]')<>0: $args['table']='' & $args['only result']='only result'
+	!@ получаем номера первого и последнего элементов, которые хотим вывести
+	if instr($args['construct'], '[range onscreen:') <> 0:
+		args['start_count'] = $strfind($args['construct'], '\[range onscreen:(\d+)\-\d+\]', 1)
+		!@ вместо последнего элемента нам нужен следующий за последним
+		args['end_count'] = $strfind($args['construct'], '\[range onscreen:\d+\-(\d+)\]', 1) + 1
+	end
+	jump 'print'	& !@ переходим к выводу (содержится в этом же условии, поэтому jump)
+elseif args['error_name_pos']<>-1 and args['error_name_pos']<>args['last']:
+	!@ если мы имеем дело не с командой, и это не последний аргумент, значит имя массива задано неверно, возвращаем 
+	$result="Error: Array's name is not correct. ARGS[<<args['error_name_pos']>>]: '<<$args[args['error_name_pos']]>>'"
 	exit
 else
-	if $args['table']!'' or $strfind($args[args['last']],'\S+\s+\S+')='': $args['table']='<table border=1 cellpadding=5>'
 	:print
-	if $args['table']!'': $args['table']+='<tr><td>#</td>'
-	args['i']=0
-	:mass
-	if args['i']<9 and $strfind($args[args['i']],'\S+\s+\S+')='' and $args[args['i']]!'':
-		$args[args['i']]=$TRIM($args[args['i']])
-		if $args['table']!'': $args['table']+="<td><<$args[args['i']]>></td>"
-		if arrsize($args[args['i']])>args['size']: args['size']=arrsize($args[args['i']])
-		args['i']+=1
-		jump 'mass'
+	!@ если списка команд нет, или управление не отключает генерацию таблицы, добавляем теги таблицы.
+	if $args['table']<>'' or $args['command_in_last']='': $args['table']='<table border=1 cellpadding=5>'
+	if $args['table']<>'': $args['table']+='<tr><td>#</td>'
+
+	!@ с помощью цикла добавляем имена массивов в список
+	loop args['i']=0 while args['i']<9 and $strfind($args[args['i']],'\[.+?\]')='' and $args[args['i']]<>'' step args['i']+=1:
+		!@ пока счётчик не достигнет девяти, или мы не встретим аргумент с управлением, или пустой аргумент
+		if $args['table']<>'': $args['table']+="<td><<$args[args['i']]>></td>"	& !@ создаём ячейку, только если уже набираем таблицу
+		args['this_size']=arrsize($args[args['i']])	& !@ получаем размер указанного массива
+		if args['this_size']>args['size']: args['size']=args['this_size']	& !@ если размер этого массива больше размера предыдущего массива, записываем размер текущего в переменную size
 	end
-	if args['size']=0: $result='All your massives are empty.' & exit
-	if $args['table']!'': $args['table']+='</tr>'
-	args['b']=0
-	:for
-	if args['b']<args['size']:
-		args['i']=0
-		if $args['table']!'': $args['table']+="<tr><td><<args['b']>></td>"
-		:zap
-		if args['i']<9 and $strfind($args[args['i']],'\S+\s+\S+')='' and $args[args['i']]!'':
-			if $args['only result']!'only result' and $args['table']='': $args['cell'] = $args[args['i']]+"[<<args['b']>>]="
-			if $args['table']='yep':
-				$args['cell'] += $dyneval("if <<$args[args['i']]>>[args[0]]!'': $result = $replace(<<$args[args['i']]>>[args[0]],' ','&nbsp;') else $result='&nbsp;'",args['b'])
+
+	if $args['table']<>'': $args['table']+='</tr>'	& !@ закрываем строку
+
+	if args['size']=0:
+		!@ если размеры всех массивов равны нулю, выводим сообщениме.
+		$result='Error: All your massives are empty.'
+		exit
+	end
+	if args['start_count'] > args['size'] - 1:
+		!@ если мы превысили максимальный индекс, нужно приравнять начало к последнему возможному индексу
+		args['start_count'] = args['size'] - 1
+	end
+	if args['end_count'] > args['size'] or args['end_count'] = -1:
+		args['end_count'] = args['size']
+	elseif args['end_count'] <= args['start_count']:
+		args['end_count'] = args['start_count'] + 1
+	end
+	!@ следующий цикл выводит уже непосредственно результаты
+	loop args['b']=args['start_count'] while args['b']<args['end_count'] step args['b']+=1:
+		!@ пока счётчик не достигнет размера самого большого массива
+		if $args['table']<>'': $args['table']+="<tr><td><<args['b']>></td>"	& !@ для вывода в виде таблицы формируем строку и первую ячейку
+		!@ этот цикл выводит содержимое ячеек под одним индексом
+		loop args['i']=0 while args['i']<9 and $strfind($args[args['i']],'\[.+?\]')='' and $args[args['i']]<>'' step args['i']+=1:
+			!@ пока счётчик не достигнет девяти, или мы не встретим аргумент с управлением, или пустой аргумент
+			if $args['only result']<>'only result' and $args['table']='':
+				!@ это не режим только результат, но и не режим вывода таблицы
+				$args['cell']=$args[args['i']]+"[<<args['b']>>]="	& !@ перед добавляением значения, добавляем название массива и номер ячейки
 			else
-				$args['cell'] += $dyneval("$result = <<$args[args['i']]>>[args[0]]",args['b'])
+				!@ это режим только результат, или режим вывода таблицы
+				$args['cell']=''	& !@ не добавляем ничего
 			end
-			if $args['table']!'':
-				$args['table']+='<td>'+$args['cell']+'</td>'
+			if instr($args[args['i']],'$')=1:
+				!@ выводим строковые значения массива
+				if $args['table']<>'':
+					!@ если мы имеем дело с таблицей
+					$args['cell']+=$dyneval({
+						!@ $args[1] - название массива
+						!@ $args[0] - номер ячейки
+						!@ в ячейке может содержаться кортеж, тогда нам необходимо вывести кортеж
+						if instr($arritem($args[1],args[0]),'')<>0:
+							$result+='('+$replace($arritem($args[1],args[0]),'',',')+')'
+							!@ не пустые ячейки обрабатываем, чтобы заменить некоторые символы для вывода
+						elseif $arritem($args[1],args[0])<>'':
+							$result = $replace($arritem($args[1],args[0]),' ','&nbsp;')
+							$result = $replace($result,'<','&lt;')
+							$result = $replace($result,'>','&gt;')
+						else
+							!@ в пустых ячейках ставим пробелы
+							$result='&nbsp;'
+						end
+					},args['b'],$args[args['i']])
+				else
+					!@ для не таблицы просто добавляем значение
+					if $args['only result']<>'only result':
+						$args['cell']+="'"+$dyneval({
+							!@ в ячейке может содержаться как кортеж, так и обычная строка
+							if instr($arritem($args[1],args[0]),'')<>0:
+								$result+='('+$replace($arritem($args[1],args[0]),'',',')+')'
+							else
+								$result = $replace($arritem($args[1],args[0]),"'","''")
+							end
+						},args['b'],$args[args['i']])+"'"
+					else
+						$args['cell']+=$dyneval({
+							!@ в ячейке может содержаться, как кортеж, так и обычная строка
+							if instr($arritem($args[1],args[0]),'')<>0:
+								$result+='('+$replace($arritem($args[1],args[0]),'',',')+')'
+							else
+								$result = $arritem($args[1],args[0])
+							end
+						},args['b'],$args[args['i']])
+					end
+				end
 			else
-				$args['result']+=$args['cell']+'	'
+				!@ выводим числовые значения массива
+				$args['cell']+=$dyneval("$result=$str(<<$args[args['i']]>>[args[0]])",args['b'])
 			end
-			$args['cell']=''
-			args['i']+=1
-			jump 'zap'
+			if $args['table']<>'':
+				$args['table']+='<td>'+$args['cell']+'</td>'	& !@ для таблицы создаём ячейку
+			elseif $args['only result']='only result' and args['i']<>0:
+				$args['result']+='	'+$args['cell']	& !@ для не таблицы добавляем отступ
+			elseif args['i']<>0:
+				$args['result']+='	&	'+$args['cell']	& !@ для не таблицы добавляем отступ
+			else:
+				$args['result']+=$args['cell']
+			end
 		end
-		if $args['table']!'': $args['table']+="</tr>" else $args['result']+='
-'
-		args['b']+=1
-		jump 'for'
+		if $args['table']<>'': $args['table']+="</tr>" else $args['result']+=$args['/n/r']	& !@ для таблицы закрываем строку, для не таблицы начинаем новую
 	end
-	if $args['table']!'': $args['table']+='</table>'
+	if $args['table']<>'': $args['table']+='</table>'
 end
-killvar '$result'
-if $args['table']!'':
-	$result=$args['table']
-elseif $args['result']!'':
-	$result=$mid($args['result'],1,len($args['result'])-1)
+killvar '$result'	& !@ на всякий случай уничтожаем переменную result
+if $args['table']<>'':
+	$result=$args['table']	& !@ если сгенерирована таблица, возвращаем таблицу
+elseif $args['result']<>'':
+	$result=$mid($args['result'],1,len($args['result'])-1)	& !@ возвращаем результат
 else
-	$result='Oops. If you see this message, that so wrong. Save the game and ask me on aleksversus@mail.ru. Error of easy.math.libs in array.prnt.few'
+	$result='Oops. If you see this message, that so wrong. Save the game and ask me on aleksversus@mail.ru. Error of easy.math.libs in em.fewArrs.print'
 end
---- #array.prnt.few# ---------------------------------
+--- em.fewArrs.print ---------------------------------

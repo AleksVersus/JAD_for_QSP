@@ -7,6 +7,6 @@ if time['hour']>=22 or (time['hour']>=0 and time['hour']<5): args['i']=4
 if time['hour']>=5 and time['hour']<11: args['i']=1
 if time['hour']>=11 and time['hour']<18: args['i']=2
 if time['hour']>=18 and time['hour']<22: args['i']=3
-$args['gwiP']=$func('get.word.inPos',$args[0],args['i'])
+$args['gwiP']=$func('em.str.getWord',$args[0],args['i'])
 $result=$args['gwiP']
 --- int.time.hours ---------------------------------

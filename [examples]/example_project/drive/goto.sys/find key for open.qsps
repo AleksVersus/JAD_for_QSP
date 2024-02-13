@@ -14,7 +14,7 @@ if no args['pos']<0:
 	if $func('prv.str.inObj',$position_array[args['pos']],'<keys>')='false':	jump 'for'
 	if $func('em.tag.getCont',$object_array[args['pos']],'key')=$args[0]:
 		if kolvo_array[args['pos']]=0: gs 'del.obj',$id_array[args['pos']] & jump 'for'	&	! если ключ уже не существует, удаляем его
-		if $func('get.tag.num',$object_array[args['pos']],'open')!0 and charge_array[args['pos']]=0: jump 'for'	&	! проверяем может ли ключ открывать двери
+		if $func('em.tag.getNum',$object_array[args['pos']],'open')!0 and charge_array[args['pos']]=0: jump 'for'	&	! проверяем может ли ключ открывать двери
 		! если ключ есть и он может открыть дверь - ай-ди найден.
 		$result = $id_array[args['pos']]
 		exit

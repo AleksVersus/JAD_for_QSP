@@ -16,9 +16,9 @@ $p_name_ = @b.d.t('property_name', $property_)
 $gt_last_ = @summ.time($args[1], $time['ost.'+$args[0]])
 !@ приводим частоту и $time['goto'] к одной единице измерения. Внимание! Это секунды!
 !@ отсчёт времени должен вестись от предыдущего значения. Т.е. от времени, ещё не изменённого интерпретатором календаря
-frequenсy_ = @get.tag.num(@conv.time(@em.tag.getCont($obj_body_, 'frqs'), 'secunde', time['last.years']), 'secunde')
-gt_secs_['last'] = @get.tag.num(@conv.time($gt_last_, '', time['last.years']), 'secunde')
-gt_secs_['now'] = @get.tag.num(@conv.time($args[1], '', time['last.years']), 'secunde')
+frequenсy_ = @em.tag.getNum(@conv.time(@em.tag.getCont($obj_body_, 'frqs'), 'secunde', time['last.years']), 'secunde')
+gt_secs_['last'] = @em.tag.getNum(@conv.time($gt_last_, '', time['last.years']), 'secunde')
+gt_secs_['now'] = @em.tag.getNum(@conv.time($args[1], '', time['last.years']), 'secunde')
 !@ вычисляем, сколько раз повторился указанный период
 pik_['count']	= gt_secs_['last']/frequenсy_
 !@ вычисляем остаток
@@ -26,8 +26,8 @@ rest_	= gt_secs_['last'] mod frequenсy_
 
 !@ изменяем здоровье
 $pik_['time'] = @summ.time($time['last.all'], "[secunde:<<gt_secs_['now']-rest_)>>]")
-hours_['dig'] = @get.tag.num($pik_['time'],'hour')
-minutes_['dig'] = @get.tag.num($pik_['time'],'minute')
+hours_['dig'] = @em.tag.getNum($pik_['time'],'hour')
+minutes_['dig'] = @em.tag.getNum($pik_['time'],'minute')
 $hours_['on_clock'] = @time.output.addition(hours_['dig'])
 $minutes_['on_clock'] = @time.output.addition(minutes_['dig'])
 

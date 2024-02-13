@@ -1,5 +1,6 @@
-# #-#
-args[0] = args[0]
-args[1] = args[1]
-result = iif(args[1]-args[0]>0, args[1]-args[0], args[0]-args[1])
---- #-# ---------------------------------
+QSP-Game Модуль разницы двух чисел
+args[0],args[1] - два целых числа.
+
+# em.abs
+result=iif(args[1]-args[0]>0,args[1]-args[0],args[0]-args[1])
+--- em.abs ---------------------------------

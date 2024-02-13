@@ -1,6 +1,0 @@
-# #col-rgb#
-! функция преобразует цвет из шестнадцатеричного формата в формат rgb, который использует qsp
-if $args[0]='': result = 0 & exit
-args['result']=rgb(func('#hex-dec#',$mid($args[0],1,2)),func('#hex-dec#',$mid($args[0],3,2)),func('#hex-dec#',$mid($args[0],5,2)))
-result=args['result']
---- #col-rgb# ---------------------------------

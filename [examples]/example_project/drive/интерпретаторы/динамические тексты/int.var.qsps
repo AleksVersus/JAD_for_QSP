@@ -37,7 +37,7 @@ elseif $args['find.str']!'':
 	$args['result']=$replace($replace($args['find.str'],$mid($args['find.str'],1,instr($args['find.str'],';;')+1)),'|')
 elseif isnum($args['var.num'])=-1 and val($args['var.num'])>=0 and instr($args[0],';;')=0:
 ! если прямо указанное значение не найдено, но оно является не отрицательным числом, получаем строку по этому числу:
-	$args['wip']=$func('get.word.inPos',mid($args[0],2,len($args[0])-2),val($args['var.num']))
+	$args['wip']=$func('em.str.getWord',mid($args[0],2,len($args[0])-2),val($args['var.num']))
 	if instr($args['wip'],';;')!0:
 		$args['result']=$replace($strfind($args['wip'],'([^;]+(\|)*)'),'|')
 	else

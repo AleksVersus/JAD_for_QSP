@@ -3,17 +3,17 @@
 $args[0] = $args[0]	&	!	строка
 $args[1] = $args[1]	&	!	падеж
 if $args[1]='И' or $args[1]='':
-	$args['gwp']=$func('get.word.inPos',$args[0],1)
+	$args['gwp']=$func('em.str.getWord',$args[0],1)
 elseif $args[1]='Р':
-	$args['gwp']=$func('get.word.inPos',$args[0],2)
+	$args['gwp']=$func('em.str.getWord',$args[0],2)
 elseif $args[1]='Д':
-	$args['gwp']=$func('get.word.inPos',$args[0],3)
+	$args['gwp']=$func('em.str.getWord',$args[0],3)
 elseif $args[1]='В':
-	$args['gwp']=$func('get.word.inPos',$args[0],4)
+	$args['gwp']=$func('em.str.getWord',$args[0],4)
 elseif $args[1]='Т':
-	$args['gwp']=$func('get.word.inPos',$args[0],5)
+	$args['gwp']=$func('em.str.getWord',$args[0],5)
 elseif $args[1]='П':
-	$args['gwp']=$func('get.word.inPos',$args[0],6)
+	$args['gwp']=$func('em.str.getWord',$args[0],6)
 end
 $result=$args['gwp']
 --- get.word.padez ---------------------------------
@@ -31,16 +31,16 @@ args[2] = args[0] mod 10
 args[3] = args[0] mod 100
 $args['gwenda']='gwe_error'
 if args[2]=1 and args[3]!11:
-	$args['gwenda']=$func('get.word.inPos',$args[1],1)
+	$args['gwenda']=$func('em.str.getWord',$args[1],1)
 end
 if args[2]>1 and args[2]<5 and (args[3]<5 or args[3]>20):
-	$args['gwenda']=$func('get.word.inPos',$args[1],2)
+	$args['gwenda']=$func('em.str.getWord',$args[1],2)
 end
 if args[2]=0 or args[2]>4 or (args[3]>10 and args[3]<21):
-	$args['gwenda']=$func('get.word.inPos',$args[1],3)
+	$args['gwenda']=$func('em.str.getWord',$args[1],3)
 end
-if args[0]=0 and $func('get.word.inPos',$args[1],4)!'' and $func('get.word.inPos',$args[1],4)!$args['gwenda']:
-	$args['gwenda']=$func('get.word.inPos',$args[1],4)
+if args[0]=0 and $func('em.str.getWord',$args[1],4)!'' and $func('em.str.getWord',$args[1],4)!$args['gwenda']:
+	$args['gwenda']=$func('em.str.getWord',$args[1],4)
 end
 $result=$args['gwenda']
 --- get.word.end ---------------------------------

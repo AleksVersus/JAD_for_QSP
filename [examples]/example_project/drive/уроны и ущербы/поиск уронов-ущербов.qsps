@@ -7,7 +7,7 @@ args['i']=1
 $args['res.021213']='<table align=left valign=top border=0 cellpadding=0 cellspacing=0 width=60%>'
 :for_uron
 $args['uron_i']=$func('em.tag.getCont',$args[1],'u'+$str(args['i']))
-args['power_i']=func('get.tag.num',$args[1],'p'+$str(args['i']))
+args['power_i']=func('em.tag.getNum',$args[1],'p'+$str(args['i']))
 if $args['uron_i']!'':
 	if args['power_i']!0: $args['res.021213']+='<tr><td align=left><b>'+$func('base.word.uron',$args[0],$args['uron_i'])+':'+'</b></td><td align=left width=10%><font color=#'+$args[2]+'>'+$func('em.indiv',args['power_i'],100,10)+'</font></td></tr>'
 	$args[1]=$TRIM($replace($args[1],'u'+$str(args['i'])+':'+$args['uron_i']+':'+'u'+$str(args['i'])))
@@ -80,9 +80,9 @@ if $strfind($args[0],"u[\d]+:[\s\S]+:u[\d]+")!'':
 		!	получаем ту же характеристику из второй строки
 		args['uron.2.p']=val($mid($args['uron.2'],2,instr($args['uron.2'],':')-2))
 		! получаем номер характеристики из второй строки
-		args['uron.2.p']=func('get.tag.num',$args[1],"p<<args['uron.2.p']>>")
+		args['uron.2.p']=func('em.tag.getNum',$args[1],"p<<args['uron.2.p']>>")
 		! получаем силу характеристики из второй строки, из первой:
-		args['uron.1.p']=func('get.tag.num',$args[0],"p<<args['i']>>")
+		args['uron.1.p']=func('em.tag.getNum',$args[0],"p<<args['i']>>")
 		if $args['uron.2']='' or args['uron.1.p']>args['uron.2.p']:
 		! если характеристика с таким же значением отсутствует в строке, или сила характеристики из первой строки превышает силу характеристики из второй строки
 			$result='false'

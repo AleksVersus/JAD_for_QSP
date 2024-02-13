@@ -26,7 +26,7 @@ if $input_text_word[0] = 'run':
 end
 if $input_text_word[0] = 'arr':
 ! выводит содержимое массивов
-	$args['res.021213']=$func('#array.prnt#',$input_text_word[1])
+	$args['res.021213']=$func('em.arr.print',$input_text_word[1])
 	jump 'end_keep'
 end
 if $input_text_word[0] = 'obj':
@@ -49,7 +49,7 @@ if $input_text_word[0]='all':
 			if arrsize('$id_array')>args['i_inputText']: jump 'new2'
 			$args['res.021213']+='<tr><td>№П.П.</td><td>ID</td><td>Тело объекта</td><td>расположение</td><td>Дочерний:</td><td>кол-во</td><td>заряд</td></tr></table>'
 		elseif $input_text_word[2]='dialog':
-			$args['res.021213']=$func('#array.prnt.few#','$easy_dialog_base_ID','$easy_dialog_base_SC','$easy_dialog_base_ST','$easy_dialog_base_PS','easy_dialog_base_KOL')
+			$args['res.021213']=$func('em.fewArrs.print','$easy_dialog_base_ID','$easy_dialog_base_SC','$easy_dialog_base_ST','$easy_dialog_base_PS','easy_dialog_base_KOL')
 			jump 'end_keep'
 		elseif $input_text_word[2]='':
 			args['i_inputText'] = 0
@@ -99,7 +99,7 @@ end
 if $input_text_word[0]='logs':
 	if $input_text_word[1]<>'error':
 		$args['res.021213']+='Лог дополнительного описания (последние сто записей):<br>'
-		$args['res.021213']+=$func('#array.prnt#','$log_print')+'<br>'
+		$args['res.021213']+=$func('em.arr.print','$log_print')+'<br>'
 	end
 	$args['res.021213']+='Лог движка:<br>'
 	args['i']=0
@@ -111,7 +111,7 @@ if $input_text_word[0]='logs':
 	end
 	$args['res.021213']+='<br>'
 	$args['res.021213']+='Лог ошибок движка:<br>'
-	$args['res.021213']+=$func('#array.prnt#','$log_error','')+'<br>'
+	$args['res.021213']+=$func('em.arr.print','$log_error','')+'<br>'
 end
 :end_keep
 args['moment2']=MSECSCOUNT

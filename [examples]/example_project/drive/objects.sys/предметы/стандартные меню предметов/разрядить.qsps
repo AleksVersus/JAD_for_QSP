@@ -11,11 +11,11 @@ if arrsize('$id_modc')>0:
 ! каждый дочерний предмет просто перемещается в рюкзак
 	$args['bag_in']=$func('get.bag',$id_modc[0])
 	args['pit.p']=arrpos('$id_array',$id_modc[0])
-	args['-weight']+=func('get.tag.num',$object_array[args['pit.p']],'weight')*kolvo_array[args['pit.p']]
+	args['-weight']+=func('em.tag.getNum',$object_array[args['pit.p']],'weight')*kolvo_array[args['pit.p']]
 	args['k']=kolvo_array[args['pit.p']]
 	$args['replaced']=$func('replace.obj',$id_modc[0],$args['bag_in'],'',kolvo_array[args['pit.p']],1)
 	$args['np.obj']=$object_array[arrpos('$id_array',$args['replaced'])]
-	$args['text']+='<font color=#'+$func('get.tag.num',$args['np.obj'],'color')+'>'+$func('get.word.padez',$func('em.tag.getCont',$args['np.obj'],'name'),'И')+" (<<args['k']>> шт.)</font>, "
+	$args['text']+='<font color=#'+$func('em.tag.getNum',$args['np.obj'],'color')+'>'+$func('get.word.padez',$func('em.tag.getCont',$args['np.obj'],'name'),'И')+" (<<args['k']>> шт.)</font>, "
 ! Уменьшается вес оружия !
 	killvar '$id_modc',0
 	jump 'hander_hoch'
@@ -23,7 +23,7 @@ end
 ! заряд оружия очищается
 charge_array[args['pit']]=0
 ! уменьшаем вес
-args['weight']=func('get.tag.num',$object_array[args['pit']],'weight')
+args['weight']=func('em.tag.getNum',$object_array[args['pit']],'weight')
 $object_array[args['pit']]=$replace($object_array[args['pit']],"[weight:<<args['weight']>>]","[weight:"+str(args['weight']-args['-weight'])+"]")
 $print['menu.else']+=$func('b.w.s','dch',$args[0],$args['text'],$args['bag_in'])
 --- menu.obj.disCharge ---------------------------------

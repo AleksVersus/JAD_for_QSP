@@ -14,9 +14,9 @@ $object_array[args['num']]=$args[0]	&	!	создаём объекту тело
 if $strfind($args[0],'<заголовок>')!'' or $args[2] = 'INVENTORY' or $args[2]='RESPAWNER':
 	$id_array[args['num']]=$args[2]
 elseif $strfind($args[0],'<link>')!'':
-	$id_array[args['num']]='link.'+TRIM($args[2])
+	$id_array[args['num']]='link.'+$TRIM($args[2])
 else
-	$id_array[args['num']]=$args[2]+'.'+$func('#rndstr#',8,'буквы и цифры')
+	$id_array[args['num']]=$args[2]+'.'+@em.str.random(8,'[inc][\d][\z][\я]')
 end
 if $strfind($args[0],'<заголовок>')!'' and instr($args[0],'[respawn.stop]')=0:
 	$position_array[args['num']]='RESPAWNER'

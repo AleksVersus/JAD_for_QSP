@@ -102,7 +102,7 @@ elseif instr($OOS['obj'],'<obj>')!0:
 	if $strfind($object_array[OOS['heading_n']],'\[put.stop\]')='':
 		$menu_OOS[arrsize('$menu_OOS')]='-:-'
 		if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
-			args['stoim']=func('get.tag.num',$OOS['obj'],"stoim")
+			args['stoim']=func('em.tag.getNum',$OOS['obj'],"stoim")
 			$args['stoimost']=$func('em.indiv',func('obj.sale.cost',args['stoim'],$func('get.loc.id')),100,1)
 			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.put','sale',$args['stoimost'])+':menu.obj.put'
 		elseif $strfind($func('get.loc.id'),'(\[м:[\d]+\]_[\S\s]+|place;|место;)')!'':
@@ -118,7 +118,7 @@ elseif instr($OOS['obj'],'<obj>')!0:
 elseif instr($OOS['obj'],'<money>')!0:
 ! если выделенным объектом является кошелёк
 	:money_print
-	$args['color']=$func('get.tag.num',$OOS['obj'],'color')
+	$args['color']=$func('em.tag.getNum',$OOS['obj'],'color')
 	$args['name']=$func('em.tag.getCont',$OOS['obj'],'name')
 	$args['name']=$func('get.word.padez',$args['name'],'И')
 	$print['money']+='<font color=#'+$args['color']+' face="CyrillicOld" size=+1><b>'+$args['name']+':</b></font><br>'
@@ -130,14 +130,14 @@ elseif instr($OOS['obj'],'<money>')!0:
 			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
 			$args['name_obj']=$func('em.tag.getCont',$object_array[OOS['pos1']],'name')
 			$args['name_obj']=$func('get.word.padez',$args['name_obj'],'И')
-			$print['money']+='<font color=#'+$func('get.tag.num',$object_array[OOS['pos1']],'color')+'><b>'+$args['name_obj']+':</b></font> <font color=#666600><b>'+str(kolvo_array[OOS['pos1']])+'</b></font><br>'
+			$print['money']+='<font color=#'+$func('em.tag.getNum',$object_array[OOS['pos1']],'color')+'><b>'+$args['name_obj']+':</b></font> <font color=#666600><b>'+str(kolvo_array[OOS['pos1']])+'</b></font><br>'
 			killvar '$tempOOS_id',0
 			jump 'for2'
 		end
 	end
 elseif instr($OOS['obj'],'<keys>')!0:
 ! если выделенным объектом является связка ключей
-	$args['color']=$func('get.tag.num',$OOS['obj'],'color')
+	$args['color']=$func('em.tag.getNum',$OOS['obj'],'color')
 	$args['name']=$func('em.tag.getCont',$OOS['obj'],'name')
 	$args['name']=$func('get.word.padez',$args['name'],'И')
 	$print['key.table']+='<font color=#'+$args['color']+' face="CyrillicOld" size=+1><b>'+$args['name']+':</b></font><br>'
@@ -149,9 +149,9 @@ elseif instr($OOS['obj'],'<keys>')!0:
 			$OOS['key'] = $func('em.tag.getCont',$object_array[OOS['pos1']],'name')
 			$OOS['key'] = $func('get.word.padez',$OOS['key'],'И')
 			if $OOS['key']='': $OOS['key'] = $func('b.d.t','table.noname')
-			if $func('get.tag.num',$object_array[OOS['pos1']],'open')!'':	$OOS['open']	=	$func('get.tag.num',$object_array[OOS['pos1']],'open')
+			if $func('em.tag.getNum',$object_array[OOS['pos1']],'open')!'':	$OOS['open']	=	$func('em.tag.getNum',$object_array[OOS['pos1']],'open')
 			if kolvo_array[OOS['pos1']]!0:	$OOS['count']	=	str(kolvo_array[OOS['pos1']])
-			if $func('get.tag.num',$object_array[OOS['pos1']],'breake')!'':	$OOS['breake']=	$func('get.tag.num',$object_array[OOS['pos1']],'breake')
+			if $func('em.tag.getNum',$object_array[OOS['pos1']],'breake')!'':	$OOS['breake']=	$func('em.tag.getNum',$object_array[OOS['pos1']],'breake')
 			$print['key.table']+= '<tr><td align=left bgcolor=#dddd66><font size=-3>'+$OOS['key']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['count']+'</font></td><td align=center bgcolor=#dddd66><font size=-3>'+$OOS['open']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['breake']+'</font></td></tr>'
 			killvar '$tempOOS_id',0
 			jump 'new'
@@ -200,7 +200,7 @@ elseif instr($OOS['obj'],'<magic>')!0:
 	if $GAME_INTERFACE['подсказки']='show': $print['help']+=$func('game.help','магия')+$func('b.w.s','help')
 elseif instr($OOS['obj'],'<gate-stone>')!0:
 ! если выделенным объектом является ожерелье гроз
-	$print['gs.table']+='<font color=#'+$func('get.tag.num',$object_array[OOS['pos']],'color')+' face="CyrillicOld" size=+1><b>'+$func('b.d.t','gate-stone')+':</b></font><br>'
+	$print['gs.table']+='<font color=#'+$func('em.tag.getNum',$object_array[OOS['pos']],'color')+' face="CyrillicOld" size=+1><b>'+$func('b.d.t','gate-stone')+':</b></font><br>'
 	if $func('get.daughter.obj',$OOS['oid'],'<g-s>','$tempOOS_id')='true':
 		$print['gs'] = '<table cellspacing=0 cellpadding=5 bgcolor=#ffff88><tr><td align=left bgcolor=#bbbb44><font size=-3>'+$func('b.d.t','target-point')+':</font></td><td align=center bgcolor=#cccc55><font size=-3>'+$func('b.d.t','table.iner')+':</font></td><td align=center bgcolor=#bbbb44><font size=-3>'+$func('b.d.t','table.charge')+':</font></td><td align=center bgcolor=#cccc55><font size=-3>'+$func('b.d.t','table.move')+':</font></td></tr>'
 		:new1
@@ -208,7 +208,7 @@ elseif instr($OOS['obj'],'<gate-stone>')!0:
 			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
 			$OOS['key'] = $func('em.tag.getCont',$object_array[OOS['pos1']],'name')
 			if $OOS['key']='': $OOS['key'] = $func('b.d.t','g-s.neverland')
-			if instr($object_array[OOS['pos1']],'[charge:')!0:	$OOS['open']	=	str(charge_array[OOS['pos1']])+'/'+$func('get.tag.num',$object_array[OOS['pos1']],'charge') else $OOS['open']=''
+			if instr($object_array[OOS['pos1']],'[charge:')!0:	$OOS['open']	=	str(charge_array[OOS['pos1']])+'/'+$func('em.tag.getNum',$object_array[OOS['pos1']],'charge') else $OOS['open']=''
 			if kolvo_array[OOS['pos1']]!0: $OOS['count']	=	str(kolvo_array[OOS['pos1']])
 			if ($OOS['open']!'' and charge_array[OOS['pos1']]!0) or $OOS['open']='': $OOS['breake']='<a href="exec:gs '+"'int.act.goto','"+$tempOOS_id[0]+"','"+$OOS['oid']+"'"+'">&#8594;</a>' else $OOS['breake']='<font color=#ff0000>'+$func('b.d.t','g-s.imposible')+'</font>'
 			$print['gs.table'] += '<tr><td align=left bgcolor=#dddd66><font size=-3>'+$OOS['key']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['count']+'</font></td><td align=center bgcolor=#dddd66><font size=-3>'+$OOS['open']+'</font></td><td align=center bgcolor=#eeee77><font size=-3>'+$OOS['breake']+'</font></td></tr>'

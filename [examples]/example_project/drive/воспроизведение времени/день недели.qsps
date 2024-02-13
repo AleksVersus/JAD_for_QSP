@@ -4,6 +4,6 @@
 ! 'Понедельник|Вторник|Среда|Четверг|Пятница|Суббота|Восскресенье'
 if $args[0]='': $args[0]=$func('b.d.t','time.wd')
 args['i']=time['weekday']+1
-$args['gwiP']=$func('get.word.inPos',$args[0],args['i'])
+$args['gwiP']=$func('em.str.getWord',$args[0],args['i'])
 $result=$args['gwiP']
 --- int.time.days ---------------------------------

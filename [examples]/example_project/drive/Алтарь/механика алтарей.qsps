@@ -29,7 +29,7 @@ if $args['onAltar.ID']<>'':
 	$args['ссылка етого предмета']=$strfind($args['предметы на алтаре'],'<a class="plain" href="exec:gs ''take.obj'','''+$args['onAltar.ID']+''' & GS ''true.goto.curloc'',''\[chest\]''"><font color=#[A-Fa-f0-9]{6}>[^<]+</font></a><br>')
 	$args['obj.qwerty']=$object_array[arrpos('$id_array',$args['onAltar.ID'])]
 	$args['name.qwerty']=$func('get.word.padez',$func('em.tag.getCont',$args['obj.qwerty'],'name'),'В')
-	$args['color.qwerty']=$func('get.tag.num',$args['obj.qwerty'],'color')
+	$args['color.qwerty']=$func('em.tag.getNum',$args['obj.qwerty'],'color')
 	$args['заряжаемый']='<b><a class="plain" href="exec:gs ''take.obj'','''+$args['onAltar.ID']+''' & GS ''true.goto.curloc'',''[chest]''"><font color=#'+$args['color.qwerty']+'>'+$func('b.d.t','altar.remove',$args['name.qwerty'])+'</font></a></b>'
 	$args['жертвенник']+='<font size=-1>'+$func('b.d.t','altar.credence')+':</font><br>'
 	$args['жертвенник']+=$replace($args['предметы на алтаре'],'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'+$args['ссылка етого предмета'])
@@ -110,7 +110,7 @@ if $args[1]<>'':
 	args['pit']=arrpos('$id_array',$args['onAltar'])
 	$args['obj']=$object_array[args['pit']]
 	! получаем максимальный заряд предмета и текущий заряд предмета
-	args['max_charge']=func('get.tag.num',$args['obj'],'maxchrg')	&	!	5000 (500000)
+	args['max_charge']=func('em.tag.getNum',$args['obj'],'maxchrg')	&	!	5000 (500000)
 	args['charge']=charge_array[args['pit']]	&	!	300 (30000)
 	args['full']=args['max_charge']-args['charge']	&	!	сколько требуется до полной зарядки 4700 (470000)
 	if args['full']=0:
@@ -153,19 +153,19 @@ $args['loc']=$func('get.obj.id',$args[1])
 ! получаем имя бога, которому должно делаться жертвоприношение
 $args['god.name']=$func('em.tag.getCont',$args['loc'],'god')
 ! получаем духовную ценность предмета для этого конкретного бога
-args['spirit.god.name']=func('get.tag.num',$func('em.tag.getCont',$args['obj'],'spirit'),$args['god.name'])
+args['spirit.god.name']=func('em.tag.getNum',$func('em.tag.getCont',$args['obj'],'spirit'),$args['god.name'])
 ! если духовная ценность для этого конкретно божества не указана, получаем духовную ценность для "пустого" бога
 if args['spirit.god.name']=0:
-	args['spirit']=func('get.tag.num',$args['obj'],'spirit')
+	args['spirit']=func('em.tag.getNum',$args['obj'],'spirit')
 else
 	args['spirit']=args['spirit.god.name']
 end
 ! если и на этот раз мы не обнаружили духовную ценность, вычисляем духовную ценность из всяких свойств предмета:
 if args['spirit']=0:
-	args['spirit']=func('get.tag.num',$args['obj'],'stoim')/5
+	args['spirit']=func('em.tag.getNum',$args['obj'],'stoim')/5
 end
 if args['spirit']=0:
-	args['spirit']=func('get.tag.num',$args['obj'],'weight')/50
+	args['spirit']=func('em.tag.getNum',$args['obj'],'weight')/50
 
 	$args['spirit.type']=$func('em.tag.getCont',$args['obj'],'np')
 	! поправить коэффициенты согласно балансу

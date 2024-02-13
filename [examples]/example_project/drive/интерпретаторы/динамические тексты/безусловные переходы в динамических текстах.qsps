@@ -2,18 +2,18 @@
 ! локация интерпретации безусловных переходов в динамическом тексте:
 ! текст ссылки, выводимый на экран|название_локации|идентификатор_локации|время|управляющая конструкция|идентификатор исходной локации
 $args[0] = $args[0]
-$args['text'] = TRIM($func('get.word.inPos',$args[0],1))
+$args['text'] = TRIM($func('em.str.getWord',$args[0],1))
 $args['last']=$args['text']
-$args['loc.name'] = TRIM($func('get.word.inPos',$args[0],2))
+$args['loc.name'] = TRIM($func('em.str.getWord',$args[0],2))
 if $args['last']=$args['loc.name']: $args['loc.name']='' else $args['last']=$args['loc.name']
-$args['loc.id'] = TRIM($func('get.word.inPos',$args[0],3))
+$args['loc.id'] = TRIM($func('em.str.getWord',$args[0],3))
 if $args['loc.id']='': $args['loc.id']=$args['loc.name']
 if $args['last']=$args['loc.id']: $args['loc.id']=$args['loc.name'] else $args['last']=$args['loc.id']
-$args['time']=TRIM($func('get.word.inPos',$args[0],4))
+$args['time']=TRIM($func('em.str.getWord',$args[0],4))
 if $args['last']=$args['time']: $args['time']='' else $args['last']=$args['time']
-$args['manage'] = TRIM($func('get.word.inPos',$args[0],5))
+$args['manage'] = TRIM($func('em.str.getWord',$args[0],5))
 if $args['last']=$args['manage']: $args['manage']='' else $args['last']=$args['manage']
-$args['back'] = TRIM($func('get.word.inPos',$args[0],6))
+$args['back'] = TRIM($func('em.str.getWord',$args[0],6))
 if $args['last']=$args['back']: $args['back']='' else $args['last']=$args['back']
 $log_error[]="
 text:<<$args['text']>>

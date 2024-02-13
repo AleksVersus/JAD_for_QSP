@@ -9,14 +9,14 @@ if $args[0]='block_recieve': args['pos']=1 & $args['start']='Рикошет ' 	&
 if $args[0]='block_repulse': args['pos']=1 & $args['start']='Отражение ' 	&	$args['end']=' урона'
 if $args[0]='uron_absorb': args['pos']=1 & $args['start']='Поглощение защиты от ' 	&	$args['end']=' урона'
 
-if $args[1]='режущий': $args['pril']=$func('get.word.inPos','р|Р',args['pos'])+'ежущ'+$func('get.word.inPos','его|ий',args['pos'])
-if $args[1]='дробящий': $args['pril']=$func('get.word.inPos','д|Д',args['pos'])+'робящ'+$func('get.word.inPos','его|ий',args['pos'])
-if $args[1]='стрелковый': $args['pril']=$func('get.word.inPos','с|С',args['pos'])+'трелков'+$func('get.word.inPos','ого|ый',args['pos'])
-if $args[1]='огненный_mgc': $args['pril']=$func('get.word.inPos','о|О',args['pos'])+'гненн'+$func('get.word.inPos','ого|ый',args['pos'])
-if $args[1]='ледяной_mgc': $args['pril']=$func('get.word.inPos','л|Л',args['pos'])+'едян'+$func('get.word.inPos','ого|ой',args['pos'])
-if $args[1]='энергетический_mgc': $args['pril']=$func('get.word.inPos','э|Э',args['pos'])+'нергетическ'+$func('get.word.inPos','ого|ий',args['pos'])
-if $args[1]='кислотный_acid': $args['pril']=$func('get.word.inPos','к|К',args['pos'])+'ислотн'+$func('get.word.inPos','ого|ый',args['pos'])
-if $args[1]='ядовитый_psn': $args['pril']=$func('get.word.inPos','я|Я',args['pos'])+'довит'+$func('get.word.inPos','ого|ый',args['pos'])
+if $args[1]='режущий': $args['pril']=$func('em.str.getWord','р|Р',args['pos'])+'ежущ'+$func('em.str.getWord','его|ий',args['pos'])
+if $args[1]='дробящий': $args['pril']=$func('em.str.getWord','д|Д',args['pos'])+'робящ'+$func('em.str.getWord','его|ий',args['pos'])
+if $args[1]='стрелковый': $args['pril']=$func('em.str.getWord','с|С',args['pos'])+'трелков'+$func('em.str.getWord','ого|ый',args['pos'])
+if $args[1]='огненный_mgc': $args['pril']=$func('em.str.getWord','о|О',args['pos'])+'гненн'+$func('em.str.getWord','ого|ый',args['pos'])
+if $args[1]='ледяной_mgc': $args['pril']=$func('em.str.getWord','л|Л',args['pos'])+'едян'+$func('em.str.getWord','ого|ой',args['pos'])
+if $args[1]='энергетический_mgc': $args['pril']=$func('em.str.getWord','э|Э',args['pos'])+'нергетическ'+$func('em.str.getWord','ого|ий',args['pos'])
+if $args[1]='кислотный_acid': $args['pril']=$func('em.str.getWord','к|К',args['pos'])+'ислотн'+$func('em.str.getWord','ого|ый',args['pos'])
+if $args[1]='ядовитый_psn': $args['pril']=$func('em.str.getWord','я|Я',args['pos'])+'довит'+$func('em.str.getWord','ого|ый',args['pos'])
 
 if $args[1]='luck': $result='Поглощение удачи' 	&	exit
 $result=$args['start']+$args['pril']+$args['end']

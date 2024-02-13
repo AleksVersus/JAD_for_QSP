@@ -7,7 +7,7 @@ args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию п�
 $args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
 
 args['колво']=kolvo_array[args['pit']]	&	!	количество предметов в позиции
-args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	вес одного предмета
+args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	вес одного предмета
 
 if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\s\S]*|seller;|торговец;)')!'':
 	$args['поднять']='buy'

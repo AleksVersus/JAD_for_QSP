@@ -1,29 +1,41 @@
-# #dec-col#
+QSP-Game Функция, конвертирующая десятеричное число в шестнадцатеричное (см ниже)
+args[0] - число целое, десятеричное в пределах от -255 до 255
+$result - шестнадцатеричное двуразрядное число (текстовое значение).
+
+# em.dec.inCol
+local $minus, base_16, num_of_digit
 $result=''
-:start
-if args[0]>16777215: jump 'end_keep'
-if args[0]<0: args[0]=-args[0] & $args['+']='-' & jump 'start'
-args['основание'] = 16
-:новое_основание
-if args[0]/args['основание'] < 16:
-	if args[0] < 16:
-		$result = $result + mid('0123456789abcdef',args[0]+1,1)
-		jump 'end_keep'
-	else
-		$result = $result + mid('0123456789abcdef',args[0]/args['основание']+1,1)
-		args[0] = args[0] mod args['основание']
-		args['основание'] = 16
-		jump 'новое_основание'
-	end
-else
-	args['основание'] = args['основание'] * 16
-	jump 'новое_основание'
+if args[0]<0: args[0]=-args[0] & $minus='-'
+if args[0]>255: args[0]=255
+!@ генерируем последнее основание и номер последнего разряда:
+!@ можно заменить на em.LOG
+base_16=1
+num_of_digit=0
+loop while no (args[0]/base_16<16):
+	base_16*=16
+	num_of_digit+=1
 end
-:end_keep
+loop local run=1 while run:
+!@ если само число меньше 16
+	if num_of_digit=0:
+		$result+=$mid('0123456789abcdef',args[0]+1,1)	& !@ получаем символ числа (hex-цифру)
+		run=0
+	else
+		$result+=$mid('0123456789abcdef',args[0]/base_16+1,1)	& !@ получаем hex-цифру
+		args[0]=args[0] mod base_16	& !@ числом становится остаток от деления на основание
+		num_of_digit-=1
+		!@ --- получение нового основания. Можно заменить на функцию #^# (em.EXP)
+			base_16=1
+			loop local i=num_of_digit while i>0 step i-=1:
+				base_16*=16
+			end
+		!@ ------------------------- получение нового основания -----------------
+	end
+end
 if len($result)=1:
 	$result='0'+$result
 elseif $result='':
 	$result='00'
 end
-$result=$args['+']+$result
---- #dec-col# ---------------------------------
+$result=$minus+$result
+--- em.dec.inCol ---------------------------------

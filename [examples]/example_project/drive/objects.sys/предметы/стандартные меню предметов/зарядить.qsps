@@ -8,10 +8,10 @@ args['pit.patron']=arrpos('$id_array',$args[0])
 ! получаем название патронов
 $args['name.patron']=$func('em.tag.getCont',$object_array[args['pit.patron']],"name")
 $args['patron']=$func('em.tag.getCont',$object_array[args['pit.patron']])
-args['weight.patron']=func('get.tag.num',$object_array[args['pit.patron']],'weight')
+args['weight.patron']=func('em.tag.getNum',$object_array[args['pit.patron']],'weight')
 ! получаем калибр и прочую информацию
-$args['calibr.patron']=$func('get.tag.num',$object_array[args['pit.patron']],'calibr')
-args['maxCharge.patron']=func('get.tag.num',$object_array[args['pit.patron']],'maxchrg')
+$args['calibr.patron']=$func('em.tag.getNum',$object_array[args['pit.patron']],'calibr')
+args['maxCharge.patron']=func('em.tag.getNum',$object_array[args['pit.patron']],'maxchrg')
 if $args[1]='':
 ! находим все объекты
 	$args['get.arms']=$func('get.daughter.obj.all','INVENTORY','','$id_moic')
@@ -21,8 +21,8 @@ if $args[1]='':
 				args['pit.arm']=arrpos('$id_array',$id_moic[0])
 				$args['arm']=$object_array[args['pit.arm']]
 			if $strfind($args['arm'],'<obj>[\s\S]*\[огнестрельное\]')!"":
-				$args['calibr.arm']=$func('get.tag.num',$args['arm'],'calibr')
-				args['maxCharge.arm']=func('get.tag.num',$args['arm'],'maxchrg')
+				$args['calibr.arm']=$func('em.tag.getNum',$args['arm'],'calibr')
+				args['maxCharge.arm']=func('em.tag.getNum',$args['arm'],'maxchrg')
 				if $args['calibr.arm']=$args['calibr.patron'] and args['maxCharge.patron']<=args['maxCharge.arm']-charge_array[args['pit.arm']]:
 					$args['name.arm']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],"name"),'В')
 					$args['res.021213']='true'
@@ -45,8 +45,8 @@ if $args[1]='':
 else
 	args['pit.arm']=arrpos('$id_array',$args[1])
 	$args['arm']=$object_array[args['pit.arm']]
-	$args['calibr.arm']=$func('get.tag.num',$args['arm'],'calibr')
-	args['maxCharge.arm']=func('get.tag.num',$args['arm'],'maxchrg')
+	$args['calibr.arm']=$func('em.tag.getNum',$args['arm'],'calibr')
+	args['maxCharge.arm']=func('em.tag.getNum',$args['arm'],'maxchrg')
 	$args['name.arm']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],"name"),'В')
 	! помещаем патронташ в пистолет
 	args['штук']=charge_array[args['pit.patron']]/args['maxCharge.patron']	&	!	всегда должно быть равно 1
@@ -54,7 +54,7 @@ else
 	! в последнюю переменную внесен ай-ди оружия, которое получилось в результате. Этому оружию передаётся вес патронов
 	args['pit.arm']=arrpos('$id_array',$args['new.arm.charge'])
 	$args['arm']=$object_array[args['pit.arm']]
-	args['weight.arm']=func('get.tag.num',$args['arm'],'weight')
+	args['weight.arm']=func('em.tag.getNum',$args['arm'],'weight')
 	$object_array[args['pit.arm']]=$replace($object_array[args['pit.arm']],"[weight:<<args['weight.arm']>>]","[weight:<<args['weight.arm']+args['weight.patron']*args['штук']>>]")
 	$print['menu.else']+='<font color=#008888><b>'+$func('get.word.padez',$args['name.patron'],'В')+" заряжены в "+$args['name.arm']+'.</b></font>'
 	gs 'int.inventory'

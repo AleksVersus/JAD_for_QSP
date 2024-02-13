@@ -27,8 +27,8 @@ if $args['name'] = '':
 	if $args[1]='seller': $args['name'] = $func('b.d.t','place.seller')
 end
 $args['type'] = $func('em.tag.getCont',$args['obj'],'type')
-if $func('get.tag.num',$args['obj'],'color')!'':
-	$args['color'] = $func('get.tag.num',$args['obj'],'color')
+if $func('em.tag.getNum',$args['obj'],'color')!'':
+	$args['color'] = $func('em.tag.getNum',$args['obj'],'color')
 	if $args[1]='seller': $cvar['seller.color']=$args['color']
 elseif $args[1]='location':
 	if $args['type']='строение':	

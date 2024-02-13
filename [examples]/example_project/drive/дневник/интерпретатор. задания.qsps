@@ -23,7 +23,7 @@ if $args['gdo']='true':
 			if instr($args['np'],'[hide]')=0:
 				$args['v']=$func('em.tag.getCont',$object_array[args['stady.pos']],'v')
 				if $args['v']='next': $args['color']=$args['color2']
-				if $args['v']='last': $args['color']=$func('#+col#',$args['color2'],'-44')
+				if $args['v']='last': $args['color']=$func('em.col.add',$args['color2'],'-44')
 				if $args['v']='eror': $args['color']='aa4400'
 				$args['int.diary.task']+="<font color=#"+$args['color']+"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Заметка № <<args['sn']>>: </b></font>"+$func('int.notes',$id_stadies[args['stady']])+'<br>'
 				args['sn']+=1

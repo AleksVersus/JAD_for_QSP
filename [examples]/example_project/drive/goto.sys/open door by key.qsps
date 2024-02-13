@@ -10,8 +10,8 @@ $int_act_goto[0] = $int_act_goto[0]
 args['tek_luck']=property['hero.luck.all']	&	!	текущая удача
 args['max_luck']=property['hero.luck.max']	&	!	максимальная удача
 args['breaking']=property['hero.breaking']	&	!	уровень умения вскрывать замки
-args['lock']=func('get.tag.num',$object_array[arrpos('$id_array',$int_act_goto[0])],'breake')	&	!	уровень замка
-args['key']=func('get.tag.num',$object_array[arrpos('$id_array',$key_iag)],'breake')	&	!	уровень отмычки
+args['lock']=func('em.tag.getNum',$object_array[arrpos('$id_array',$int_act_goto[0])],'breake')	&	!	уровень замка
+args['key']=func('em.tag.getNum',$object_array[arrpos('$id_array',$key_iag)],'breake')	&	!	уровень отмычки
 
 args['abs_luck']=(rand(1,args['tek_luck'])*100/args['tek_luck'])-((args['max_luck']-args['tek_luck'])*100/args['max_luck'])
 args['breake']=(args['lock']-(args['key']+args['breaking']/args['key']))*100/args['lock']

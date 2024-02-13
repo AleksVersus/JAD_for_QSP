@@ -43,14 +43,14 @@ $lvar['qut']={Адское Пекло и Небеса -
 Я весь мир мечтаю продать.
 Время - деньги. Пусть стрелки бегут на часах -
 И мне нечего больше желать.}
-$func('#str.inArray#',$lvar['qut'],'$mass','("|'+"'"+'|!|\?|-|,|;|:|\.| |
+$func('em.str.inArr',$lvar['qut'],'$mass','("|'+"'"+'|!|\?|-|,|;|:|\.| |
 )','NOTSPACE REGULAR LCASE')
 $func('inputText','arr $mass')
-$func('get.tag.num','color="ff8899"[rem:zzzfff]','color')+'-1'
-$func('get.tag.num',"color=#uuuhhh",'color\h')+'-2'
-$func('get.tag.num','color:66ff88
+$func('em.tag.getNum','color="ff8899"[rem:zzzfff]','color')+'-1'
+$func('em.tag.getNum',"color=#uuuhhh",'color\h')+'-2'
+$func('em.tag.getNum','color:66ff88
   8','color')+'-3'
 $func('em.tag.getCont','[name:Дублоны:name] <nocount><!-- [color:888800] <num:</nocount><nocount>-!><!--дублон|дублона|дублонов:num></noco-->unt>','<!--!>')+'-4'
-$func('get.tag.num','<font color=#88ff88>Какой-то текст</font>','color')
-func('get.tag.num','[stoim:561] [color:008800]','stoim')
+$func('em.tag.getNum','<font color=#88ff88>Какой-то текст</font>','color')
+func('em.tag.getNum','[stoim:561] [color:008800]','stoim')
 --- !--tester--! ---------------------------------

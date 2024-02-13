@@ -1,37 +1,53 @@
-# #rndstr#
+QSP-Game Возвращает строку случайных символов
+args[0] - необходимая длина строки. Если не задана, выбирается случайным образом от 1 до 8 символов. Только число
+$args[1] - символы, которых не должно быть в строке, либо управляющая конструкция. Только текст.
+$args[2] - символы, которые должны быть добавлены к строке
+
+# em.str.random
 if args[0]=0: args[0]=rand(1,8)
-$args[1]=$args[1]
-$args[2] = $args[2]
-if $args[1]='буквы и цифры':
-	$args['symbols']='QWERTYUIOPASDFGHJKLZXCVBNM1234567890qwertyuiopasdfghjklzxcvbnmёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ'
+local $symbols,$new_symbols="",""	& !@ инициализируем переменную symbols и new_symbols
+if $strfind($args[1],'(?i)\[inc(lude)?\]')<>'':
+	$args[1]=$lcase($args[1])
+	if instr($args[1],'[\all]')<>0 or instr($args[1],'[\d]')<>0: $symbols+='1234567890'
+	if instr($args[1],'[\all]')<>0 or instr($args[1],'[\h]')<>0: $symbols+='1234567890abcdef'
+	if instr($args[1],'[\all]')<>0 or instr($args[1],'[\s]')<>0: $symbols+='	 '
+	if instr($args[1],'[\all]')<>0 or instr($args[1],'[\w]')<>0:
+		!@ буквы
+		$symbols+='QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'
+		$symbols+='ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮёйцукенгшщзхъфывапролджэячсмитьбю'
+		!@ цифры и символ подчёркивания
+		$symbols+='1234567890_'
+	end
+	if instr($args[1],'[\all]')<>0 or instr($args[1],'[\я]')<>0:
+		$symbols+='ЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮёйцукенгшщзхъфывапролджэячсмитьбю'
+	end
+	if instr($args[1],'[\all]')<>0 or instr($args[1],'[\z]')<>0:
+		$symbols+='QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm'
+	end
+	if instr($args[1],'[ucase]')<>0: $symbols=$ucase($symbols)
+	if instr($args[1],'[lcase]')<>0: $symbols=$lcase($symbols)
 	$args[1] = ''
-elseif $args[1]='только это':
+elseif $strfind($args[1],'(?i)\[only this\]')<>'' or $strfind($args[1],'(?i)\[ot\]')<>'':
 	$args[1] = ''
 else
-	$args['symbols']='QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?1234567890'+"!@#$%^&*()_+-=`~qwertyuiop[]asdfghjkl;'zxcvbnm,./\|№"
-	$args['symbols']+="ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
+	$symbols='QWERTYUIOP{}ASDFGHJKL:"ZXCVBNM<>?1234567890'
+	$symbols+="!@#$%^&*()_+-=`~qwertyuiop[]asdfghjkl;'zxcvbnm,./\|№"
+	$symbols+="ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮ"
 end
-if $args[1]<>'':
-	args['i']=len($args['symbols'])
-	:for
-	if len($args[1])>0 and args['i']>0:
-		if len($args[1])>1:
-			$args['1'] = $mid($args[1],1,1)
-			$args[1] = $mid($args[1],2)
-		else
-			$args['1']=$args[1]
-			$args[1]=''
-		end
-		$args['symbols']=$replace($args['symbols'],$args['1'])
-		args['i']-=1
-		if len($args[1])>0: jump 'for'
+!@ следующий алгоритм удаляет исключаемые символы из набора, так же удаляет повторяющиеся символы
+loop local $temp while len($symbols)>0:
+	!@ цикл выполняется, пока не перебрали весь набор символов
+	$temp=$mid($symbols,1,1)	& !@ вырезаем первый символ из набора
+	!@ проверяем присутствует ли данный символ в наборе $args[1]
+	if instr($args[1],$temp)=0:
+		!@ если символа в наборе запрещённых нет
+		$new_symbols+=$temp	& !@ добавляем символ к новому набору
 	end
+	$symbols=$replace($symbols,$temp)	& !@ удаляем символ из старого набора (и дубликаты тоже)
 end
-if $args[2]<>'': $args['symbols']+=$args[2]
-:while
-if args[0]>0:
-	$result['rndstr']+=($mid($args['symbols'],rand(1,len($args['symbols'])),1))
-	args[0]-=1
-	if args[0]>0: jump 'while'
+$symbols=$new_symbols
+if $args[2]<>'': $symbols+=$args[2]
+loop while args[0]>0 step args[0]-=1:
+	$result['rndstr']+=($mid($symbols,rand(1,len($symbols)),1))
 end
---- #rndstr# ---------------------------------
+--- em.str.random ---------------------------------

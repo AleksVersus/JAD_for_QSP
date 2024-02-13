@@ -1,9 +1,9 @@
 # base.word.screen
 $args[0] = $args[0]
 $args[1] = $args[1]
-$args['color']=$func('get.tag.num',$args[1],'color')
+$args['color']=$func('em.tag.getNum',$args[1],'color')
 $args['name']=$func('em.tag.getCont',$args[1],'name')
-args['колво']=func('get.tag.num',$args[1],'колво')
+args['колво']=func('em.tag.getNum',$args[1],'колво')
 $args['num']=$func('em.tag.getCont',$args[1],'num')
 $args['txt']=$func('em.tag.getCont',$args[1],'txt')
 if $args[0]!'': jump $args[0] else jump 'wtf'

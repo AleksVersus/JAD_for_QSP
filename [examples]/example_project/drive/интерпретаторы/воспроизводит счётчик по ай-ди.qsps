@@ -5,7 +5,7 @@ args['pit']=arrpos('$id_array',$args[0])
 $args['obj']=$object_array[args['pit']]
 $args['np']=$func('em.tag.getCont',$args['obj'],'np')
 $args['name']=$func('em.tag.getCont',$args['obj'],'name')
-$args['color']=$func('get.tag.num',$args['obj'],'color')
+$args['color']=$func('em.tag.getNum',$args['obj'],'color')
 $args['short_name']=$func('em.tag.getCont',$args['obj'])
 if $args['color']='': $args['color']='008888'
 if instr($args['np'],'[level]')!0:
@@ -13,10 +13,10 @@ if instr($args['np'],'[level]')!0:
 	$args['res.021213']+='<tr><td><b><font color=#'+$args['color']+' size=5>'+$args['name']+': </font></b></td>'
 	$args['l']=$func('em.tag.getCont',$args['obj'],'l')
 	if $args['l']='': $args['l']='уровень|уровня|уровню|уровень|уровнем|уровне'
-	$args['res.021213']+='<td align=right><font color=#'+$func('#+col#',$args['color'],'-22')+'>'+str(point_count[$args['short_name']+'.level'])+" "+$func('get.word.padez',$args['l'],'И')+'</font></td></tr>'
+	$args['res.021213']+='<td align=right><font color=#'+$func('em.col.add',$args['color'],'-22')+'>'+str(point_count[$args['short_name']+'.level'])+" "+$func('get.word.padez',$args['l'],'И')+'</font></td></tr>'
 	$args['p']=$func('em.tag.getCont',$args['obj'],'p')
 	if $args['p']='': $args['p']='Набрано: '
-	$args['res.021213']+='<tr><td><font color=#'+$func('#+col#',$args['color'],'-22')+'><b>'+$args['p']+'</b></font></td><td align=right>'+str(point_count[$args['short_name']+'.point'])
+	$args['res.021213']+='<tr><td><font color=#'+$func('em.col.add',$args['color'],'-22')+'><b>'+$args['p']+'</b></font></td><td align=right>'+str(point_count[$args['short_name']+'.point'])
 	$args['m']=$func('em.tag.getCont',$args['obj'],'m')
 	if $args['m']='': $args['m']=' из '
 	$args['res.021213']+='<b>'+$args['m']+str(point_count[$args['short_name']+'.marker'])+'</b>'
@@ -31,7 +31,7 @@ if instr($args['np'],'[level]')!0:
 	$args['res.021213']+='</td></tr>'
 	$args['s']=$func('em.tag.getCont',$args['obj'],'s')
 	if $args['s']!'':
-		$args['res.021213']+='<tr><td colspan=2><br><font color=#'+$func('#+col#',$args['color'],'-44')+'>'+$args['s']+': </font>'+str(point_count[$args['short_name']+'.marker']-point_count[$args['short_name']+'.point'])+'</td></tr>'
+		$args['res.021213']+='<tr><td colspan=2><br><font color=#'+$func('em.col.add',$args['color'],'-44')+'>'+$args['s']+': </font>'+str(point_count[$args['short_name']+'.marker']-point_count[$args['short_name']+'.point'])+'</td></tr>'
 	end
 	$args['res.021213']+='</table>'
 elseif instr($args['np'],'[easy]')!0:

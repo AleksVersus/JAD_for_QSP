@@ -15,12 +15,12 @@ $args[0] = $args[0]	&	!	расходуемое время
 ! и локацию summ.time
 $args['last.time']=$func('get.time.now')
 $args['new.time']=$func('summ.time',$args['last.time'],$args[0])
-	time['sec']		=	func('get.tag.num',$args['new.time'],'secunde')
-	time['minute']	=	func('get.tag.num',$args['new.time'],'minute')
-	time['hour']	=	func('get.tag.num',$args['new.time'],'hour')
-	time['day']		=	func('get.tag.num',$args['new.time'],'day')
-	args['+weekday']	=	func('get.tag.num',$args['new.time'],'week')
-	time['year']	=	func('get.tag.num',$args['new.time'],'year')
+	time['sec']		=	func('em.tag.getNum',$args['new.time'],'secunde')
+	time['minute']	=	func('em.tag.getNum',$args['new.time'],'minute')
+	time['hour']	=	func('em.tag.getNum',$args['new.time'],'hour')
+	time['day']		=	func('em.tag.getNum',$args['new.time'],'day')
+	args['+weekday']	=	func('em.tag.getNum',$args['new.time'],'week')
+	time['year']	=	func('em.tag.getNum',$args['new.time'],'year')
 	if len(str(time['hour']))=1: $time['hour.onClock']='0'+str(time['hour']) else $time['hour.onClock']=str(time['hour'])
 	if len(str(time['minute']))=1: $time['minute.onClock']='0'+str(time['minute']) else $time['minute.onClock']=str(time['minute'])
 ! вычисляем день недели
@@ -90,17 +90,17 @@ if $args[1] = '':
 	args['day']		=	time['day']	&	!	текущее время в днях (365/366)
 	args['year']	=	time['year']	&	!	номер текущего года
 else
-	args['sec']		=	func('get.tag.num',$args[1],'secunde')
-	args['minute']	=	func('get.tag.num',$args[1],'minute')
-	args['hour']	=	func('get.tag.num',$args[1],'hour')
-	args['day']		=	func('get.tag.num',$args[1],'day')
-	args['year']	=	func('get.tag.num',$args[1],'year')
+	args['sec']		=	func('em.tag.getNum',$args[1],'secunde')
+	args['minute']	=	func('em.tag.getNum',$args[1],'minute')
+	args['hour']	=	func('em.tag.getNum',$args[1],'hour')
+	args['day']		=	func('em.tag.getNum',$args[1],'day')
+	args['year']	=	func('em.tag.getNum',$args[1],'year')
 end
-args['sec.new']		=	func('get.tag.num',$args[0],'secunde')
-args['minute.new']	=	func('get.tag.num',$args[0],'minute')
-args['hour.new']	=	func('get.tag.num',$args[0],'hour')
-args['day.new']		=	func('get.tag.num',$args[0],'day')
-args['year.new']	=	func('get.tag.num',$args[0],'year')
+args['sec.new']		=	func('em.tag.getNum',$args[0],'secunde')
+args['minute.new']	=	func('em.tag.getNum',$args[0],'minute')
+args['hour.new']	=	func('em.tag.getNum',$args[0],'hour')
+args['day.new']		=	func('em.tag.getNum',$args[0],'day')
+args['year.new']	=	func('em.tag.getNum',$args[0],'year')
 ! {результатом являются три слова: 
 'first' - больше первое значение
 'second' - больше второе значение
@@ -141,18 +141,18 @@ $args[8] = $args[8]
 ! дополнительный тег, позволяющий вычислить значение до указанного разряда, передаётся в нулевом аргументе
 ! <sec> - секунды <min> - минуты <hour> - часы <day> - дни
 args['i']=1
-args['res.year']=func('get.tag.num',$args[0],'year')
-args['res.day']=func('get.tag.num',$args[0],'day')
-args['res.hour']=func('get.tag.num',$args[0],'hour')
-args['res.minute']=func('get.tag.num',$args[0],'minute')
-args['res.secunde']=func('get.tag.num',$args[0],'secunde')
+args['res.year']=func('em.tag.getNum',$args[0],'year')
+args['res.day']=func('em.tag.getNum',$args[0],'day')
+args['res.hour']=func('em.tag.getNum',$args[0],'hour')
+args['res.minute']=func('em.tag.getNum',$args[0],'minute')
+args['res.secunde']=func('em.tag.getNum',$args[0],'secunde')
 :for_add_time
 if args['i']<9:
-	args['add.year']+=func('get.tag.num',$args[args['i']],'year')
-	args['add.day']+=func('get.tag.num',$args[args['i']],'day')
-	args['add.hour']+=func('get.tag.num',$args[args['i']],'hour')
-	args['add.minute']+=func('get.tag.num',$args[args['i']],'minute')
-	args['add.secunde']+=func('get.tag.num',$args[args['i']],'secunde')
+	args['add.year']+=func('em.tag.getNum',$args[args['i']],'year')
+	args['add.day']+=func('em.tag.getNum',$args[args['i']],'day')
+	args['add.hour']+=func('em.tag.getNum',$args[args['i']],'hour')
+	args['add.minute']+=func('em.tag.getNum',$args[args['i']],'minute')
+	args['add.secunde']+=func('em.tag.getNum',$args[args['i']],'secunde')
 	args['i']+=1
 	jump 'for_add_time'
 end
@@ -235,11 +235,11 @@ if args[2] = '':
 else
 	args['time.year']=args[1]
 end
-args['day']=func('get.tag.num',$args[0],'day')
-args['year']=func('get.tag.num',$args[0],'year')
-args['hour']=func('get.tag.num',$args[0],'hour')
-args['minute']=func('get.tag.num',$args[0],'minute')
-args['secunde']=func('get.tag.num',$args[0],'secunde')
+args['day']=func('em.tag.getNum',$args[0],'day')
+args['year']=func('em.tag.getNum',$args[0],'year')
+args['hour']=func('em.tag.getNum',$args[0],'hour')
+args['minute']=func('em.tag.getNum',$args[0],'minute')
+args['secunde']=func('em.tag.getNum',$args[0],'secunde')
 ! вычисляем количество дней 
 args['i']=args['time.year']
 :for_you

@@ -1,20 +1,48 @@
-# #array.prnt#
-$args[0] = $args[0]
-$args[1] = $UCASE($args[1])
-if $args[2]='': $args[2]='
-'
-if args[3]<0: args[3]=0
-if args[4]<args[3]: args[4]=0
-:for
-if args[3]<arrsize($args[0]):
-	if instr($args[1],'[ONLY RESULT]')=0: $args['array.prnt'] += $args[0]+"[<<args[3]>>]="
-	if instr($args[1],'[TRIM]')<>0: $args['trim.open']='TRIM(' & $args['trim.close']=')'
-	$args['array.prnt'] += $dyneval("$result = <<$args['trim.open']>><<$args[0]>>[args[0]]<<$args['trim.close']>>",args[3])+$args[2]
-	args[3]+=1
-	if args[3]<=args[4] or args[4]=0: jump 'for'
+QSP-Game возвращает содержимое массива
+Аргументы см. ниже
+
+# em.arr.print
+local em_arr_print_copy_array_	& !@ объявляем локальный массив для хранения выводимых значений
+copyarr 'em_arr_print_copy_array_', $args[0]	& !@ копируем значения в локальный массив
+!@ инициализируем локальные переменные
+local $type_, $quotes_, $only_result_, $array_print_, $inline_
+local $array_name_, $commands_, $delimiter_, start_cell_, end_cell_ = $args[0], $args[1], $args[2], args[3], args[4]
+$commands_ = $lcase($commands_)	& !@ переводим команды в нижний регистр
+if $delimiter_ = '': $delimiter_ = '
+'	& !@ если $delimiter_ не указано, в качестве разделителя использует символ переноса строки
+if $delimiter_ = '/se': $delimiter_ = ''	& !@ если указан ключ,разделитель не используется
+if start_cell_ < 0: start_cell_ = 0	& !@ защита от дурака
+if end_cell_ < start_cell_: end_cell_ = 0	& !@ защита от дурака
+!@ если название массива начинается с $, мы имеем дело с текстовым массивом
+if instr($array_name_, '$') = 1: $type_ = 'str' else $type_ = 'int'
+!@ если не выводим только результаты, содержимое оборачивается в кавычки
+if instr($commands_, '[only result]') = 0:
+	$quotes_ = "'"
+	$only_result_ = ''
+else
+	$quotes_ = ""
+	$only_result_ = 'yep'
 end
-if instr($args[1],'[NOT LAST]')<>0: 
-	$args['array.prnt']=$mid($args['array.prnt'],1,len($args['array.prnt'])-len($args[2]))
+loop local i, j, size_ = start_cell_, end_cell_, arrsize('em_arr_print_copy_array_') while (i<size_ and (i<=j or j=0)) step i+=1:
+	!@ если не указано, что нужно вывести только значения массивов, к выводимым значениям добавляется название массива и номер ячейки
+	if $only_result_ = '': $array_print_ += $array_name_ + "[<<i>>]="
+	if $type_ = 'str':
+		!@ если пытаемся получить строковые значения, это может быть строка или кортеж
+		if instr($em_arr_print_copy_array_[i], '') = 0:
+			$inline_ = $replace($em_arr_print_copy_array_[i], $quotes_, "''")
+			if instr($commands_, '[trim]') <> 0: $inline_ = $trim($inline_)
+			$array_print_ += $quotes_ + $inline_ + $quotes_ + $delimiter_
+		else
+			$array_print_ += "(" + $replace($em_arr_print_copy_array_[i], '', ',') + ')' + $delimiter_
+		end
+	elseif $type_ = 'int':
+		!@ если пытаемся получить число, просто вписываем его
+		$array_print_ += $str(em_arr_print_copy_array_[i]) + $delimiter_
+	end
 end
-$result=$args['array.prnt']
---- #array.prnt# ---------------------------------
+!@ если последний разделитель следует исключить, вырезаем
+if instr($commands_, '[not last]') <> 0: 
+	$array_print_ = $mid($array_print_, 1, len($array_print_) - len($delimiter_))
+end
+$result = $array_print_	& !@ возвращаем результат
+--- em.arr.print ---------------------------------

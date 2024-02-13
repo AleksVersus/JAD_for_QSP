@@ -6,6 +6,6 @@ if time['month']=1 or time['month']=12 or time['month']=2: args['i']=3
 if time['month']=3 or time['month']=4 or time['month']=5: args['i']=4
 if time['month']=6 or time['month']=7 or time['month']=8: args['i']=1
 if time['month']=9 or time['month']=10 or time['month']=11: args['i']=2
-$args['gwiP']=$func('get.word.inPos',$args[0],args['i'])
+$args['gwiP']=$func('em.str.getWord',$args[0],args['i'])
 $result=$args['gwiP']
 --- int.time.years ---------------------------------

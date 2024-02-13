@@ -14,7 +14,7 @@ if instr($args[1],'take.obj:')!0 or instr($args[1],'put.obj:')!0:
 	if instr($args[1],'take.obj:')!0:	$args['OID']=$func('em.tag.getCont',$args[1],'take.obj')
 	if instr($args[1],'put.obj:')!0:	$args['OID']=$func('em.tag.getCont',$args[1],'put.obj')
 	$args['obj']=$func('get.obj.id',$args['OID'])
-	$args['color']=$func('get.tag.num',$args['obj'],'color')
+	$args['color']=$func('em.tag.getNum',$args['obj'],'color')
 	$args['name']=$func('em.tag.getCont',$args['obj'],'name')
 end
 $args['add.body']+='<body> '

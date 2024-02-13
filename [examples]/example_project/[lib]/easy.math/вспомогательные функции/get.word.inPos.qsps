@@ -1,16 +1,20 @@
-# get.word.inPos
-if $args[2] = '': $args[2]='|'
-$args[0] = $args[0]+$args[2]
-args[1] = args[1]
-local $cs_ = ''
-loop while len($args[0])>0 and args[1]>0 step args[1]-=1:
-	if instr($args[0],$args[2])>0:
-		$cs_ = $mid($args[0],1,instr($args[0],$args[2]))
-		$args[0] = $mid($args[0],instr($args[0],$args[2])+1)
-	else
-		$cs_ = $args[0]
-		$args[0] = ''
+QSP-Game Функция из строки вида aaa|bbb|ccc|...|yyy|zzz получает подстроку, стоящую в указанной позиции. Подстроки помещаются между разделителями. По умолчанию разделителем является вертикальная черта.
+$args[0] - строка
+args[1] - позиция, из которой нужно получить подстроку.
+$args[2] - разделитель. По умолчанию в качестве разделителя используется вертикальная черта.
+
+# em.str.getWord
+local $cut_string
+if $args[2] = '': $args[2]='|'	& !@ по умолчанию разделителем выступает вертикальная черта
+$args[0] = $args[0]+$args[2]	& !@ для упрощения вычислений добавляем разделитель к финалу
+loop local delimiter while len($args[0])>0 and args[1]>0 step args[1]-=1:
+	!@ вычисления продолжаются пока не разобрана вся строка, либо пока счётчик не будет исчерпан
+	delimiter=instr($args[0],$args[2])
+	if delimiter>0:
+		!@ если разделитель в строке найден
+		$cut_string = $mid($args[0],1,delimiter+len($args[2])-1)	& !@ вырезаем до разделителя
+		$args[0] = $mid($args[0],delimiter+len($args[2]))	& !@ строкой становится хвост после разделителя
 	end
 end
-$result=$replace($cs_, $args[2])
---- get.word.inPos ---------------------------------
+$result=$replace($cut_string,$args[2])
+--- em.str.getWord ---------------------------------

@@ -94,7 +94,7 @@ elseif $light_array[$func('get.loc.id')]!'темно':
 		! Если дверь можно взломать
 			killvar '$key_iag'
 			! Поиск наиболее подeходящей отмычки!
-			$key_iag[arrsize('$key_iag')]='get.key.inBreake',func('get.tag.num',$args['link'],'breake')
+			$key_iag[arrsize('$key_iag')]='get.key.inBreake',func('em.tag.getNum',$args['link'],'breake')
 			if arrsize('$key_iag')>0: $menu_iag[arrsize("$menu_iag")]='Попытаться вскрыть замок:use.key.inDoor'
 		end
 		

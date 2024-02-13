@@ -12,12 +12,12 @@ end
 ! получаем айдишник предмета и его вид
 args['pit']=arrpos('$id_array',$args[0])
 $args['obj']=$object_array[args['pit']]
-args['menzlot']=func('get.tag.num',$args['obj'],'menzlot')+1
+args['menzlot']=func('em.tag.getNum',$args['obj'],'menzlot')+1
 if args['menzlot']=8: args['menzlot']=1
 $args['func']=$func('base.new.obj','[:радужный_меч:]',"get.obj [menzlot:<<args['menzlot']>>]")
 $object_array[args['pit']]=$replace($object_array[args['pit']],$args['obj'],$args['func'])
-$args['lc']=$func('get.tag.num',$args['obj'],'color')
-$args['nc']=$func('get.tag.num',$args['func'],'color')
+$args['lc']=$func('em.tag.getNum',$args['obj'],'color')
+$args['nc']=$func('em.tag.getNum',$args['func'],'color')
 $args['ln']=$func('em.tag.getCont',$args['obj'],'name')
 $args['nn']=$func('em.tag.getCont',$args['func'],'name')
 $print['take.obj']+='<font color=#'+$args['lc']+'><b>'+$func('get.word.padez',$args['ln'])+'</b></font> <font color=#9933cc><b>превратился в</b></font> <font color=#'+$args['nc']+'><b>'+$func('get.word.padez',$args['nn'])+'</b></font>.'

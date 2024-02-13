@@ -4,19 +4,19 @@
 ! $args[0] - строка вида SHORT_WORD|Первый вариант|Второй вариант|...|Последний вариант
 $args[0] = $args[0]
 ! получаем короткое слово - часть идентификатора ссылки
-$args['short_word']=TRIM($func('get.word.inPos',$args[0],1))
+$args['short_word']=TRIM($func('em.str.getWord',$args[0],1))
 ! получаем объект по ай-ди
 $args['link']=$func('get.obj.id','link.'+$args['short_word'])
 if $strfind($args['link'],'<goto:[\s\S]+:goto>')!'':
 ! если гиперссылка является объектом-переходом:
 	! получаем текст по-умолчанию. Этот текст будет выводиться во всех случаях, когда не найден иной текст
-	$args['name']=TRIM($func('get.word.inPos',$args[0],2))
+	$args['name']=TRIM($func('em.str.getWord',$args[0],2))
 	$result='<a class="plain" href="exec:gs '+"'int.act.goto','"+'link.'+$args['short_word']+"'"+'"><font color=#009988>'+$args['name']+'</font></a>'
 	exit
 elseif $strfind($args['link'],'<obj:[\s\S]+:obj>')!'':
 	$args['outObj']=$replace($args['link'],$strfind($args['link'],'<obj:[\s\S]+:obj>'))
-	$args['name']=TRIM($func('get.word.inPos',$args[0],3))
-	$args['other']=TRIM($func('get.word.inPos',$args[0],2))
+	$args['name']=TRIM($func('em.str.getWord',$args[0],3))
+	$args['other']=TRIM($func('em.str.getWord',$args[0],2))
 	args['pos']	= arrpos('$id_array','link.'+$args['short_word'])
 	if $func('sim.time',$respawn_array[args['pos']])!'first':
 	! если время респавна меньше или равно текущему.
@@ -25,7 +25,7 @@ elseif $strfind($args['link'],'<obj:[\s\S]+:obj>')!'':
 	! что 0 - это нулевой спавн, то есть, когда игрок первый раз натыкается на ссылку)
 	! второй вариант: ссылка спавнится постоянно
 	! в charge_array[] производится отсчёт, сколько раз заспавнена ссылка
-		args['repeat']=func('get.tag.num',$args['outObj'],'repeat')	&	!	получаем, сколько раз должна спавниться ссылка
+		args['repeat']=func('em.tag.getNum',$args['outObj'],'repeat')	&	!	получаем, сколько раз должна спавниться ссылка
 		if (instr($args['link'],'[respawn:')=0 and no charge_array[args['pos']]>args['repeat']) or (instr($args['link'],'[respawn:')!0):
 			charge_array[args['pos']]+=1	&	!	сколько раз спавнилась ссылка
 			kolvo_array[args['pos']]=0	&	!	играет роль метки. 0 - предметы в ссылке полностью респавнятся

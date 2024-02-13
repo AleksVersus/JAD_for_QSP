@@ -42,7 +42,7 @@ elseif $strfind($args['obj'],'\[count\]|\[number\]')!'':
 				$args['pay']=$func('prv.obj.pay',$args[0],args['поднять_штук'],'purchase')
 				if $args['pay']='true': $infop['pay']='true' else jump 'print'
 			end
-			args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	вес одного предмета
+			args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	вес одного предмета
 			$args['bag_in']=$func('get.bag',$args[0])
 			! Перемещаем предмет в полученную позицию
 			$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['поднять_штук'])

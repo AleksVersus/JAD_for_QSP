@@ -1,8 +1,10 @@
+QSP-Game Удаление элементов массивов по текстовому индексу
+Технически можно обойтись без этой локации,
+но она выручает, когда в массиве надо удалить сразу
+несколько ячеек по индексам.
 # kill.var.olegus
 if instr($args[0],'$')<>1: $args[0]='$'+$args[0]
-loop local i, $rnd_ = 1, '' while $args[i] <> '' step i += 1:
-	$rnd_=$func('#rndstr#',32)
-	dynamic "<<$args[0]>>['<<$args[i]>>']=$args[0]",$rnd_
-	killvar $args[0],arrpos($args[0],$rnd_)
+loop local i = 1 while $args[i] <> '' step i += 1:
+	killvar $args[0], $args[1]
 end
 --- kill.var.olegus ---------------------------------

@@ -142,7 +142,7 @@ elseif $curloc='[chest]' and $strfind($args['LID'],'(\[т:[\d]+\]_[\s\S]+|тор
 	! респавн торговца
 		if $func('sim.time',$respawn_array[args['$']])!'first':
 		! если подошло время респавна
-			args['$bank']=func('get.tag.num',$object_array[args['$']],'bank')	&	!	вычисляем каков банк торговца
+			args['$bank']=func('em.tag.getNum',$object_array[args['$']],'bank')	&	!	вычисляем каков банк торговца
 			if args['$bank']=0: args['$bank']=1000
 			$args['$respawn']=$func('em.tag.getCont',$object_array[args['$']],'respawn')	&	!	получаем время респавна
 			if $args['$respawn']='': $args['$respawn']='[day:7]'
@@ -151,9 +151,9 @@ elseif $curloc='[chest]' and $strfind($args['LID'],'(\[т:[\d]+\]_[\s\S]+|тор
 				charge_array[args['$']]=args['$bank']
 			else
 			! если денег в банке больше, чем должно быть, вычитаем якобы растраченную часть. Для этого:
-				args['$respawn.time']=$func('get.tag.num',$func('conv.time',$args['$respawn'],'minute'),'minute')	&	!	вычисляем период респавнинга в минутах
-				args['$time.now']=$func('get.tag.num',$func('conv.time',$func('get.time.now'),'minute'),'minute')	&	!	вычисляем текущее время в минутах
-				args['$respawn.last']=$func('get.tag.num',$func('conv.time',$respawn_array[args['$']],'minute'),'minute')	&	!	вычисляем время последнего респавна
+				args['$respawn.time']=$func('em.tag.getNum',$func('conv.time',$args['$respawn'],'minute'),'minute')	&	!	вычисляем период респавнинга в минутах
+				args['$time.now']=$func('em.tag.getNum',$func('conv.time',$func('get.time.now'),'minute'),'minute')	&	!	вычисляем текущее время в минутах
+				args['$respawn.last']=$func('em.tag.getNum',$func('conv.time',$respawn_array[args['$']],'minute'),'minute')	&	!	вычисляем время последнего респавна
 				charge_array[args['$']]-=(args['$time.now']-args['$respawn.last'])*(charge_array[args['$']]-args['$bank'])/args['$respawn.time']
 			end
 			$respawn_array[args['$']]=$func('summ.time',$func('get.time.now'),$args['$respawn'])

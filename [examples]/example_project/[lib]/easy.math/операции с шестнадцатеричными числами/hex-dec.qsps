@@ -1,19 +1,19 @@
-# #hex-dec#
+QSP-Game Функция, конвертирующая шестнадцатеричное число в десятеричное
+$args[0] — шестнадцатеричное число
+result - десятеричное число
+
+# em.hex.inDec
+$args[0]=$lcase($args[0])	& !@ переводим в нижний регистр все символы hex-числа (строка)
+local $last_symbol
 result=0
-$args[0] = lcase ($args[0])
-args['i']=0
-:next
-if args['i']<len($args[0]):
-	args['t'] = instr('0123456789abcdef',mid($args[0],len($args[0])-args['i'],1)) - 1
-	args['j'] = args['i']
-	:multiple
-	if args['j'] > 0:
-		args['t'] = args['t'] * 16
-		args['j'] -= 1
-		if args['j'] > 0: jump 'multiple'
+loop local i,t,lenght=0,0,len($args[0]) while i<lenght step i+=1:
+	!@ пока счётчик меньше длины строки
+	$last_symbol=$mid($args[0],len($args[0])-i,1) & !@ вырезаем из строки указанную hex-цифру
+	t=instr('0123456789abcdef',$last_symbol)-1 & !@ определяем значение цифры по таблице сопоставления
+	loop local j=i while j>0 step j-=1:
+		!@ умножаем на 16 столько раз, каков номер разряда у текущей цифры
+		t*=16
 	end
-	args['i'] += 1
-	result += args['t']
-	if args['i']<len($args[0]): jump 'next'
+	result+=t	& !@ прибавляем к результату полученное число
 end
---- #hex-dec# ---------------------------------
+--- em.hex.inDec ---------------------------------

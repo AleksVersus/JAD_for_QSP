@@ -28,7 +28,7 @@ $args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое и
 		$args['target_list']=$mid(TRIM($args['target_list']),2)+'| '
 		args['tl']=1
 		:bag_w_target
-		$args['boob']=TRIM($func('get.word.inPos',$args['target_list'],args['tl']))
+		$args['boob']=TRIM($func('em.str.getWord',$args['target_list'],args['tl']))
 		! $args['print']+=$args['boob']+' <<args["tl"]>><br>'
 		if $args['boob']!'':
 			args['arr']=arrcomp('$object_array','[\s\S]*'+$args[1]+'[\s\S]*\[:'+$args['boob']+'\][\s\S]*|[\s\S]*\[:'+$args['boob']+'\][\s\S]*'+$args[1]+'[\s\S]*')

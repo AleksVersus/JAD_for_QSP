@@ -63,7 +63,7 @@ jump $args['jump']
 	! --------------------------------------------------------------- штучные ---------------------------------------------------------------------------
 	:радужный_меч
 	if $args['short_word']='радужный_меч':
-		if inStr($args[1],'[menzlot:')=0: args['menzlot']=rand(1,7) else args['menzlot']=func('get.tag.num',$args[1],'menzlot')
+		if inStr($args[1],'[menzlot:')=0: args['menzlot']=rand(1,7) else args['menzlot']=func('em.tag.getNum',$args[1],'menzlot')
 		if $args[1]='' or instr($args[1],'get.obj')!0:
 			$args['new_obj'] += '[:радужный_меч:] [number] [np:[оружие] [одноручное] [меч]:np] [stoim:90921600] [weight:740] [uron_absorb: u1:luck:u1 p1:1000 :uron_absorb] [menu:m1:Изменить цвет:menu.rainbowsword.color.change:m1:menu] [uron: u1:дробящий:u1 u2:режущий:u2 p1:500 p2:2500 '
 			if args['menzlot']=1: $args['new_obj']+= ' u3:огненный_mgc:u3 p3:5000 :uron] [name:Красный меч|Красного меча|Красному мечу|Красный меч|Красным мечом|Красном мече:name] [color:880000] [menzlot:1]' & !огненный_mgc +50
@@ -1350,14 +1350,14 @@ if $args[1] = '' or instr($args[1],'get.obj')!0:
 		$args['np'] = $func('em.tag.getCont',$args['new_obj'],'np')	&	!	получаем набор признаков
 		$args['res.021213']=$args['new_obj']	&	!	запоминаем тело предмета
 		! если дальность удара по функции получается и не присутствует в запомненом теле, добавляем дальность удара
-		if func('get.obj.DU',$args['np'])!0 and func('get.tag.num',$args['res.021213'],'DU')=0: $args['new_obj']+=' [DU:'+str(func('get.obj.DU',$args['res.021213']))+']'
+		if func('get.obj.DU',$args['np'])!0 and func('em.tag.getNum',$args['res.021213'],'DU')=0: $args['new_obj']+=' [DU:'+str(func('get.obj.DU',$args['res.021213']))+']'
 		! если позиции для предмета есть, добавляем.
 		if $func('get.obj.pos',$args['np'],$args['res.021213'])!'': $args['new_obj'] += ' [pos: '+$func('get.obj.pos',$args['np'],$args['res.021213'])+' :pos]'
 		! Слияние свойств. Приоритет у $args[0]
 		$args['res.obj.021213']=$func('remastering.obj',$args[0],$args['new_obj'])
 		if instr($args['res.obj.021213'],'[oneself]')!0: $args['OIDstart']=$UCASE($args['short_word']) else $args['OIDstart']=$args['short_word']
 		if instr($args['res.obj.021213'],'[maxchrg:')!0 and args[4] = 0:
-			args[4] = func('get.tag.num',$args['res.obj.021213'],'charge')
+			args[4] = func('em.tag.getNum',$args['res.obj.021213'],'charge')
 		elseif args[4] ! 0 and  instr($args['res.obj.021213'],'[maxchrg:')!0:
 			args[4] = args[4]
 		else

@@ -5,7 +5,7 @@ args[1]	= args[1]	&	!	количество, которое покупаем ил
 $args[2]= $args[2]	&	!	sale - продажа purchase - покупка
 
 $args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['stoim.nominal']=$func('get.tag.num',$args['obj'],'stoim')	&	!	получаем номинальную стоимость предмета
+args['stoim.nominal']=$func('em.tag.getNum',$args['obj'],'stoim')	&	!	получаем номинальную стоимость предмета
 args['tid']=arrpos('$id_array',$func('get.loc.id'))	&	!	получаем позицию торговца в базе
 $args['prv.obj.pay']='false'
 args['did']=-1

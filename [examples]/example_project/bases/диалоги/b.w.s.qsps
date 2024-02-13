@@ -26,7 +26,7 @@ if $args[0] = 'u': $args['res.bws'] = "<br><hr>*	Звёздочкой отмеч
 if $args[0]='dch':
 	$args['arm']=$object_array[arrpos('$id_array',$args[1])]
 	$args['arm.name']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],'name'),'В')
-	$args['color']=$func('get.tag.num',$args['arm'],'color')
+	$args['color']=$func('em.tag.getNum',$args['arm'],'color')
 	if instr($object_array[arrpos('$id_array',$args[3])],'<inventory>')!0:
 		$args['bag']='инвентарь'
 	elseif  instr($object_array[arrpos('$id_array',$args[3])],'<bag>')!0:
@@ -51,7 +51,7 @@ end
 if $args[0]='dont_put.altar':
 	$args['obj']=$func('get.obj.id',$args[1])
 	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args['obj'],'name'),'В')
-	$args['color']=$func('get.tag.num',$args['obj'],'color')
+	$args['color']=$func('em.tag.getNum',$args['obj'],'color')
 	$args['res.bws']="<b><font color=#884444>Нельзя сбросить. Разряженный предмет уже на алтаре: <font color=#"+$args['color']+'>'+$args['name']+"</font>.</font></b>"
 	jump 'end_exit'
 end
@@ -59,21 +59,21 @@ end
 if $args[0]='put.altar':
 	$args['obj']=$func('get.obj.id',$args[1])
 	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args['obj'],'name'),'В')
-	$args['color']=$func('get.tag.num',$args['obj'],'color')
+	$args['color']=$func('em.tag.getNum',$args['obj'],'color')
 	$args['res.bws']=$func('int.din.text',"<b><font color=#880055>Ты установи(л//ла) <font color=#"+$args['color']+'>'+$args['name']+"</font> на алтарь.</font></b>")
 	jump 'end_exit'
 end
 :take.nocount
 if $args[0]='take.nocount':
 	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('get.tag.num',$args[1],'color')
+	$args['color']=$func('em.tag.getNum',$args[1],'color')
 	$args['res.bws']=$func('int.din.text',"<b><font color=#005588>Ты подня(л//ла) <font color=#"+$args['color']+'>'+$args['name']+"</font> ("+str(args[2])+" "+$func('get.word.end',args[2],'штука|штуки|штук')+").</font></b>")
 	jump 'end_exit'
 end
 :take.oneself
 if instr($args[0],'take.oneself')<>0:
 	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('get.tag.num',$args[1],'color')
+	$args['color']=$func('em.tag.getNum',$args[1],'color')
 	if instr($args[0],'[buy]')<>0:
 		$args['###']='приобр(ёл/ела)'
 	elseif instr($args[0],'[take]')<>0:
@@ -85,8 +85,8 @@ end
 :take.count
 if instr($args[0],'take.count')<>0:
 	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('get.tag.num',$args[1],'color')
-	args['колво']=func('get.tag.num',$args[1],'колво')
+	$args['color']=$func('em.tag.getNum',$args[1],'color')
+	args['колво']=func('em.tag.getNum',$args[1],'колво')
 	if instr($args[0],'[buy]')<>0:
 		$args['###']='приобр(ёл/ела)'
 	elseif instr($args[0],'[take]')<>0:
@@ -98,8 +98,8 @@ end
 :take.number
 if instr($args[0],'take.number')<>0:
 	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
-	$args['color']=$func('get.tag.num',$args[1],'color')
-	args['колво']=func('get.tag.num',$args[1],'колво')
+	$args['color']=$func('em.tag.getNum',$args[1],'color')
+	args['колво']=func('em.tag.getNum',$args[1],'колво')
 	if instr($args[0],'[buy]')<>0:
 		$args['###']='приобр(ёл/ела)'
 	elseif instr($args[0],'[take]')<>0:
@@ -138,7 +138,7 @@ if $args[0]='altar.charge':
 		$args['res.bws']="<b><font color=#88aabb>Премет полностью заряжен.</font></b>"
 	elseif $args[1]='part':
 		$args['obj']=$func('get.obj.id',$args[2])
-		args['p']=func('get.tag.num',$args['obj'],'maxchrg')
+		args['p']=func('em.tag.getNum',$args['obj'],'maxchrg')
 		$args['max_charge']=$func('em.indiv',args['p'],100,10)
 		$args['charge']=$func('em.indiv',charge_array[arrpos('$id_array',$args[2])],100,10)
 		$args['res.bws']="<b><font color=#88aabb>Премет заряжен не полностью <<$args['charge']>>/<<$args['max_charge']>>.</font></b>"

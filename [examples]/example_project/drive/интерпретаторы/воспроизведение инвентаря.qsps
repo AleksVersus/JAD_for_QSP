@@ -59,7 +59,7 @@ else
 	if instr($object_array[args['pos']],'[lock.obj]')!0:
 		$args['color']='888888'	&	!	цвет залоченых предметов
 	else
-		$args['color'] = $func('get.tag.num',$object_array[args['pos']],'color')
+		$args['color'] = $func('em.tag.getNum',$object_array[args['pos']],'color')
 		if $args['color']='': $args['color']='449900'	&	!	цвет предметов по умолчанию
 	end
 	if instr($object_array[args['pos']],'<obj>')!0 and kolvo_array[args['pos']]!0: $args['kolvo']=' ('+str(kolvo_array[args['pos']])+')'

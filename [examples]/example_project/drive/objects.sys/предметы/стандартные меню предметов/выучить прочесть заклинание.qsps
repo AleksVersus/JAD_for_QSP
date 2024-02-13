@@ -30,7 +30,7 @@ end
 $args['menergy.spell'] = $func('em.tag.getCont',$args['spell.obj'],'menergy')
 $args['magic.menergy.spell']=$func('magic.menergy.spell',$args[1],$args['menergy.spell'],'prove')
 if $args['magic.menergy.spell']='false':
-	args['mana']=func('get.tag.num',$args['spell.obj'],'mana')
+	args['mana']=func('em.tag.getNum',$args['spell.obj'],'mana')
 	if args['mana']>property['hero.mana.all'] or instr($args['spell.obj'],'[mana:')=0:
 		$args['magic.menergy.spell']='false'
 		$args['spell']='!spell.cant.read! not energy'

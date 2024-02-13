@@ -3,7 +3,7 @@
 if $args[0]='': $args[0]=$OOS['oid']
 args['pos']=arrpos('$id_array',$args[0]) 	&	!	получаем позицию предмета в базе
 $args['obj']=$func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	получаем вес предмета
+args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	получаем вес предмета
 args['kolvo']=kolvo_array[args['pos']]	&	! запоминаем текущее количество
 if instr($args['obj'],'[number]')!0:
 	args['штучек']=1
@@ -21,7 +21,7 @@ elseif $args['use']='dont take':
 	$print['use.obj.actObj']=$func('b.w.s','full.pos',$args['pos_list'])
 else
 ! предмет взят, но не полностью, значит возвращён остаток
-	args['w']=args['weight']*(args['kolvo']-func('get.tag.num',$args['use'],'колво'))
+	args['w']=args['weight']*(args['kolvo']-func('em.tag.getNum',$args['use'],'колво'))
 end
 property['hero.power.all']-=args['w']
 $print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))

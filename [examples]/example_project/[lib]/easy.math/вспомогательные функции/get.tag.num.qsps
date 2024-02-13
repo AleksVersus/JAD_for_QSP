@@ -1,38 +1,42 @@
-# get.tag.num
-$args[0] = $args[0]
-$args[1] = $args[1]
-if $mid($args[1],len($args[1])-1)='\h': $args[1] = $replace($args[1],'\h') & $args['hex']='hex'
-if $strfind($args[0],'(\[|<|\{|\()'+$args[1]+':'+'([0-9A-Fa-f\-]*?)'+'(\]|>|\}|\))')!'':
-	$args['result.num'] = $strfind($args[0],'(\[|<|\{|\()'+$args[1]+':'+'([0-9A-Fa-f\-]*?)'+'(\]|>|\}|\))',2)
+# em.tag.getNum
+local it_hex, $res_num = 0, ''	& !@ инициализация локальных переменных
+!@ если указан ключ /h - в результат можно выводить только шестнадцатеричное число
+if $mid($args[1],len($args[1])-1)='/h': $args[1]=$replace($args[1],'/h') & it_hex=1
+if $strfind($args[0],'\['+$args[1]+':'+'([^][]*?)'+'\]')<>'':
+	!@ [tag:any symbols]
+	$res_num = $strfind($args[0],'\['+$args[1]+':'+'([^][]+?)'+'\]',1)
 	jump 'results'
-elseif $strfind($args[0],'\['+$args[1]+':'+'([^][]*?)'+'\]')!'':
-	$args['result.num'] = $strfind($args[0],'\['+$args[1]+':'+'([^][]+?)'+'\]',1)
+elseif $strfind($args[0],'<'+$args[1]+':'+'([^><]*?)'+'>')<>'':
+	!@ <tag:any symbols>
+	$res_num = $strfind($args[0],'<'+$args[1]+':'+'([^><]+?)'+'>',1)
 	jump 'results'
-elseif $strfind($args[0],'<'+$args[1]+':'+'([^><]*?)'+'>')!'':
-	$args['result.num'] = $strfind($args[0],'<'+$args[1]+':'+'([^><]+?)'+'>',1)
+elseif $strfind($args[0],'\{'+$args[1]+':'+'([^}{]*?)'+'\}')<>'':
+	!@ {tag:any symbols}
+	$res_num = $strfind($args[0],'\{'+$args[1]+':'+'([^}{]+?)'+'\}',1)
 	jump 'results'
-elseif $strfind($args[0],'\{'+$args[1]+':'+'([^}{]*?)'+'\}')!'':
-	$args['result.num'] = $strfind($args[0],'\{'+$args[1]+':'+'([^}{]+?)'+'\}',1)
+elseif $strfind($args[0],'\('+$args[1]+':'+'([^)(]*?)'+'\)')<>'':
+	!@ (tag:any symbols)
+	$res_num = $strfind($args[0],'\('+$args[1]+':'+'([^)(]+?)'+'\)',1)
 	jump 'results'
-elseif $strfind($args[0],'\('+$args[1]+':'+'([^)(]*?)'+'\)')!'':
-	$args['result.num'] = $strfind($args[0],'\('+$args[1]+':'+'([^)(]+?)'+'\)',1)
+elseif $strfind($args[0],$args[1]+'=("|'+"')([\s\S]*?)\1")<>'':
+	!@ tag="any symbols"
+	!@ tag='any symbols'
+	$res_num = $strfind($args[0],$args[1]+'=("|'+"')([\s\S]*?)\1",2)
 	jump 'results'
-elseif $strfind($args[0],$args[1]+'=("|'+"')([\s\S]*?)\1")!'':
-	$args['result.num'] = $strfind($args[0],$args[1]+'=("|'+"')([\s\S]*?)\1",2)
-	jump 'results'
-elseif $strfind($args[0],$args[1]+'(:|=#)[\S]+')!'':
-	$args['result.num'] = $strfind($args[0],$args[1]+'(:|=#)([\S]+)',2)
+elseif $strfind($args[0],$args[1]+'(:|=#)[\S]+')<>'':
+	!@ tag:non_space_symbols
+	!@ tag=#non_space_symbols
+	$res_num = $strfind($args[0],$args[1]+'(:|=#)([\S]+)',2)
 	:results
-	if $args['hex']='hex' and $strfind($args['result.num'],'^([0-9A-Fa-f\-]+)([\S]*)$')='':
+	if it_hex and $strfind($res_num,'^([0-9A-Fa-f\-]+)([\S]*)$')='':
+		!@ если число не шестнадцатеричное, но был установлен ключ, ничего не возвращаем
+		killvar '$result'
 		exit
-	elseif $args['hex']='hex':
-		$args['result.num'] = $strfind($args['result.num'],'^([0-9A-Fa-f\-]+)([\S]*)$',1)
+	elseif it_hex:
+		!@ если ключ был установлен и число шестнадцатеричное, получаем это число
+		$res_num = $strfind($res_num,'^([0-9A-Fa-f\-]+)([\S]*)$',1)
 	end
-	if isnum($args['result.num']) = -1:
-		args['result.num'] = val($args['result.num'])
-	else
-		$args['result.num'] = $args['result.num']
-	end
+	!@ результат возвращаем только в текстовом виде
+	$result=$res_num
 end
-$result = $args['result.num']
---- get.tag.num ---------------------------------
+--- em.tag.getNum ---------------------------------
