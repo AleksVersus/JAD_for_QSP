@@ -4,13 +4,13 @@
 ! если нет - возвращает "full"
 $args[0] = $args[0]	&	!	id объекта "предмет"
 $args['obj']=$func('get.obj.id',$args[0])	&	!	тело объекта "предмет"
-$args['pos_list']=$func('get.tag.cont',$args['obj'],'pos')	&	!	список позиций
-if $func('get.tag.cont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
-if $func('get.tag.cont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
-if $func('get.tag.cont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
+$args['pos_list']=$func('em.tag.getCont',$args['obj'],'pos')	&	!	список позиций
+if $func('em.tag.getCont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
+if $func('em.tag.getCont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
+if $func('em.tag.getCont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
 args['i']=1
 :newpos
-$args['position']=$func('get.tag.cont',$args['pos_list'],$args['l']+str(args['i']))
+$args['position']=$func('em.tag.getCont',$args['pos_list'],$args['l']+str(args['i']))
 ! получаем позицию из тега
 if $args['position']!'':
 	args['count']+=1

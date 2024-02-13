@@ -50,7 +50,7 @@ $func('get.tag.num','color="ff8899"[rem:zzzfff]','color')+'-1'
 $func('get.tag.num',"color=#uuuhhh",'color\h')+'-2'
 $func('get.tag.num','color:66ff88
   8','color')+'-3'
-$func('get.tag.cont','[name:Дублоны:name] <nocount><!-- [color:888800] <num:</nocount><nocount>-!><!--дублон|дублона|дублонов:num></noco-->unt>','<!--!>')+'-4'
+$func('em.tag.getCont','[name:Дублоны:name] <nocount><!-- [color:888800] <num:</nocount><nocount>-!><!--дублон|дублона|дублонов:num></noco-->unt>','<!--!>')+'-4'
 $func('get.tag.num','<font color=#88ff88>Какой-то текст</font>','color')
 func('get.tag.num','[stoim:561] [color:008800]','stoim')
 --- !--tester--! ---------------------------------

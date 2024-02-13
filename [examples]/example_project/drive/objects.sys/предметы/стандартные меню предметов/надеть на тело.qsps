@@ -17,7 +17,7 @@ if $args['use']='taken':
 elseif $args['use']='dont take':
 	args['w']=0
 	$print['menu.in.body']=$func('base.word.screen','003')
-	$args['pos_list']=$func('get.tag.cont',$args['obj'],'pos')
+	$args['pos_list']=$func('em.tag.getCont',$args['obj'],'pos')
 	$print['use.obj.actObj']=$func('b.w.s','full.pos',$args['pos_list'])
 else
 ! предмет взят, но не полностью, значит возвращён остаток

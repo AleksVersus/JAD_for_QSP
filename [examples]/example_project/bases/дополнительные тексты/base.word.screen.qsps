@@ -2,10 +2,10 @@
 $args[0] = $args[0]
 $args[1] = $args[1]
 $args['color']=$func('get.tag.num',$args[1],'color')
-$args['name']=$func('get.tag.cont',$args[1],'name')
+$args['name']=$func('em.tag.getCont',$args[1],'name')
 args['колво']=func('get.tag.num',$args[1],'колво')
-$args['num']=$func('get.tag.cont',$args[1],'num')
-$args['txt']=$func('get.tag.cont',$args[1],'txt')
+$args['num']=$func('em.tag.getCont',$args[1],'num')
+$args['txt']=$func('em.tag.getCont',$args[1],'txt')
 if $args[0]!'': jump $args[0] else jump 'wtf'
 :001
 if $args[0]='001':

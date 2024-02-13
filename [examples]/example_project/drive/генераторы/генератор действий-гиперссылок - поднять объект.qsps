@@ -13,7 +13,7 @@ if $light_array[$args[1]]='темно': jump 'fin'	&	!	в темноте нел�
 ! ------------------ различные свойства предметов ----------
 	$args['obj']=$func('get.obj.id',$args[0])
 	args['pos']=arrpos('$id_array',$args[0])
-	$args['name']=$func('get.tag.cont',$args['obj'],'name')
+	$args['name']=$func('em.tag.getCont',$args['obj'],'name')
 	$args['name']=$func('get.word.padez',$args['name'],'В')
 	args['weight']=func('get.tag.num',$args['obj'],'weight')
 	if kolvo_array[args['pos']]!0 and instr($args[3],'[count]')<>0: $args['kolvo']=' ('+str(kolvo_array[args['pos']])+' штук'+$func('get.word.end',kolvo_array[args['pos']],'а|и|')
@@ -57,7 +57,7 @@ elseif $args[2]='acts':
 	if instr($args['obj'],'[lock-obj]')=0:
 $args['res.021213']="
 act '<font color=#880088><<$args['actions.text']>><oid:<<$args[0]>>:oid></font>':
-	$args['oid']=$func('get.tag.cont',$selact,'oid')
+	$args['oid']=$func('em.tag.getCont',$selact,'oid')
 	gs 'take.obj',$args['oid']
 	GS 'true.goto.curloc',$curloc
 end

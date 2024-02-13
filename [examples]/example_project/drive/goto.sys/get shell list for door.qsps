@@ -10,7 +10,7 @@ args['pos']=-1
 args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*\[снаряд метательный\][\s\S]*\[:дверь\][\s\S]*|[\s\S]*\[:дверь\][\s\S]*\[снаряд метательный\][\s\S]*')	&	! находим в массиве позицию элемента содержащего сочетание тегов
 if no args['pos']<0:
 	if $func('prv.str.inObj',$position_array[args['pos']],'<bag>|<inventory>')='false':	jump 'for'	&	! если предмет не лежит ни в сумке ни в инвентаре, ищем новый
-	if $args[0]='' or ($args[0]!'' and $func('get.similar.Uron',$args[0],$func('get.tag.cont',$object_array[args['pos']],'uron'))!''):
+	if $args[0]='' or ($args[0]!'' and $func('get.similar.Uron',$args[0],$func('em.tag.getCont',$object_array[args['pos']],'uron'))!''):
 	! если урон можно нанести любыми видами атак или конкретным и он присутствует в списке оружия
 		$shell_iag[arrsize('$shell_iag')]=$id_array[args['pos']]
 	end

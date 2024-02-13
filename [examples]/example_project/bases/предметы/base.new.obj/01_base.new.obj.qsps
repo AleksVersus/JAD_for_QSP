@@ -1347,7 +1347,7 @@ jump $args['jump']
 if $args[1] = '' or instr($args[1],'get.obj')!0:
 	if $args['new_obj']!'<obj> ' and $args['new_obj']!'':
 		! добавляем исходные позициии типа
-		$args['np'] = $func('get.tag.cont',$args['new_obj'],'np')	&	!	получаем набор признаков
+		$args['np'] = $func('em.tag.getCont',$args['new_obj'],'np')	&	!	получаем набор признаков
 		$args['res.021213']=$args['new_obj']	&	!	запоминаем тело предмета
 		! если дальность удара по функции получается и не присутствует в запомненом теле, добавляем дальность удара
 		if func('get.obj.DU',$args['np'])!0 and func('get.tag.num',$args['res.021213'],'DU')=0: $args['new_obj']+=' [DU:'+str(func('get.obj.DU',$args['res.021213']))+']'

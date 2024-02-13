@@ -31,9 +31,9 @@ exit
 :одеть
 	args['i'] = 1
 	:for
-	if $func('get.tag.cont',$args[1],"p<<args['i']>>")!'':
-		$args["pos<<args['i']>>"]=$func('get.tag.cont',$args[1],"p<<args['i']>>")
-		$args["pos<<args['i']+1>>"]=$func('get.tag.cont',$args[1],"p<<args['i']+1>>")
+	if $func('em.tag.getCont',$args[1],"p<<args['i']>>")!'':
+		$args["pos<<args['i']>>"]=$func('em.tag.getCont',$args[1],"p<<args['i']>>")
+		$args["pos<<args['i']+1>>"]=$func('em.tag.getCont',$args[1],"p<<args['i']+1>>")
 		if $object_hero[$args["pos<<args['i']>>"]]!'':
 			if $args["pos<<args['i']>>"]='правая рука' and $args["pos<<args['i']+1>>"]='левая рука':
 				$result += " - <font color=#004488>О! Вот это я называю оружием!</font>"
@@ -88,11 +88,11 @@ if args['rand']=3: $result += '<font color=#880055> - Зачем я только
 exit
 :снять
 	args['i'] = 1
-	$args["поз"]=$func('get.tag.cont',$args[1],"pos")
+	$args["поз"]=$func('em.tag.getCont',$args[1],"pos")
 	:for1
-	if $func('get.tag.cont',$args["поз"],"p<<args['i']>>")!'':
-		$args["pos<<args['i']>>"]=$func('get.tag.cont',$args["поз"],"p<<args['i']>>")
-		$args["pos<<args['i']+1>>"]=$func('get.tag.cont',$args["поз"],"p<<args['i']+1>>")
+	if $func('em.tag.getCont',$args["поз"],"p<<args['i']>>")!'':
+		$args["pos<<args['i']>>"]=$func('em.tag.getCont',$args["поз"],"p<<args['i']>>")
+		$args["pos<<args['i']+1>>"]=$func('em.tag.getCont',$args["поз"],"p<<args['i']+1>>")
 			if $args["pos<<args['i']>>"]='правая рука' and $args["pos<<args['i']+1>>"]='левая рука':
 				$result += " - <font color=#008844>Тэкс. Это мне больше не понадобится.</font>"
 				exit

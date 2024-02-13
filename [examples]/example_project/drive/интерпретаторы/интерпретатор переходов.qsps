@@ -11,13 +11,13 @@ killvar '$menu_iag'
 $int_act_goto[0]=$args[0]
 
 $args['link']=$func('get.obj.id',$args[0])	&	!	! Получаем исходное тело ссылки, перехода
-$args['goto']=$func('get.tag.cont',$args['link'],'goto')	&	!	! Исходник перехода
-$args['loc_ID']=$func('get.tag.cont',$args['goto'],'loc')	&	!	! ID целевой локации
+$args['goto']=$func('em.tag.getCont',$args['link'],'goto')	&	!	! Исходник перехода
+$args['loc_ID']=$func('em.tag.getCont',$args['goto'],'loc')	&	!	! ID целевой локации
 ! проверяются
-$args['manage.word']=$func('get.tag.cont',$args['goto'],'spec')	&	! управляющее слово
+$args['manage.word']=$func('em.tag.getCont',$args['goto'],'spec')	&	! управляющее слово
 if $args['loc_ID']='[chest]':
 ! если целевая локация сундук
-	$args['DID']=$func('get.tag.cont',$args['goto'],'did')
+	$args['DID']=$func('em.tag.getCont',$args['goto'],'did')
 	$args['head']=$func('get.obj.id',$args['DID'])
 else
 	$args['head']=$func('get.obj.id',$args['loc_ID'])	&	!	получаем заголовок локации места
@@ -50,7 +50,7 @@ if instr($args['link'],'<g-s>')!0:
 		*pl $func('base.word.screen','018','[color:008888]')
 		pl $func('base.word.screen','018','[color:0088cc]')
 		gs 'waiting.string','',500,10000,'0088cc','cccc00',2	&	!	выводим визуальную задержку
-		nl "<font color=#0088cc>Осуществлено перемещение в </font>"+$func('get.tag.cont',$args['head'],'name')
+		nl "<font color=#0088cc>Осуществлено перемещение в </font>"+$func('em.tag.getCont',$args['head'],'name')
 		$time['goto'] = ''	&	!	нужно ли затрачивать время на телепортацию?????
 		GAME_VALUE['goto'] = 1
 		GOTO $args['loc_ID'],$args['DID'],$args['manage.word'],$func('get.loc.id')	&	!	осуществляем переход
@@ -62,18 +62,18 @@ end
 ! Проверяем закрыта ли дверь
 if $strfind($args['goto'],'\[key:[\s\S]+:key\]')='':
 ! если для перехода не требуется ключ, осуществляется непосредственный переход
-	$time['goto'] = $func('get.tag.cont',$args['goto'],'time')
+	$time['goto'] = $func('em.tag.getCont',$args['goto'],'time')
 	GAME_VALUE['goto'] = 1
 	GOTO $args['loc_ID'],$args['DID'],$args['manage.word'],$func('get.loc.id')
 elseif $light_array[$func('get.loc.id')]!'темно':
 ! если ключ нужен. Производится поиск среди ключей на совпадение короткого имени
-	$args['key'] = $func('get.tag.cont',$args['goto'],'key')
+	$args['key'] = $func('em.tag.getCont',$args['goto'],'key')
 	$args['open'] = $func('get.key.inOpen',$args['key'])
 	if $args['open']!'':
 	! Если есть подходящий ключ
-		pl 'Дверь открыта ключом "'+$func('get.tag.cont',$func('get.obj.id',$args['open']),'name')+'".'
+		pl 'Дверь открыта ключом "'+$func('em.tag.getCont',$func('get.obj.id',$args['open']),'name')+'".'
 		if instr($args['link'],'[locked]')=0: gs 'rpl.str.inObj.id',$args[0],$strfind($args['goto'],'key:[\s\S]+:key')
-		$time['goto'] = $func('get.tag.cont',$args['goto'],'time')
+		$time['goto'] = $func('em.tag.getCont',$args['goto'],'time')
 		GAME_VALUE['goto'] = 1
 		GOTO $args['loc_ID'],$args['DID'],$args['manage.word'],$func('get.loc.id')
 	else
@@ -84,9 +84,9 @@ elseif $light_array[$func('get.loc.id')]!'темно':
 			if instr($args['link'],'[uron:')!0:
 				killvar '$shell_iag'
 				killvar '$arm_iag'
-				gs 'get.shell.inOpen',$func('get.tag.cont',$args['link'],'uron')
+				gs 'get.shell.inOpen',$func('em.tag.getCont',$args['link'],'uron')
 				if arrsize('$shell_iag')>0: $menu_iag[arrsize("$menu_iag")]='Использовать снаряды:use.shell.inDoor'
-				gs 'get.arm.inOpen',$func('get.tag.cont',$args['link'],'uron')
+				gs 'get.arm.inOpen',$func('em.tag.getCont',$args['link'],'uron')
 				if arrsize('$arm_iag')>0: $menu_iag[arrsize("$menu_iag")]='Использовать оружие:use.arm.inDoor'
 			end
 		end

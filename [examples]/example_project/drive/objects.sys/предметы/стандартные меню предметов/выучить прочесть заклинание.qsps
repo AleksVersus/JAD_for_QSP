@@ -17,7 +17,7 @@ if $args[1] = '[chest]':
 else
 	args['loc.pit']=arrpos('$id_array',$args[1])
 	$args['loc.obj']=$object_array[args['loc.pit']]
-	$args['place']=$func('get.tag.cont',$args['loc.obj'],'place')
+	$args['place']=$func('em.tag.getCont',$args['loc.obj'],'place')
 	if instr($args['place'],'[молчание]')!0:
 		$args['spell']='!spell.cant.read! silent'
 		$print['menu.in.body'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.location')
@@ -27,7 +27,7 @@ end
 ! здесь должна находиться проверка на возможность читать заклинание во время боя
 !	пошаговый бой предполагает одно чтение заклинания за ход
 
-$args['menergy.spell'] = $func('get.tag.cont',$args['spell.obj'],'menergy')
+$args['menergy.spell'] = $func('em.tag.getCont',$args['spell.obj'],'menergy')
 $args['magic.menergy.spell']=$func('magic.menergy.spell',$args[1],$args['menergy.spell'],'prove')
 if $args['magic.menergy.spell']='false':
 	args['mana']=func('get.tag.num',$args['spell.obj'],'mana')

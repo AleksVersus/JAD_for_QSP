@@ -3,8 +3,8 @@
 $args[0] = $args[0]	&	!	ай-ди локации
 $args[1] = $args[1]	&	!	управляющее слово
 $args['obj']=$func('get.obj.id',$args[0])
-$args['name'] = $func('get.tag.cont',$args['obj'],'name')
-$args['spec'] = $func('get.tag.cont',$args['obj'],'spec')
+$args['name'] = $func('em.tag.getCont',$args['obj'],'name')
+$args['spec'] = $func('em.tag.getCont',$args['obj'],'spec')
 if $args['name'] = '':
 	if $args[1]='location': $args['name'] = $func('b.d.t','place.neverland')
 	if $args[1]='chest':
@@ -26,7 +26,7 @@ if $args['name'] = '':
 	end
 	if $args[1]='seller': $args['name'] = $func('b.d.t','place.seller')
 end
-$args['type'] = $func('get.tag.cont',$args['obj'],'type')
+$args['type'] = $func('em.tag.getCont',$args['obj'],'type')
 if $func('get.tag.num',$args['obj'],'color')!'':
 	$args['color'] = $func('get.tag.num',$args['obj'],'color')
 	if $args[1]='seller': $cvar['seller.color']=$args['color']

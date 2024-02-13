@@ -6,7 +6,7 @@ if $args[2] = '': $args[2]='ff0000' 	&	!	цвет, по умолчанию яр�
 args['i']=1
 $args['res.021213']='<table align=left valign=top border=0 cellpadding=0 cellspacing=0 width=60%>'
 :for_uron
-$args['uron_i']=$func('get.tag.cont',$args[1],'u'+$str(args['i']))
+$args['uron_i']=$func('em.tag.getCont',$args[1],'u'+$str(args['i']))
 args['power_i']=func('get.tag.num',$args[1],'p'+$str(args['i']))
 if $args['uron_i']!'':
 	if args['power_i']!0: $args['res.021213']+='<tr><td align=left><b>'+$func('base.word.uron',$args[0],$args['uron_i'])+':'+'</b></td><td align=left width=10%><font color=#'+$args[2]+'>'+$func('em.indiv',args['power_i'],100,10)+'</font></td></tr>'
@@ -33,7 +33,7 @@ dynamic "
 i_gsu=1
 :while1
 if $strfind($args[<<u_gsu>>],'u[\d]+:[\s\S]+:u[\d]+')!'':
-	$gsu<<u_gsu>>[i_gsu]=$func('get.tag.cont',$args[<<u_gsu>>],'u'+str(i_gsu))
+	$gsu<<u_gsu>>[i_gsu]=$func('em.tag.getCont',$args[<<u_gsu>>],'u'+str(i_gsu))
 	$args[<<u_gsu>>]=$replace($args[<<u_gsu>>],'u'+str(i_gsu)+':'+$gsu<<u_gsu>>[i_gsu]+':u'+str(i_gsu))
 	i_gsu+=1
 	jump 'while1'
@@ -72,7 +72,7 @@ args['i']=1
 :надежда_твой_компас_земной
 if $strfind($args[0],"u[\d]+:[\s\S]+:u[\d]+")!'':
 ! проверяем наличие в строке интересующей конструкции
-	$args['uron.1']=$func('get.tag.cont',$args[0],"u<<args['i']>>")
+	$args['uron.1']=$func('em.tag.getCont',$args[0],"u<<args['i']>>")
 	! вычисляем характеристику по текущему номеру
 	if $args['uron.1']!"":
 	! если характеристика присутствует в строке

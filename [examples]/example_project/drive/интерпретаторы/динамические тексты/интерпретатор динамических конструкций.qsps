@@ -30,7 +30,7 @@ if $strfind($args[0],'<DIN(\d+):[\s\S]*?:\1DIN>')!'':
 elseif $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')!'':
 	$args['new.text'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]')	&	!	получаем тегированную строку
 	$args['tag'] = $strfind($args[0],'\[(\D+)\][\s\S]*?\[\/\1\]',1)	&	!	получаем тег
-	$args['string']=$func('get.tag.cont',$args['new.text'],$args['tag'])	&	!	извлекаем строку из тегов
+	$args['string']=$func('em.tag.getCont',$args['new.text'],$args['tag'])	&	!	извлекаем строку из тегов
 	! внимание. Далее следует рекурсивное обращение к текущей локации!!!
 	!*pl 'Уровень рекурсии: <<args[1]>>'
 	!*pl 'Строка без тегов: '+$args['string']

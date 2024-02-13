@@ -17,7 +17,7 @@ else
 	args['back.number']=1
 end
 args['pos']=arrpos('$id_array',$GAME_VALUE['inventory.floor'])	&	!	вычисляем позицию объекта, дочерние объекты которого мы воспроизводим.
-$args['name']=$func('get.tag.cont',$object_array[args['pos']],'name') 
+$args['name']=$func('em.tag.getCont',$object_array[args['pos']],'name') 
 if $position_array[args['pos']]!"":
 	! Если объект, который мы выводим, принадлежит другому объекту, первый предмет в инвентаре должен возвращать нас на предыдущий уровень.
 	addobj '<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td align=left><img src="'+$func('base.img','back')+'"></td><td align=left><font color=#ff0000><b>&nbsp;&nbsp;&nbsp;'+$args['name']+'</b><font><oid:back:oid><back:'+$position_array[args['pos']]+':back></td></tr></table>','',args['back.number']
@@ -47,14 +47,14 @@ if instr($object_array[args['pit']],'<body>')!0:
 		$args['oid']=$id_array[args['pos']]
 		jump 'incl'
 	else
-		$args['empty'] = $func('get.tag.cont',$object_array[args['pit']],'empty')
+		$args['empty'] = $func('em.tag.getCont',$object_array[args['pit']],'empty')
 		addobj $args['empty']+'<oid:'+$args[0]+':oid>' & exit
 	end
 else
 	args['pos']=args['pit']
 	$args['oid']=$args[0]
 	:incl
-	$args['name'] = $func('get.tag.cont',$object_array[args['pos']],'name')
+	$args['name'] = $func('em.tag.getCont',$object_array[args['pos']],'name')
 	$args['name'] = $func('get.word.padez',$args['name'],'И')
 	if instr($object_array[args['pos']],'[lock.obj]')!0:
 		$args['color']='888888'	&	!	цвет залоченых предметов

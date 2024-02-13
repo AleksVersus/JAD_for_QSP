@@ -6,10 +6,10 @@ $args[2] = $args[2]	&	!	управление
 $args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
 if $strfind($args['obj'],'\[quest\]')='':
 	args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	вес одного предмета
-	$args['short_name']=$func('get.tag.cont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
+	$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
 	$args['inPut']=$func('get.loc.id')	&	!	получаем айди места, в которое собираемся переместить предмет (id текущей локации)
-	$args['loc.targets']=TRIM($func('get.tag.cont',$object_array[arrpos('$id_array',$args['inPut'])],'target'))
-	$args['obj.targets']=$func('get.tag.cont',$args['obj'],'np')
+	$args['loc.targets']=TRIM($func('em.tag.getCont',$object_array[arrpos('$id_array',$args['inPut'])],'target'))
+	$args['obj.targets']=$func('em.tag.getCont',$args['obj'],'np')
 	$args['target']=$func('prv.onTarget',$args['loc.targets'],$args['obj.targets'],'one')
 	if $args['target'] = 'false' and $args['loc.targets']!'':
 		! невозможно сбросить предмет сюда
@@ -50,7 +50,7 @@ if $strfind($args['obj'],'\[quest\]')='':
 			$args['put.from']='bag'
 		else
 			! предмет выложен из части тела
-			$args['short_body_part']='[:'+$func('get.tag.cont',$object_array[args['bag']])+':]'
+			$args['short_body_part']='[:'+$func('em.tag.getCont',$object_array[args['bag']])+':]'
 			$args['put.from']='body'
 			$print['take.obj']+=$func('base.new.bodypart',$args['short_body_part'],'put.obj:'+$args['last_id']+':put.obj')
 		end

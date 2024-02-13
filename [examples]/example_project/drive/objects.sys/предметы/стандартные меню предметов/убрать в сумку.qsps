@@ -5,7 +5,7 @@ args['pos']=arrpos('$id_array',$args[0]) 	&	!	получаем позицию п
 $args['obj']=$func('get.obj.id',$args[0])	&	!	получаем тело предмета
 args['weight']=func('get.tag.num',$args['obj'],'weight')	&	!	получаем вес предмета
 args['kolvo']=kolvo_array[args['pos']]	&	! запоминаем текущее количество
-$args['short_name']=$func('get.tag.cont',$args['obj'])
+$args['short_name']=$func('em.tag.getCont',$args['obj'])
 $args['bag_in']=$func('get.bag',$args[0])
 ! Необходимо проверить из какого места перемещается предмет, т.е. проверяем класс родительского объекта <body> или <inventory>
 $args['parent']=$func('get.obj.id',$position_array[args['pos']]) 	&	!	получаем тело родительского объекта

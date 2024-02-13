@@ -10,13 +10,13 @@ local $gt_last_, frequenсy_, gt_secs_, pik_, rest_
 local hours_, minutes_, $texts_
 
 $obj_body_ = $object_array[arrpos('$id_array',$args[0])]
-$property_ = @get.tag.cont($obj_body_)
+$property_ = @em.tag.getCont($obj_body_)
 $p_name_ = @b.d.t('property_name', $property_)
 !@ суммируем остаток времени от предыдущего захода и $time['goto']
 $gt_last_ = @summ.time($args[1], $time['ost.'+$args[0]])
 !@ приводим частоту и $time['goto'] к одной единице измерения. Внимание! Это секунды!
 !@ отсчёт времени должен вестись от предыдущего значения. Т.е. от времени, ещё не изменённого интерпретатором календаря
-frequenсy_ = @get.tag.num(@conv.time(@get.tag.cont($obj_body_, 'frqs'), 'secunde', time['last.years']), 'secunde')
+frequenсy_ = @get.tag.num(@conv.time(@em.tag.getCont($obj_body_, 'frqs'), 'secunde', time['last.years']), 'secunde')
 gt_secs_['last'] = @get.tag.num(@conv.time($gt_last_, '', time['last.years']), 'secunde')
 gt_secs_['now'] = @get.tag.num(@conv.time($args[1], '', time['last.years']), 'secunde')
 !@ вычисляем, сколько раз повторился указанный период

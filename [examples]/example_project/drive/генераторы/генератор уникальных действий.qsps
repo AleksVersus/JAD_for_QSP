@@ -6,12 +6,12 @@ $args[2] = $args[2]	&	!	acts href - действия или ссылка
 $args[3] = $args[3]	&	!	дополнительные опции
 args['pit']=arrpos('$id_array',$args[0])
 $args['obj']=$object_array[args['pit']]
-$args['name']=$func('get.tag.cont',$args['obj'],'name')
+$args['name']=$func('em.tag.getCont',$args['obj'],'name')
 if instr($args['obj'],'[lock-obj]')<>0: $args['lock']='lock'
 if $light_array[$args[1]]='темно':
 ! если на локации темно
 	if instr($args['obj'],'[dark-hide]')<>0: jump 'fin'	&	!	скрывать в темноте. Не выводится
-	$args['dark.name']=$func('get.tag.cont',$args['obj'],'dark-name')	&	!	имя в темноте
+	$args['dark.name']=$func('em.tag.getCont',$args['obj'],'dark-name')	&	!	имя в темноте
 	if $args['dark.name']<>'': $args['name']=$args['dark.name']
 	if instr($args['obj'],'[dark-lock]')<>0: $args['lock']='lock'
 end

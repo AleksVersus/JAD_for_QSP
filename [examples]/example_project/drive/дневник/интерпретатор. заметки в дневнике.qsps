@@ -26,10 +26,10 @@ elseif $args['note']='true':
 		$args['table.note']+='<tr bgcolor=#'+$args['bgc']+' valign=middle>'
 		args['pos']=arrpos('$id_array',$array_note[args['i']])
 		$args['obj']=$object_array[args['pos']]
-		$args['содержимое заметки']=$func('get.tag.cont',$args['obj'],'v')
-		$args['название заметки']=$func('get.tag.cont',$args['obj'],'name')
-		$args['примечание к заметке']=$func('get.tag.cont',$args['obj'],'sn')
-		$args['набор признаков']=$func('get.tag.cont',$args['obj'],'np')
+		$args['содержимое заметки']=$func('em.tag.getCont',$args['obj'],'v')
+		$args['название заметки']=$func('em.tag.getCont',$args['obj'],'name')
+		$args['примечание к заметке']=$func('em.tag.getCont',$args['obj'],'sn')
+		$args['набор признаков']=$func('em.tag.getCont',$args['obj'],'np')
 		if args['i']=1: $args['link.add']='<a href="exec:'+"gs 'add.new.note','<<$args[0]>>' & gs 'int.diary','<<$args[0]>>'"+'" title="добавить заметку"><img src="'+$func('base.img','add')+'"></a>' else $args['link.add']=''
 		if instr($args['набор признаков'],'[lock-button]')=0:
 			if args['i']>2: $args['link.up']='<a href="exec:'+"gs 'rtp.obj','"+$array_note[args['i']]+"','"+$array_note[args['i']-1]+"' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','toup')+'"></a>' else  $args['link.up']=''

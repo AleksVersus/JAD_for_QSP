@@ -25,7 +25,7 @@ if $args[0] = 'u': $args['res.bws'] = "<br><hr>*	Звёздочкой отмеч
 :dch
 if $args[0]='dch':
 	$args['arm']=$object_array[arrpos('$id_array',$args[1])]
-	$args['arm.name']=$func('get.word.padez',$func('get.tag.cont',$args['arm'],'name'),'В')
+	$args['arm.name']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],'name'),'В')
 	$args['color']=$func('get.tag.num',$args['arm'],'color')
 	if instr($object_array[arrpos('$id_array',$args[3])],'<inventory>')!0:
 		$args['bag']='инвентарь'
@@ -50,7 +50,7 @@ end
 :dont_put.altar
 if $args[0]='dont_put.altar':
 	$args['obj']=$func('get.obj.id',$args[1])
-	$args['name']=$func('get.word.padez',$func('get.tag.cont',$args['obj'],'name'),'В')
+	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args['obj'],'name'),'В')
 	$args['color']=$func('get.tag.num',$args['obj'],'color')
 	$args['res.bws']="<b><font color=#884444>Нельзя сбросить. Разряженный предмет уже на алтаре: <font color=#"+$args['color']+'>'+$args['name']+"</font>.</font></b>"
 	jump 'end_exit'
@@ -58,21 +58,21 @@ end
 :put.altar
 if $args[0]='put.altar':
 	$args['obj']=$func('get.obj.id',$args[1])
-	$args['name']=$func('get.word.padez',$func('get.tag.cont',$args['obj'],'name'),'В')
+	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args['obj'],'name'),'В')
 	$args['color']=$func('get.tag.num',$args['obj'],'color')
 	$args['res.bws']=$func('int.din.text',"<b><font color=#880055>Ты установи(л//ла) <font color=#"+$args['color']+'>'+$args['name']+"</font> на алтарь.</font></b>")
 	jump 'end_exit'
 end
 :take.nocount
 if $args[0]='take.nocount':
-	$args['name']=$func('get.word.padez',$func('get.tag.cont',$args[1],'name'),'В')
+	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
 	$args['color']=$func('get.tag.num',$args[1],'color')
 	$args['res.bws']=$func('int.din.text',"<b><font color=#005588>Ты подня(л//ла) <font color=#"+$args['color']+'>'+$args['name']+"</font> ("+str(args[2])+" "+$func('get.word.end',args[2],'штука|штуки|штук')+").</font></b>")
 	jump 'end_exit'
 end
 :take.oneself
 if instr($args[0],'take.oneself')<>0:
-	$args['name']=$func('get.word.padez',$func('get.tag.cont',$args[1],'name'),'В')
+	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
 	$args['color']=$func('get.tag.num',$args[1],'color')
 	if instr($args[0],'[buy]')<>0:
 		$args['###']='приобр(ёл/ела)'
@@ -84,7 +84,7 @@ if instr($args[0],'take.oneself')<>0:
 end
 :take.count
 if instr($args[0],'take.count')<>0:
-	$args['name']=$func('get.word.padez',$func('get.tag.cont',$args[1],'name'),'В')
+	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
 	$args['color']=$func('get.tag.num',$args[1],'color')
 	args['колво']=func('get.tag.num',$args[1],'колво')
 	if instr($args[0],'[buy]')<>0:
@@ -97,7 +97,7 @@ if instr($args[0],'take.count')<>0:
 end
 :take.number
 if instr($args[0],'take.number')<>0:
-	$args['name']=$func('get.word.padez',$func('get.tag.cont',$args[1],'name'),'В')
+	$args['name']=$func('get.word.padez',$func('em.tag.getCont',$args[1],'name'),'В')
 	$args['color']=$func('get.tag.num',$args[1],'color')
 	args['колво']=func('get.tag.num',$args[1],'колво')
 	if instr($args[0],'[buy]')<>0:
@@ -117,7 +117,7 @@ if $args[0]='full.pos':
 		if arrsize('$id_temp_bodyparts')>0:
 			$args['obj']=$func('get.obj.id',$id_temp_bodyparts[0])
 			args['pit']=arrpos('$id_array',$id_temp_bodyparts[0])
-			$args['part']=$func('get.tag.cont',$args['obj'])
+			$args['part']=$func('em.tag.getCont',$args['obj'])
 			if instr($args[1],$args['part'])!0:
 				if $include_array[args['pit']]!'':
 					$args['res.bws']+=$func('base.new.bodypart','[:'+$args['part']+':]','full.pos')+'<br>'

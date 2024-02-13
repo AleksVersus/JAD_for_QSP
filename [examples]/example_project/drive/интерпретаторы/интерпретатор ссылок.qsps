@@ -31,7 +31,7 @@ elseif $strfind($args['link'],'<obj:[\s\S]+:obj>')!'':
 			kolvo_array[args['pos']]=0	&	!	играет роль метки. 0 - предметы в ссылке полностью респавнятся
 			if instr($args['link'],'[respawn:')!0:
 				$args['now']=$func('get.time.now')
-				$args['new']=$func('get.tag.cont',$args['outObj'],'respawn')
+				$args['new']=$func('em.tag.getCont',$args['outObj'],'respawn')
 				$respawn_array[args['pos']]=$func('summ.time',$args['now'],$args['new'])
 			end
 		end

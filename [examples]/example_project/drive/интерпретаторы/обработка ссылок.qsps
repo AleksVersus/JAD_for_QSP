@@ -12,16 +12,16 @@ if kolvo_array[args['pos.link']]=0:
 	gosub 'del.obj',$args[0],'not parent'
 	! генерируются новые объекты
 	! внимание: для генерации объектов, не внесённых в базу, используйте короткое слово пустого объекта [:?:]
-	$args['objs.inLink']=$TRIM($func('get.tag.cont',$args['link'],'obj'))	&	!	получаем все объекты, какие есть в ссылке
+	$args['objs.inLink']=$TRIM($func('em.tag.getCont',$args['link'],'obj'))	&	!	получаем все объекты, какие есть в ссылке
 	args['i']=1
 	! начинаем генерацию объектов
 	:Game_Adventure_Master
 	if $strfind($args['objs.inLink'],'\[io[\d]+:[\s\S]*:io[\d]+\]')!'' and args['i']<999:
 	! пока в строке присутствует запись \[io[\d]+:[\s\S]*:io[\d]+\] делаем
-		$args['io']=$func('get.tag.cont',$args['objs.inLink'],"io<<args['i']>>")	&	!	вычленяем тело объекта
-		args['kolvo']=DYNEVAL($func('get.tag.cont',$args['io'],'kolvo'))	&	!	получаем количество
-		args['charge']=DYNEVAL($func('get.tag.cont',$args['io'],'hapj'))	&	!	получаем заряд. Помните: если не указать заряд, он будет равным максимальному значению для предмета или 0
-		$args['dyn']=$func('get.tag.cont',$args['io'],'dynamic')	&	!	получаем динамический код. Подробнее смотри в спецификации
+		$args['io']=$func('em.tag.getCont',$args['objs.inLink'],"io<<args['i']>>")	&	!	вычленяем тело объекта
+		args['kolvo']=DYNEVAL($func('em.tag.getCont',$args['io'],'kolvo'))	&	!	получаем количество
+		args['charge']=DYNEVAL($func('em.tag.getCont',$args['io'],'hapj'))	&	!	получаем заряд. Помните: если не указать заряд, он будет равным максимальному значению для предмета или 0
+		$args['dyn']=$func('em.tag.getCont',$args['io'],'dynamic')	&	!	получаем динамический код. Подробнее смотри в спецификации
 		$args['for base']=$replace($args['io'],$strfind($args['io'],'\[kolvo:[\s\S]*:kolvo\]'))	&	!	удаляем количество из тела
 		$args['for base']=$replace($args['for base'],$strfind($args['io'],'\[hapj:[\s\S]*:hapj\]'))	&	!	удаляем заряд из тела
 		$args['for base']=$replace($args['for base'],$strfind($args['io'],'\[dynamic:[\s\S]*:dynamic\]'))	&	!	удаляем заряд из тела

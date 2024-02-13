@@ -2,7 +2,7 @@
 $args[0] = $OOS['oid']
 args['pit']=arrpos('$id_array',$args[0])
 $args['obj']=$object_array[args['pit']]
-$args['book']=$func('get.tag.cont',$args['obj'])
+$args['book']=$func('em.tag.getCont',$args['obj'])
 if instr($args['obj'],'<spell>')!0 and книга_прочитана[$args['book']]=0:
 	$print['read.book']+='Ты не знаешь, как действует это заклинание.'
 	$args['ras']='!book.cant.read!'

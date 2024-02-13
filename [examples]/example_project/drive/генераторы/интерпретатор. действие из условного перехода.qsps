@@ -6,8 +6,8 @@ $args[2] = $args[2]	&	!	href acts - вид действия
 $args[3] = $args[3]	&	!	дополнительные команды
 ! получаем некоторую инфу о переходе
 $args['obj']=$object_array[arrpos('$id_array',$args[0])]	&	!	тело объекта "переход"
-$args['loc']=$func('get.tag.cont',$args['obj'],'loc')		&	!	направление перехода ай-ди локации, на которую нужно попасть
-$args['name']=$func('get.tag.cont',$args['obj'],'name')		&	!	название перехода
+$args['loc']=$func('em.tag.getCont',$args['obj'],'loc')		&	!	направление перехода ай-ди локации, на которую нужно попасть
+$args['name']=$func('em.tag.getCont',$args['obj'],'name')		&	!	название перехода
 if $light_array[$args[1]]='темно':
 ! если на локации темно, вид переходов несколько меняется
 	$args['name']=$func('b.d.t','dark.goto')	&	!	название во тьме
@@ -25,7 +25,7 @@ if ($light_array[$args[1]]='темно' and $args['loc']<>"[chest]" and $args['k
 	! если формируется действие
 $args['acts']+="
 act '<<$args['name']>><oid:<<$args[0]>>:oid>':
-	$args['oid']=$func('get.tag.cont',$selact,'oid')
+	$args['oid']=$func('em.tag.getCont',$selact,'oid')
 	gs 'int.act.goto',$args['oid']
 end
 "

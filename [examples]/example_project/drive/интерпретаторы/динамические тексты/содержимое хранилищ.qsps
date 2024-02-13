@@ -1,7 +1,7 @@
 # int.chest.name
 ! получает информацию о дочерних предметах сундука и преобразует имя сундука
 $args[0] = $args[0]	&	!	строка вида		Название сундука[did:[с:1]_ай-ди_сундука:did]
-$args['id']=$func('get.tag.cont',$args[0],'did')
+$args['id']=$func('em.tag.getCont',$args[0],'did')
 $args['name']=$replace($args[0],$strfind($args[0],'.did:'+$args['id']+':did.'))
 if здесь_смотрел[$args['id']]<1:
 	$result=$args['name']+$func('b.d.t','chest.dont_know')

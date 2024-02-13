@@ -101,7 +101,7 @@ elseif $curloc='[chest]' and $strfind($args['LID'],'(\[с:[\d]+\]_[\s\S]+|сун
 		$args['head.chest']=$func('get.obj.id',$args['LID'])
 	end
 	! получаем специализацию локации
-	$args['spec.chest']=$func('get.tag.cont',$args['head.chest'],'spec')
+	$args['spec.chest']=$func('em.tag.getCont',$args['head.chest'],'spec')
 	
 	if здесь_смотрел[$args['LID']]<1:
 	! метка о посещении выставляется при первом посещении
@@ -144,7 +144,7 @@ elseif $curloc='[chest]' and $strfind($args['LID'],'(\[т:[\d]+\]_[\s\S]+|тор
 		! если подошло время респавна
 			args['$bank']=func('get.tag.num',$object_array[args['$']],'bank')	&	!	вычисляем каков банк торговца
 			if args['$bank']=0: args['$bank']=1000
-			$args['$respawn']=$func('get.tag.cont',$object_array[args['$']],'respawn')	&	!	получаем время респавна
+			$args['$respawn']=$func('em.tag.getCont',$object_array[args['$']],'respawn')	&	!	получаем время респавна
 			if $args['$respawn']='': $args['$respawn']='[day:7]'
 			if charge_array[args['$']]<=args['$bank']:
 			!	если денег в банке меньше либо равно, чем должно быть, накидываем денег

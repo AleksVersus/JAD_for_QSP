@@ -1,17 +1,27 @@
-# get.tag.cont
-if $args[1]='<!--!>' and $strfind($args[0],'<!--([\s\S]+?)-->')!'':
+QSP-Game Получает содержимое двойного тега из строки.
+$args[0] - текст, содержащий тег.
+$args[1] - корень тега.
+# em.tag.getCont
+if ($args[1]='<!--!>' or $args[1]='<!>') and $strfind($args[0],'<!--([\s\S]+?)-->')<>'':
+	!@ содержимое комментария
 	$result = $strfind($args[0],'<!--([\s\S]+?)-->',1)
-elseif $strfind($args[0],'\['+$args[1]+':([\s\S]+?):'+$args[1]+'\]')!'':
+elseif $strfind($args[0],'\['+$args[1]+':([\s\S]+?):'+$args[1]+'\]')<>'':
+	!@ [tag:any symbols:tag]
 	$result = $strfind($args[0],'\['+$args[1]+':([\s\S]+?):'+$args[1]+'\]',1)
-elseif $strfind($args[0],'\('+$args[1]+':([\s\S]+?):'+$args[1]+'\)')!'':
+elseif $strfind($args[0],'\('+$args[1]+':([\s\S]+?):'+$args[1]+'\)')<>'':
+	!@ (tag:any symbols:tag)
 	$result = $strfind($args[0],'\('+$args[1]+':([\s\S]+?):'+$args[1]+'\)',1)
-elseif $strfind($args[0],'\['+$args[1]+'\]([\s\S]+?)\[\/'+$args[1]+'\]')!'':
+elseif $strfind($args[0],'\['+$args[1]+'\]([\s\S]+?)\[\/'+$args[1]+'\]')<>'':
+	!@ [tag]any symbols[/tag]
 	$result = $strfind($args[0],'\['+$args[1]+'\]([\s\S]+?)\[\/'+$args[1]+'\]?',1)
-elseif $strfind($args[0],'<'+$args[1]+':([\s\S]+?):'+$args[1]+'>')!'':
+elseif $strfind($args[0],'<'+$args[1]+':([\s\S]+?):'+$args[1]+'>')<>'':
+	!@ <tag:any symbols:tag>
 	$result = $strfind($args[0],'<'+$args[1]+':([\s\S]+?):'+$args[1]+'>',1)
-elseif $strfind($args[0],'<'+$args[1]+'>([\s\S]+?)<\/'+$args[1]+'>')!'':
+elseif $strfind($args[0],'<'+$args[1]+'>([\s\S]+?)<\/'+$args[1]+'>')<>'':
+	!@ <tag>any symbols</tag>
 	$result = $strfind($args[0],'<'+$args[1]+'>([\s\S]+?)<\/'+$args[1]+'>',1)
-elseif $strfind($args[0],$args[1]+':([\s\S]+?):'+$args[1])!'':
+elseif $strfind($args[0],$args[1]+':([\s\S]+?):'+$args[1])<>'':
+	!@ tag:any symbols:tag
 	$result = $strfind($args[0],$args[1]+':([\s\S]+?):'+$args[1],1)
 end
---- get.tag.cont ---------------------------------
+--- em.tag.getCont ---------------------------------

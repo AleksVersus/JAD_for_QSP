@@ -19,9 +19,9 @@ if $args['gdo']='true':
 		:stadies
 		if args['stady']<arrsize('$id_stadies'):
 			args['stady.pos']=arrpos('$id_array',$id_stadies[args['stady']])
-			$args['np']=$func('get.tag.cont',$object_array[args['stady.pos']],'np')
+			$args['np']=$func('em.tag.getCont',$object_array[args['stady.pos']],'np')
 			if instr($args['np'],'[hide]')=0:
-				$args['v']=$func('get.tag.cont',$object_array[args['stady.pos']],'v')
+				$args['v']=$func('em.tag.getCont',$object_array[args['stady.pos']],'v')
 				if $args['v']='next': $args['color']=$args['color2']
 				if $args['v']='last': $args['color']=$func('#+col#',$args['color2'],'-44')
 				if $args['v']='eror': $args['color']='aa4400'

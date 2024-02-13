@@ -4,11 +4,11 @@ killvar '$menu_OOS'
 killvar '$tempOOS_id'
 killvar 'OOS'
 killvar '$OOS'
-$OOS['oid']=$func('get.tag.cont',$selobj,'oid')	&	!	получаем ай-ди выделенного объекта. Айди хранится в виде html тега <oid: :oid>
+$OOS['oid']=$func('em.tag.getCont',$selobj,'oid')	&	!	получаем ай-ди выделенного объекта. Айди хранится в виде html тега <oid: :oid>
 OOS['pos']=arrpos('$id_array',$OOS['oid'])	&	!	получаем его позицию в базе
 $OOS['obj']=$object_array[OOS['pos']]	&	!	получаем его тело
-$OOS['np']=$func('get.tag.cont',$OOS['obj'],'np')	&	!	набор признаков
-$OOS['short_word']=$func('get.tag.cont',$OOS['obj'])	&	!	ключевое слово, ай-ди вида
+$OOS['np']=$func('em.tag.getCont',$OOS['obj'],'np')	&	!	набор признаков
+$OOS['short_word']=$func('em.tag.getCont',$OOS['obj'])	&	!	ключевое слово, ай-ди вида
 ! В зависимости от класса, производим операции
 if instr($OOS['obj'],'[nocount]')!0:
 ! неисчислимый предмет, помещённый в панель инвентаря!!!
@@ -23,7 +23,7 @@ elseif instr($OOS['obj'],'<body>')!0:
 ! если объект является "частью тела" в дополнительное окно описания выводятся все имеющиеся "предметы",
 ! которые можно надеть на указанную часть тела.
 	! Вычисляем часть тела:
-	$OOS['pos_list']=$func('get.tag.cont',$OOS['obj'])
+	$OOS['pos_list']=$func('em.tag.getCont',$OOS['obj'])
 	!	1	производим поиск дочерних объектов в инвентаре по классу <bag> и <obj>
 	killvar '$tempOOS_id'
 	gs 'get.daughter.obj.all','INVENTORY','(<bag>|<obj>)+','$tempOOS_id'
@@ -35,7 +35,7 @@ elseif instr($OOS['obj'],'<body>')!0:
 			if $func('prv.pos.inObj',$tempOOS_id[OOS['p']])='empty':
 				OOS['t']=0
 				:mass
-				$array_body_part_pos[OOS['t']]=$func('get.tag.cont',$object_array[arrpos('$id_array',$array_body_part[OOS['t']])])
+				$array_body_part_pos[OOS['t']]=$func('em.tag.getCont',$object_array[arrpos('$id_array',$array_body_part[OOS['t']])])
 				OOS['t']+=1
 				if OOS['t']<arrsize('$array_body_part'):jump 'mass'
 				if arrcomp('$array_body_part_pos','[\s\S]*'+$OOS['pos_list']+'[\s\S]*')!-1: $print['obj_in_pos']+=$func('gen.ahref.actObj',$tempOOS_id[OOS['p']])+'<br>'
@@ -66,7 +66,7 @@ elseif instr($OOS['obj'],'<obj>')!0:
 	end
 	if $strfind($func('get.loc.id'),'(\[с:[\d]+\]_[\S\s]+|сундук;|chest;)')<>'':
 		$args['loc.id.13']=$func('get.obj.id',$cvar['loc_id'+$cvar['chest']])
-		$args['spec.head']=$func('get.tag.cont',$args['loc.id.13'],'spec')
+		$args['spec.head']=$func('em.tag.getCont',$args['loc.id.13'],'spec')
 		if instr($args['spec.head'],'[smithing]')!0 and instr($object_array[arrpos('$id_array',$position_array[OOS['pos']])],'<body>')=0:
 			$menu_OOS[arrsize('$menu_OOS')]=$func('b.d.t','menu.obj.unmount')+':menu.obj.unmount'
 		end
@@ -119,7 +119,7 @@ elseif instr($OOS['obj'],'<money>')!0:
 ! если выделенным объектом является кошелёк
 	:money_print
 	$args['color']=$func('get.tag.num',$OOS['obj'],'color')
-	$args['name']=$func('get.tag.cont',$OOS['obj'],'name')
+	$args['name']=$func('em.tag.getCont',$OOS['obj'],'name')
 	$args['name']=$func('get.word.padez',$args['name'],'И')
 	$print['money']+='<font color=#'+$args['color']+' face="CyrillicOld" size=+1><b>'+$args['name']+':</b></font><br>'
 	$args['gdo.money']=$func('get.daughter.obj',$OOS['oid'],'','$tempOOS_id')
@@ -128,7 +128,7 @@ elseif instr($OOS['obj'],'<money>')!0:
 		:for2
 		if arrsize('$tempOOS_id')>0:
 			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
-			$args['name_obj']=$func('get.tag.cont',$object_array[OOS['pos1']],'name')
+			$args['name_obj']=$func('em.tag.getCont',$object_array[OOS['pos1']],'name')
 			$args['name_obj']=$func('get.word.padez',$args['name_obj'],'И')
 			$print['money']+='<font color=#'+$func('get.tag.num',$object_array[OOS['pos1']],'color')+'><b>'+$args['name_obj']+':</b></font> <font color=#666600><b>'+str(kolvo_array[OOS['pos1']])+'</b></font><br>'
 			killvar '$tempOOS_id',0
@@ -138,7 +138,7 @@ elseif instr($OOS['obj'],'<money>')!0:
 elseif instr($OOS['obj'],'<keys>')!0:
 ! если выделенным объектом является связка ключей
 	$args['color']=$func('get.tag.num',$OOS['obj'],'color')
-	$args['name']=$func('get.tag.cont',$OOS['obj'],'name')
+	$args['name']=$func('em.tag.getCont',$OOS['obj'],'name')
 	$args['name']=$func('get.word.padez',$args['name'],'И')
 	$print['key.table']+='<font color=#'+$args['color']+' face="CyrillicOld" size=+1><b>'+$args['name']+':</b></font><br>'
 	if $func('get.daughter.obj',$OOS['oid'],'<key>','$tempOOS_id')='true':
@@ -146,7 +146,7 @@ elseif instr($OOS['obj'],'<keys>')!0:
 		:new
 		if arrsize('$tempOOS_id')>0:
 			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
-			$OOS['key'] = $func('get.tag.cont',$object_array[OOS['pos1']],'name')
+			$OOS['key'] = $func('em.tag.getCont',$object_array[OOS['pos1']],'name')
 			$OOS['key'] = $func('get.word.padez',$OOS['key'],'И')
 			if $OOS['key']='': $OOS['key'] = $func('b.d.t','table.noname')
 			if $func('get.tag.num',$object_array[OOS['pos1']],'open')!'':	$OOS['open']	=	$func('get.tag.num',$object_array[OOS['pos1']],'open')
@@ -206,7 +206,7 @@ elseif instr($OOS['obj'],'<gate-stone>')!0:
 		:new1
 		if arrsize('$tempOOS_id')>0:
 			OOS['pos1']=arrpos('$id_array',$tempOOS_id[0])
-			$OOS['key'] = $func('get.tag.cont',$object_array[OOS['pos1']],'name')
+			$OOS['key'] = $func('em.tag.getCont',$object_array[OOS['pos1']],'name')
 			if $OOS['key']='': $OOS['key'] = $func('b.d.t','g-s.neverland')
 			if instr($object_array[OOS['pos1']],'[charge:')!0:	$OOS['open']	=	str(charge_array[OOS['pos1']])+'/'+$func('get.tag.num',$object_array[OOS['pos1']],'charge') else $OOS['open']=''
 			if kolvo_array[OOS['pos1']]!0: $OOS['count']	=	str(kolvo_array[OOS['pos1']])
@@ -228,7 +228,7 @@ elseif instr($OOS['obj'],'<spell>')!0:
 	gs 'int.menu.obj',$OOS['obj']
 elseif $OOS['oid']='back':
 ! если выделенным объектом является возвратный объект
-	$GAME_VALUE['inventory.floor'] = $func('get.tag.cont',$selobj,'back')
+	$GAME_VALUE['inventory.floor'] = $func('em.tag.getCont',$selobj,'back')
 end
 ! скрипт, выполняемый при выделении объекта. Можно добить, например, меню, или что ещё
 if $strfind($run_array[OOS['pos']],'!onObjSel!')!'': $args['doc']=$func('run.dynamic.script','!onObjSel!',$OOS['oid'])

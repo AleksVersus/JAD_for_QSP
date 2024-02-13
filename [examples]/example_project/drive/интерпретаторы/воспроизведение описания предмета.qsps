@@ -2,7 +2,7 @@
 ! интерпретатор выводит свойства предмета. ака browzer предметов
 ! 	"используемые функции:
 
-		get.tag.cont
+		em.tag.getCont
 		get.tag.num
 		get.word.end
 		
@@ -10,10 +10,10 @@
 $args[0] = $args[0]
 $args['obj']=$object_array[arrpos('$id_array',$args[0])]
 ! [::] [name::name] [st::st] [stoim:176] [weight:50][color:663300][uron: u1:удар u2:пуля p1:1000 p2:125 :uron]
-$args['marker'] = $func('get.tag.cont',$args['obj'],"")
-$args['name'] = $func('get.tag.cont',$args['obj'],"name")
+$args['marker'] = $func('em.tag.getCont',$args['obj'],"")
+$args['name'] = $func('em.tag.getCont',$args['obj'],"name")
 $args['name'] = $func('get.word.padez',$args['name'],'И')
-$args['np'] = $func('get.tag.cont',$args['obj'],"np")
+$args['np'] = $func('em.tag.getCont',$args['obj'],"np")
 args['stoim']=func('get.tag.num',$args['obj'],"stoim")
 if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'': args['stoim']=func('obj.sale.cost',args['stoim'],$func('get.loc.id'))
 args['weight']=func('get.tag.num',$args['obj'],"weight")
@@ -22,20 +22,20 @@ if $args['stoimost']='0': $args['stoimost']=$func('em.indiv',args['stoim'],100,1
 $args['weight'] = $func('em.indiv',args['weight'],100,10)
 $args['weight.all']=$func('em.indiv',args['weight']*kolvo_array[arrpos('$id_array',$args[0])],100,10)
 $args['color'] = $func('get.tag.num',$args['obj'],"color")
-$args['pos'] = $func('get.tag.cont',$args['obj'],"pos")
+$args['pos'] = $func('em.tag.getCont',$args['obj'],"pos")
 ! название предмета
 $args['res.021213'] = '<font color=#'+$args['color']+' face="CyrillicOld" size=+2><b>'+$args['name']+'</b></font><br>'
 ! краткое описание предмета
-if $func('get.tag.cont',$args['obj'],'text')='': $args['text']=$func('base.new.obj',$args['obj'],'text') else $args['text']=$func('get.tag.cont',$args['obj'],'text')
-$args['res.021213'] = $args['res.021213'] + $args['text']+' '+$func('get.tag.cont',$args['obj'],'end')+'<br><br>'
+if $func('em.tag.getCont',$args['obj'],'text')='': $args['text']=$func('base.new.obj',$args['obj'],'text') else $args['text']=$func('em.tag.getCont',$args['obj'],'text')
+$args['res.021213'] = $args['res.021213'] + $args['text']+' '+$func('em.tag.getCont',$args['obj'],'end')+'<br><br>'
 ! основные и дополнительные свойства предмета
 if instr($args['np'],'[оружие]')!0 or instr($args['np'],'[снаряды]')!0 or instr($args['np'],'[заряд]')!0 or instr($args['np'],'[перчатки]')!0:
-	$args['uron'] = $func('get.tag.cont',$args['obj'],"uron")
+	$args['uron'] = $func('em.tag.getCont',$args['obj'],"uron")
 	if $args['uron']!'':
 		$args['res.021213'] = $args['res.021213'] + '<font color=#000088><b>Возможный урон:</b></font><br>'
 		$args['res.021213'] = $args['res.021213'] + $func('get.uron.list','uron',$args['uron'],$args['color'])
 	end
-	$args['uron_absorb'] = $func('get.tag.cont',$args['obj'],"uron_absorb")
+	$args['uron_absorb'] = $func('em.tag.getCont',$args['obj'],"uron_absorb")
 	if $args['uron_absorb']!'':
 		$args['res.021213'] = $args['res.021213'] + '<font color=#000088><b>Свойства поглощения:</b></font><br>'
 		$args['res.021213'] = $args['res.021213'] + $func('get.uron.list','uron_absorb',$args['uron_absorb'],$args['color'])
@@ -46,22 +46,22 @@ if instr($args['np'],'[оружие]')!0 or instr($args['np'],'[снаряды]'
 	end
 end
 if instr($args['np'],'[доспех]')!0:
-	$args['block'] = $func('get.tag.cont',$args['obj'],"block")
+	$args['block'] = $func('em.tag.getCont',$args['obj'],"block")
 	if $args['block']!'':
 		$args['res.021213'] = $args['res.021213'] + '<font color=#000088><b>Свойства защиты:</b></font><br>'
 		$args['res.021213'] = $args['res.021213'] + $func('get.uron.list','block',$args['block'],$args['color'])
 	end
-	$args['block_absorb'] = $func('get.tag.cont',$args['obj'],"block_absorb")
+	$args['block_absorb'] = $func('em.tag.getCont',$args['obj'],"block_absorb")
 	if $args['block_absorb']!'':
 		$args['res.021213'] = $args['res.021213'] + '<font color=#000088><b>Свойства поглощения:</b></font><br>'
 		$args['res.021213'] = $args['res.021213'] + $func('get.uron.list','block_absorb',$args['block_absorb'],$args['color'])
 	end
-	$args['block_repulse'] = $func('get.tag.cont',$args['obj'],"block_repulse")
+	$args['block_repulse'] = $func('em.tag.getCont',$args['obj'],"block_repulse")
 	if $args['block_repulse']!'':
 		$args['res.021213'] = $args['res.021213'] + '<font color=#000088><b>Отражение урона:</b></font><br>'
 		$args['res.021213'] = $args['res.021213'] + $func('get.uron.list','block_repulse',$args['block_repulse'],$args['color'])
 	end
-	$args['block_recieve'] = $func('get.tag.cont',$args['obj'],"block_recieve")
+	$args['block_recieve'] = $func('em.tag.getCont',$args['obj'],"block_recieve")
 	if $args['block_recieve']!'':
 		$args['res.021213'] = $args['res.021213'] + '<font color=#000088><b>Рикошет:</b></font><br>'
 		$args['res.021213'] = $args['res.021213'] + $func('get.uron.list','block_recieve',$args['block_recieve'],$args['color'])
@@ -77,7 +77,7 @@ if instr($args['np'],'[огнестрельное]')!0:
 		:for_patron
 		if arrsize('$id_temp')>0:
 			$args['patron.obj']=$object_array[arrpos('$id_array',$id_temp[0])]
-			$args['res.021213']+="&nbsp;&nbsp;&bull;&nbsp;&nbsp;<a href='exec:clr & pl $func(""int.obj.property"",""<<$id_temp[0]>>"")'>"+$func('get.word.padez',$func('get.tag.cont',$args['patron.obj'],'name'),'И')+"</a>: <<kolvo_array[arrpos('$id_array',$id_temp[0])]*charge_array[arrpos('$id_array',$id_temp[0])]>>/"+str(func('get.tag.num',$args['patron.obj'],'maxchrg')*kolvo_array[arrpos('$id_array',$id_temp[0])])+'<br>'
+			$args['res.021213']+="&nbsp;&nbsp;&bull;&nbsp;&nbsp;<a href='exec:clr & pl $func(""int.obj.property"",""<<$id_temp[0]>>"")'>"+$func('get.word.padez',$func('em.tag.getCont',$args['patron.obj'],'name'),'И')+"</a>: <<kolvo_array[arrpos('$id_array',$id_temp[0])]*charge_array[arrpos('$id_array',$id_temp[0])]>>/"+str(func('get.tag.num',$args['patron.obj'],'maxchrg')*kolvo_array[arrpos('$id_array',$id_temp[0])])+'<br>'
 			killvar '$id_temp',0
 			jump 'for_patron'
 		end

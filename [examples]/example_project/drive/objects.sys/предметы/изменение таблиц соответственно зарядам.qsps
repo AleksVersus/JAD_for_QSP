@@ -18,7 +18,7 @@ args[5] = args[5]	&	!	количество патронташей
 	end
 	! заряжаем в несуществующем месте
 	if $args[4]!'':
-		$args['patron']=$func('get.tag.cont',$object_array[arrpos('$id_array',$args[4])])
+		$args['patron']=$func('em.tag.getCont',$object_array[arrpos('$id_array',$args[4])])
 		$args['charge.new']=$func('replace.obj',$args[4],$args['id.newObj'],$args['patron'],args[5])
 	end
 	args['new.pit']=arrpos('$id_array',$args['id.newObj'])

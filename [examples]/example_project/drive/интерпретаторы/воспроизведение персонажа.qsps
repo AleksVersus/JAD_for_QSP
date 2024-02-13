@@ -6,12 +6,12 @@ args['pos']=arrpos('$id_array',$args[0])	&	!	позиция в базе
 $args['property']=$object_array[args['pos']]	&	!	тело объекта
 $args['parent']=$object_array[arrpos('$id_array',$position_array[args['pos']])]	&	!	родительский объект
 if instr($args['parent'],'<hero>')!0: $args['prefiks']='hero.'	&	!	префикс свойства
-$args['id'] = $func('get.tag.cont',$args['property'])	&	!	короткое имя свойства
+$args['id'] = $func('em.tag.getCont',$args['property'])	&	!	короткое имя свойства
 $args['color'] =  $func('get.tag.num',$args['property'],'color')	&	!	цвет выводимой надписи
 args['size'] =  func('get.tag.num',$args['property'],'size')	&	!	размер выводимой надписи
-$args['name'] = $func('get.tag.cont',$args['property'],'name')	&	!	имя выводимой надписи
-$args['uron']=$func('get.tag.cont',$args['property'],'block')
-if $args['uron']='': $args['uron']=$func('get.tag.cont',$args['property'],'uron')
+$args['name'] = $func('em.tag.getCont',$args['property'],'name')	&	!	имя выводимой надписи
+$args['uron']=$func('em.tag.getCont',$args['property'],'block')
+if $args['uron']='': $args['uron']=$func('em.tag.getCont',$args['property'],'uron')
 if args['size']=0: args['size']=1
 if $strfind($args['property'],'\[txt\]')!'':
 ! если свойство текстового свойства, пардон за каламбур.
@@ -39,7 +39,7 @@ elseif $strfind($args['property'],'\[hide\]')='':
 		if property[$args['prefiks']+$args['id']+'.pula']!0: $args['res.int.hero.property']+='<font color=#'+$args['color']+' size='+str(args['size'])+'><b>'+$args['name']+'(текущих снарядов для огнестрельного оружия):</b></font> '+$func('em.indiv',property[$args['prefiks']+$args['id']+'.pula'],100,10)
 	end
 	if $strfind($args['property'],'\[up[\S]*\]')!'':
-		$args['frqs']=$func('get.tag.cont',$args['property'],'frqs')
+		$args['frqs']=$func('em.tag.getCont',$args['property'],'frqs')
 		args['year']=func('get.tag.num',$args['frqs'],'year')
 		args['day']=func('get.tag.num',$args['frqs'],'day')
 		args['hour']=func('get.tag.num',$args['frqs'],'hour')
@@ -57,12 +57,12 @@ elseif $strfind($args['property'],'\[hide\]')='':
 	$args['res.021213']+=$args['res.int.hero.property']
 	if $args['uron']!'':
 		if args['i']=1: $args['res.021213']=''
-		$args['trefiks']=$func('get.tag.cont',$args['uron'],'u'+str(args['i']))
+		$args['trefiks']=$func('em.tag.getCont',$args['uron'],'u'+str(args['i']))
 		$args['uron']=TRIM($replace($args['uron'],'u'+str(args['i'])+':'+$args['trefiks']+':'+'u'+str(args['i'])))
 		if instr($args['property'],'[block:')!0: $args['key_word']='block'
 		if instr($args['property'],'[uron:')!0: $args['key_word']='uron'
-		$args['name']=$func('get.tag.cont',$args['property'],'name')+' ['+$func('base.word.uron',$args['key_word'],$args['trefiks'])+']'
-		$args['id']= $func('get.tag.cont',$args['property'])+'.'+$args['trefiks']
+		$args['name']=$func('em.tag.getCont',$args['property'],'name')+' ['+$func('base.word.uron',$args['key_word'],$args['trefiks'])+']'
+		$args['id']= $func('em.tag.getCont',$args['property'])+'.'+$args['trefiks']
 		args['i']+=1
 		jump 'maxxx'
 	end

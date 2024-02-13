@@ -10,8 +10,8 @@ killvar '$reserve_acts'
 args['i']=0
 :create_acts
 if arrsize('$avar')>args['i']:
-	$args['obj']=$func('get.tag.cont',$avar[args['i']],'act')
-	$args['name']=$func('get.tag.cont',$args['obj'],'name')
+	$args['obj']=$func('em.tag.getCont',$avar[args['i']],'act')
+	$args['name']=$func('em.tag.getCont',$args['obj'],'name')
 	if $args[0]='acts':
 		$args['acts']="
 		act '"+$args['name']+"':

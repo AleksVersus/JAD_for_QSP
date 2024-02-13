@@ -3,7 +3,7 @@
 $args[0] = $args[0]	&	!	ай-ди предмета
 $args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
 args['pit'] = arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
-$args['short_name']=$func('get.tag.cont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
+$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
 ! выбираем текст подъёма, покупки
 if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
 	$args['take/buy']='[buy]'		&	!	покупается

@@ -4,23 +4,23 @@
 $args[0] = $args[0]	&	!	-	динамический текст
 $args[1] = $args[1]	&	!	-	дополнительные данные
 if $strfind($args[0],'\[th\][\s\S]*?\[\/th\]')!'' and instr($args[0],'[th]')=1:
-	$args['int.DIN']=$func('int.time.hours',$func('get.tag.cont',$args[0],'th'))
+	$args['int.DIN']=$func('int.time.hours',$func('em.tag.getCont',$args[0],'th'))
 elseif $strfind($args[0],'\[ty\][\s\S]*?\[\/ty\]')!'' and instr($args[0],'[ty]')=1:
-	$args['int.DIN']=$func('int.time.years',$func('get.tag.cont',$args[0],'ty'))
+	$args['int.DIN']=$func('int.time.years',$func('em.tag.getCont',$args[0],'ty'))
 elseif $strfind($args[0],'\[tm\][\s\S]*\[\/tm\]')!'' and instr($args[0],'[tm]')=1:
-	$args['int.DIN']=$func('int.time.month',$func('get.tag.cont',$args[0],'tm'))
+	$args['int.DIN']=$func('int.time.month',$func('em.tag.getCont',$args[0],'tm'))
 elseif $strfind($args[0],'\[td\][\s\S]*\[\/td\]')!'' and instr($args[0],'[td]')=1:
-	$args['int.DIN']=$func('int.time.days',$func('get.tag.cont',$args[0],'td'))
+	$args['int.DIN']=$func('int.time.days',$func('em.tag.getCont',$args[0],'td'))
 elseif $strfind($args[0],'\[chestname\][\s\S]+\[\/chestname\]')!'' and instr($args[0],'[chestname]')=1:
-	$args['int.DIN']=$func('int.chest.name',$func('get.tag.cont',$args[0],'chestname'))
+	$args['int.DIN']=$func('int.chest.name',$func('em.tag.getCont',$args[0],'chestname'))
 elseif $strfind($args[0],'\[var\][\s\S]+\[\/var\]')!'' and instr($args[0],'[var]')=1:
-	$args['int.DIN']=$func('int.var',$func('get.tag.cont',$args[0],'var'))
+	$args['int.DIN']=$func('int.var',$func('em.tag.getCont',$args[0],'var'))
 elseif $strfind($args[0],'\[lnk\][\s\S]+\[\/lnk\]')!'' and instr($args[0],'[lnk]')=1:
-	$args['int.DIN']=$func('int.link',TRIM($func('get.tag.cont',$args[0],'lnk')))
+	$args['int.DIN']=$func('int.link',TRIM($func('em.tag.getCont',$args[0],'lnk')))
 elseif $strfind($args[0],'\[goto\][\s\S]+\[\/goto\]')!'' and instr($args[0],'[goto]')=1:
-	$args['int.DIN']=$func('int.dyn.goto',TRIM($func('get.tag.cont',$args[0],'goto')))
+	$args['int.DIN']=$func('int.dyn.goto',TRIM($func('em.tag.getCont',$args[0],'goto')))
 elseif $strfind($args[0],'\[back\][\s\S]+\[\/back\]')!'' and instr($args[0],'[back]')=1:
-	$args['int.DIN']=$func('int.dyn.back',TRIM($func('get.tag.cont',$args[0],'back')))
+	$args['int.DIN']=$func('int.dyn.back',TRIM($func('em.tag.getCont',$args[0],'back')))
 elseif $strfind($args[0],'\[[\s\S]*?\/\/[\s\S]*?\]')!'' or $strfind($args[0],'\([\s\S]*?\/\/[\s\S]*?\)')!'':
 	$args['int.DIN']=$func('int.word.SEX',$args[0])
 elseif $strfind($args[0],'<DIN(\d+):[\s\S]*:\1DIN>')!0:

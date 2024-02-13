@@ -6,7 +6,7 @@ if $args[1]='':
 	$args[1] = "[v:"+$args[5]+":v] "	&	!	тело заметки, может содержать html форматировние
 end
 if $args[2]='': $args[2]="[name:<<time['date']>>/<<time['month']>>/<<time['year']>> <<time['hour']>>:<<time['minute']>>:name] "
-if $args[3]='': $args[3]="[sn:"+$func('get.tag.cont',$object_array[arrpos('$id_array',$func('get.loc.id'))],'name')+":sn] "
+if $args[3]='': $args[3]="[sn:"+$func('em.tag.getCont',$object_array[arrpos('$id_array',$func('get.loc.id'))],'name')+":sn] "
 if $args[4]='': $args[4]='[np:[note]:np]'
 $args['obj']=$func('add.new.obj','<note> '+$args[2]+$args[4]+$args[1]+$args[3],$args[0],'NOTE')
 --- add.new.note ---------------------------------

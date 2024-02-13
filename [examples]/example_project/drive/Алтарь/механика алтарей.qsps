@@ -28,7 +28,7 @@ if $args['onAltar.ID']<>'':
 	! получаем ссылку етого предмета
 	$args['ссылка етого предмета']=$strfind($args['предметы на алтаре'],'<a class="plain" href="exec:gs ''take.obj'','''+$args['onAltar.ID']+''' & GS ''true.goto.curloc'',''\[chest\]''"><font color=#[A-Fa-f0-9]{6}>[^<]+</font></a><br>')
 	$args['obj.qwerty']=$object_array[arrpos('$id_array',$args['onAltar.ID'])]
-	$args['name.qwerty']=$func('get.word.padez',$func('get.tag.cont',$args['obj.qwerty'],'name'),'В')
+	$args['name.qwerty']=$func('get.word.padez',$func('em.tag.getCont',$args['obj.qwerty'],'name'),'В')
 	$args['color.qwerty']=$func('get.tag.num',$args['obj.qwerty'],'color')
 	$args['заряжаемый']='<b><a class="plain" href="exec:gs ''take.obj'','''+$args['onAltar.ID']+''' & GS ''true.goto.curloc'',''[chest]''"><font color=#'+$args['color.qwerty']+'>'+$func('b.d.t','altar.remove',$args['name.qwerty'])+'</font></a></b>'
 	$args['жертвенник']+='<font size=-1>'+$func('b.d.t','altar.credence')+':</font><br>'
@@ -37,7 +37,7 @@ else
 	$args['жертвенник']='<font size=-1>'+$func('b.d.t','altar.credence')+':</font><br>'+$args['предметы на алтаре']
 end
 ! Если локация отведена определённому божеству, можно сгенерировать это божество
-$args['god.altar']=TRIM($func('get.tag.cont',$args['loc.head'],'god'))
+$args['god.altar']=TRIM($func('em.tag.getCont',$args['loc.head'],'god'))
 $args['god.id']=$func('get.id.obj','(<god>[\s\S]*\[god:'+$args['god.altar']+':god\]|\[god:'+$args['god.altar']+':god\][\s\S]*<god>)')
 if $args['god.id']='false':
 	$args['god.id']=$func('add.new.obj','<god> [god:'+$args['god.altar']+':god] [name:'+$args['god.altar']+':name]','','GOD')
@@ -89,7 +89,7 @@ if $args['altar.obj']='true':
 		jump 'for'
 	end
 end
-$args['god.altar']=$func('get.tag.cont',$args['loc.head'],'god')
+$args['god.altar']=$func('em.tag.getCont',$args['loc.head'],'god')
 $args['god.id']=$func('get.id.obj','(<god>[\s\S]*\[god:'+$args['god.altar']+':god\]|\[god:'+$args['god.altar']+':god\][\s\S]*<god>)')
 kolvo_array[arrpos('$id_array',$args['god.id'])]	+=	args['+к карме']
 charge_array[arrpos('$id_array',$args['god.id'])]	+=	args['+к молитвам']
@@ -118,7 +118,7 @@ if $args[1]<>'':
 		exit
 	end
 	! получаем ай-ди божества
-	$args['god.altar']=TRIM($func('get.tag.cont',$args['loc.head'],'god'))
+	$args['god.altar']=TRIM($func('em.tag.getCont',$args['loc.head'],'god'))
 	$args['god.id']=$func('get.id.obj','(<god>[\s\S]*\[god:'+$args['god.altar']+':god\]|\[god:'+$args['god.altar']+':god\][\s\S]*<god>)')
 	args['god.pit']=arrpos('$id_array',$args['god.id'])
 	! получаем кармическую энергию, переданную божеству
@@ -151,9 +151,9 @@ $args['obj']=$func('get.obj.id',$args[0])
 args['pit'] = arrpos('$id_array',$args[0])
 $args['loc']=$func('get.obj.id',$args[1])
 ! получаем имя бога, которому должно делаться жертвоприношение
-$args['god.name']=$func('get.tag.cont',$args['loc'],'god')
+$args['god.name']=$func('em.tag.getCont',$args['loc'],'god')
 ! получаем духовную ценность предмета для этого конкретного бога
-args['spirit.god.name']=func('get.tag.num',$func('get.tag.cont',$args['obj'],'spirit'),$args['god.name'])
+args['spirit.god.name']=func('get.tag.num',$func('em.tag.getCont',$args['obj'],'spirit'),$args['god.name'])
 ! если духовная ценность для этого конкретно божества не указана, получаем духовную ценность для "пустого" бога
 if args['spirit.god.name']=0:
 	args['spirit']=func('get.tag.num',$args['obj'],'spirit')
@@ -167,7 +167,7 @@ end
 if args['spirit']=0:
 	args['spirit']=func('get.tag.num',$args['obj'],'weight')/50
 
-	$args['spirit.type']=$func('get.tag.cont',$args['obj'],'np')
+	$args['spirit.type']=$func('em.tag.getCont',$args['obj'],'np')
 	! поправить коэффициенты согласно балансу
 	if instr($args['spirit.type'],'[оружие]')!0: args['spirit']+=100
 	if instr($args['spirit.type'],'[двуручное]')!0: args['spirit']+=80

@@ -12,12 +12,12 @@ if $args[2]='respawn':
 	! ВНИМАНИЕ!!! РЕСПАВН МАГИЧЕСКОЙ ЭНЕРГИИ ПРОСТРАНСТВА ОСУЩЕСТВЛЯЕТСЯ ВСЕГДА, независимо от того находится ли локация в респаунере, или нет	
 	! Респавн магической энергии происходит постоянно. Тут работает простая закономерность. Каждая энергия пространства имеет свой предел
 	! этот предел делится на период спавна и вычисляется насколько он должен быть сейчас заполнен
-		$args['respawn.loc']=$func('get.tag.cont',$args['obj'],'respawn')	&	!	получаем время респавна
+		$args['respawn.loc']=$func('em.tag.getCont',$args['obj'],'respawn')	&	!	получаем время респавна
 		if $args['respawn.loc']='': $args['respawn.loc']='[day:1]'
 		args['respawn.time']=$func('get.tag.num',$func('conv.time',$args['respawn.loc'],'minute'),'minute')	&	!	вычисляем период респавнинга в минутах
 		args['time.last']=$func('get.tag.num',$func('conv.time',$kolvo_array[args['loc.it']],'minute'),'minute')
 		args['time.new']=$func('get.tag.num',$func('conv.time',$time['new.all'],'minute'),'minute')
-		$args['menergy']=$func('get.tag.cont',$args['obj'],'menergy')
+		$args['menergy']=$func('em.tag.getCont',$args['obj'],'menergy')
 	else
 		$result='false' & exit
 	end
@@ -31,13 +31,13 @@ if $args[2]='prove' or $args[2]='spell':
 	end
 end
 if $args[2]='set':
-	$args['menergy']=$func('get.tag.cont',$args['obj'],'menergy')
+	$args['menergy']=$func('em.tag.getCont',$args['obj'],'menergy')
 	if $args['menergy']='': $result='flase' & exit
 end
 args['i']=1
 :for
 if $strfind($args['menergy'],"u[\d]+:[\s\S]+:u[\d]+")!'':
-	$args['uron']=$func('get.tag.cont',$args['menergy'],"u<<args['i']>>")
+	$args['uron']=$func('em.tag.getCont',$args['menergy'],"u<<args['i']>>")
 	if $args['uron']!"":
 		args['power']=func('get.tag.num',$args['menergy'],"p<<args['i']>>")
 		if $args[2]='set':

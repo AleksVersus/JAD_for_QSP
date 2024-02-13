@@ -4,7 +4,7 @@
 if $args[0] = '': $args[0]=$OOS['oid']
 $args['obj']= $func('get.obj.id',$args[0])	&	!	получаем тело предмета
 args['pit']	= arrpos('$id_array',$args[0])
-$args['short_word']=$func('get.tag.cont',$args['obj'])
+$args['short_word']=$func('em.tag.getCont',$args['obj'])
 args['weight']=func('get.tag.num',$args['obj'],'weight')
 $args['unmount.list']=$func('base.new.obj','[:'+$args['short_word']+':]','unmount')
 if $args['unmount.list']='cant unmount':
@@ -24,7 +24,7 @@ if args['unmount.iner']>0 and no args['unmount.iner']>kolvo_array[args['pit']]:
 	:for
 	if strfind($args['unmount.list'],"\[[\d]+:[\s\S]*:[\d]+\]")!'':
 		$args['str']=$replace($replace($strfind($args['unmount.list'],"\[<<args['i']>>:[\s\S]+:<<args['i']>>\]"),"[<<args['i']>>:"),":<<args['i']>>]")
-		$args['unmount.name']=$func('get.tag.cont',$args['str'],'name')
+		$args['unmount.name']=$func('em.tag.getCont',$args['str'],'name')
 		args['unmount.weight']=func('get.tag.num',$args['str'],'count')
 		$args['ingredients.id']=$func('base.new.obj','[:'+$args['unmount.name']+':]','','INVENTORY',args['unmount.iner']*args['unmount.weight'])
 		$args['last_id']=$func('replace.obj',$args['ingredients.id'],$cvar['loc_id'+$cvar['chest']],$args['short_word'],args['unmount.iner']*args['unmount.weight'])

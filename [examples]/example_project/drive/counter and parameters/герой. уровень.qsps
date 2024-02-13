@@ -3,7 +3,7 @@
 args[0] = args[0]	&	!	сколько очков добавится.
 $args['id'] = $func('get.id.obj','<property>[\s\S]*\[:level:\]')
 $args['obj']=$object_array[arrpos('$id_array',$args['id'])]
-$args['l']=$func('get.tag.cont',$args['obj'],'l')
+$args['l']=$func('em.tag.getCont',$args['obj'],'l')
 if $args['l']='': $args['l']='уровень|уровня|уровню|уровень|уровнем|уровне'
 point_count['hero.level.level'] = point_count['hero.level.level']	&	!	уровень
 point_count['hero.level.point'] = point_count['hero.level.point']	&	!	непосредственно очки опыта

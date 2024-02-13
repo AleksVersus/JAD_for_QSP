@@ -11,11 +11,11 @@ $args[0] = $args[0]
 $args[1] = $args[1]
 if $args[2]='': $args[2]=$func('get.id.obj','<hero>')
 if instr($args[1],'take.obj:')!0 or instr($args[1],'put.obj:')!0:
-	if instr($args[1],'take.obj:')!0:	$args['OID']=$func('get.tag.cont',$args[1],'take.obj')
-	if instr($args[1],'put.obj:')!0:	$args['OID']=$func('get.tag.cont',$args[1],'put.obj')
+	if instr($args[1],'take.obj:')!0:	$args['OID']=$func('em.tag.getCont',$args[1],'take.obj')
+	if instr($args[1],'put.obj:')!0:	$args['OID']=$func('em.tag.getCont',$args[1],'put.obj')
 	$args['obj']=$func('get.obj.id',$args['OID'])
 	$args['color']=$func('get.tag.num',$args['obj'],'color')
-	$args['name']=$func('get.tag.cont',$args['obj'],'name')
+	$args['name']=$func('em.tag.getCont',$args['obj'],'name')
 end
 $args['add.body']+='<body> '
 $args['short_word'] = $replace($replace($strfind($args[0],'\[:[\S]+:\]'),'[:'),':]')
@@ -127,7 +127,7 @@ elseif instr($args[1],'take.obj')!0:
 		$result=$args['take.obj']
 		exit
 	else
-		$args['res.021213']="<b>Объект <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'И')+'</font> добавлен в позицию'+$func('get.tag.cont',$args[0])+'.</b>'
+		$args['res.021213']="<b>Объект <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'И')+'</font> добавлен в позицию'+$func('em.tag.getCont',$args[0])+'.</b>'
 		$result=$args['res.021213']
 		exit
 	end
@@ -136,7 +136,7 @@ elseif instr($args[1],'put.obj')!0:
 		$result=$args['put.obj']
 		exit
 	else
-		$args['res.021213']="<b>Объект <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'И')+'</font> удалён из позиции'+$func('get.tag.cont',$args[0])+'.</b>'
+		$args['res.021213']="<b>Объект <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'И')+'</font> удалён из позиции'+$func('em.tag.getCont',$args[0])+'.</b>'
 		$result=$args['res.021213']
 		exit
 	end

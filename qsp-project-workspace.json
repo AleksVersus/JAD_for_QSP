@@ -134,49 +134,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.put",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f.qsps": [
-            [
-                "int.lighting",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044f.qsps": [
-            [
-                "int.inventory",
-                [
-                    2,
-                    15
-                ]
-            ],
-            [
-                "int.inventory.obj",
-                [
-                    1862,
-                    1879
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\test_location.qsps": [
-            [
-                "!--tester--!",
-                [
-                    196,
-                    208
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\decrease objects.qsps": [
             [
                 "minus.obj",
@@ -186,39 +143,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0439.qsps": [
-            [
-                "int.din.text",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\clear all parents.qsps": [
             [
                 "clr.parent.obj",
                 [
                     2,
                     16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\goto.sys\\get shell list for door.qsps": [
-            [
-                "get.shell.inOpen",
-                [
-                    2,
-                    18
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": [
-            [
-                "int.link.obj",
-                [
-                    2,
-                    14
                 ]
             ]
         ],
@@ -261,41 +191,9 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0434\u043e\u043f.\u043c\u0435\u043d\u044e\\\u0434\u043e\u043f.\u043c\u0435\u043d\u044e.qsps": [
-            [
-                "menu.rainbowsword.color.change",
-                [
-                    2,
-                    32
-                ]
-            ],
-            [
-                "menu.backer.back",
-                [
-                    1287,
-                    1303
-                ]
-            ],
-            [
-                "menu.backer.memory",
-                [
-                    1456,
-                    1474
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u0431\u043e\u043b\u044c\u0448\u0430\u044f. \u0432\u0430\u0440\u0438\u0430\u043d\u0442 2.qsps": [
             [
                 "int.diary.big1",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449.qsps": [
-            [
-                "int.chest.name",
                 [
                     2,
                     16
@@ -320,15 +218,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u043c\u0435\u0442\u043a\u0438 \u0432 \u0434\u043d\u0435\u0432\u043d\u0438\u043a\u0435.qsps": [
-            [
-                "int.diary.note",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440.qsps": [
             [
                 "int.diary",
@@ -338,46 +227,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c.qsps": [
-            [
-                "menu.obj.read",
-                [
-                    2,
-                    15
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u0440\u044f\u0434\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.disCharge",
-                [
-                    2,
-                    20
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\prove regexp in Object.qsps": [
             [
                 "prv.str.inObj",
                 [
                     2,
                     15
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u043c\u0430\u0433\u0438\u044f\\\u043c\u0430\u0433\u0438.qsps": [
-            [
-                "magic.menergy.spell",
-                [
-                    2,
-                    21
-                ]
-            ],
-            [
-                "magic.add.spell",
-                [
-                    2828,
-                    2843
                 ]
             ]
         ],
@@ -417,39 +272,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0443\u0440\u043e\u0432\u0435\u043d\u044c.qsps": [
-            [
-                "hero.level",
-                [
-                    2,
-                    12
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0442\u0430\u0431\u043b\u0438\u0446 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0437\u0430\u0440\u044f\u0434\u0430\u043c.qsps": [
-            [
-                "redo.obj.inCharge",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\get object by ID.qsps": [
             [
                 "get.obj.id",
                 [
                     2,
                     12
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\base.dialog.hero (\u0441\u0442\u0430\u0440\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
-            [
-                "base.dialog.hero",
-                [
-                    2,
-                    18
                 ]
             ]
         ],
@@ -507,15 +335,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0435\u043a\u0441\u0442 \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": [
-            [
-                "int.notes",
-                [
-                    2,
-                    11
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\test_location.qsps": [
             [
                 "!\u0431\u0430\u0437\u044b!",
@@ -543,48 +362,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442 \u0441\u0447\u0451\u0442\u0447\u0438\u043a \u043f\u043e \u0430\u0439-\u0434\u0438.qsps": [
-            [
-                "int.counter",
-                [
-                    2,
-                    13
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\delete object and all daughters.qsps": [
             [
                 "del.obj",
                 [
                     2,
                     9
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043d\u0430\u0434\u0435\u0432\u0430\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": [
-            [
-                "use.obj.actObj",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0432\u0435\u0441\u0430.qsps": [
-            [
-                "prv.obj.weight",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": [
-            [
-                "gen.act.act",
-                [
-                    2,
-                    13
                 ]
             ]
         ],
@@ -606,15 +389,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": [
-            [
-                "take.obj",
-                [
-                    2,
-                    10
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u043c\u0435\u0441\u044f\u0446.qsps": [
             [
                 "int.time.month",
@@ -630,24 +404,6 @@
                 [
                     2,
                     11
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\add nocount object in purse.qsps": [
-            [
-                "add.obj.nocount",
-                [
-                    2,
-                    17
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\goto.sys\\find key for open.qsps": [
-            [
-                "get.key.inOpen",
-                [
-                    2,
-                    16
                 ]
             ]
         ],
@@ -676,39 +432,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0441\u0443\u043c\u043a\u0443.qsps": [
-            [
-                "menu.in.bag",
-                [
-                    2,
-                    13
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0447\u0430\u0441\u0442\u0438 \u0442\u0435\u043b\u0430\\base.new.bodypart.qsps": [
-            [
-                "base.new.bodypart",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c \u0441\u0442\u0430\u0434\u0438\u044e.qsps": [
             [
                 "add.new.stady",
                 [
                     2,
                     15
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u043f\u0443\u043d\u043a\u0442\u043e\u0432 \u043c\u0435\u043d\u044e.qsps": [
-            [
-                "int.menu.obj",
-                [
-                    2,
-                    14
                 ]
             ]
         ],
@@ -748,15 +477,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0433\u0438\u043f\u0435\u0440\u0441\u0441\u044b\u043b\u043e\u043a - \u043d\u0430\u0434\u0435\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442.qsps": [
-            [
-                "gen.ahref.actObj",
-                [
-                    2,
-                    18
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u043a\u0443\u043f\u043a\u0430 \u043f\u0440\u043e\u0434\u0430\u0436\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432.qsps": [
             [
                 "obj.sale.cost",
@@ -773,39 +493,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": [
-            [
-                "menu.in.inventory",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0437\u0434\u043e\u0440\u043e\u0432\u044c\u0435.qsps": [
             [
                 "hero.health",
                 [
                     2,
                     13
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0430 \u0442\u0435\u043b\u0435 \u043c\u0435\u0441\u0442\u043e.qsps": [
-            [
-                "prv.pos.inObj",
-                [
-                    2,
-                    15
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u043c\u0435\u0442\u043a\u0430 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c.qsps": [
-            [
-                "add.new.note",
-                [
-                    2,
-                    14
                 ]
             ]
         ],
@@ -824,33 +517,6 @@
                 [
                     2,
                     16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": [
-            [
-                "int.loc.act",
-                [
-                    2,
-                    13
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\textincode.qsps": [
-            [
-                "int.DIN",
-                [
-                    2,
-                    9
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": [
-            [
-                "int.link",
-                [
-                    2,
-                    10
                 ]
             ]
         ],
@@ -897,15 +563,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0437\u0430\u0440\u044f\u0434\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.inCharge",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\remastering.obj.qsps": [
             [
                 "remastering.obj",
@@ -915,62 +572,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\goto.sys\\get arm list for door.qsps": [
-            [
-                "get.arm.inOpen",
-                [
-                    2,
-                    16
-                ]
-            ],
-            [
-                "use.shell.inDoor",
-                [
-                    1004,
-                    1020
-                ]
-            ],
-            [
-                "use.arm.inDoor",
-                [
-                    1080,
-                    1094
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\base.img (\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f).qsps": [
             [
                 "base.img",
                 [
                     2,
                     10
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435.qsps": [
-            [
-                "prv.task.diary",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": [
-            [
-                "int.diary.task",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u044f\\magic.warspell.qsps": [
-            [
-                "magic.warspell",
-                [
-                    2,
-                    16
                 ]
             ]
         ],
@@ -1019,46 +626,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": [
-            [
-                "menu.obj.spell.teach",
-                [
-                    2,
-                    22
-                ]
-            ],
-            [
-                "menu.obj.spell.read",
-                [
-                    86,
-                    105
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\base.calibr.qsps": [
             [
                 "base.calibr",
                 [
                     2,
                     13
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043d\u0430\u0434\u0435\u0442\u044c \u043d\u0430 \u0442\u0435\u043b\u043e.qsps": [
-            [
-                "menu.in.body",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": [
-            [
-                "int.act.goto",
-                [
-                    2,
-                    14
                 ]
             ]
         ],
@@ -1134,15 +707,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\sys\\onnewloc.qsps": [
-            [
-                "onNewLoc",
-                [
-                    2,
-                    10
-                ]
-            ]
-        ],
         "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0448\u0435\u0441\u0442\u043d\u0430\u0434\u0446\u0430\u0442\u0435\u0440\u0438\u0447\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\col-inv.qsps": [
             [
                 "#col-inv#",
@@ -1161,39 +725,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\scripts.sys\\text in code.qsps": [
-            [
-                "int.run",
-                [
-                    2,
-                    9
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0432\u0440\u0435\u043c\u044f \u0441\u0443\u0442\u043e\u043a.qsps": [
             [
                 "int.time.hours",
                 [
                     2,
                     16
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\base.new.obj\\01_base.new.obj.qsps": [
-            [
-                "base.new.obj",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\find right bag.qsps": [
-            [
-                "get.bag",
-                [
-                    2,
-                    9
                 ]
             ]
         ],
@@ -1206,30 +743,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c.qsps": [
-            [
-                "menu.obj.unmount",
-                [
-                    2,
-                    18
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.obj.pos.qsps": [
             [
                 "get.obj.pos",
                 [
                     2,
                     13
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0438\u0437 \u0443\u0441\u043b\u043e\u0432\u043d\u043e\u0433\u043e \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u0430.qsps": [
-            [
-                "gen.act.goto",
-                [
-                    2,
-                    14
                 ]
             ]
         ],
@@ -1254,15 +773,6 @@
         "[examples]\\example_project\\drive\\interface.sys\\scale.rn.qsps": [
             [
                 "get.scale.rn",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u043e\u0432 \u043b\u043e\u043a\u0430\u0446\u0438\u0439.qsps": [
-            [
-                "int.loc.head",
                 [
                     2,
                     14
@@ -1909,15 +1419,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\gen.ahref.inMount.qsps": [
-            [
-                "gen.ahref.inMount",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
         "[examples]\\example_project\\main\\[start].qsps": [
             [
                 "[start]",
@@ -1954,15 +1455,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.s (\u043d\u043e\u0432\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
-            [
-                "b.d.s",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.t.qsps": [
             [
                 "b.d.t",
@@ -1978,15 +1470,6 @@
                 [
                     67,
                     87
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": [
-            [
-                "hero.vosst.time",
-                [
-                    247,
-                    262
                 ]
             ]
         ],
@@ -2098,39 +1581,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.tag.cont.qsps": [
-            [
-                "get.tag.cont",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
         "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\indiv.qsps": [
             [
                 "em.indiv",
                 [
                     298,
                     306
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.w.s.qsps": [
-            [
-                "b.w.s",
-                [
-                    2,
-                    7
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.screen.qsps": [
-            [
-                "base.word.screen",
-                [
-                    2,
-                    18
                 ]
             ]
         ],
@@ -2149,6 +1605,365 @@
                 [
                     2,
                     13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
+            [
+                "em.dz",
+                [
+                    390,
+                    395
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.tag.cont.qsps": [
+            [
+                "em.tag.getCont",
+                [
+                    114,
+                    128
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": [
+            [
+                "hero.vosst.time",
+                [
+                    247,
+                    262
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\gen.ahref.inMount.qsps": [
+            [
+                "gen.ahref.inMount",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.s (\u043d\u043e\u0432\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
+            [
+                "b.d.s",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.w.s.qsps": [
+            [
+                "b.w.s",
+                [
+                    2,
+                    7
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\base.dialog.hero (\u0441\u0442\u0430\u0440\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
+            [
+                "base.dialog.hero",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u043e\u043f.\u043c\u0435\u043d\u044e\\\u0434\u043e\u043f.\u043c\u0435\u043d\u044e.qsps": [
+            [
+                "menu.rainbowsword.color.change",
+                [
+                    2,
+                    32
+                ]
+            ],
+            [
+                "menu.backer.back",
+                [
+                    1291,
+                    1307
+                ]
+            ],
+            [
+                "menu.backer.memory",
+                [
+                    1460,
+                    1478
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.screen.qsps": [
+            [
+                "base.word.screen",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\base.new.obj\\01_base.new.obj.qsps": [
+            [
+                "base.new.obj",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u044f\\magic.warspell.qsps": [
+            [
+                "magic.warspell",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\bases\\\u0447\u0430\u0441\u0442\u0438 \u0442\u0435\u043b\u0430\\base.new.bodypart.qsps": [
+            [
+                "base.new.bodypart",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\test_location.qsps": [
+            [
+                "!--tester--!",
+                [
+                    196,
+                    208
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0443\u0440\u043e\u0432\u0435\u043d\u044c.qsps": [
+            [
+                "hero.level",
+                [
+                    2,
+                    12
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\find key for open.qsps": [
+            [
+                "get.key.inOpen",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\get arm list for door.qsps": [
+            [
+                "get.arm.inOpen",
+                [
+                    2,
+                    16
+                ]
+            ],
+            [
+                "use.shell.inDoor",
+                [
+                    1006,
+                    1022
+                ]
+            ],
+            [
+                "use.arm.inDoor",
+                [
+                    1082,
+                    1096
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\get shell list for door.qsps": [
+            [
+                "get.shell.inOpen",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\add nocount object in purse.qsps": [
+            [
+                "add.obj.nocount",
+                [
+                    2,
+                    17
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\find right bag.qsps": [
+            [
+                "get.bag",
+                [
+                    2,
+                    9
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0430 \u0442\u0435\u043b\u0435 \u043c\u0435\u0441\u0442\u043e.qsps": [
+            [
+                "prv.pos.inObj",
+                [
+                    2,
+                    15
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0442\u0430\u0431\u043b\u0438\u0446 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0437\u0430\u0440\u044f\u0434\u0430\u043c.qsps": [
+            [
+                "redo.obj.inCharge",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043d\u0430\u0434\u0435\u0432\u0430\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": [
+            [
+                "use.obj.actObj",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": [
+            [
+                "take.obj",
+                [
+                    2,
+                    10
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0432\u0435\u0441\u0430.qsps": [
+            [
+                "prv.obj.weight",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": [
+            [
+                "menu.obj.put",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": [
+            [
+                "menu.obj.spell.teach",
+                [
+                    2,
+                    22
+                ]
+            ],
+            [
+                "menu.obj.spell.read",
+                [
+                    86,
+                    105
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0437\u0430\u0440\u044f\u0434\u0438\u0442\u044c.qsps": [
+            [
+                "menu.obj.inCharge",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u043f\u0443\u043d\u043a\u0442\u043e\u0432 \u043c\u0435\u043d\u044e.qsps": [
+            [
+                "int.menu.obj",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043d\u0430\u0434\u0435\u0442\u044c \u043d\u0430 \u0442\u0435\u043b\u043e.qsps": [
+            [
+                "menu.in.body",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c.qsps": [
+            [
+                "menu.obj.read",
+                [
+                    2,
+                    15
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c.qsps": [
+            [
+                "menu.obj.unmount",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u0440\u044f\u0434\u0438\u0442\u044c.qsps": [
+            [
+                "menu.obj.disCharge",
+                [
+                    2,
+                    20
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": [
+            [
+                "menu.in.inventory",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0441\u0443\u043c\u043a\u0443.qsps": [
+            [
+                "menu.in.bag",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\text in code.qsps": [
+            [
+                "int.run",
+                [
+                    2,
+                    9
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\sys\\onnewloc.qsps": [
+            [
+                "onNewLoc",
+                [
+                    2,
+                    10
                 ]
             ]
         ],
@@ -2172,29 +1987,38 @@
             [
                 "altar.sacrifice",
                 [
-                    4410,
-                    4425
+                    4414,
+                    4429
                 ]
             ],
             [
                 "altar.charge.obj",
                 [
-                    5573,
-                    5589
+                    5579,
+                    5595
                 ]
             ],
             [
                 "get.spirit",
                 [
-                    8126,
-                    8136
+                    8134,
+                    8144
                 ]
             ],
             [
                 "menu.obj.put.onAltar",
                 [
-                    11587,
-                    11607
+                    11601,
+                    11621
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0433\u0438\u043f\u0435\u0440\u0441\u0441\u044b\u043b\u043e\u043a - \u043d\u0430\u0434\u0435\u0442\u044c \u043e\u0431\u044a\u0435\u043a\u0442.qsps": [
+            [
+                "gen.ahref.actObj",
+                [
+                    2,
+                    18
                 ]
             ]
         ],
@@ -2204,6 +2028,85 @@
                 [
                     2,
                     13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": [
+            [
+                "gen.act.act",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435 \u0438\u0437 \u0443\u0441\u043b\u043e\u0432\u043d\u043e\u0433\u043e \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u0430.qsps": [
+            [
+                "gen.act.goto",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435.qsps": [
+            [
+                "prv.task.diary",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u043c\u0435\u0442\u043a\u0430 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c.qsps": [
+            [
+                "add.new.note",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": [
+            [
+                "int.diary.task",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u043c\u0435\u0442\u043a\u0438 \u0432 \u0434\u043d\u0435\u0432\u043d\u0438\u043a\u0435.qsps": [
+            [
+                "int.diary.note",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0435\u043a\u0441\u0442 \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": [
+            [
+                "int.notes",
+                [
+                    2,
+                    11
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044f.qsps": [
+            [
+                "int.inventory",
+                [
+                    2,
+                    15
+                ]
+            ],
+            [
+                "int.inventory.obj",
+                [
+                    1864,
+                    1881
                 ]
             ]
         ],
@@ -2225,6 +2128,112 @@
                 ]
             ]
         ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442 \u0441\u0447\u0451\u0442\u0447\u0438\u043a \u043f\u043e \u0430\u0439-\u0434\u0438.qsps": [
+            [
+                "int.counter",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": [
+            [
+                "int.loc.act",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f.qsps": [
+            [
+                "int.lighting",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": [
+            [
+                "int.act.goto",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": [
+            [
+                "int.link",
+                [
+                    2,
+                    10
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": [
+            [
+                "int.link.obj",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\textincode.qsps": [
+            [
+                "int.DIN",
+                [
+                    2,
+                    9
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0439.qsps": [
+            [
+                "int.din.text",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u043e\u0432 \u043b\u043e\u043a\u0430\u0446\u0438\u0439.qsps": [
+            [
+                "int.loc.head",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449.qsps": [
+            [
+                "int.chest.name",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u043c\u0430\u0433\u0438\u044f\\\u043c\u0430\u0433\u0438.qsps": [
+            [
+                "magic.menergy.spell",
+                [
+                    2,
+                    21
+                ]
+            ],
+            [
+                "magic.add.spell",
+                [
+                    2836,
+                    2851
+                ]
+            ]
+        ],
         "[examples]\\example_project\\drive\\\u0443\u0440\u043e\u043d\u044b \u0438 \u0443\u0449\u0435\u0440\u0431\u044b\\\u043f\u043e\u0438\u0441\u043a \u0443\u0440\u043e\u043d\u043e\u0432-\u0443\u0449\u0435\u0440\u0431\u043e\u0432.qsps": [
             [
                 "get.uron.list",
@@ -2236,24 +2245,15 @@
             [
                 "get.similar.Uron",
                 [
-                    1132,
-                    1148
+                    1134,
+                    1150
                 ]
             ],
             [
                 "sim.uron.onFull",
                 [
-                    2195,
-                    2210
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
-            [
-                "em.dz",
-                [
-                    390,
-                    395
+                    2199,
+                    2214
                 ]
             ]
         ]

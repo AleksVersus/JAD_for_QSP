@@ -15,7 +15,7 @@ if arrsize('$id_modc')>0:
 	args['k']=kolvo_array[args['pit.p']]
 	$args['replaced']=$func('replace.obj',$id_modc[0],$args['bag_in'],'',kolvo_array[args['pit.p']],1)
 	$args['np.obj']=$object_array[arrpos('$id_array',$args['replaced'])]
-	$args['text']+='<font color=#'+$func('get.tag.num',$args['np.obj'],'color')+'>'+$func('get.word.padez',$func('get.tag.cont',$args['np.obj'],'name'),'И')+" (<<args['k']>> шт.)</font>, "
+	$args['text']+='<font color=#'+$func('get.tag.num',$args['np.obj'],'color')+'>'+$func('get.word.padez',$func('em.tag.getCont',$args['np.obj'],'name'),'И')+" (<<args['k']>> шт.)</font>, "
 ! Уменьшается вес оружия !
 	killvar '$id_modc',0
 	jump 'hander_hoch'

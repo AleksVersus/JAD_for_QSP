@@ -8,10 +8,10 @@ $args[9] = $args[9]	&	!	дополнительные данные
 
 if $args[1]<>'':
 	$args['seller']=$func('get.obj.id',$args[1])
-	$args['s.name']=$func('get.word.padez',$func('get.tag.cont',$args['seller'],'tname'),'И')
-	$args['s.sex']=$func('get.tag.cont',$args['seller'],'sex')
+	$args['s.name']=$func('get.word.padez',$func('em.tag.getCont',$args['seller'],'tname'),'И')
+	$args['s.sex']=$func('em.tag.getCont',$args['seller'],'sex')
 	$args['color']=$func('get.tag.num',$args['seller'],'color')
-	$args['np']=$func('get.tag.cont',$args['seller'],'np')
+	$args['np']=$func('em.tag.getCont',$args['seller'],'np')
 end
 if $args['color']='': $args['color']='006600'	&	!	не забыть вытащить цвет в базу
 if $args['s.name']='': $args['s.name']=$func('b.d.t','place.neverland')

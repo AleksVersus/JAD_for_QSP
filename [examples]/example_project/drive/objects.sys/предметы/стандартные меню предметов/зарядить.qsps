@@ -6,8 +6,8 @@ if $args[0]='': $args[0]=$OOS['oid']
 $args[1] = $args[1]
 args['pit.patron']=arrpos('$id_array',$args[0])
 ! получаем название патронов
-$args['name.patron']=$func('get.tag.cont',$object_array[args['pit.patron']],"name")
-$args['patron']=$func('get.tag.cont',$object_array[args['pit.patron']])
+$args['name.patron']=$func('em.tag.getCont',$object_array[args['pit.patron']],"name")
+$args['patron']=$func('em.tag.getCont',$object_array[args['pit.patron']])
 args['weight.patron']=func('get.tag.num',$object_array[args['pit.patron']],'weight')
 ! получаем калибр и прочую информацию
 $args['calibr.patron']=$func('get.tag.num',$object_array[args['pit.patron']],'calibr')
@@ -24,7 +24,7 @@ if $args[1]='':
 				$args['calibr.arm']=$func('get.tag.num',$args['arm'],'calibr')
 				args['maxCharge.arm']=func('get.tag.num',$args['arm'],'maxchrg')
 				if $args['calibr.arm']=$args['calibr.patron'] and args['maxCharge.patron']<=args['maxCharge.arm']-charge_array[args['pit.arm']]:
-					$args['name.arm']=$func('get.word.padez',$func('get.tag.cont',$args['arm'],"name"),'В')
+					$args['name.arm']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],"name"),'В')
 					$args['res.021213']='true'
 					args['u']+=1
 					!начало генерации ссылки для вывода на экран:
@@ -47,7 +47,7 @@ else
 	$args['arm']=$object_array[args['pit.arm']]
 	$args['calibr.arm']=$func('get.tag.num',$args['arm'],'calibr')
 	args['maxCharge.arm']=func('get.tag.num',$args['arm'],'maxchrg')
-	$args['name.arm']=$func('get.word.padez',$func('get.tag.cont',$args['arm'],"name"),'В')
+	$args['name.arm']=$func('get.word.padez',$func('em.tag.getCont',$args['arm'],"name"),'В')
 	! помещаем патронташ в пистолет
 	args['штук']=charge_array[args['pit.patron']]/args['maxCharge.patron']	&	!	всегда должно быть равно 1
 	$args['new.arm.charge']=$func('redo.obj.inCharge',$args[1],$position_array[args['pit.arm']],charge_array[args['pit.patron']],'+',$args[0],args['штук'])

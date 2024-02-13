@@ -9,9 +9,9 @@ $args[1] = $args[1]	&	!	управляющее или сопроводитель
 if args[2]=0: args[2]=1 else args[2] = args[2]	&	!	количество
 $args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
 args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
-$args['short_name']=$func('get.tag.cont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
+$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
 $args['use.obj.actObj']='dont take'
-$args['pos_list']=$func('get.tag.cont',$args['obj'],'pos')	&	!	вычисляем список позиций, в которые добавляется указанный предмет
+$args['pos_list']=$func('em.tag.getCont',$args['obj'],'pos')	&	!	вычисляем список позиций, в которые добавляется указанный предмет
 $args['ppi']=$func('prv.pos.inObj',$args[0])
 if $args['pos_list']!'' and $args['ppi']='empty':
 ! если предмет должен добавляться на тело и "части тела" свободны
@@ -25,12 +25,12 @@ if $args['pos_list']!'' and $args['ppi']='empty':
 		jump 'array_body_part'
 	end
 	args['p']=1
-	if $func('get.tag.cont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
-	if $func('get.tag.cont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
-	if $func('get.tag.cont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
+	if $func('em.tag.getCont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
+	if $func('em.tag.getCont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
+	if $func('em.tag.getCont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
 	:body_part
 	if len($args['pos_list'])>0:
-		$args['position']=$func('get.tag.cont',$args['pos_list'],$args['l']+str(args['p']))
+		$args['position']=$func('em.tag.getCont',$args['pos_list'],$args['l']+str(args['p']))
 		! получаем очередную позицию из списка
 		if $args['position']!'':
 		! если позиция не равна пустому значению, ищем её в массиве $array_body_part_obj
@@ -59,7 +59,7 @@ if $args['pos_list']!'' and $args['ppi']='empty':
 					end
 				end
 				$include_array[arrpos('$id_array',$array_body_part[args['exit_pos']])]=$args['last_id']
-				$args['short_body_part']='[:'+$func('get.tag.cont',$array_body_part_obj[args['exit_pos']])+':]'
+				$args['short_body_part']='[:'+$func('em.tag.getCont',$array_body_part_obj[args['exit_pos']])+':]'
 				$print['use.obj.actObj']+=$func('base.new.bodypart',$args['short_body_part'],'take.obj:'+$args['last_id']+':take.obj')
 				! Придаём части тела дочерний объект
 				

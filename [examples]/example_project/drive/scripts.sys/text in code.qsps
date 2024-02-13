@@ -4,7 +4,7 @@ $args[0] = $args[0]	&	!	строка вида r1: :r1 ... rN: :rN
 args['i']=1
 :for
 if $strfind($args[0],'r[\d]+:[\s\S]*:r[\d]+')!'':
-	$args['string']=$func('get.tag.cont',$args[0],"r<<args['i']>>")
+	$args['string']=$func('em.tag.getCont',$args[0],"r<<args['i']>>")
 	$args[0]=TRIM($replace($args[0],"r<<args['i']>>:"+$args['string']+":r<<args['i']>>"))
 	$args['res.021213']=$args['string']+'
 '
