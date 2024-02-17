@@ -1,16 +1,18 @@
-# magic.warspell
+QSP-Game
 ! скрипт выполнения боевого заклинания, чтобы не хранить весь в $run_array
 $args[0] = $args[0]	&	!	управляющая конструкция
 $args[1] = $args[1]	&	!	id - заклинания
 $args[2] = $args[2]
-args['pit.spell']=arrpos('$id_array',$args[1])
-$args['obj.spell']=$object_array[args['pit.spell']]
+# magic.warspell
+local pit_, $obj_, $damage_list_
+pit_ = arrpos('$id_array', $args[1])
+$obj_ = $object_array[pit_]
 if $args[0] = "spell.read":
-	! здесь должна быть проверка на наличие цели
-	$args['uron.list']=$TRIM($func('em.tag.getCont',$args['obj.spell'],'uron'))
-	$result='true'
+	!@ здесь должна быть проверка на наличие цели
+	$damage_list_ = $trim(@em.tag.getCont($obj_, 'uron'))
+	$result = 'true'
 end
 if $args[0] = "spell.teach":
-! Здесь будет скрипт изучения заклинания
+	!@ Здесь будет скрипт изучения заклинания
 end
 --- magic.warspell ---------------------------------

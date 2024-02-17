@@ -1,5 +1,6 @@
-# base.magic.string
+QSP-Game 
 ! надстройка для боевых заклинаний. Просто строка, вызывающая настоящий скрипт боевых заклинаний
-$args[0] = $args[0]	&	!	калибровочный код
-if $args[0] = 'warspell': $result="$result=$func('magic.warspell',$args[0],$args[1],$args[2])"	&	exit
+$args[0] - калибровочный код
+# base.magic.string
+if $args[0] = 'warspell': $result = "$result = @magic.warspell($args[0], $args[1], $args[2])" & exit
 --- base.magic.string ---------------------------------

@@ -1,147 +1,141 @@
-# base.new.bodypart
+QSP-Game
 ! база для выбора и воссоздания свойства по идентификационному слову
 ! [:word:]
-! $args[0] - сюда передаётся информация о создаваемом свойстве
-! $args[1] - сюда передаются управляющие конструкции
+! $args [0] - сюда передаётся информация о создаваемом свойстве
+! $args [1] - сюда передаются управляющие конструкции
 !		take.obj:OID:take.obj - управляющая конструкция, в которой передаётся идентификатор объекта
-! $args[2] - сюда передаётся позиция, в которую нужно поместить объект.
+! $args [2] - сюда передаётся позиция, в которую нужно поместить объект.
 
-! ----- инициализация аргументов --------------------
-$args[0] = $args[0]
-$args[1] = $args[1]
-if $args[2]='': $args[2]=$func('get.id.obj','<hero>')
-if instr($args[1],'take.obj:')!0 or instr($args[1],'put.obj:')!0:
-	if instr($args[1],'take.obj:')!0:	$args['OID']=$func('em.tag.getCont',$args[1],'take.obj')
-	if instr($args[1],'put.obj:')!0:	$args['OID']=$func('em.tag.getCont',$args[1],'put.obj')
-	$args['obj']=$func('get.obj.id',$args['OID'])
-	$args['color']=$func('em.tag.getNum',$args['obj'],'color')
-	$args['name']=$func('em.tag.getCont',$args['obj'],'name')
+# base.new.bodypart
+!@ ----- инициализация аргументов --------------------
+local $bodypart_, $cmd_, $place_ = $args[0], $args[1], $args[2]
+if $place_='': $place_=@get.id.obj('<hero>')
+local $item_body_, $color_, $name_, $add_bp_, $item_kind_, $item_id_
+if instr($cmd_,'take.obj:') <> 0 or instr($cmd_,'put.obj:') <> 0:
+	if instr($cmd_,'take.obj:') <> 0:	$item_id_ = @em.tag.getCont($cmd_,'take.obj')
+	if instr($cmd_,'put.obj:') <> 0:	$item_id_ = @em.tag.getCont($cmd_,'put.obj')
+	$item_body_ = @get.obj.id($item_id_)
+	$color_ = @em.tag.getNum($item_body_, 'color')
+	$name_ = @em.tag.getCont($item_body_, 'name')
 end
-$args['add.body']+='<body> '
-$args['short_word'] = $replace($replace($strfind($args[0],'\[:[\S]+:\]'),'[:'),':]')
-! ------------- собственно база частей тела. записи --------------------!
-	:правая_рука
-	if $args['short_word']='правая_рука':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:правая_рука:] [name:Правая рука|Правой руки|Правой руке|Правую руку|Правой рукой|Правой руке:name] [text:В правой руке:text] [empty:-в правой руке пусто-:empty] [c:arm:c] [t:рука:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+="<b><font color=#008888>Ты взя(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+"</font> в правую руку.</font></b>"
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты освободи(л//ла) правую руку.</font></b>")
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>Ты уже держишь что-то в правой руке.</font></b>")
+$add_bp_+='<body> '
+$item_kind_ = $replace($replace($strfind($bodypart_,'\[:[\S]+:\]'),'[:'),':]')
+local $take_obj_, $put_obj_, $full_pos_
+!@ ------------- собственно база частей тела. записи --------------------!
+:правая_рука
+	if $item_kind_='правая_рука':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:правая_рука:] [name:Правая рука|Правой руки|Правой руке|Правую руку|Правой рукой|Правой руке:name] [text:В правой руке:text] [empty:-в правой руке пусто-:empty] [c:arm:c] [t:рука:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+="<b><font color=#008888>Ты взя(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+"</font> в правую руку.</font></b>"
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты освободи(л//ла) правую руку.</font></b>")
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>Ты уже держишь что-то в правой руке.</font></b>")
 		jump 'end_sel'
 	end
-	:левая_рука
-	if $args['short_word']='левая_рука':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:левая_рука:] [name:Левая рука|Левой руки|Левой руке|Левую руку|Левой рукой|Левой руке:name] [text:В левой руке:text] [empty:-в левой руке пусто-:empty] [c:arm:c] [t:рука:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты взя(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> в левую руку.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты освободи(л//ла) левую руку.</font></b>")
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>Ты уже держишь что-то в левой руке.</font></b>")
+:левая_рука
+	if $item_kind_='левая_рука':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:левая_рука:] [name:Левая рука|Левой руки|Левой руке|Левую руку|Левой рукой|Левой руке:name] [text:В левой руке:text] [empty:-в левой руке пусто-:empty] [c:arm:c] [t:рука:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты взя(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> в левую руку.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты освободи(л//ла) левую руку.</font></b>")
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>Ты уже держишь что-то в левой руке.</font></b>")
 		jump 'end_sel'
 	end
-	:голова
-	if $args['short_word']='голова':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:голова:] [text:На голове:text] [empty:-без шапки-:empty] [с:dosp:c] [t:голова:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> на голову.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты сня(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> с головы.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>На голову уже что-то надето.</font></b>")
+:голова
+	if $item_kind_='голова':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:голова:] [text:На голове:text] [empty:-без шапки-:empty] [с:dosp:c] [t:голова:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> на голову.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты сня(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> с головы.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>На голову уже что-то надето.</font></b>")
 		jump 'end_sel'
 	end
-	:шея
-	if $args['short_word']='шея':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:шея:] [text:На шее:text] [empty:-на шее ничего нет-:empty]  [с:dosp:c] [t:шея:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> на шею.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты сня(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>На шее нет места.</font></b>")
+:шея
+	if $item_kind_='шея':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:шея:] [text:На шее:text] [empty:-на шее ничего нет-:empty]  [с:dosp:c] [t:шея:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> на шею.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты сня(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>На шее нет места.</font></b>")
 		jump 'end_sel'
 	end
-	:плечи
-	if $args['short_word']='плечи':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:плечи:] [text:На плечах:text] [empty:-на плечах ничего нет-:empty] [с:dosp:c] [t:плечи:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> на плечи.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты сня(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>На плечи уже что-то надето.</font></b>")
+:плечи
+	if $item_kind_='плечи':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:плечи:] [text:На плечах:text] [empty:-на плечах ничего нет-:empty] [с:dosp:c] [t:плечи:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> на плечи.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты сня(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>На плечи уже что-то надето.</font></b>")
 		jump 'end_sel'
 	end
-	:тело
-	if $args['short_word']='тело':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:тело:] [text:На теле:text] [empty:-голый торс-:empty] [с:dosp:c] [t:тело:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты сня(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>На тело уже что-то надето.</font></b>")
+:тело
+	if $item_kind_='тело':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:тело:] [text:На теле:text] [empty:-голый торс-:empty] [с:dosp:c] [t:тело:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты сня(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>На тело уже что-то надето.</font></b>")
 		jump 'end_sel'
 	end
-	:штаны
-	if $args['short_word']='штаны':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:штаны:] [text:На бёдрах:text] [empty:-без штан-:empty] [с:dosp:c] [t:штаны:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты сня(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>На ноги уже что-то надето.</font></b>")
+:штаны
+	if $item_kind_='штаны':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:штаны:] [text:На бёдрах:text] [empty:-без штан-:empty] [с:dosp:c] [t:штаны:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты сня(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>На ноги уже что-то надето.</font></b>")
 		jump 'end_sel'
 	end
-	:обувь
-	if $args['short_word']='обувь':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+=$func('int.din.text','[:обувь:] [text:На ногах:text] [empty:-бос(ой/ая)-:empty] [с:dosp:c] [t:обувь:t]')
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> на ноги.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты разу(лся/лась).</font></b>")
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>Ты уже обу(лся/лась).</font></b>")
+:обувь
+	if $item_kind_='обувь':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+=@int.din.text('[:обувь:] [text:На ногах:text] [empty:-бос(ой/ая)-:empty] [с:dosp:c] [t:обувь:t]')
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> на ноги.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты разу(лся/лась).</font></b>")
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>Ты уже обу(лся/лась).</font></b>")
 		jump 'end_sel'
 	end
-	:перчатки
-	if $args['short_word']='перчатки':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:перчатки:] [text:На руkах:text] [empty:-перчаток нет-:empty] [с:dosp:c] [t:перчатки:t]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты наде(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> на руки.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты сня(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font>.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>Ты уже наде(л//ла) что-то на руки.</font></b>")
+:перчатки
+	if $item_kind_='перчатки':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:перчатки:] [text:На руkах:text] [empty:-перчаток нет-:empty] [с:dosp:c] [t:перчатки:t]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты наде(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> на руки.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты сня(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font>.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>Ты уже наде(л//ла) что-то на руки.</font></b>")
 		jump 'end_sel'
 	end
-	:колчан
-	if $args['short_word']='колчан':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:колчан:] [text:Используются:text] [color:888888] [empty:<font color=#888888>-колчан пуст-</font>:empty] [с:arm:c] [t:колчан:t] [np::np]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты переложи(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> в колчан.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты выложи(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> из колчана.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>Колчан полон.</font></b>")
+:колчан
+	if $item_kind_='колчан':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:колчан:] [text:Используются:text] [color:888888] [empty:<font color=#888888>-колчан пуст-</font>:empty] [с:arm:c] [t:колчан:t] [np::np]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты переложи(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> в колчан.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты выложи(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> из колчана.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>Колчан полон.</font></b>")
 		jump 'end_sel'
 	end
-	:арбалетная_сума
-	if $args['short_word']='арбалетная_сума':
-		if $args[1]='' or instr($args[1],'get.body')!0: $args['add.body']+='[:арбалетная_сума:] [text:Используются:text] [empty:<font color=#888888>-арбалетная сума пуста-</font>:empty] [с:arm:c] [t:арбалетная_сума:t] [np::np]'
-		if instr($args[1],'take.obj:')!0: $args['take.obj']+=$func('int.din.text',"<b><font color=#008888>Ты переложи(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> в арбалетную суму.</font></b>')
-		if instr($args[1],'put.obj:')!0: $args['put.obj']+=$func('int.din.text',"<b><font color=#880088>Ты выложи(л//ла) <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'В')+'</font> из арбалетной сумы.</font></b>')
-		if instr($args[1],'full.pos')!0: $args['full.pos']+=$func('int.din.text',"<b><font color=#ff4444>Арбалетная сума полна.</font></b>")
+:арбалетная_сума
+	if $item_kind_='арбалетная_сума':
+		if $cmd_='' or instr($cmd_,'get.body')!0: $add_bp_+='[:арбалетная_сума:] [text:Используются:text] [empty:<font color=#888888>-арбалетная сума пуста-</font>:empty] [с:arm:c] [t:арбалетная_сума:t] [np::np]'
+		if instr($cmd_,'take.obj:')!0: $take_obj_+=@int.din.text("<b><font color=#008888>Ты переложи(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> в арбалетную суму.</font></b>')
+		if instr($cmd_,'put.obj:')!0: $put_obj_+=@int.din.text("<b><font color=#880088>Ты выложи(л//ла) <font color=#"+$color_+">"+@get.word.padez($name_,'В')+'</font> из арбалетной сумы.</font></b>')
+		if instr($cmd_,'full.pos')!0: $full_pos_+=@int.din.text("<b><font color=#ff4444>Арбалетная сума полна.</font></b>")
 		jump 'end_sel'
 	end
 	
 ! -------------- конец базы. записи кончились --------------------------
 :end_sel
 ! -------------- приведение к конечному результату и возвращение его в качестве значения функции ---------------
-if $args[1]='' or instr($args[1],'get.body')!0:
-! добавление отличительных свойств на объект
-		$args['res.obj.021213']=$func('remastering.obj',$args[0],$args['add.body'])
-		if instr($args[1],'get.body')=0:
-			$args['res.021213']=$func('add.new.obj',$args['res.obj.021213'],$args[2],'BODY')
-			$result=$args['res.021213']
-		else
-			$result=$args['res.obj.021213']
-		end
-		exit
-elseif instr($args[1],'take.obj')!0:
-	if $args['take.obj']!'':
-		$result=$args['take.obj']
+if $cmd_='' or instr($cmd_,'get.body')<> 0:
+	!@ добавление отличительных свойств на объект
+	local $res_bp_=@remastering.obj($bodypart_,$add_bp_)
+	$result = $iif(instr($cmd_,'get.body') = 0, @add.new.obj($res_bp_,$place_,'BODY'), $res_bp_)
+	exit
+elseif instr($cmd_, 'take.obj')<> 0:
+	if $take_obj_ <> '':
+		$result = $take_obj_
+	else:
+		$result = "<b>Объект <font color=#<<$color_>>><<@get.word.padez($name_,'И')>></font> добавлен в позицию<<@em.tag.getCont($bodypart_)>>.</b>"
+	end
+	exit
+elseif instr($cmd_,'put.obj') <> 0:
+	if $put_obj_ <> '':
+		$result = $put_obj_
 		exit
 	else
-		$args['res.021213']="<b>Объект <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'И')+'</font> добавлен в позицию'+$func('em.tag.getCont',$args[0])+'.</b>'
-		$result=$args['res.021213']
+		$result = "<b>Объект <font color=#<<$color_>>><<@get.word.padez($name_,'И')>></font> удалён из позиции<<@em.tag.getCont($bodypart_)>>.</b>"
 		exit
 	end
-elseif instr($args[1],'put.obj')!0:
-	if $args['put.obj']!'':
-		$result=$args['put.obj']
-		exit
-	else
-		$args['res.021213']="<b>Объект <font color=#"+$args['color']+">"+$func('get.word.padez',$args['name'],'И')+'</font> удалён из позиции'+$func('em.tag.getCont',$args[0])+'.</b>'
-		$result=$args['res.021213']
-		exit
-	end
-elseif instr($args[1],'full.pos')!0:
-	$result=$args['full.pos']
+elseif instr($cmd_,'full.pos') <> 0:
+	$result = $full_pos_
 	exit
 end
 --- base.new.bodypart ---------------------------------
