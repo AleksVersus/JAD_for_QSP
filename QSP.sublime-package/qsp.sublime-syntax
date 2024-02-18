@@ -427,6 +427,7 @@ contexts: # теперь необходимо определить "контек
 
   subex:
     - include: figurebrack
+    - include: sugarfunc
     - match: (\n\r|\r|\r\n|\n)
       scope: invalid.illegal.qsp avs_wrongenter
     - include: operacion_subex
@@ -434,6 +435,7 @@ contexts: # теперь необходимо определить "контек
     - include: functions
     - include: numeric
     - include: strings
+    - include: users_variables
 
   operacion_subex:
     # TODO: слить повторяющиеся определения для операций в подвыражениях и других
