@@ -506,15 +506,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\interface.sys\\print additional description.qsps": [
-            [
-                "print.word",
-                [
-                    2,
-                    12
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0442\u0430\u0431\u043b\u0438\u0446 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0437\u0430\u0440\u044f\u0434\u0430\u043c.qsps": [
             [
                 "redo.obj.inCharge",
@@ -757,15 +748,6 @@
                 [
                     2,
                     22
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\interface.sys\\scale.qsps": [
-            [
-                "get.scale",
-                [
-                    2,
-                    11
                 ]
             ]
         ],
@@ -1171,15 +1153,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\goto.sys\\true goto current location.qsps": [
-            [
-                "true.goto.curloc",
-                [
-                    2,
-                    18
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\sys\\usercom.qsps": [
             [
                 "inputText",
@@ -1329,15 +1302,6 @@
                 [
                     2,
                     12
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\interface.sys\\hero.stat-scale.qsps": [
-            [
-                "get.scale.hero",
-                [
-                    2,
-                    16
                 ]
             ]
         ],
@@ -1842,6 +1806,42 @@
                 [
                     500,
                     514
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\true goto current location.qsps": [
+            [
+                "true.goto.curloc",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\interface.sys\\hero.stat-scale.qsps": [
+            [
+                "get.scale.hero",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\interface.sys\\print additional description.qsps": [
+            [
+                "print.word",
+                [
+                    2,
+                    12
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\interface.sys\\scale.qsps": [
+            [
+                "get.scale",
+                [
+                    275,
+                    284
                 ]
             ]
         ]

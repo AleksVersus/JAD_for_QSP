@@ -1,9 +1,10 @@
 # get.scale.hero
-$args['interface']+='<center><table align=center cellpadding=0 cellspacing=0>'
-$args['interface']+="<tr><td background='res\img\scl\scl.sky'><font size=-1>"+$func('em.indiv',property['hero.health.all'],100,10)+"</font></td><td>"+$func('get.scale','scrd',property['hero.health.all'],property['hero.health.max'])+"</td><td><font size=-1>"+$func('em.indiv',property['hero.health.max'],100,10)+"</font></td></tr>"
-$args['interface']+="<tr><td><font size=-1>"+$func('em.indiv',property['hero.mana.all'],100,10)+"</font></td><td>"+$func('get.scale','scsk',property['hero.mana.all'],property['hero.mana.max'])+"</td><td><font size=-1>"+$func('em.indiv',property['hero.mana.max'],100,10)+"</font></td></tr>"
-$args['interface']+="<tr><td><font size=-1>"+$func('em.indiv',property['hero.force.all'],100,10)+"</font></td><td>"+$func('get.scale','scgr',property['hero.force.all'],property['hero.force.max'])+"</td><td><font size=-1>"+$func('em.indiv',property['hero.force.max'],100,10)+"</font></td></tr>"
-$args['interface']+="<tr><td><font size=-1>"+$func('em.indiv',property['hero.luck.all'],100,10)+"</font></td><td>"+$func('get.scale','scyl',property['hero.luck.all'],property['hero.luck.max'])+"</td><td><font size=-1>"+$func('em.indiv',property['hero.luck.max'],100,10)+"</font></td></tr>"
-$args['interface']+='</table></center>'
-$result=$args['interface']
+local $interface_
+$interface_+='<center><table align=center cellpadding=0 cellspacing=0>'
+$interface_+="<tr><td background='res\img\scl\scl.sky'><font size=-1>"+@em.indiv(property['hero.health.all'],100,10)+"</font></td><td>"+@get.scale('scrd',property['hero.health.all'],property['hero.health.max'])+"</td><td><font size=-1>"+@em.indiv(property['hero.health.max'],100,10)+"</font></td></tr>"
+$interface_+="<tr><td><font size=-1><<@em.indiv(property['hero.mana.all'],100,10)>></font></td><td>"+@get.scale('scsk',property['hero.mana.all'],property['hero.mana.max'])+"</td><td><font size=-1>"+@em.indiv(property['hero.mana.max'],100,10)+"</font></td></tr>"
+$interface_+="<tr><td><font size=-1>"+@em.indiv(property['hero.force.all'],100,10)+"</font></td><td>"+@get.scale('scgr',property['hero.force.all'],property['hero.force.max'])+"</td><td><font size=-1>"+@em.indiv(property['hero.force.max'],100,10)+"</font></td></tr>"
+$interface_+="<tr><td><font size=-1>"+@em.indiv(property['hero.luck.all'],100,10)+"</font></td><td>"+@get.scale('scyl',property['hero.luck.all'],property['hero.luck.max'])+"</td><td><font size=-1>"+@em.indiv(property['hero.luck.max'],100,10)+"</font></td></tr>"
+$interface_+='</table></center>'
+$result = $interface_
 --- get.scale.hero ---------------------------------
