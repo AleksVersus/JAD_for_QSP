@@ -1,33 +1,35 @@
+QSP-Game
 Обратите внимание на 18-ю строку. Поскольку символ разрыва  _ не поддерживается подсветкой, else и end воспринимаются, как лишние
-
-# get.key.inBreake
 ! Функция получает ай-ди наиболее подходящей отмычки.
-args[0] = args[0]
-args['pos']=-1
-args['key']=0
-:for
-args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*<key>[\s\S]*\[breake:[\d]+\][\s\S]*')
-if no args['pos']<0:
-	if $func('prv.str.inObj',$position_array[args['pos']],'<keys>')='false':	jump 'for'
-	if kolvo_array[args['pos']]=0: gs 'del.obj',$id_array[args['pos']] & jump 'for'	&	! если ключ уже не существует, удаляем его
-	if $func('em.tag.getNum',$object_array[args['pos']],'open')!0 and charge_array[args['pos']]=0: jump 'for'	&	! проверяем может ли ключ открывать двери
-	! если ключ есть и он может открывать двери, сверяется свойство
-	args['breake-1']=func('em.tag.getNum',$object_array[args['pos-1']],'breake')
-	args['breake']=func('em.tag.getNum',$object_array[args['pos']],'breake')
-	if args['breake']!args[0]:
-		if (args['breake']>args[0] and ((args['breake-1']<args[0]) or (func('em.abs',args['breake-1'],args[0])>func('em.abs',args['breake'],args[0])))) or  _
-		((no args['breake-1']>args[0]) and (func('em.abs',args['breake-1'],args[0])>func('em.abs',args['breake'],args[0]))):
-				$args['get.key.inBreake']=$id_array[args['pos']]
-				args['pos-1']=args['pos']
+[0] — уровень отмычки, который требуется для взлома
+# get.key.inBreake
+local skeleton_lvl_ = args[0]
+local break_, pos_last_
+loop local pos_ = -1 while 1:
+	pos_ = arrcomp('$object_array','[\s\S]*<key>[\s\S]*\[breake:[\d]+\][\s\S]*', pos_+1)
+	if no pos_ < 0:
+		if @prv.str.inObj($position_array[pos_], '<keys>') = 'false':	jump 'continue'
+		!@ если ключ уже не существует, удаляем его
+		if kolvo_array[pos_] = 0: gs 'del.obj', $id_array[pos_] & jump 'continue'
+		!@ проверяем может ли ключ открывать двери
+		if @em.tag.getNum($object_array[pos_], 'open') <> 0 and charge_array[pos_] = 0: jump 'continue'
+		!@ если ключ есть и он может открывать двери, сверяется свойство
+		break_['-1'] = @em.tag.getNum($object_array[pos_last_],'breake')
+		break_['1'] = @em.tag.getNum($object_array[pos_], 'breake')
+		if break_['1'] <> skeleton_lvl_:
+			if (break_['1'] > skeleton_lvl_ and ((break_['-1'] < skeleton_lvl_) or (@em.abs(break_['-1'], skeleton_lvl_) > @em.abs(break_['1'],skeleton_lvl_)))) or  _
+			((no break_['-1'] > skeleton_lvl_) and (@em.abs(break_['-1'],skeleton_lvl_) > @em.abs(break_['1'],skeleton_lvl_))):
+					$result = $id_array[pos_]
+					pos_last_ = pos_
+			end
+		else:
+			$result = $id_array[pos_]
+			exit
 		end
+		jump 'continue'
 	else
-		$args['get.key.inBreake'] = $id_array[args['pos']]
-		$result = $args['get.key.inBreake']
 		exit
 	end
-	jump 'for'
-else
-	$result = $args['get.key.inBreake']
-	exit
+	:continue
 end
 --- get.key.inBreake ---------------------------------

@@ -1,21 +1,24 @@
-# get.arm.inOpen
+QSP-Game
 ! Подпрограмма сравнивает все предметы в руках с возможными уронами.
 ! Если нужное сочетание найдено, оружие вписывается в $arm_iag
-! $args[0] - список уронов
-$args[0] = $args[0]
-args['pos']=-1
-:for
-args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*<body>[\s\S]*\[c:arm:c\][\s\S]*')	&	! находим в массиве позицию элемента "часть тела, предназначенная для оружия"
-if no args['pos']<0:
-	if $func('prv.str.inObj',$include_array[args['pos']],'\[type:оружие:type\]')='false':	jump 'for'
-	if $args[0]='' or ($args[0]!'' and $func('get.similar.Uron',$args[0],$func('em.tag.getCont',$include_array[args['pos']],'uron'))!''):
-	! если урон можно нанести любыми видами атак, или конкретным и он присутствует в списке оружия
-		if arrpos('$arm_iag',$include_array[args['pos']])!-1: $arm_iag[arrsize('$arm_iag')]=$include_array[args['pos']]
-		! если такого предмета ещё нет в базе предметов, наносящих урон
+! [0] - список уронов
+# get.arm.inOpen
+local $dmg_list_ = $args[0]
+loop local pos_ = -1 while 1:
+	!@ находим в массиве позицию элемента "часть тела, предназначенная для оружия"
+	pos_ = arrcomp('$object_array','[\s\S]*<body>[\s\S]*\[c:arm:c\][\s\S]*', pos_+1)	
+	if no pos_ < 0:
+		if @prv.str.inObj($include_array[pos_], '\[type:оружие:type\]') = 'false': jump 'continue'
+		if $dmg_list_ = '' or ($dmg_list_<>'' and @get.similar.Uron($dmg_list_, @em.tag.getCont($include_array[pos_],'uron'))<>''):
+			!@ если урон можно нанести любыми видами атак, или конкретным и он присутствует в списке оружия
+			if arrpos('$arm_iag', $include_array[pos_]) <> -1: $arm_iag[] = $include_array[pos_]
+			!@ если такого предмета ещё нет в базе предметов, наносящих урон
+		end
+		jump 'continue'
+	else
+		exit
 	end
-	jump 'for'
-else
-	exit
+	:continue
 end
 --- get.arm.inOpen ---------------------------------
 

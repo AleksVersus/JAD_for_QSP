@@ -189,15 +189,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\goto.sys\\open door by key.qsps": [
-            [
-                "use.key.inDoor",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": [
             [
                 "menu.obj.property",
@@ -485,38 +476,6 @@
                 [
                     2201,
                     2216
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": [
-            [
-                "int.act.goto",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\goto.sys\\get arm list for door.qsps": [
-            [
-                "get.arm.inOpen",
-                [
-                    2,
-                    16
-                ]
-            ],
-            [
-                "use.shell.inDoor",
-                [
-                    1006,
-                    1022
-                ]
-            ],
-            [
-                "use.arm.inDoor",
-                [
-                    1082,
-                    1096
                 ]
             ]
         ],
@@ -962,15 +921,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\goto.sys\\find skeleton key.qsps": [
-            [
-                "get.key.inBreake",
-                [
-                    133,
-                    149
-                ]
-            ]
-        ],
         "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0448\u0435\u0441\u0442\u043d\u0430\u0434\u0446\u0430\u0442\u0435\u0440\u0438\u0447\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\hex-dec.qsps": [
             [
                 "em.hex.inDec",
@@ -1382,15 +1332,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\goto.sys\\find key for open.qsps": [
-            [
-                "get.key.inOpen",
-                [
-                    2,
-                    16
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\interface.sys\\hero.stat-scale.qsps": [
             [
                 "get.scale.hero",
@@ -1476,15 +1417,6 @@
                 [
                     326,
                     343
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\goto.sys\\get shell list for door.qsps": [
-            [
-                "get.shell.inOpen",
-                [
-                    2,
-                    18
                 ]
             ]
         ],
@@ -1842,6 +1774,74 @@
                 [
                     2098,
                     2108
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\find key for open.qsps": [
+            [
+                "get.key.inOpen",
+                [
+                    588,
+                    602
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": [
+            [
+                "int.act.goto",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\find skeleton key.qsps": [
+            [
+                "get.key.inBreake",
+                [
+                    247,
+                    263
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\get arm list for door.qsps": [
+            [
+                "get.arm.inOpen",
+                [
+                    165,
+                    179
+                ]
+            ],
+            [
+                "use.shell.inDoor",
+                [
+                    1005,
+                    1021
+                ]
+            ],
+            [
+                "use.arm.inDoor",
+                [
+                    1081,
+                    1095
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\get shell list for door.qsps": [
+            [
+                "get.shell.inOpen",
+                [
+                    413,
+                    429
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\goto.sys\\open door by key.qsps": [
+            [
+                "use.key.inDoor",
+                [
+                    500,
+                    514
                 ]
             ]
         ]

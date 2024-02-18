@@ -1,26 +1,29 @@
-# use.key.inDoor
+QSP-Game
 ! Локация производит действие вскрытия двери с помощью ранее найденной отмычки
 ! Используются значения из переменных $key_iag и $int_act_goto[0]
 ! Чем больше уровень отмычки, мастерства, меньше уровень замка, чем выше удача (как максимальная, так и текущая) тем больше вероятность взлома.
 ! Взлом вероятен в любом случае, даже если удача на минимуме, а разница между уровнем отмычки и замком невероятная.
 ! провал взлома так же возможен в любом случае.
 ! Уменьшаем количество отмычек на 1
+# use.key.inDoor
 $key_iag = $key_iag
 $int_act_goto[0] = $int_act_goto[0]
-args['tek_luck']=property['hero.luck.all']	&	!	текущая удача
-args['max_luck']=property['hero.luck.max']	&	!	максимальная удача
-args['breaking']=property['hero.breaking']	&	!	уровень умения вскрывать замки
-args['lock']=func('em.tag.getNum',$object_array[arrpos('$id_array',$int_act_goto[0])],'breake')	&	!	уровень замка
-args['key']=func('em.tag.getNum',$object_array[arrpos('$id_array',$key_iag)],'breake')	&	!	уровень отмычки
+local cur_luck_, max_luck_, brkn_lvl_, lock_lvl_, key_lvl_
+local abs_luck_, brk_, var_
+cur_luck_ = property['hero.luck.all']	&	!@	текущая удача
+max_luck_ = property['hero.luck.max']	&	!@	максимальная удача
+brkn_lvl_ = property['hero.breaking']	&	!@	уровень умения вскрывать замки
+lock_lvl_ = @em.tag.getNum($object_array[arrpos('$id_array', $int_act_goto[0])], 'breake')	&	!@	уровень замка
+key_lvl_ = @em.tag.getNum($object_array[arrpos('$id_array', $key_iag)], 'breake')	&	!@	уровень отмычки
 
-args['abs_luck']=(rand(1,args['tek_luck'])*100/args['tek_luck'])-((args['max_luck']-args['tek_luck'])*100/args['max_luck'])
-args['breake']=(args['lock']-(args['key']+args['breaking']/args['key']))*100/args['lock']
-args['var']=rand(-args['abs_luck'],100)
-if no args['var']<args['breake']:
+abs_luck_ = (rand(1,cur_luck_)*100/cur_luck_)-((max_luck_-cur_luck_)*100/max_luck_)
+brk_ = (lock_lvl_-(key_lvl_+brkn_lvl_/key_lvl_))*100/lock_lvl_
+var_ = rand(-abs_luck_, 100)
+if no var_ < brk_:
 	*pl 'Замок взломан'
 	if instr($object_array[arrpos('$id_array',$int_act_goto[0])],'[locked]')=0:
-		gs 'rpl.str.inObj.id',$int_act_goto[0],'\[key:[\s\S]+:key\]'
-		gs 'rpl.str.inObj.id',$int_act_goto[0],'\[breake:[\d]+\]'
+		@rpl.str.inObj.id($int_act_goto[0], '\[key:[\s\S]+:key\]')
+		@rpl.str.inObj.id($int_act_goto[0], '\[breake:[\d]+\]')
 	end
 else
 	*pl 'Неудачная попытка'
