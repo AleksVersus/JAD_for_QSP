@@ -82,7 +82,13 @@ class QspWorkspace:
 			new.add((pf_, self.get_hash(pf_))) # abs-paths + hashs
 		to_del = list(old - new)
 		to_add = list(new - old)
-		to_del_paths, to_del_hashs = (zip(to_del) if len(to_del)>0 else ([], []))
+		try:
+			to_del_paths, to_del_hashs = [], []
+			if len(to_del)>0:
+				to_del_paths, to_del_hashs = zip(to_del)
+		except ValueError:
+			print(to_del, ValueError)
+			
 		# replace on new paths
 		for new_path, md5 in to_add[:]:
 			if md5 in to_del_hashs:
