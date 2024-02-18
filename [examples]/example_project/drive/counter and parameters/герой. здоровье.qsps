@@ -1,29 +1,25 @@
 QSP-Game Отвечает за подсчёт здоровья героя
 [0]	&	!	на сколько изменяется здоровье
 [1]	&	!	в какую сторону изменяется
-[3] &	! all - текущий запас max - максимальный уровень
+[3] &	!	all - текущий запас max - максимальный уровень
 [2]	&	!	дополнительный текст
 # hero.health
 local change_, $sign_, $level_, $add_text_ = args[0], $args[1], $args[2], $args[3]
-if $level_='': $level_='all'
-if change_ <> 0:
-	local $prop_ = 'health'
-	local $tl_[0], $tl_[1], $tl_[2], $tl_[3] = '009.3', '009.4', '009.1', '009.2'
-	local last_max_ = property['hero.<<$prop_>>.max']
-	if $sign_ = '' or $sign_ = 'del' or $sign_ = '-':
-		property['hero.<<$prop_>>.' + $level_] -= change_
-		if $level_ = 'all': $print['hero.health'] += @base.word.screen($tl_[0],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
-		if $level_ = 'max': $print['hero.health'] += @base.word.screen($tl_[1],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
-	elseif $sign_ = '+' or $sign_ = 'add':
-		property['hero.<<$prop_>>.' + $level_] += change_
-		if $level_ = 'all': $print['hero.health'] += @base.word.screen($tl_[2],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
-		if $level_ = 'max': $print['hero.health'] += @base.word.screen($tl_[3],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
+local $prop_ = 'health'
+local $texts_ = ('009.3', '009.4', '009.1', '009.2')
+local $max_code_ = {
+	local $prop_ = $args[0]
+	if property['hero.<<$prop_>>.all'] > property['hero.<<$prop_>>.max']:
+		property['hero.<<$prop_>>.all'] = property['hero.<<$prop_>>.max']
 	end
-	if property['hero.<<$prop_>>.max'] <> last_max_: property['hero.<<$prop_>>.all'] = property['hero.<<$prop_>>.all'] + (property['hero.<<$prop_>>.max'] - last_max_)
-	if property['hero.<<$prop_>>.all'] > property['hero.<<$prop_>>.max']: property['hero.<<$prop_>>.all'] = property['hero.<<$prop_>>.max']
-	if property['hero.<<$prop_>>.all'] < 1:	GOTO '[death]'
-	$print['hero.health'] += '<font size=-1>' + @int.hero.property(@get.id.obj('<property>[\s\S]*\[:<<$prop_>>:\]')) + '</font>'
-end
+}
+local $min_code_ = {
+	local $prop_ = $args[0]
+	if property['hero.<<$prop_>>.all'] < 1:
+		GOTO '[death]'
+	end
+}
+@hero.prop(change_, $sign_, $level_, $add_text_, $prop_, $texts_, $min_code_, $max_code_)
 --- hero.health ---------------------------------
 
 change_
@@ -34,3 +30,6 @@ $add_text_
 $prop_
 $texts_
 $min_code_
+$max_code_
+
+min_code_ and max_code_ callback give property name

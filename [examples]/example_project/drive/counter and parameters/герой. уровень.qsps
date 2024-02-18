@@ -1,21 +1,21 @@
+QSP-Game отвечает за подсчёт опыта героя и уровня.
+[0]	&	!@	сколько очков добавится.
 # hero.level
-! отвечает за подсчёт опыта героя и уровня.
-args[0] = args[0]	&	!	сколько очков добавится.
-$args['id'] = $func('get.id.obj','<property>[\s\S]*\[:level:\]')
-$args['obj']=$object_array[arrpos('$id_array',$args['id'])]
-$args['l']=$func('em.tag.getCont',$args['obj'],'l')
-if $args['l']='': $args['l']='уровень|уровня|уровню|уровень|уровнем|уровне'
-point_count['hero.level.level'] = point_count['hero.level.level']	&	!	уровень
-point_count['hero.level.point'] = point_count['hero.level.point']	&	!	непосредственно очки опыта
-point_count['hero.level.marker']= point_count['hero.level.marker']	&	!	пороговое значение
-point_count['hero.level.point']+=args[0]
-if point_count['hero.level.point']>=point_count['hero.level.marker']:
-! если мы достигли порогового значения, значит прибаляем уровень, выставляем следующее значение
-	point_count['hero.level.level']+=1
-	point_count['hero.level.marker']+=100*point_count['hero.level.level']
-	! с прибавлением уровня увеличиваются очки обучения
-	point_count['hero.teaching.point']+=point_count['hero.teaching.up']+property['hero.teaching']
-	$print['counters']+='<br>'+$func('int.din.text','<font color=#00ccff><b>Ты (достиг/достигла) </b>'+$str(point_count['hero.level.level'])+' <b>'+$func('get.word.padez',$args['l'],'Р')+'.</b></font>')
-	$print['counters']+="<br><font color=#005588><b>Получено</b> <<point_count['hero.teaching.up']+property['hero.teaching']>> <b>"+$func('get.word.end',point_count['hero.teaching.up']+property['hero.teaching'],'очко|очка|очков')+" обучения.</b></font>"
+local $id_ = @get.id.obj('<property>[\s\S]*\[:level:\]')
+local $obj_ = $object_array[arrpos('$id_array', $id_)]
+local $l_word_ = @em.tag.getCont($obj_, 'l')
+if $l_word_ = '': $l_word_ = 'уровень|уровня|уровню|уровень|уровнем|уровне'
+point_count['hero.level.level'] = point_count['hero.level.level']	&	!@	уровень
+point_count['hero.level.point'] = point_count['hero.level.point']	&	!@	непосредственно очки опыта
+point_count['hero.level.marker']= point_count['hero.level.marker']	&	!@	пороговое значение
+point_count['hero.level.point'] += args[0]
+if point_count['hero.level.point'] >= point_count['hero.level.marker']:
+	!@ если мы достигли порогового значения, значит прибаляем уровень, выставляем следующее значение
+	point_count['hero.level.level'] += 1
+	point_count['hero.level.marker'] += 100 * point_count['hero.level.level']
+	!@ с прибавлением уровня увеличиваются очки обучения
+	point_count['hero.teaching.point'] += point_count['hero.teaching.up'] + property['hero.teaching']
+	$print['counters'] += '<br>' + @int.din.text('<font color=#00ccff><b>Ты (достиг/достигла) </b>' + $str(point_count['hero.level.level']) + ' <b>' + @get.word.padez($l_word_, 'Р') + '.</b></font>')
+	$print['counters'] += "<br><font color=#005588><b>Получено</b> <<point_count['hero.teaching.up'] + property['hero.teaching']>> <b><<@get.word.end(point_count['hero.teaching.up'] + property['hero.teaching'],'очко|очка|очков')>> обучения.</b></font>"
 end
 --- hero.level ---------------------------------

@@ -1,23 +1,27 @@
+QSP-Game Отвечает за подсчёт запаса бодрости/выносливость
+[0]	&	!	на сколько изменяется бодрость
+[1]	&	!	в какую сторону изменяется
+[2] &	!	all - текущий запас max - максимальный уровень
+[3]	&	!	дополнительный текст
 # hero.force
-! Отвечает за подсчёт запаса бодрости/выносливость
-args[0]	=	args[0]	&	!	на сколько изменяется бодрость
-$args[1]	=	$args[1]	&	!	в какую сторону изменяется
-if $args[2]='': $args[2]='all' else $args[2] = $args[2] & ! all - текущий запас max - максимальный уровень
-$args[3] = $args[3]	&	!	дополнительный текст
-if args[0]!0:
-	args['last_max']=property['hero.force.max']
-	if $args[1]='' or $args[1]='del' or $args[1]='-':
-		property['hero.force.'+$args[2]]-=args[0]
-		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','026.3','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
-		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','026.4','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
-	elseif $args[1]='+' or $args[1]='add':
-		property['hero.force.'+$args[2]]+=args[0]
-		if $args[2]='all': $print['hero.health']+=$func('base.word.screen','026.1','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
-		if $args[2]='max': $print['hero.health']+=$func('base.word.screen','026.2','[колво:'+$str(args[0])+'] [txt:<<$args[3]>>:txt]')
+local change_, $sign_, $level_, $add_text_ = args[0], $args[1], $args[2], $args[3]
+if $level_='': $level_='all'
+if change_ <> 0:
+	local $prop_ = 'force'
+	local $tl_[0], $tl_[1], $tl_[2], $tl_[3] = '026.3', '026.4', '026.1', '026.2'
+	local last_max_ = property['hero.<<$prop_>>.max']
+	if $sign_ = '' or $sign_ = 'del' or $sign_ = '-':
+		property['hero.<<$prop_>>.' + $level_] -= change_
+		if $level_ = 'all': $print['hero.health'] += @base.word.screen($tl_[0],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
+		if $level_ = 'max': $print['hero.health'] += @base.word.screen($tl_[1],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
+	elseif $sign_ = '+' or $sign_ = 'add':
+		property['hero.<<$prop_>>.' + $level_] += change_
+		if $level_ = 'all': $print['hero.health'] += @base.word.screen($tl_[2],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
+		if $level_ = 'max': $print['hero.health'] += @base.word.screen($tl_[3],'[колво:<<change_>>] [txt:<<$add_text_>>:txt]')
 	end
-	if property['hero.force.max']<>args['last_max']: property['hero.force.all']=property['hero.force.all']+(property['hero.force.max']-args['last_max'])
-	if property['hero.force.all']>property['hero.force.max']: property['hero.force.all']=property['hero.force.max']
-	if property['hero.force.all']<0: property['hero.force.all']=0
-	$print['hero.health']+='<font size=-1>'+$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:force:\]'))+'</font>'
+	if property['hero.<<$prop_>>.max'] <> last_max_: property['hero.<<$prop_>>.all'] = property['hero.<<$prop_>>.all'] + (property['hero.<<$prop_>>.max'] - last_max_)
+	if property['hero.<<$prop_>>.all'] > property['hero.<<$prop_>>.max']: property['hero.<<$prop_>>.all'] = property['hero.<<$prop_>>.max']
+	if property['hero.<<$prop_>>.all'] < 0: property['hero.<<$prop_>>.all'] = 0
+	$print['hero.health'] += '<font size=-1>' + @int.hero.property(@get.id.obj('<property>[\s\S]*\[:<<$prop_>>:\]')) + '</font>'
 end
 --- hero.force ---------------------------------
