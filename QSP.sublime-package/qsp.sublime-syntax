@@ -314,6 +314,8 @@ contexts: # теперь необходимо определить "контек
     - match: (?<={{left_operand}})\s*?{{operacion_two_signs}}(?=\s*?{{right_operand}})
       scope: keyword.operator.two-signs.qsp
     # подсветка для однознаковых операторов
+    - match: '\-(?=\s*?{{right_operand}})'
+      scope: keyword.operator.one-sign.qsp
     - match: (?<={{left_operand}})\s*?{{operacion_one_sign}}(?!\s*?{{right_operand}})
       scope: invalid.illegal.qsp avs_wrong_one_sign_with_out_right
     - match: (^\s*?|\&\s*?|\(\s*?|\{\s*?|\[\s*?)\K{{operacion_one_sign}}(?=\s*?{{right_operand}}*)
