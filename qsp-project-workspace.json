@@ -1318,36 +1318,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\func\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438.qsps": [
-            [
-                "get.word.padez",
-                [
-                    2,
-                    16
-                ]
-            ],
-            [
-                "get.word.end",
-                [
-                    701,
-                    713
-                ]
-            ],
-            [
-                "remastering.tag.number",
-                [
-                    1610,
-                    1632
-                ]
-            ],
-            [
-                "get.loc.id",
-                [
-                    2381,
-                    2391
-                ]
-            ]
-        ],
         "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": [
             [
                 "em.dz",
@@ -1842,6 +1812,36 @@
                 [
                     196,
                     205
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\func\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438.qsps": [
+            [
+                "get.word.padez",
+                [
+                    208,
+                    222
+                ]
+            ],
+            [
+                "get.word.end",
+                [
+                    926,
+                    938
+                ]
+            ],
+            [
+                "remastering.tag.number",
+                [
+                    1673,
+                    1695
+                ]
+            ],
+            [
+                "get.loc.id",
+                [
+                    2098,
+                    2108
                 ]
             ]
         ]
