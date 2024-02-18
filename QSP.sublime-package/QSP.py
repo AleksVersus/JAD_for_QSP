@@ -142,7 +142,7 @@ class QspInvalidInput(sublime_plugin.EventListener):
 			current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
 			_safe_cp = (lambda x, y: 
 				False if None in (x, y) else os.path.commonprefix([x, y]) != '')
-			if not _safe_cp(current_qsps, project_folder):
+			if _safe_cp(current_qsps, project_folder):
 				qsps_relpath = os.path.relpath(current_qsps, project_folder)
 			else:
 				qsps_relpath = ''
