@@ -1,50 +1,51 @@
-# get.scale
+QSP-Game
 ! функция получает изображение шкалы
-$args[0] =	$args[0]	&	!	- кодовое слово рисунка наполнения или цвет в формате RRGGBB
-args[1]	 =	args[1]		&	!	- текущее значение
-args[3]	 =	args[3] 	&	!	- ширина шкалы. По умолчанию 100 повторений для изображений и 20 повторений для символов
-$args[4] =	$args[4]	&	!	- информация для лога
-if args[2]=0:
-	if $args[4]!'no.log':
-		$error_log+='location name: "get.scale" ERROR!: Maximal is null. <<$args[0]>> all:<<args[1]>> max:<<args[2]>><br>'
+[0]		&	!	- кодовое слово рисунка наполнения или цвет в формате RRGGBB
+[1]		&	!	- текущее значение
+[3] 	&	!	- ширина шкалы. По умолчанию 100 повторений для изображений и 20 повторений для символов
+[4]		&	!	- информация для лога
+# get.scale
+local $color_, current_, maximal_, width_, $logs_ = $args[0], args[1], args[2], args[3], $args[4]
+if maximal_ = 0:
+	if $logs_  <> 'no.log':
+		$error_log += 'location name: "get.scale" ERROR!: Maximal is null. <<$color_>> all:<<current_>> max:<<maximal_>><br>'
 	else
-		$error_log+='location name: "get.scale" This is not error. Maximal is null. <<$args[0]>> all:<<args[1]>> max:<<args[2]>><br>'
+		$error_log += 'location name: "get.scale" This is not error. Maximal is null. <<$color_>> all:<<current_>> max:<<maximal_>><br>'
 	end
-	exit		&	!	- максимальное значение
+	exit &	!@	- максимальное значение
 else
-	args[2]	 =	args[2]
+	maximal_ = maximal_ 
 end
-! получаем рисунки шкал
-$args['no_image']= $func('base.img')	&	!	как выглядит строка базы, не получившая изображения
-$args['fill']	=	$func('base.img',$args[0])
-$args['space']	=	$func('base.img','scsp')
-$args['refill']	=	$func('base.img','scyl')
-if $args['fill']=$args['no_image'] or $args['space']=$args['no_image'] or $args['refill']=$args['no_image']:
-! если хотя бы для одного из рисунков не будет найдено изображение в базе создаём шкалу из символов
-	if args[3]=0: args[3] = 20
-	$args['fill']	=	'<font color=#'+$args[0]+' face="CourierNew">|</font>'
-	$args['space']	=	'<font color=#888888 face="CourierNew">|</font>'
-	$args['refill']	=	'<font color=#888800 face="CourierNew">|</font>'
-else
-	if args[3]=0: args[3]=100
-	$args['fill']	=	'<img src="'+$args['fill']+'">'
-	$args['space']	=	'<img src="'+$args['space']+'">'
-	$args['refill']	=	'<img src="'+$args['refill']+'">'
-end 
-args['fill_size'] = args[1]*args[3]/args[2]	&	!	вычисляем насколько заполнена шкала в процентах
-args['full_size']=args[3]	&	!	устанавливаем ширину шкалы
-:elset
-if args['full_size']>0 or args['fill_size']>0:
-	if args['fill_size']>0 and args['full_size']>0:
-		$args['res.031213']+=$args['fill']	&	!	подстановка рисунка наполнения шкалы
-	elseif args['fill_size']>0 and args['full_size']<1:
-		$args['res.031213']+=$args['refill']	&	!	подстановка рисунка переполнения шкалы
-	else
-		$args['res.031213']+=$args['space']	&	!	подстановка рисунка пустой шкалы
+local $no_img_, $fill_, $empty_, $overflow_
+!@ получаем рисунки шкал
+$no_img_  = @base.img()	&	!@	как выглядит строка базы, не получившая изображения
+$fill_ 	=	@base.img($color_)
+$empty_ 	=	@base.img('scsp')
+$overflow_ 	=	@base.img('scyl')
+if @em.tpl.in($no_img_, ($fill_, $empty_, $overflow_)):
+!@ если хотя бы для одного из рисунков не будет найдено изображение в базе создаём шкалу из символов
+	if width_ =0: width_  = 20
+	$fill_ 	=	'<font color=#<<$color_>> face="CourierNew">|</font>'
+	$empty_ 	=	'<font color=#888888 face="CourierNew">|</font>'
+	$overflow_ 	=	'<font color=#888800 face="CourierNew">|</font>'
+else:
+	if width_ =0: width_ =100
+	$fill_ 	=	'<img src="<<$fill_>>">'
+	$empty_ 	=	'<img src="<<$empty_>>">'
+	$overflow_ 	=	'<img src="<<$overflow_>>">'
+end
+local fill_wide_, max_wide_
+fill_wide_ = current_ * width_ / maximal_ 	&	!@	вычисляем насколько заполнена шкала в процентах
+max_wide_ = width_ 	&	!@	устанавливаем ширину шкалы
+loop while max_wide_>0 or fill_wide_>0:
+	if fill_wide_>0 and max_wide_>0:
+		$result += $fill_ 	&	!@	подстановка рисунка наполнения шкалы
+	elseif fill_wide_>0 and max_wide_<1:
+		$result += $overflow_ 	&	!@	подстановка рисунка переполнения шкалы
+	else:
+		$result += $empty_ 	&	!@	подстановка рисунка пустой шкалы
 	end
-	args['fill_size']=args['fill_size']-1
-	args['full_size']=args['full_size']-1
-	if args['full_size']>0 or args['fill_size']>0: jump 'elset'
+	fill_wide_ -= 1
+	max_wide_ -= 1
 end
-$result=$args['res.031213']
 --- get.scale ---------------------------------

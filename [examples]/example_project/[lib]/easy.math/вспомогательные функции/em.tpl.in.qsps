@@ -1,0 +1,19 @@
+$[0] — значение (только текстовое!)
+$[1] - кортеж
+result: 1 - значение присутствует в кортеже, 0 - отсутствует
+!@pp:if(em_tpl_in):include
+# em.tpl.in
+!@ объявляем локальные переменные
+local $element_, $list_, $delimiter_ = $args[0], $args[1], ''
+!@ разделитель по умолчанию
+if $delimiter_ = '': $delimiter_ = '|'
+!@ костылим список, чтобы легко искать элемент
+$list_ = $delimiter_ + $list_ + $delimiter_ 
+!@ ищем элемент
+if instr($list_, $delimiter_ + $element_ + $delimiter_) <> 0:
+	result = 1
+else:
+	result = 0
+end
+--- em.tpl.in ---------------------------------
+!@pp:endif

@@ -1,87 +1,77 @@
 # setScreen
-if $args[0] = '': $args[0] = $setScreen	&	!	точный тип интерфейса: место, хранилище, торговец, алтарь, кузница, алхим_стол... diary.big, diary.small...
-$args[1] = $args[1]	&	!	цветовые настройки: темно, чёрно-зелёный
-! -------------------------------- Выставление настроек по-умолчанию -----------------------------------------
+local $screen_sets_, $color_design_ = $args[0], $args
+if $screen_sets_ = '': $screen_sets_ = $setScreen	&	!@	точный тип интерфейса: место, хранилище, торговец, алтарь, кузница, алхим_стол... diary.big, diary.small...
+$color_design_ = $color_design_	&	!@	цветовые настройки: темно, чёрно-зелёный
+!@ -------------------------------- Выставление настроек по-умолчанию -----------------------------------------
 	if $GAME_INTERFACE['show.input']='':	$GAME_INTERFACE['show.input']='hide'
 	if $GAME_INTERFACE['show.acts']='':		$GAME_INTERFACE['show.acts']='hide'
 	if $GAME_INTERFACE['show.stat']='':		$GAME_INTERFACE['show.stat']='show'
 	if $GAME_INTERFACE['maintxt']="":		$GAME_INTERFACE['maintxt']="vertical"
 	if $GAME_INTERFACE['obj.image.stat']='':$GAME_INTERFACE['obj.image.stat']='hide'
 	
-! -------------------------------- Выставление настроек по-умолчанию -----------------------------------------
+!@ -------------------------------- Выставление настроек по-умолчанию -----------------------------------------
 
-if $GAME_INTERFACE['show.input']='show':
-	args['input']=1
-elseif $GAME_INTERFACE['show.input']='hide':
-	args['input']=0
-end
-if $GAME_INTERFACE['show.acts']='show':
-	args['acts']=1
-elseif $GAME_INTERFACE['show.acts']='hide':
-	args['acts']=0
-end
-if $GAME_INTERFACE['show.stat']='show':
-	args['stat']=1
-else
-	args['stat']=0
-end
-! выставляем настройки строки ввода
-showinput args['input']
+i = iif($GAME_INTERFACE['show.input']='show', 1, 0)
+a = iif($GAME_INTERFACE['show.acts']='show', 1, 0)
+s = iif($GAME_INTERFACE['show.stat']='show', 1, 0)
+
+!@ выставляем настройки строки ввода
+	showinput i
 :место
-! настройки экрана для локаций места
-if $args[0]='место':
-	if $args[1]='темно':
-		fcolor = rgb (0,250,0)
-		bcolor = rgb (0,0,0)
-		lcolor = rgb (0,100,0)
-		$GAME_INTERFACE['acts.color']='101010'
-		$GAME_INTERFACE['stat.color']='000004'
-	else
-		fcolor = 0
-		bcolor = rgb(224,224,224)
-		lcolor = rgb (0,80,0)
-		$GAME_INTERFACE['acts.color']='e0e0f0'
-		$GAME_INTERFACE['stat.color']='dde0dd'
+	!@ настройки экрана для локаций места
+	if $screen_sets_='место':
+		if $color_design_='темно':
+			fcolor = rgb(0,250,0)
+			bcolor = rgb(0,0,0)
+			lcolor = rgb(0,100,0)
+			$GAME_INTERFACE['acts.color']='101010'
+			$GAME_INTERFACE['stat.color']='000004'
+		else
+			fcolor = 0
+			bcolor = rgb(224,224,224)
+			lcolor = rgb(0,80,0)
+			$GAME_INTERFACE['acts.color']='e0e0f0'
+			$GAME_INTERFACE['stat.color']='dde0dd'
+		end
+		showacts a
+		showstat s
 	end
-	showacts args['acts']
-	showstat args['stat']
-end
 :хранилище
-! настройки экрана для хранилищ
-if $args[0]='хранилище':
-	
-		fcolor = 0
-		bcolor = rgb(224,224,224)
-		lcolor = rgb (0,80,0)
-		$GAME_INTERFACE['acts.color']='e0e0f0'
-		$GAME_INTERFACE['stat.color']='dde0dd'
-	
-	showacts 0
-	showstat args['stat']
-end
+	!@ настройки экрана для хранилищ
+	if $screen_sets_='хранилище':
+		
+			fcolor = 0
+			bcolor = rgb(224,224,224)
+			lcolor = rgb(0,80,0)
+			$GAME_INTERFACE['acts.color']='e0e0f0'
+			$GAME_INTERFACE['stat.color']='dde0dd'
+		
+		showacts 0
+		showstat s
+	end
 :кузница
-! настройки экрана для хранилищ
-if $args[0]='кузница':
-	
-		fcolor = 0
-		bcolor = rgb(224,224,224)
-		lcolor = rgb (0,80,0)
-		$GAME_INTERFACE['acts.color']='e0e0f0'
-		$GAME_INTERFACE['stat.color']='dde0dd'
-	
-	showacts args['acts']
-	showstat args['stat']
-end
+	!@ настройки экрана для хранилищ
+	if $screen_sets_='кузница':
+		
+			fcolor = 0
+			bcolor = rgb(224,224,224)
+			lcolor = rgb(0,80,0)
+			$GAME_INTERFACE['acts.color']='e0e0f0'
+			$GAME_INTERFACE['stat.color']='dde0dd'
+		
+		showacts a
+		showstat s
+	end
 
-if $args[0]='black-green':
-	fcolor = rgb (0,200,0)
-	bcolor = rgb (0,0,0)
-	lcolor = rgb (0,100,0)
+if $screen_sets_='black-green':
+	fcolor = rgb(0,200,0)
+	bcolor = rgb(0,0,0)
+	lcolor = rgb(0,100,0)
 	showacts 0	&	! скрываем действия
 	showobjs 0	&	! скрываем вещи
 	showstat 0	&	! скрываем дополнительное описание
-	showinput args['input']
-elseif $args[0]='reset':
+	showinput i
+elseif $screen_sets_='reset':
 	showacts 1
 	showobjs 1
 	showstat 1
@@ -89,60 +79,60 @@ elseif $args[0]='reset':
 	fcolor = 0
 	bcolor = 0
 	lcolor = 0
-elseif $args[0]='diary.big':
+elseif $screen_sets_='diary.big':
 	showacts 0
 	showobjs 0
 	showstat 0
-	showinput args['input']
+	showinput i
 	fcolor = 0
-	bcolor = rgb (60,60,88)
+	bcolor = rgb(60,60,88)
 	lcolor = rgb(0,100,100)
-elseif $args[0]='diary.big1':
+elseif $screen_sets_='diary.big1':
 	showacts 0
 	showobjs 0
 	showstat 0
-	showinput args['input']
+	showinput i
 	fcolor = 0
-	bcolor = rgb (60,60,88)
+	bcolor = rgb(60,60,88)
 	lcolor = rgb(0,100,100)
-elseif $args[0]='diary.small':
+elseif $screen_sets_='diary.small':
 	showacts 0
 	showobjs 0
 	showstat 0
-	showinput args['input']
+	showinput i
 	fcolor = 0
 	bcolor = rgb(224,224,224)
 	lcolor = rgb(0,100,0)
-elseif $args[0]='chest':
+elseif $screen_sets_='chest':
 	showacts 0
 	showobjs 1
-	showstat args['stat']
-	showinput args['input']
+	showstat s
+	showinput i
 	$GAME_INTERFACE['acts.color']='e0e0f0'
 	$GAME_INTERFACE['stat.color']='dde0dd'
 	fcolor = 0
 	bcolor = rgb(224,224,224)
-	lcolor = rgb (0,80,0)
-elseif $args[0]='smithing':
-	showacts args['acts']
+	lcolor = rgb(0,80,0)
+elseif $screen_sets_='smithing':
+	showacts a
 	showobjs 1
-	showstat args['stat']
-	showinput args['input']
+	showstat s
+	showinput i
 	$GAME_INTERFACE['acts.color']='e0e0f0'
 	$GAME_INTERFACE['stat.color']='dde0dd'
 	fcolor = 0
 	bcolor = rgb(224,224,224)
-	lcolor = rgb (0,80,0)
+	lcolor = rgb(0,80,0)
 else
-	showacts args['acts']
+	showacts a
 	showobjs 1
-	showstat args['stat']
-	showinput args['input']
+	showstat s
+	showinput i
 	$GAME_INTERFACE['acts.color']='e0e0f0'
 	$GAME_INTERFACE['stat.color']='dde0dd'
 	fcolor = 0
 	bcolor = rgb(224,224,224)
-	lcolor = rgb (0,80,0)
+	lcolor = rgb(0,80,0)
 end
-$setScreen = $args[0]
+$setScreen = $screen_sets_
 --- setScreen ---------------------------------
