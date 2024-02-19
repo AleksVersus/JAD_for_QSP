@@ -1,29 +1,33 @@
+QSP-Game ! Локация сравнивает списки типов
+$[0] - первый список
+$[1] - второй список
+$[2] - управление
 # prv.onTarget
-! Локация сравнивает списки типов
-$args[0] = TRIM($args[0])	&	!	первый список
-$args[1] = TRIM($args[1])	&	!	второй список
-$args[2] = $args[2]	&	!	ключевое слово
-$args['0'] = $args[1]
-$args['1'] = $args[0]
-$args['res'] = 'false'
-args['u'] = 0
-:for
-if $args[args['u']]!'':
-	args['progon']+=1
-	$args['type'] = mid($args[args['u']],1,instr($args[args['u']],']'))
-	if instr($args["<<args['u']>>"],$args['type'])!0:
-		args['sovp']+=1
-		if	$args[2]	=	'one':	$result	=	'true'	&	exit
+local $type_list_[0], $type_list_[1], $mode_ = $args[0], $args[1], $args[2]
+$type_list_[0] = $trim($type_list_[0])	&	!@	первый список
+$type_list_[1] = $trim($type_list_[1])	&	!@	второй список
+local $reserve_[0], $reserve_[1] = $type_list_[1], $type_list_[0]
+
+$result = 'false'
+
+local run_, match_, $type_
+loop local u = 0 while 1:
+	if $type_list_[u] <> '':
+		run_ += 1
+		$type_ = $trim($mid($type_list_[u], 1, instr($type_list_[u], ']')))
+		if instr($reserve_[u], $type_) <> 0:
+			match_ += 1
+			if	$mode_ = 'one':	$result = 'true' & exit
+		end
+		$args[u] = $trim($replace($args[u], $type_))
+	elseif u = 0:
+		u = 1
+	else:
+		jump 'break'
 	end
-	$args[args['u']]=TRIM($replace($args[args['u']],$args['type']))
-	jump 'for'
 end
-if args['u']=0:
-	args['u'] = 1
-	jump 'for'
+:break
+if $mode_ = 'all':
+	if match_ = run_: $result = 'true'
 end
-if $args[2] = 'all':
-	if args['sovp'] = args['progon']: $args['res'] = 'true'
-end
-$result = $args['res']
 --- prv.onTarget ---------------------------------

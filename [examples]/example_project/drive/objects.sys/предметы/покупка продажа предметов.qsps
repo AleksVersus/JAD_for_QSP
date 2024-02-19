@@ -1,19 +1,21 @@
-# obj.sale.cost
-! Функция вычисляет полную стоимость при продаже
-args[0] = args[0]	&	!	номинальная стоимость
-$args[1] = $args[1]	&	!	id торговца
+QSP-Game ! Функция вычисляет полную стоимость при продаже
+[0]	&	!	номинальная стоимость
+$[1]	&	!	id торговца
 
-args['tid']=arrpos('$id_array',$args[1])
-args['margin']=func('em.tag.getNum',$object_array[args['tid']],'margin')	&	!	индивидуальная наценка торговца в процентах
-result=args[0]+(args[0]*(args['margin']-20))/100
+# obj.sale.cost
+local nominal_cost_, $seller_id_ = $args[0], $args[1]
+local pos_ = arrpos('$id_array', $seller_id_)
+local margin_ = @em.tag.getNum($object_array[pos_], 'margin')	&	!@	индивидуальная наценка торговца в процентах
+result = nominal_cost_ + (nominal_cost_ * (margin_ - 20)) / 100
 --- obj.sale.cost ---------------------------------
 
-# obj.purc.cost
-! Функция вычисляет полную стоимость при покупке
-args[0] = args[0]	&	!	номинальная стоимость
-$args[1] = $args[1]	&	!	id торговца
+QSP-Game ! Функция вычисляет полную стоимость при покупке
+[0]	&	!	номинальная стоимость
+$[1]	&	!	id торговца
 
-args['tid']=arrpos('$id_array',$args[1])
-args['discount']=func('em.tag.getNum',$object_array[args['tid']],'discount')	&	!	индивидуальная скидка торговца в процентах
-result=args[0]+(args[0]*(20-args['discount']))/100
+# obj.purc.cost
+local nominal_cost_, $seller_id_ = $args[0], $args[1]
+local pos_ = arrpos('$id_array', $seller_id_)
+local discount_ = @em.tag.getNum($object_array[pos_], 'discount')	&	!@	индивидуальная скидка торговца в процентах
+result = nominal_cost_ + (nominal_cost_ * (20 - discount_)) / 100
 --- obj.purc.cost ---------------------------------

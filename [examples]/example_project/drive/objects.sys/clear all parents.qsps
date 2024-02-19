@@ -1,9 +1,8 @@
-# clr.parent.obj
-! Функция очищает все родительские объекты от дочернего
+QSP-Game ! Функция очищает все родительские объекты от дочернего
 $args[0] = $args[0]	&	!	id дочернего объекта
-args['pos']=-1
-:for
-args['pos']=arrpos(args['pos']+1,'$include_array',$args[0])
-if args['pos']!-1: $include_array[args['pos']]='' else exit
-jump 'for'
+# clr.parent.obj
+loop local pos_ = -1 while 1:
+	pos_ = arrpos('$include_array',$args[0], pos_ + 1)
+	if pos_ <> -1: $include_array[pos_] = '' else exit
+end
 --- clr.parent.obj ---------------------------------

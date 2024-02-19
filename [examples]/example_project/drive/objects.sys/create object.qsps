@@ -1,30 +1,33 @@
-# add.new.obj
+QSP-Game
 ! Подпрограмма создаёт новый объект в игре и присваивает ему айдишник
 ! Если используется в качестве функции, в результат возвращается ай-дишник
-$args[0] = $args[0]	&	!	 - тело объекта, исходник объекта
-$args[1] = $args[1]	&	!	 - положение, где находится объект
-$args[2] = $args[2]	&	!	 - Ключевое слово (короткое слово, идентификатор вида)
-args[3] = args[3]	&	!	 - количество одинаковых предметов
-args[4] = args[4]	&	!	 - заряд предмета
-$args[5] = $args[5]	&	!	 - динамический код, выполняемый во время действий с предметом.
-args[6] = args[6]	&	!	 - позиция в которую нужно добавить предмет в базе !!!! ВНИМАНИЕ. Если в этой позиции в базе уже есть предмет, он будет затёрт.
-if args[6]!0: args['num']=args[6] else args['num'] = arrsize('$id_array')
-$object_array[args['num']]=$args[0]	&	!	создаём объекту тело
-! если объект является заголовком или инвентарём или респавнером, его ай-ди 
-if $strfind($args[0],'<заголовок>')!'' or $args[2] = 'INVENTORY' or $args[2]='RESPAWNER':
-	$id_array[args['num']]=$args[2]
-elseif $strfind($args[0],'<link>')!'':
-	$id_array[args['num']]='link.'+$TRIM($args[2])
+$[0]	&	!	 - тело объекта, исходник объекта
+$[1]	&	!	 - положение, где находится объект
+$[2]	&	!	 - Ключевое слово (короткое слово, идентификатор вида)
+[3]		&	!	 - количество одинаковых предметов
+[4]		&	!	 - заряд предмета
+$[5]	&	!	 - динамический код, выполняемый во время действий с предметом.
+[6]		&	!	 - позиция в которую нужно добавить предмет в базе !!!! ВНИМАНИЕ. Если в этой позиции в базе уже есть предмет, он будет затёрт.
+# add.new.obj
+local $obj_body_, $place_id_, $kind_ = $args[0], $args[1], $args[2]
+local number_, charge_, $run_code_, pos_ = args[3], args[4], $args[5], args[6]
+local pit_ = iif(pos_ <> 0, pos_, arrsize('$id_array'))
+$object_array[pit_] = $obj_body_	&	!@	создаём объекту тело
+!@ если объект является заголовком или инвентарём или респавнером, его ай-ди 
+if $strfind($obj_body_,'<заголовок>') <> '' or $kind_ = 'INVENTORY' or $kind_='RESPAWNER':
+	$id_array[pit_] = $kind_
+elseif $strfind($obj_body_,'<link>') <> '':
+	$id_array[pit_] = 'link.' + $TRIM($kind_)
 else
-	$id_array[args['num']]=$args[2]+'.'+@em.str.random(8,'[inc][\d][\z][\я]')
+	$id_array[pit_] = $kind_ + '.' + @em.str.random(8,'[inc][\d][\z][\я]')
 end
-if $strfind($args[0],'<заголовок>')!'' and instr($args[0],'[respawn.stop]')=0:
-	$position_array[args['num']]='RESPAWNER'
+if $strfind($obj_body_,'<заголовок>')<>'' and instr($obj_body_,'[respawn.stop]') = 0:
+	$position_array[pit_] = 'RESPAWNER'
 else
-	$position_array[args['num']]=$args[1]
+	$position_array[pit_] = $place_id_
 end
-kolvo_array[args['num']]=args[3]
-charge_array[args['num']]=args[4]
-$run_array[args['num']]=$args[5]
-$result = $id_array[args['num']]
+kolvo_array[pit_]=number_
+charge_array[pit_]=charge_
+$run_array[pit_]=$run_code_
+$result = $id_array[pit_]
 --- add.new.obj ---------------------------------

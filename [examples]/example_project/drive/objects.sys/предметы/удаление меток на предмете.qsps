@@ -1,11 +1,12 @@
+QSP-Game !Удаляет лишние метки на предметах при поднятии и пр
+$[0]	&	!	id предмета
+$[1]	&	!	управление
 # del.markers.obj
-!Удаляет лишние метки на предметах при поднятии и пр
-$args[0] = $args[0]	&	!	id предмета
-$args[1] = $args[1]	&	!	управление
-args['pit']=arrpos('$id_array',$args[0])
-$log_error+='last_id^'+$args[0]
-if $args[1]='take':
-	$object_array[args['pit']]=$replace($object_array[args['pit']],'[on Altar]')
-	$object_array[args['pit']]=$replace($object_array[args['pit']],'[lock-obj]')
+local $obj_id_, $mode_ = $args[0], $args[1]
+local pos_ = arrpos('$id_array',$obj_id_)
+$log_error += 'last_id^' + $obj_id_
+if $mode_ = 'take':
+	$object_array[pos_] = $replace($object_array[pos_], '[on altar]')
+	$object_array[pos_] = $replace($object_array[pos_], '[lock-obj]')
 end
 --- del.markers.obj ---------------------------------

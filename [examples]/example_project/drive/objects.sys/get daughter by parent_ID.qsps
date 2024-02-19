@@ -1,40 +1,46 @@
-# get.daughter.obj
-! Функция получает все дочерние объекты для данного ай-ди.
+QSP-Game ! Функция получает все дочерние объекты для данного ай-ди.
 ! Результатом является true - есть дочерние, false - нет дочерних
 ! так же заполняется массив $temp_id
-$args[0] = $args[0] &	! $args[0] - ай-ди родительского объекта
-$args[1] = $args[1]	&	! $args[1] - регулярное выражение по которому производится дополнительная фильтрация
-if $args[2] = '': $args[2] = '$temp_id'	&	!	массив, в который вносятся ай-ди дочерних объектов.
-if instr($args[2],'$')<>1: $args[2]='$'+$args[2]
-$args[3] = $args[3]	&	!	дополнительная проверка.
-if $args[4] = '': $args[4]='position'
-! регулярное выражение по которому производится дополнительная фильтрация. Сортировка идёт по данным в массиве $run_array[]
-args['log.start']=msecscount
-$args['gdo']='false'
-args['pos']=-1
-:for
-args['pos']=arrpos(args['pos']+1,'$<<$args[4]>>_array',$args[0])
-if args['pos']<>-1 and args['i']<>args['pos']:
-	args['i']=args['pos']
-	if $args[1]='' or $strfind($object_array[args['pos']],$args[1])<>'':
-		if $args[3]='' or $strfind($run_array[args['pos']],$args[3])<>'':
-			$args['gdo']='true'
-			pl "&gt;<<$args[2]>>[arrsize('<<$args[2]>>')]=<<$id_array[args['pos']]>>"
-			dynamic "<<$args[2]>>[arrsize('<<$args[2]>>')]=$id_array[args[0]]",args['pos']
+$[0] - ай-ди родительского объекта
+$[1] - регулярное выражение по которому производится дополнительная фильтрация
+$[2]!	массив, в который вносятся ай-ди дочерних объектов.
+$[3]!	дополнительная проверка. ! регулярное выражение Сортировка идёт по данным в массиве $run_array[]
+$[4] - в каком столбце ищем информацию
+
+# get.daughter.obj
+local $parent_id_, $regexp_, $arr_, $run_regexp_, $col_ = $args[0], $args[1], $args[2], $args[3], $args[4]
+if $arr_ = '': $arr_ = '$temp_id'	&	
+if instr($arr_,'$')<>1: $arr_='$'+$arr_
+if $col_ = '': $col_='position'
+
+local log_start_, log_finish_
+log_start_=msecscount
+$result='false'
+pos_=-1
+loop local pos_, run_, i = -1, 1, -1 while run_:
+	pos_ = arrpos('$<<$col_>>_array',$parent_id_, pos_+1)
+	if pos_<>-1 and i<>pos_:
+		i=pos_
+		if $regexp_='' or $strfind($object_array[pos_],$regexp_)<>'':
+			if $run_regexp_='' or $strfind($run_array[pos_],$run_regexp_)<>'':
+				$result='true'
+				pl "&gt;<<$arr_>>[arrsize('<<$arr_>>')]=<<$id_array[pos_]>>"
+				dynamic "<<$arr_>>[arrsize('<<$arr_>>')]=$id_array[args[0]]",pos_
+			end
 		end
+	else:
+		run_ = 0
 	end
-	jump 'for'
 end
-args['log.finish']=msecscount
+log_finish_=msecscount
 $error_log[]="<<MSECSCOUNT>> get.daughter.obj
 	curloc:<<$curloc>> 
-	parent:<<$args[0]>> 
-	filtr:<<$args[1]>> 
-	array:<<$args[2]>> 
-	dynamic_script:<<$args[3]>>
-	round:$<<$args[4]>>_array 
-	result:<<$args['gdo']>> 
-	arrsize:<<arrsize($args[2])>> 
-	time:<<args['log.finish']-args['log.start']>>"
-$result=$args['gdo']
+	parent:<<$parent_id_>> 
+	filter:<<$regexp_>> 
+	array:<<$arr_>> 
+	dynamic_script:<<$run_regexp_>>
+	round:$<<$col_>>_array 
+	result:<<$result>> 
+	arrsize:<<arrsize($arr_)>> 
+	time:<<log_finish_-log_start_>>"
 --- get.daughter.obj ---------------------------------

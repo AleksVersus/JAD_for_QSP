@@ -1,39 +1,42 @@
+QSP-Game ! функция проверяет возможно ли добавление в рюкзак или инвентарь
+$[0]	&	!	ай-ди предмета
+$[1]	&	!	управляющая конструкция
 # prv.obj.weight
-! функция проверяет возможно ли добавление в рюкзак или инвентарь
-$args[0] = $args[0]	&	!	ай-ди предмета
-$args[1] = $args[1]	&	!	управляющая конструкция
-$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
-$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
+local $obj_id_, $manage_ = $args[0], $args[1]
+local $obj_body_, pos_, $obj_kind_, number_, weight_, $vector_, capacity_
+local how_many_
+$obj_body_ = @get.obj.id($obj_id_)	&	!@	получаем тело предмета
+pos_ = arrpos('$id_array', $obj_id_)	&	!@	получаем позицию предмета в базе
+$obj_kind_ = @em.tag.getCont($obj_body_)	&	!@	короткое имя предмета, ай-ди вида.
 
-args['колво']=kolvo_array[args['pit']]	&	!	количество предметов в позиции
-args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	вес одного предмета
+number_ = kolvo_array[pos_]	&	!@	количество предметов в позиции
+weight_ = @em.tag.getNum($obj_body_, 'weight')	&	!@	вес одного предмета
 
-if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\s\S]*|seller;|торговец;)')!'':
-	$args['поднять']='buy'
-elseif $args[1]='inBag':
-	$args['поднять']='inBag'
-elseif $args[1]='inInv':
-	$args['поднять']='inInv'
-else
-	$args['поднять']='place'
+if $strfind(@get.loc.id(),'(\[т:[\d]+\]_[\s\S]*|seller;|торговец;)')<>'':
+	$vector_ = 'buy'
+elseif $manage_ = 'inBag':
+	$vector_ = 'inBag'
+elseif $manage_ = 'inInv':
+	$vector_ = 'inInv'
+else:
+	$vector_ = 'place'
 end
-! Вычисляем, сколько предметов такого веса может поместиться в рюкзаке
-if args['weight']!0: args['вместимость']=(property['hero.power.max']-property['hero.power.all'])/args['weight'] else args['вместимость']=2123456789
-if args['колво']>5 and args['вместимость']>5:
-! Проверяем количество поднимаемых предметов. Если оно больше пяти, спрашиваем, сколько хочешь поднять.
-	! Если количество поднимаемых предметов больше вместимости рюкзака, количество предметов, которые можно поднять ограничивается вместимостью
-	! В противном случае это количество ограничено количеством поднимаемых предметов
-	if args['колво']>args['вместимость']: args['вместимость']=args['вместимость'] else args['вместимость']=args['колво']
-	args['поднять_штук']=$input($func('b.d.t','hmayw',$args['поднять'],args['вместимость']))
-	if isnum($args['поднять_штук'])=-1: args['поднять_штук']=val($args['поднять_штук']) else args['поднять_штук']=0
-else
-! Если количество поднимаемых предметов 5 или меньше, и рюкзак может вместить лишь пять или меньше предметов, предметы поднимаются поштучно.
-	args['поднять_штук']=1
+!@ Вычисляем, сколько предметов такого веса может поместиться в рюкзаке
+capacity_ = iif(weight_ <> 0, (property['hero.power.max'] - property['hero.power.all']) / weight_, 2123456789)
+if number_>5 and capacity_>5:
+	!@ Проверяем количество поднимаемых предметов. Если оно больше пяти, спрашиваем, сколько хочешь поднять.
+	!@ Если количество поднимаемых предметов больше вместимости рюкзака, количество предметов, которые можно поднять ограничивается вместимостью
+	!@ В противном случае это количество ограничено количеством поднимаемых предметов
+	capacity_ = iif(number_ > capacity_, capacity_, number_)
+	$how_many_ = $input(@b.d.t('hmayw', $vector_, capacity_))
+	how_many_ = iif(isnum($how_many_)=-1, val($how_many_), 0)
+else:
+	!@ Если количество поднимаемых предметов 5 или меньше, и рюкзак может вместить лишь пять или меньше предметов, предметы поднимаются поштучно.
+	how_many_ = 1
 end
-if args['поднять_штук']!0 and no args['поднять_штук']*args['weight']>property['hero.power.max']-property['hero.power.all'] and no args['поднять_штук']>args['вместимость']:
-	result=args['поднять_штук']
+if how_many_ <> 0 and no how_many_*weight_>property['hero.power.max']-property['hero.power.all'] and no how_many_>capacity_:
+	result = how_many_
 else
-	result=0
+	result = 0
 end
 --- prv.obj.weight ---------------------------------

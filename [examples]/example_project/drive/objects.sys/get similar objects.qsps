@@ -1,28 +1,28 @@
-# get.similar.obj
-! Функция получает позицию объекта, которому идентичен другой объект
+QSP-Game ! Функция получает позицию объекта, которому идентичен другой объект
 ! $args[0] - ай-ди исходного объекта
 ! $args[1] - ай-ди искомого местоположения. если пустое значение, ищет вообще по всем объектам в игре.
-$args[0] = $args[0]
-$args[1] = $args[1]
-args['obj'] = arrpos('$id_array',$args[0])	&	!	получаем номер объекта в базе по его ай-ди
-args['get.similar.obj']=-1	&	!	результат по умолчанию
-args['pos']=-1	&	!	позиция исключаемая из поиска
-:for
-args['pos']=arrpos(args['pos']+1,'$object_array',$object_array[args['obj']])	&	!	находим позицию объекта идентичного исходному
-if no args['pos']<0:
-! Если позиция не -1
-	if args['pos']=args['obj']: jump 'for'
-	if $position_array[args['pos']]!$args[1] and $args[1]!'': jump 'for'	&	!	если родительский объект искомого объекта не соответствует исходному повторяем поиск
-	if charge_array[args['pos']]!charge_array[args['obj']]: jump 'for'	&	!	если у объектов разные заряды, повторяем поиск
-	$args['daughters']=$func('get.daughter.obj',$id_array[args['pos']],'','$id_temp')
-	if $args['daughters']!'false': killvar '$id_temp' & jump 'for'
-	if $respawn_array[args['pos']]!$respawn_array[args['obj']]:  jump 'for'	&	!	если у объектов разное время респаунинга, повторяем поиск
-	if $run_array[args['pos']]!$run_array[args['obj']]:  jump 'for'	&	!	если у объектов различаются динамические коды
-	args['get.similar.obj']=args['pos']
-	result=args['get.similar.obj']
-	exit
-else
-	result=args['get.similar.obj']
-	exit
+# get.similar.obj
+local $obj_id_, $place_id_ = $args[0], $args[1]
+local pit_, pos_, $have_daughter_
+pit_ = arrpos('$id_array',$obj_id_)	&	!@	получаем номер объекта в базе по его ай-ди
+result=-1	&	!@	результат по умолчанию
+pos_=-1		&	!@	позиция исключаемая из поиска
+loop while 1:
+	pos_=arrpos('$object_array',$object_array[pit_], pos_+1)	&	!@	находим позицию объекта идентичного исходному
+	if no pos_<0:
+	!@ Если позиция не -1
+		if pos_ = pit_: jump 'continue'
+		if $position_array[pos_] <> $place_id_ and $place_id_ <> '': jump 'continue'	&	!@	если родительский объект искомого объекта не соответствует исходному повторяем поиск
+		if charge_array[pos_] <> charge_array[pit_]: jump 'for'	&	!@	если у объектов разные заряды, повторяем поиск
+		$have_daughter_ = @get.daughter.obj($id_array[pos_],'','$id_temp')
+		if $have_daughter_ <> 'false': killvar '$id_temp' & jump 'continue'
+		if $respawn_array[pos_] <> $respawn_array[pit_]:  jump 'continue'	&	!@	если у объектов разное время респаунинга, повторяем поиск
+		if $run_array[pos_] <> $run_array[pit_]:  jump 'continue'	&	!@	если у объектов различаются динамические коды
+		result = pos_
+		exit
+	else
+		exit
+	end
+	:continue
 end
 --- get.similar.obj ---------------------------------

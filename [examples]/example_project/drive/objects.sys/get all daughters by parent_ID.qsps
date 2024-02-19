@@ -1,40 +1,26 @@
-# get.daughter.obj.all
-! локация ищет все дочерние объекты и вложенные в них объекты.
+QSP-Game ! локация ищет все дочерние объекты и вложенные в них объекты.
 ! Если указать регулярное выражение будет произведён поиск лишь тех объектов, к которым применимо регулярное выражение
-$args[0] = $args[0]	&	!	ID местоположения
-$args[1] = $args[1]	&	!	фильтр объектов в виде регулярного выражения
-$args[2] = $args[2]	&	!	имя массива, в который будут помещены ай-ди всех дочерних объектов
-$args['gdoa']='false'
-$args['level.0']=DYNEVAL("$args['dyneval']=$func('get.daughter.obj','<<$args[0]>>','<<$args[1]>>','<<$args[2]>>0')
-$result=$args['dyneval']")
-if $args['level.0']='true':
-	args['i'] = 0
-	:next
-	args['u'] = 0
-	:daughter
-	$args["level.<<args['i']>>"]=DYNEVAL("$args['dyneval']=$func('get.daughter.obj',<<$args[2]>><<args['i']>>[<<args['u']>>],'<<$args[1]>>','<<$args[2]>><<args['i']+1>>')
-$result=$args['dyneval']")
-	args['u']+=1
-	if args['u']<arrsize("<<$args[2]>><<args['i']>>"): jump 'daughter'
-	args['i']+=1
-	if arrsize("<<$args[2]>><<args['i']>>")>0: jump 'next'
-end
-args['r'] = 0
-args['t'] = 0
-:for
-if args['r']<args['i']+1:
-	args['n'] = 0
-	:lu
-	if args['n']<arrsize("<<$args[2]>><<args['r']>>"):
-		DYNAMIC "<<$args[2]>>[<<args['t']>>]=<<$args[2]>><<args['r']>>[<<args['n']>>]"
-		if args['t']=0: $args['gdoa']='true'
-		args['n']+=1
-		args['t']+=1
-		jump 'lu'
+$[0]	&	!	ID местоположения
+$[1]	&	!	фильтр объектов в виде регулярного выражения
+$[2]	&	!	имя массива, в который будут помещены ай-ди всех дочерних объектов
+# get.daughter.obj.all
+local $place_id_, $regexp_, $arr_ = $args[0], $args[1], $args[2]
+$result='false'
+local i
+if @get.daughter.obj($place_id_, $regexp_, '<<$arr_>>0') = 'true':
+	local $next_id_, $bool_
+	loop i = 0 while arrsize("<<$arr_>><<i>>")>0 step i += 1:
+		loop local u = 0 while u < arrsize("<<$arr_>><<i>>") step u +=1:
+			$next_id_ = $arritem('<<$arr_>><<i>>', u)
+			$bool_ = @get.daughter.obj($next_id_, $regexp_,'<<$arr_>><<i+1>>')
+		end
 	end
-	killvar "<<$args[2]>><<args['r']>>"
-	args['r']+=1
-	jump 'for'
 end
-$result = $args['gdoa']
+loop local r, t = 0, 0 while r < i+1 step r += 1:
+	loop local n = 0 while n < arrsize("<<$arr_>><<r>>") step n += 1 & t += 1:
+		dynamic "<<$arr_>>[] = <<$arr_>><<r>>[<<n>>]"
+		if t = 0: $result = 'true'
+	end
+	killvar "<<$arr_>><<r>>"
+end
 --- get.daughter.obj.all ---------------------------------
