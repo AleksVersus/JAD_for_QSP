@@ -1,4 +1,121 @@
+QSP-Game
+$args[0] = $args[0]	&	!	id локации
 # interface.place
+local $loc_id_ = $args[0]
+local $head_text_, $stat_text_, $acts_text_, $main_text_, $output_
+!@ формируем заголовок:
+$head_text_ += $SQUARE['SQUARE.head']
+!@ формируем дополнительное описание:
+$stat_text_ += $SQUARE['SQUARE.stat']
+!@ формируем действия:
+$acts_text_ += $SQUARE['SQUARE.loc.acts.inHREF']		&	!@	действия из массива $avar идут в первую очередь
+$acts_text_ += $SQUARE['SQUARE.location.obj.inHREF']	&	!@	действия <obj> <goto> <act>
+! формируем основное описание:
+if $light_array[$loc_id_]='темно':
+	$main_text_ += @b.d.t('dark')
+	$main_text_ += $SQUARE['SQUARE.location.indark.chest']
+else
+	$main_text_ += $SQUARE['SQUARE.loc.maintxt']			&	!@	базовое описание выводится в первую очередь
+	$main_text_ += $SQUARE['SQUARE.loc.hallow']			&	!@	следующим по порядку идёт приветствие
+	$main_text_ += $SQUARE['SQUARE.loc.fromSource']		&	!@	описание из исходника
+	$main_text_ += $SQUARE['SQUARE.loc.plustext']			&	!@	добавочный текст
+	$main_text_ += $SQUARE['SQUARE.loc.dvar']				&	!@	текст в накидку
+end
+	!@ начало таблицы
+	$output_+="<table width=100% valign=middle cellpadding=0 border=1>"
+		!@ ячейка заголовка. Одинаковая для всех режимов.
+		$output_+="<tr><td align=center valign=middle><<$head_text_>></td></tr>"
+		!@ ячейка/таблица описания/статов/действий
+		$output_+="<tr><td><table width=100% cellpadding=12 border=2>"
+		if $GAME_INTERFACE['maintxt']='vertical':
+		!@ вертикальная разметка. Дополнительное описание располагается рядом с основным и действиями, т.е. одной строкой
+			!@ начало общей строки
+			$output_+='<tr>'
+			if $GAME_INTERFACE['show.stat']='main left':
+			!@ если статы выводятся слева, создеём отдельную ячейку
+				$output_+='<td align=center valign=bottom width=38%><div align=justify>'
+					$output_ += $iif($stat_text_<>'', $stat_text_ , '&nbsp;')
+				$output_+='</div></td>'
+			end
+			!@ создаём ячейку для основного описания и действий и ещё таблицу:
+			$output_+='<td align=left valign=top><table width=100% cellpadding=5 border=1>'
+				!@ строка и ячейка с основным описанием
+				$output_+="<tr><td width=100% valign=top align=center height=400><div align=justify>"
+					$output_ += $iif($main_text_<>'', $main_text_, '&nbsp;')
+					!@ закрываем строку и ячейку с основным описанием
+				$output_+="</div></td></tr>"
+				!@ В режиме main under дополнительное описание располагается сразу под основным
+				if $GAME_INTERFACE['show.stat']='main under' and $stat_text_<>'':
+				!@ строка/ячейка дополнительного описания не создаётся, если не нужна
+					$output_+="<tr><td width=100% valign=top align=center height=400><div align=justify>"
+						$output_ += $stat_text_
+					$output_+="</div></td></tr>"
+				end
+				!@ действия добавляются в таблицу только при show.acts=hide
+				if $GAME_INTERFACE['show.acts']='hide' and $acts_text_<>'':
+				!@ строка/ячейка действий не создаётся, если их нет
+					$output_+="<tr><td width=100% valign=top align=left bgcolor=#"+$GAME_INTERFACE['acts.color']+">"
+						$output_+='<font size=1>'+@b.d.t('word.acts')+':</font><br>'
+						$output_+=$acts_text_
+					$output_+="</td></tr>"
+				end
+			!@ закрываем таблицу и ячейку
+			$output_+='</table></td>'
+			if $GAME_INTERFACE['show.stat']='main right':
+			!@ если статы выводятся справа, создаём отдельную ячейку
+				$output_+='<td align=center valign=bottom width=38%><div align=justify>'
+					$output_ += $iif($stat_text_<>'', $stat_text_ , '&nbsp;')
+				$output_+='</div></td>'
+			end
+			!@ конец общей строки
+			$output_+='</tr>'
+		elseif $GAME_INTERFACE['maintxt']='horizontal':
+		!@ горизонатльная разметка. дополнительное описание и действия располагаются под основным описанием
+			!@ отдельной строкой и ячейкой размещаем основное описание
+			$output_+='<tr><td width=100% height="400 px."><div align=justify>'
+				$output_ += $iif($main_text_<>'', $main_text_ , '&nbsp;')
+			$output_+='</div></td></tr>'
+			!@ строка/ячейка/таблица с действиями и статами. Выводится только если хотя бы одно из окон скрыто
+			if $GAME_INTERFACE['show.acts']='hide' or $GAME_INTERFACE['show.stat']<>'show':
+				local $stat_cell_ = ''
+				$output_+='<tr><td width=100%><table width=100% border=1>'
+					!@ общая строка
+					$output_+='<tr>'
+						if $GAME_INTERFACE['show.stat']='main left' or $GAME_INTERFACE['show.stat']='main right':
+							local w = iif($GAME_INTERFACE['show.acts']='hide', 35, 100)
+							$stat_cell_='<td width=<<w>>% align=center valign=top><div align=justify>'
+								$stat_cell_ += $iif($stat_text_<>'', $stat_text_ , '&nbsp;')
+							$stat_cell_+='</div></td>'
+						end
+						if $GAME_INTERFACE['show.stat']='main left':	$output_+=$stat_cell_
+						if $GAME_INTERFACE['show.acts']='hide':
+							if $acts_text_<>'':
+								$output_+="<td valign=top align=left bgcolor=#"+$GAME_INTERFACE['acts.color']+">"
+									$output_+='<font size=1>'+@b.d.t('word.acts')+':</font><br>'
+									$output_+=$acts_text_
+								$output_+="</td>"
+							else
+								$output_+='<td>&nbsp;</td>'
+							end
+						end
+						if $GAME_INTERFACE['show.stat']='main right':	$output_+=$stat_cell_
+					$output_+='</tr>'
+					!@ если show.stat = main under размещаем отдельной строкой
+					if $GAME_INTERFACE['show.stat']='main under' and $stat_text_<>'':
+						$output_+="<tr><td width=100% valign=top align=center height=400><div align=justify>"
+							$output_ += $stat_text_
+						$output_+="</div></td></tr>"
+					end
+				$output_+='</table></td></tr>'
+			end
+		end
+		!@ закрываем ячейку/таблицу описания/статов/действий
+		$output_+='</table></td></tr>'
+	!@ конец таблицы
+	$output_+="</table>"
+$result = $output_
+--- interface.place ---------------------------------
+
 ! таблица в основное описание локации места. Понадобятся значения следующих переменных:
 ! "общие переменные режимов
 	$SQUARE['SQUARE.loc.type']
@@ -18,115 +135,3 @@
 !	$SQUARE['SQUARE.location.obj.inHREF']
 !	$SQUARE['SQUARE.location.indark.chest']
 !"
-$args[0] = $args[0]	&	!	id локации
-! формируем заголовок:
-$args['head.text']+=$SQUARE['SQUARE.head']
-! формируем дополнительное описание:
-$args['stat.text']+=$SQUARE['SQUARE.stat']
-! формируем действия:
-$args['acts.text']+=$SQUARE['SQUARE.loc.acts.inHREF']		&	!	действия из массива $avar идут в первую очередь
-$args['acts.text']+=$SQUARE['SQUARE.location.obj.inHREF']	&	!	действия <obj> <goto> <act>
-! формируем основное описание:
-if $light_array[$args[0]]='темно':
-	$args['main.text']+=$func('b.d.t','dark')
-	$args['main.text']+=$SQUARE['SQUARE.location.indark.chest']
-else
-	$args['main.text']+=$SQUARE['SQUARE.loc.maintxt']			&	!	базовое описание выводится в первую очередь
-	$args['main.text']+=$SQUARE['SQUARE.loc.hallow']			&	!	следующим по порядку идёт приветствие
-	$args['main.text']+=$SQUARE['SQUARE.loc.fromSource']		&	!	описание из исходника
-	$args['main.text']+=$SQUARE['SQUARE.loc.plustext']			&	!	добавочный текст
-	$args['main.text']+=$SQUARE['SQUARE.loc.dvar']				&	!	текст в накидку
-end
-	! начало таблицы
-	$args['interface']+="<table width=100% valign=middle cellpadding=0 border=1>"
-		! ячейка заголовка. Одинаковая для всех режимов.
-		$args['interface']+="<tr><td align=center valign=middle>"+$args['head.text']+"</td></tr>"
-		! ячейка/таблица описания/статов/действий
-		$args['interface']+="<tr><td><table width=100% cellpadding=12 border=2>"
-		if $GAME_INTERFACE['maintxt']='vertical':
-		! вертикальная разметка. Дополнительное описание располагается рядом с основным и действиями, т.е. одной строкой
-			! начало общей строки
-			$args['interface']+='<tr>'
-			if $GAME_INTERFACE['show.stat']='main left':
-			! если статы выводятся слева, создеём отдельную ячейку
-				$args['interface']+='<td align=center valign=bottom width=38%><div align=justify>'
-				if $args['stat.text']<>'': $args['interface']+=$args['stat.text'] else $args['interface']+='&nbsp;'
-				$args['interface']+='</div></td>'
-			end
-			! создаём ячейку для основного описания и действий и ещё таблицу:
-			$args['interface']+='<td align=left valign=top><table width=100% cellpadding=5 border=1>'
-				! строка и ячейка с основным описанием
-				$args['interface']+="<tr><td width=100% valign=top align=center height=400><div align=justify>"
-					if $args['main.text']<>'': $args['interface']+=$args['main.text'] else $args['interface']+='&nbsp;'
-				! закрываем строку и ячейку с основным описанием
-				$args['interface']+="</div></td></tr>"
-				! В режиме main under дополнительное описание располагается сразу под основным
-				if $GAME_INTERFACE['show.stat']='main under' and $args['stat.text']<>'':
-				! строка/ячейка дополнительного описания не создаётся, если не нужна
-					$args['interface']+="<tr><td width=100% valign=top align=center height=400><div align=justify>"
-						$args['interface']+=$args['stat.text']
-					$args['interface']+="</div></td></tr>"
-				end
-				! действия добавляются в таблицу только при show.acts=hide
-				if $GAME_INTERFACE['show.acts']='hide' and $args['acts.text']<>'':
-				! строка/ячейка действий не создаётся, если их нет
-					$args['interface']+="<tr><td width=100% valign=top align=left bgcolor=#"+$GAME_INTERFACE['acts.color']+">"
-						$args['interface']+='<font size=1>'+$func('b.d.t','word.acts')+':</font><br>'
-						$args['interface']+=$args['acts.text']
-					$args['interface']+="</td></tr>"
-				end
-			! закрываем таблицу и ячейку
-			$args['interface']+='</table></td>'
-			if $GAME_INTERFACE['show.stat']='main right':
-			! если статы выводятся справа, создаём отдельную ячейку
-				$args['interface']+='<td align=center valign=bottom width=38%><div align=justify>'
-				if $args['stat.text']<>'': $args['interface']+=$args['stat.text'] else $args['interface']+='&nbsp;'
-				$args['interface']+='</div></td>'
-			end
-			! конец общей строки
-			$args['interface']+='</tr>'
-		elseif $GAME_INTERFACE['maintxt']='horizontal':
-		! горизонатльная разметка. дополнительное описание и действия располагаются под основным описанием
-			! отдельной строкой и ячейкой размещаем основное описание
-			$args['interface']+='<tr><td width=100% height="400 px."><div align=justify>'
-				if $args['main.text']<>'': $args['interface']+=$args['main.text'] else $args['interface']+='&nbsp;'
-			$args['interface']+='</div></td></tr>'
-			! строка/ячейка/таблица с действиями и статами. Выводится только если хотя бы одно из окон скрыто
-			if $GAME_INTERFACE['show.acts']='hide' or $GAME_INTERFACE['show.stat']<>'show':
-				$args['interface']+='<tr><td width=100%><table width=100% border=1>'
-					! общая строка
-					$args['interface']+='<tr>'
-						if $GAME_INTERFACE['show.stat']='main left' or $GAME_INTERFACE['show.stat']='main right':
-							if $GAME_INTERFACE['show.acts']='hide': args["w"]=35 else args["w"]=100
-							$args['stat.cell']='<td width=<<args["w"]>>% align=center valign=top><div align=justify>'
-							if $args['stat.text']<>'': $args['stat.cell']+=$args['stat.text'] else $args['stat.cell']+='&nbsp;'
-							$args['stat.cell']+='</div></td>'
-						end
-						if $GAME_INTERFACE['show.stat']='main left':	$args['interface']+=$args['stat.cell']
-						if $GAME_INTERFACE['show.acts']='hide':
-							if $args['acts.text']<>'':
-								$args['interface']+="<td valign=top align=left bgcolor=#"+$GAME_INTERFACE['acts.color']+">"
-									$args['interface']+='<font size=1>'+$func('b.d.t','word.acts')+':</font><br>'
-									$args['interface']+=$args['acts.text']
-								$args['interface']+="</td>"
-							else
-								$args['interface']+='<td>&nbsp;</td>'
-							end
-						end
-						if $GAME_INTERFACE['show.stat']='main right':	$args['interface']+=$args['stat.cell']
-					$args['interface']+='</tr>'
-					! если show.stat = main under размещаем отдельной строкой
-					if $GAME_INTERFACE['show.stat']='main under' and $args['stat.text']<>'':
-						$args['interface']+="<tr><td width=100% valign=top align=center height=400><div align=justify>"
-							$args['interface']+=$args['stat.text']
-						$args['interface']+="</div></td></tr>"
-					end
-				$args['interface']+='</table></td></tr>'
-			end
-		end
-		! закрываем ячейку/таблицу описания/статов/действий
-		$args['interface']+='</table></td></tr>'
-	! конец таблицы
-	$args['interface']+="</table>"
-$result = $args['interface']
---- interface.place ---------------------------------

@@ -1,4 +1,110 @@
+QSP-Game
+$args[0] = $args[0]	&	!	id локации
 # interface.chest
+local $loc_id_ = $args[0]
+local $head_text_, $stat_text_, $acts_text_, $main_text_, $output_, $main_or_stat_
+!@ формируем заголовок:
+$head_text_+=$SQUARE['SQUARE.head']
+!@ формируем дополнительное описание:
+$stat_text_+=$SQUARE['SQUARE.stat']
+!@ формируем действия:
+$acts_text_+=$SQUARE['SQUARE.loc.acts.inHREF']		&	!@	действия из массива $avar
+!@ формируем основное описание:
+$main_text_+=$SQUARE['SQUARE.loc.maintxt']			&	!@	базовое описание выводится в первую очередь
+$main_text_+=$SQUARE['SQUARE.loc.hallow']			&	!@	следующим по порядку идёт приветствие
+$main_text_+=$SQUARE['SQUARE.loc.fromSource']		&	!@	описание из исходника
+$main_text_+=$SQUARE['SQUARE.loc.plustext']			&	!@	добавочный текст
+$main_text_+=$SQUARE['SQUARE.loc.dvar']				&	!@	текст в накидку
+if $acts_text_<>'' and $acts_text_<>'': $main_text_+='<br>'
+$main_text_+=$acts_text_						&	!@	действия на локации в основном описании
+
+	!@ начало таблицы
+	$output_+='<table width=100% valign=middle cellpadding=8 border=3>'
+		!@ строка заголовка. Одинаковая для всех режимов:
+		$output_+="<tr><td align=center valign=middle><<$head_text_>></td></tr>"
+		!@ основной текст вертикальный:
+		if $GAME_INTERFACE['maintxt']='vertical':
+			!@ если режим статов main under отдельной строкой пишется основное описание
+			if $GAME_INTERFACE['show.stat']="main under" and $main_text_<>'':
+				!@ начало строки и ячейки
+				$output_+="<tr><td align=left valign=top><div align=justify>"
+				!@ содержимое основного описания:
+					$output_+=$main_text_
+				!@ конец строки и ячейки
+				$output_+="</div></td></tr>"
+			end
+			!@ если режим статов main under отдельной строкой пишется дополнительное описание
+			if $GAME_INTERFACE['show.stat']="main under" and $stat_text_<>'':
+				!@ начало строки и ячейки
+				$output_+="<tr><td align=left valign=top><div align=justify>"
+				!@ содержимое основного описания:
+					$output_+=$stat_text_
+				!@ конец строки и ячейки
+				$output_+="</div></td></tr>"
+			end
+			!@ начало строки/ячейки/таблицы со списком предметов/мэйном/статом
+			$output_+="<tr><td align=center valign=top><table width=100% cellpadding=5 border=2>"
+				!@ ячейка/таблица мэйн/стат начало
+				$main_or_stat_+='<td width=35%><table width=100% border=1>'
+					!@ строка/ячейка - основное опписание начало
+					$main_or_stat_+='<tr><td>'
+						$main_or_stat_+= $iif($main_text_<>'', $main_text_,'&nbsp;')
+					!@ строка/ячейка - основное опписание конец
+					$main_or_stat_ += '</td></tr>'
+					if $stat_text_<>'':
+					!@ строка ячейка доп описания
+						$main_or_stat_+='<tr><td>'
+						$main_or_stat_+=$stat_text_
+						$main_or_stat_+='</td></tr>'
+					end
+				!@ ячейка/таблица мэйн/стат конец
+				$main_or_stat_+='</table></td>'
+				if $GAME_INTERFACE['show.stat']="main left": $output_+=$main_or_stat_
+				!@ ячейка с предметами начало
+				$output_+='<td align=left valign=bottom>'
+					$output_+=$SQUARE['SQUARE.chest.obj.inHREF']
+					$output_+='<br>'+$SQUARE['SQUARE.chest.closeAct']
+				!@ ячейка с предметами конец
+				$output_+='</td>'
+				if $GAME_INTERFACE['show.stat']="main right": $output_+=$main_or_stat_
+			!@ конец строки/ячецки/таблицы со списокм/мэйном/статом
+			$output_+='</table></td></tr>'
+		elseif $GAME_INTERFACE['maintxt']='horizontal':
+			!@ начало строки/ячейки с мэйном
+			$output_+='<tr><td width=100%>'
+				$output_+=$main_text_
+			!@ конец строки/ячейки с мэйном
+			$output_+='</td></tr>'
+			!@ начало строки/ячейки таблицы со сброшенными предметами и статом
+			$output_+='<tr><td><table width=100% border=2 cellspacing=5><tr>'
+				!@ ячейка стат
+				if $stat_text_<>'':
+				!@ строка ячейка доп описания
+					$main_or_stat_+='<td width=35% align=left valign=top>'
+					$main_or_stat_+=$stat_text_
+					$main_or_stat_+='</td>'
+				end
+				if $GAME_INTERFACE['show.stat']="main left" and $main_or_stat_<>'': $output_+=$main_or_stat_
+				!@ ячейка сброшенных предметов
+				$output_+='<td valign=top align=left>'
+					$output_+=$SQUARE['SQUARE.chest.closeAct']+'<br>'
+					$output_+=$SQUARE['SQUARE.chest.obj.inHREF']
+				$output_+='</td>'
+				if $GAME_INTERFACE['show.stat']="main right" and $main_or_stat_<>'': $output_+=$main_or_stat_
+			!@ конец строки/ячейки таблицы со сброшенными предметами и статом
+			$output_+='</tr></table></td></tr>'
+			!@ строка ячейка статов при main under
+			if $stat_text_<>'' and $GAME_INTERFACE['show.stat']="main under":
+				$output_+='<tr><td align=left valign=top>'
+					$output_+=$stat_text_
+				$output_+='</td></tr>'
+			end
+		end
+	!@ конец таблицы
+	$output_+="</table>"
+	
+$result = $output_
+--- interface.chest ---------------------------------
 ! таблица в основное описание локации места. Понадобятся значения следующих переменных:
 ! "общие переменные режимов
 	$SQUARE['SQUARE.loc.type']
@@ -19,106 +125,3 @@
 ! переменные для хранилища
 !	$SQUARE['SQUARE.chest.obj.inHREF']
 !"
-$args[0] = $args[0]	&	!	id локации
-! формируем заголовок:
-$args['head.text']+=$SQUARE['SQUARE.head']
-! формируем дополнительное описание:
-$args['stat.text']+=$SQUARE['SQUARE.stat']
-! формируем действия:
-$args['acts.text']+=$SQUARE['SQUARE.loc.acts.inHREF']		&	!	действия из массива $avar
-! формируем основное описание:
-$args['main.text']+=$SQUARE['SQUARE.loc.maintxt']			&	!	базовое описание выводится в первую очередь
-$args['main.text']+=$SQUARE['SQUARE.loc.hallow']			&	!	следующим по порядку идёт приветствие
-$args['main.text']+=$SQUARE['SQUARE.loc.fromSource']		&	!	описание из исходника
-$args['main.text']+=$SQUARE['SQUARE.loc.plustext']			&	!	добавочный текст
-$args['main.text']+=$SQUARE['SQUARE.loc.dvar']				&	!	текст в накидку
-if $args['acts.text']<>'' and $args['acts.text']<>'': $args['main.text']+='<br>'
-$args['main.text']+=$args['acts.text']						&	!	действия на локации в основном описании
-
-	! начало таблицы
-	$args['interface']+='<table width=100% valign=middle cellpadding=8 border=3>'
-		! строка заголовка. Одинаковая для всех режимов:
-		$args['interface']+="<tr><td align=center valign=middle>"+$args['head.text']+"</td></tr>"
-		! основной текст вертикальный:
-		if $GAME_INTERFACE['maintxt']='vertical':
-			! если режим статов main under отдельной строкой пишется основное описание
-			if $GAME_INTERFACE['show.stat']="main under" and $args['main.text']<>'':
-				! начало строки и ячейки
-				$args['interface']+="<tr><td align=left valign=top><div align=justify>"
-				! содержимое основного описания:
-					$args['interface']+=$args['main.text']
-				! конец строки и ячейки
-				$args['interface']+="</div></td></tr>"
-			end
-			! если режим статов main under отдельной строкой пишется дополнительное описание
-			if $GAME_INTERFACE['show.stat']="main under" and $args['stat.text']<>'':
-				! начало строки и ячейки
-				$args['interface']+="<tr><td align=left valign=top><div align=justify>"
-				! содержимое основного описания:
-					$args['interface']+=$args['stat.text']
-				! конец строки и ячейки
-				$args['interface']+="</div></td></tr>"
-			end
-			! начало строки/ячейки/таблицы со списком предметов/мэйном/статом
-			$args['interface']+="<tr><td align=center valign=top><table width=100% cellpadding=5 border=2>"
-				! ячейка/таблица мэйн/стат начало
-				$args['main|stat']+='<td width=35%><table width=100% border=1>'
-					! строка/ячейка - основное опписание начало
-					$args['main|stat']+='<tr><td>'
-						if $args['main.text']<>'': $args['main|stat']+=$args['main.text'] else $args['main|stat']+='&nbsp;'
-					! строка/ячейка - основное опписание конец
-					$args['main|stat']+='</td></tr>'
-					if $args['stat.text']<>'':
-					! строка ячейка доп описания
-						$args['main|stat']+='<tr><td>'
-						$args['main|stat']+=$args['stat.text']
-						$args['main|stat']+='</td></tr>'
-					end
-				! ячейка/таблица мэйн/стат конец
-				$args['main|stat']+='</table></td>'
-				if $GAME_INTERFACE['show.stat']="main left": $args['interface']+=$args['main|stat']
-				! ячейка с предметами начало
-				$args['interface']+='<td align=left valign=bottom>'
-					$args['interface']+=$SQUARE['SQUARE.chest.obj.inHREF']
-					$args['interface']+='<br>'+$SQUARE['SQUARE.chest.closeAct']
-				!ячейка с предметами конец
-				$args['interface']+='</td>'
-				if $GAME_INTERFACE['show.stat']="main right": $args['interface']+=$args['main|stat']
-			! конец строки/ячецки/таблицы со списокм/мэйном/статом
-			$args['interface']+='</table></td></tr>'
-		elseif $GAME_INTERFACE['maintxt']='horizontal':
-			! начало строки/ячейки с мэйном
-			$args['interface']+='<tr><td width=100%>'
-				$args['interface']+=$args['main.text']
-			! конец строки/ячейки с мэйном
-			$args['interface']+='</td></tr>'
-			! начало строки/ячейки таблицы со сброшенными предметами и статом
-			$args['interface']+='<tr><td><table width=100% border=2 cellspacing=5><tr>'
-				! ячейка стат
-				if $args['stat.text']<>'':
-				! строка ячейка доп описания
-					$args['main|stat']+='<td width=35% align=left valign=top>'
-					$args['main|stat']+=$args['stat.text']
-					$args['main|stat']+='</td>'
-				end
-				if $GAME_INTERFACE['show.stat']="main left" and $args['main|stat']<>'': $args['interface']+=$args['main|stat']
-				! ячейка сброшенных предметов
-				$args['interface']+='<td valign=top align=left>'
-					$args['interface']+=$SQUARE['SQUARE.chest.closeAct']+'<br>'
-					$args['interface']+=$SQUARE['SQUARE.chest.obj.inHREF']
-				$args['interface']+='</td>'
-				if $GAME_INTERFACE['show.stat']="main right" and $args['main|stat']<>'': $args['interface']+=$args['main|stat']
-			! конец строки/ячейки таблицы со сброшенными предметами и статом
-			$args['interface']+='</tr></table></td></tr>'
-			! строка ячейка статов при main under
-			if $args['stat.text']<>'' and $GAME_INTERFACE['show.stat']="main under":
-				$args['interface']+='<tr><td align=left valign=top>'
-					$args['interface']+=$args['stat.text']
-				$args['interface']+='</td></tr>'
-			end
-		end
-	! конец таблицы
-	$args['interface']+="</table>"
-	
-$result = $args['interface']
---- interface.chest ---------------------------------

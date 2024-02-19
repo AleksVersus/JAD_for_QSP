@@ -86,8 +86,10 @@ class QspWorkspace:
 			to_del_paths, to_del_hashs = [], []
 			if len(to_del)>0:
 				to_del_paths, to_del_hashs = zip(to_del)
-		except ValueError:
-			print(to_del, ValueError)
+		except ValueError as e:
+			print(to_del, str(e))
+			sublime.message_dialog('Error RAISE in this moment!!!')
+			raise e
 			
 		# replace on new paths
 		for new_path, md5 in to_add[:]:
