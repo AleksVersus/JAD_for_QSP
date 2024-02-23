@@ -78,8 +78,6 @@ end
 		end
 	end
 	@kill.var.olegus('$infop','pay','taked','last_id','past_id')
-	killvar '$array_body_part_obj'
-	killvar '$array_body_part'
 	@int.inventory
 !@ ----------------------------------------------- вывод на печать --------------------------------------------------
 --- take.obj ---------------------------------
