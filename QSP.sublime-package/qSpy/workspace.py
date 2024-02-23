@@ -85,7 +85,8 @@ class QspWorkspace:
 		try:
 			to_del_paths, to_del_hashs = [], []
 			if len(to_del)>0:
-				to_del_paths, to_del_hashs = zip(to_del)
+				print('unpack this')
+				to_del_paths, to_del_hashs = zip(*to_del)
 		except ValueError as e:
 			print(to_del, str(e))
 			sublime.message_dialog('Error RAISE in this moment!!!')
