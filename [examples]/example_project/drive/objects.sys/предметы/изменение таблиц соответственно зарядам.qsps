@@ -1,36 +1,38 @@
+QSP-Game локация изменяет таблицы в соответсвии с изменениями зарядов предметов
+$[0]	&	!	ай-ди исходного предмета
+$[1]	&	!	id родительского предмета
+[2]		&	!	значение изменяемого заряда
+$[3]	&	!	если не указано, заряд уменьшается
+$[4]	&	!	ай-ди патронташа
+[5]		&	!	количество патронташей
 # redo.obj.inCharge
-! локация изменяет таблицы в соответсвии с изменениями зарядов предметов
-$args[0]=$args[0]	&	!	ай-ди исходного предмета
-$args[1]=$args[1]	&	!	id родительского предмета
-args[2]=args[2]	&	!	значение изменяемого заряда
-if $args[3]='' or $args[3]='down' or $args[3]='del' or $args[3]='-': $args[3]='-'
-if $args[3]='up' or $args[3]='add' or $args[3]='+': $args[3]='+'	&	!	если не указано, заряд уменьшается
-$args[4] = $args[4]	&	!	ай-ди патронташа
-args[5] = args[5]	&	!	количество патронташей
-	args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию в таблице
-	args['pit.parent']=arrpos('$id_array',$args[1])	&	!	позиция родительского объекта в таблице
-	$args['WORD']=$mid($args[0],1,instr($args[0],'.')-1)	&	!	получаем ключевое слово
-	! перемещаем объект в несуществующее место
-	if instr($object_array[args['pit.parent']],'<body>')=0:
-		$args['id.newObj']=$func('replace.obj',$args[0],'charge_place',$args['WORD'],1)
-	else
-		$args['id.newObj']=$args[0]
-	end
-	! заряжаем в несуществующем месте
-	if $args[4]!'':
-		$args['patron']=$func('em.tag.getCont',$object_array[arrpos('$id_array',$args[4])])
-		$args['charge.new']=$func('replace.obj',$args[4],$args['id.newObj'],$args['patron'],args[5])
-	end
-	args['new.pit']=arrpos('$id_array',$args['id.newObj'])
-	if $args[3]='-': charge_array[args['new.pit']]-=args[2]
-	if $args[3]='+': charge_array[args['new.pit']]+=args[2]
-	! перемещаем этот объект в контейнер родительского объекта
-	if instr($object_array[args['pit.parent']],'<body>')=0:
-		$args['replaced']=$func('replace.obj',$args['id.newObj'],$args[1],$args['WORD'],1)
-	else
-		$args['replaced']=$args[0]
-	end
-	$args['redo.obj.inCharge']=$args['replaced']
-killvar '$result'
-$result=$args['redo.obj.inCharge']
+local $obj_id_, $place_id_, charge_ = $args[0], $args[1], args[2]
+local $direction_, $bandoleer_id_, bandoleers_number_ = $args[3], $args[4], args[5]
+local $temp_
+if instr('[][down][del][-]', '[<<$direction_>>]') <> 0: $direction_ = '-'
+if instr('[up][add][+]', '[<<$direction_>>]') <> 0: $direction_ = '+'
+local pos_, place_pos_, $obj_kind_, $new_obj_id_
+pos_ = arrpos('$id_array',$obj_id_)	&	!@	получаем позицию в таблице
+place_pos_ = arrpos('$id_array', $place_id_)	&	!@	позиция родительского объекта в таблице
+$obj_kind_ = $mid($obj_id_, 1, instr($obj_id_,'.')-1)	&	!@	получаем ключевое слово
+!@ перемещаем объект в несуществующее место
+if instr($object_array[place_pos_], '<body>') = 0:
+	$new_obj_id_ = @replace.obj($obj_id_,'charge_place',$obj_kind_,1)
+else:
+	$new_obj_id_ = $obj_id_
+end
+!@ заряжаем в несуществующем месте
+if $bandoleer_id_ <> '':
+	local $bandoleer_kind_ = @em.tag.getCont($object_array[arrpos('$id_array', $bandoleer_id_)])
+	$temp_ = @replace.obj($bandoleer_id_, $new_obj_id_, $bandoleer_kind_, bandoleers_number_)
+end
+local new_obj_pos_ = arrpos('$id_array',$new_obj_id_)
+if $direction_ = '-': charge_array[new_obj_pos_] -= charge_
+if $direction_ = '+': charge_array[new_obj_pos_] += charge_
+!@ перемещаем этот объект в контейнер родительского объекта
+if instr($object_array[place_pos_],'<body>') = 0:
+	$result = @replace.obj($new_obj_id_, $place_id_, $obj_kind_, 1)
+else:
+	$result = $obj_id_
+end
 --- redo.obj.inCharge ---------------------------------

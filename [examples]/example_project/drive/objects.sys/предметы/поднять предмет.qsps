@@ -11,8 +11,8 @@ $obj_kind_ = @em.tag.getCont($obj_body_)	&	!@ короткое имя предм
 $take_or_buy_ = $iif($strfind(@get.loc.id(),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)') <> '', '[buy]', '[take]')
 if instr($obj_body_,'[oneself]') <> 0:
 	!@ здесь может быть проверка на наличие этого предмета.
-	$object_array[pos_]=$replace($object_array[pos_],'<obj>','<'+$obj_kind_+'>')
-	kolvo_array[pos_]=0
+	$object_array[pos_] = $replace($object_array[pos_], '<obj>', '<'+$obj_kind_+'>')
+	kolvo_array[pos_] = 0
 	$temp_ = @replace.obj($obj_id_,'INVENTORY')
 	$print['take.obj'] += @b.w.s("take.oneself "+$take_or_buy_, $obj_body_)
 elseif instr($obj_body_, '[nocount]') <> 0:

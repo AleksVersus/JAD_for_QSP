@@ -1,82 +1,78 @@
+QSP-Game функция осуществляет одевание предмета на тело, если есть такая возможность
+В результат выдаётся три варианта:
+- dont take	- предмет не был взят
+- taken		- предмет взят полностью, т.е. всё количество
+- другое	- предмет взят не полностью, т.е. только некоторое количество
+$[0]	-	ай-ди предмета
+$[1]	-	управляющее или сопроводительное слово dont.pay - по этому значению определяем, что не нужно проверять стоимость.
+[2]		-	количество
 # use.obj.actObj
-! функция осуществляет одевание предмета на тело, если есть такая возможность
-! В результат выдаётся три варианта:
-! dont take	- предмет не был взят
-! taken		- предмет взят полностью, т.е. всё количество
-! другое	- предмет взят не полностью, т.е. только некоторое количество
-$args[0] = $args[0]	&	!	ай-ди предмета
-$args[1] = $args[1]	&	!	управляющее или сопроводительное слово dont.pay - по этому значению определяем, что не нужно проверять стоимость.
-if args[2]=0: args[2]=1 else args[2] = args[2]	&	!	количество
-$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
-$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
-$args['use.obj.actObj']='dont take'
-$args['pos_list']=$func('em.tag.getCont',$args['obj'],'pos')	&	!	вычисляем список позиций, в которые добавляется указанный предмет
-$args['ppi']=$func('prv.pos.inObj',$args[0])
-if $args['pos_list']!'' and $args['ppi']='empty':
-! если предмет должен добавляться на тело и "части тела" свободны
-	! есть список позиций и заполненный массив $array_body_part
-	! Заполняем массив $array_body_part_obj объектами "части тела"
-	args['i']=0
-	:array_body_part
-	if args['i']<arrsize('$array_body_part'):
-		$array_body_part_obj[args['i']]=$func('get.obj.id',$array_body_part[args['i']])
-		args['i']+=1
-		jump 'array_body_part'
+local $obj_id_, $cmd_, number_, $temp_ = $args[0], $args[1], args[2], ''
+if number_ = 0: number_ = 1	&	!@ количество
+local $obj_body_, pos_, $obj_kind_, $pos_list_, $bp_
+$obj_body_ = @get.obj.id($obj_id_)	&	!@ получаем тело предмета
+pos_ = arrpos('$id_array',$obj_id_)	&	!@ получаем позицию предмета в базе
+$obj_kind_ = @em.tag.getCont($obj_body_)	&	!@ короткое имя предмета, ай-ди вида.
+$result = 'dont take'
+$pos_list_ = @em.tag.getCont($obj_body_,'pos')	&	!@ вычисляем список позиций, в которые добавляется указанный предмет
+local $array_body_part_, $array_body_part_obj_
+$bp_ = @prv.pos.inObj($obj_id_)
+if $pos_list_ <> '' and $bp_ = 'empty':
+!@ если предмет должен добавляться на тело и "части тела" свободны
+	!@ есть список позиций и заполненный массив $array_body_part_
+	!@ Заполняем массив $array_body_part_obj_ объектами "части тела"
+	loop local i = 0 while i < arrsize('$array_body_part_') step i += 1:
+		$array_body_part_obj_[i] = @get.obj.id($array_body_part_[i])
 	end
-	args['p']=1
-	if $func('em.tag.getCont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
-	if $func('em.tag.getCont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
-	if $func('em.tag.getCont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
-	:body_part
-	if len($args['pos_list'])>0:
-		$args['position']=$func('em.tag.getCont',$args['pos_list'],$args['l']+str(args['p']))
-		! получаем очередную позицию из списка
-		if $args['position']!'':
-		! если позиция не равна пустому значению, ищем её в массиве $array_body_part_obj
-			args['exit_pos']=arrcomp('$array_body_part_obj','[\s\S]*'+$args['position']+'[\s\S]*')
-			if args['exit_pos']!-1:
-			! Если позиция в массиве найдена
-				if $args['last_id']='':
-				! Перемещаем предмет, в позицию "части тела". Заметьте! Один раз
-					if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'' and $args[1]!'dont.pay':
-						$args['pay']=$func('prv.obj.pay',$args[0],args[2],'purchase')
-						if $args['pay']='false':
+	local $position_, outpos_, $last_id_
+	if @em.tag.getCont($pos_list_,'t1') <> '': $type_bp_ = 't'	&	!@	тип позиции "рука" "перчатки"
+	if @em.tag.getCont($pos_list_,'c1') <> '': $type_bp_ = 'c'	&	!@	класс позиции "arm" "dosp"
+	if @em.tag.getCont($pos_list_,'p1') <> '': $type_bp_ = 'p'	&	!@	конкретная позиция "правая рука" "левая рука"
+	loop local p_ = 1 while len($pos_list_)>0 step p_ += 1:
+		$position_ = @em.tag.getCont($pos_list_, $type_bp_+$str(p_))
+		!@ получаем очередную позицию из списка
+		if $position_ <> '':
+		!@ если позиция не равна пустому значению, ищем её в массиве $array_body_part_obj_
+			outpos_ = arrcomp('$array_body_part_obj_', '[\s\S]*<<$position_>>[\s\S]*')
+			if outpos_ <> -1:
+			!@ Если позиция в массиве найдена
+				if $last_id_ = '':
+				!@ Перемещаем предмет, в позицию "части тела". Заметьте!@ Один раз
+					local $is_pay_
+					if $strfind(@get.loc.id(),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)') <> '' and $cmd_ <> 'dont.pay':
+						$is_pay_ = @prv.obj.pay($obj_id_,number_,'purchase')
+						if $is_pay_='false':
 							$result='dont money'
 							exit
 						end
 					end
-					$args['last_id']=$func('replace.obj',$args[0],$array_body_part[args['exit_pos']],$args['short_name'],args[2])
-					$args['use.obj.actObj']=$func('prv.obj.id',$args[0],$args['last_id'])
-					args['pos_lid']=arrpos('$id_array',$args['last_id'])
-					$infop['last_id']=$args['last_id']
-					$infop['past_id']=$args[0]
-					$infop['taked']='true'
-					if $args['pay']='true': $infop['pay']='true'
-					if $strfind($run_array[args['pos_lid']],'!used!')!'':
-					! динамический код, выполняемый при использовании/одевании
-						$args['run_array.used']=$func('run.dynamic.script','!used!',$args['last_id'],$args[0])
+					$last_id_ = @replace.obj($obj_id_,$array_body_part_[outpos_],$obj_kind_,number_)
+					$result = @prv.obj.id($obj_id_,$last_id_)
+					last_id_['pos'] = arrpos('$id_array', $last_id_)
+					$infop['last_id'] = $last_id_
+					$infop['past_id'] = $obj_id_
+					$infop['taked'] = 'true'
+					if $is_pay_ = 'true': $infop['pay'] = 'true'
+					if $strfind($run_array[last_id_['pos']],'!used!') <> '':
+					!@ динамический код, выполняемый при использовании/одевании
+						$temp_ = @run.dynamic.script('!used!',$last_id_,$obj_id_)
 					end
 				end
-				$include_array[arrpos('$id_array',$array_body_part[args['exit_pos']])]=$args['last_id']
-				$args['short_body_part']='[:'+$func('em.tag.getCont',$array_body_part_obj[args['exit_pos']])+':]'
-				$print['use.obj.actObj']+=$func('base.new.bodypart',$args['short_body_part'],'take.obj:'+$args['last_id']+':take.obj')
-				! Придаём части тела дочерний объект
+				$include_array[arrpos('$id_array',$array_body_part_[outpos_])]=$last_id_
+				local $bp_kind_ = '[:'+@em.tag.getCont($array_body_part_obj_[outpos_])+':]'
+				$print['use.obj.actObj'] += @base.new.bodypart($bp_kind_, 'take.obj:<<$last_id_>>:take.obj')
+				!@ Придаём части тела дочерний объект
 				
-				! Удаляем "использованную" "часть тела"
-				killvar '$array_body_part_obj',args['exit_pos']
-				killvar '$array_body_part',args['exit_pos']
-				! Вырезаем значение из позиционного листа
-				$args['pos_list']=TRIM($replace($args['pos_list'],$args['l']+str(args['p'])+':'+$args['position']+':'+$args['l']+str(args['p'])))
+				!@ Удаляем "использованную" "часть тела"
+				killvar '$array_body_part_obj_', outpos_
+				killvar '$array_body_part_', outpos_
+				!@ Вырезаем значение из позиционного листа
+				$pos_list_= $trim($replace($pos_list_,$type_bp_+$str(p_)+':'+$position_+':'+$type_bp_+$str(p_)))
 			else
 				$error_log+='<font size=+1 color=#ff0000><b>ВНИМАНИЕ!!! Произошла ошибка добавления предмета в "части тела" на локации use.obj.actObj Несоответствие начального и конечного списков позиций.</b></font>'
 				exit
 			end
 		end
-		! Независимо от того была ли нужная нам "часть тела" или пустое значение
-		args['p']+=1
-		jump 'body_part'
 	end
 end
-$result=$args['use.obj.actObj']
 --- use.obj.actObj ---------------------------------

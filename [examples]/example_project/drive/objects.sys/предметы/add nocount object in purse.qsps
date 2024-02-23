@@ -1,25 +1,30 @@
+QSP-Game ! программа добавляет неисчислимый предмет в кошелёк
+$[0]	&	!	ай-ди объекта
 # add.obj.nocount
-! программа добавляет неисчислимый предмет в кошелёк
-$args[0] = $args[0]	&	!	ай-ди объекта
+local $obj_id_, $temp_ = $args[0], ''
+local $obj_body_, pos_, $obj_kind_, $place_id_
+local how_many_, $last_id_
+$obj_body_ = @get.obj.id($obj_id_)	&	!@	получаем тело предмета
+pos_ = arrpos('$id_array', $obj_id_)	&	!@	получаем позицию предмета в базе
+$obj_kind_ = @em.tag.getCont($obj_body_)	&	!@	короткое имя предмета, ай-ди вида.
 
-$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['pit']=arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
-$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
-
-$args['bag_in']=$func('get.bag',$args[0],'<money>')	&	!	находим подходящий кошелёк
-if $args['bag_in']='INVENTORY':
-! {ВНИМАНИЕ. необходимо создать внутреннюю базу oneself-объектов.}
-	$args['bag_in']=$func('add.new.obj','<money> [name:Кошелёк:name] [color:888800] [:money:] [oneself]','INVENTORY','MONEY')
+$place_id_ = @get.bag($obj_id_, '<money>')	&	!@	находим подходящий кошелёк
+if $place_id_ = 'INVENTORY':
+!@ {ВНИМАНИЕ. необходимо создать внутреннюю базу oneself-объектов.}
+	$place_id_ = @add.new.obj('<money> [name:Кошелёк:name] [color:888800] [:money:] [oneself]','INVENTORY','MONEY')
 end
-args['поднять_штук']=kolvo_array[args['pit']]
-$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['поднять_штук'])
-$args['add.obj.nocount']=$func('prv.obj.id',$args[0],$args['last_id'])
-if $args['add.obj.nocount']!'dont take':
-	$print['take.obj']+=$func('b.w.s','take.nocount',$args['obj'],args['поднять_штук'])
-	if $strfind($run_array[args['pit']],'!nocount.take!')!'': $args['run_array']=$func('run.dynamic.script','!nocount.take!',$args['last_id'],$args[0])
+how_many_ = kolvo_array[pos_]
+$last_id_ = @replace.obj($obj_id_, $place_id_, $obj_kind_, how_many_)
+$result = @prv.obj.id($obj_id_, $last_id_)
+if $result <> 'dont take':
+	$print['take.obj'] += @b.w.s('take.nocount', $obj_body_, how_many_)
+	if $strfind($run_array[pos_],'!nocount.take!') <> '':
+		$temp_ = @run.dynamic.script('!nocount.take!', $last_id_,$obj_id_)
+	end
 else
-	if $strfind($run_array[args['pit']],'!nocount.dont.take!')!'': $args['run_array']=$func('run.dynamic.script','!nocount.dont.take!',$args['last_id'],$args[0])
+	if $strfind($run_array[pos_],'!nocount.dont.take!') <> '':
+		$temp_ = @run.dynamic.script('!nocount.dont.take!', $last_id_,$obj_id_)
+	end
 end
-$result=$args['add.obj.nocount']
-$infop['last_id.on.prv.obj.pay']=$args['last_id']
+$infop['last_id.on.prv.obj.pay'] = $last_id_
 --- add.obj.nocount ---------------------------------

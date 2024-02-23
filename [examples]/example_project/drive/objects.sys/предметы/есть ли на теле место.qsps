@@ -1,35 +1,39 @@
-# prv.pos.inObj
-! Функция проверяет, есть ли свободное "место на теле" для "предмета"
+QSP-Game Функция проверяет, есть ли свободное "место на теле" для "предмета"
 ! если есть - заполняет массив $array_body_part[] айдишниками позиций и возвращает 'empty'
 ! если нет - возвращает "full"
-$args[0] = $args[0]	&	!	id объекта "предмет"
-$args['obj']=$func('get.obj.id',$args[0])	&	!	тело объекта "предмет"
-$args['pos_list']=$func('em.tag.getCont',$args['obj'],'pos')	&	!	список позиций
-if $func('em.tag.getCont',$args['pos_list'],'t1')!'': $args['l']='t'	&	!	тип позиции "рука" "перчатки"
-if $func('em.tag.getCont',$args['pos_list'],'c1')!'': $args['l']='c'	&	!	класс позиции "arm" "dosp"
-if $func('em.tag.getCont',$args['pos_list'],'p1')!'': $args['l']='p'	&	!	конкретная позиция "правая рука" "левая рука"
-args['i']=1
-:newpos
-$args['position']=$func('em.tag.getCont',$args['pos_list'],$args['l']+str(args['i']))
-! получаем позицию из тега
-if $args['position']!'':
-	args['count']+=1
-	args['pos']=-1
-	:for
-	args['pos']=arrcomp(args['pos']+1,'$object_array','[\s\S]*<body>[\s\S]*'+$args['position']+'[\s\S]*|[\s\S]*'+$args['position']+'[\s\S]*<body>[\s\S]*')
-	if args['pos']!-1:
-		if $include_array[args['pos']]!'': jump 'for'
-		$array_body_part[arrsize('$array_body_part')]=$id_array[args['pos']]
-		jump 'for'
+$[0]	&	!	id объекта "предмет"
+# prv.pos.inObj
+local $obj_id_ = $args[0]
+local $obj_body_, $pos_list_, $type_bp_
+local $position_, count_
+$obj_body_ = @get.obj.id($obj_id_)	&	!@	тело объекта "предмет"
+$pos_list_ = @em.tag.getCont($obj_body_, 'pos')	&	!@	список позиций
+if @em.tag.getCont($pos_list_,'t1') <> '': $type_bp_ = 't'	&	!@	тип позиции "рука" "перчатки"
+if @em.tag.getCont($pos_list_,'c1') <> '': $type_bp_ = 'c'	&	!@	класс позиции "arm" "dosp"
+if @em.tag.getCont($pos_list_,'p1') <> '': $type_bp_ = 'p'	&	!@	конкретная позиция "правая рука" "левая рука"
+loop local i = 1 while len($pos_list_) > 0 step i += 1:
+	$position_ = @em.tag.getCont($pos_list_,$type_bp_+$str(i))
+	! получаем позицию из тега
+	if $position_ <> '':
+		count_+=1
+		loop local pos_ = -1 while 1:
+			pos_ = arrcomp('$object_array','[\s\S]*<body>[\s\S]*<<$position_>>[\s\S]*|[\s\S]*<<$position_>>[\s\S]*<body>[\s\S]*', pos_ + 1)
+			if pos_ <> -1:
+				if $include_array[pos_] <> '': jump 'continue'
+				$array_body_part[arrsize('$array_body_part')] = $id_array[pos_]
+			else:
+				jump 'break'
+			end
+			:continue
+		end
+		:break
+		$pos_list_ = $trim($replace($pos_list_,'<<$type_bp_>><<i>>:<<$position_>>:<<$type_bp_>><<i>>'))
 	end
-	$args['pos_list']=TRIM($replace($args['pos_list'],$args['l']+str(args['i'])+':'+$args['position']+':'+$args['l']+str(args['i'])))
 end
-args['i']+=1
-if len($args['pos_list'])>0: jump 'newpos'
-if arrsize('$array_body_part')<args['count']:
-	$result='full'
+if arrsize('$array_body_part') < count_:
+	$result = 'full'
 	killvar '$array_body_part'
 else
-	$result='empty'
+	$result = 'empty'
 end
 --- prv.pos.inObj ---------------------------------
