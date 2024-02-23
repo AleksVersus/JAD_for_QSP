@@ -1,86 +1,85 @@
+QSP-Game локация поднимает предмет с текущего положения и добавляет его в инвентарь или рюкзак
+$[0]	&	!@ ай-ди предмета
 # take.obj
-! локация поднимает предмет с текущего положения и добавляет его в инвентарь или рюкзак
-$args[0] = $args[0]	&	!	ай-ди предмета
-$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['pit'] = arrpos('$id_array',$args[0])	&	!	получаем позицию предмета в базе
-$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
-! выбираем текст подъёма, покупки
-if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
-	$args['take/buy']='[buy]'		&	!	покупается
-else
-	$args['take/buy']='[take]'	&	!	простой подъём
-end
-if instr($args['obj'],'[oneself]')!0:
-	! здесь может быть проверка на наличие этого предмета.
-	$object_array[args['pit']]=$replace($object_array[args['pit']],'<obj>','<'+$args['short_name']+'>')
-	kolvo_array[args['pit']]=0
-	gosub 'replace.obj',$args[0],'INVENTORY'
-	$print['take.obj']+=$func('b.w.s',"take.oneself "+$args['take/buy'],$args['obj'])
-elseif instr($args['obj'],'[nocount]')!0:
-! Находим подходящий кошелёк. Динамический код при поднятии неисчислимого предмета выполняется с локации add.obj.noucount
-	$args['res.take.obj']=$func('add.obj.nocount',$args[0])
-elseif $strfind($args['obj'],'\[count\]|\[number\]')!'':
-! Если предмет штучный, или меновой. Динамический код надевания предмета выполняется с локации use.obj.actObj
-	if instr($args['obj'],'[count]')=0:
-		$args['onBody']=$func('use.obj.actObj',$args[0])
-	else
-		$args['onBody']='dont take'
-	end
-	if $args['onBody']='dont money':
-		$args['res.take.obj']='dont take'
+local $obj_id_ = $args[0]
+local $temp_, $obj_body_, pos_, $obj_kind_
+local how_many_, $last_id_, $take_or_buy_, $on_body_
+$obj_body_ = @get.obj.id($obj_id_)	&	!@ получаем тело предмета
+pos_ = arrpos('$id_array', $obj_id_)	&	!@ получаем позицию предмета в базе
+$obj_kind_ = @em.tag.getCont($obj_body_)	&	!@ короткое имя предмета, ай-ди вида.
+!@ выбираем текст подъёма, покупки
+$take_or_buy_ = $iif($strfind(@get.loc.id(),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)') <> '', '[buy]', '[take]')
+if instr($obj_body_,'[oneself]') <> 0:
+	!@ здесь может быть проверка на наличие этого предмета.
+	$object_array[pos_]=$replace($object_array[pos_],'<obj>','<'+$obj_kind_+'>')
+	kolvo_array[pos_]=0
+	$temp_ = @replace.obj($obj_id_,'INVENTORY')
+	$print['take.obj'] += @b.w.s("take.oneself "+$take_or_buy_, $obj_body_)
+elseif instr($obj_body_, '[nocount]') <> 0:
+!@ Находим подходящий кошелёк. Динамический код при поднятии неисчислимого предмета выполняется с локации add.obj.noucount
+	$result = @add.obj.nocount($obj_id_)
+elseif $strfind($obj_body_,'\[count\]|\[number\]') <> '':
+!@ Если предмет штучный, или меновой. Динамический код надевания предмета выполняется с локации use.obj.actObj
+	$on_body_ = $iif(instr($obj_body_,'[count]') = 0, @use.obj.actObj($obj_id_), 'dont take')
+	if $on_body_ = 'dont money':
+		$result = 'dont take'
 		jump 'print'
-	elseif $args['onBody']!'dont take':
-		$args['res.take.obj']=$args['onBody']
-		$print['take.obj']+=$func('b.w.s',"take.number "+$args['take/buy'],$args['obj']+'[колво:1]')
+	elseif $on_body_ <> 'dont take':
+		$result = $on_body_
+		$print['take.obj'] += @b.w.s("take.number "+$take_or_buy_, $obj_body_+'[колво:1]')
 	else
-	! Если предмет напрямую не одевается на тело, должна быть произведена проверка, можно ли добавить предмет в рюкзак или инвентарь
-		! Проверяем правильно ли указано количество предметов, которое мы хотим поднять
-		args['поднять_штук']=func('prv.obj.weight',$args[0])
-		if args['поднять_штук']!0:
-		! Количество предметов, которые мы собираемся поднять, не выходит за указанные пределы
-			if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
-				$args['pay']=$func('prv.obj.pay',$args[0],args['поднять_штук'],'purchase')
-				if $args['pay']='true': $infop['pay']='true' else jump 'print'
+	!@ Если предмет напрямую не одевается на тело, должна быть произведена проверка, можно ли добавить предмет в рюкзак или инвентарь
+		!@ Проверяем правильно ли указано количество предметов, которое мы хотим поднять
+		how_many_ = @prv.obj.weight($obj_id_)
+		if how_many_ <> 0:
+		!@ Количество предметов, которые мы собираемся поднять, не выходит за указанные пределы
+			if $strfind(@get.loc.id(),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)') <> '':
+				local $is_pay_ = @prv.obj.pay($obj_id_,how_many_,'purchase')
+				if $is_pay_ = 'true': $infop['pay'] = 'true' else jump 'print'
 			end
-			args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	вес одного предмета
-			$args['bag_in']=$func('get.bag',$args[0])
-			! Перемещаем предмет в полученную позицию
-			$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['поднять_штук'])
-			$args['res.take.obj']=$func('prv.obj.id',$args[0],$args['last_id'])
-			property['hero.power.all']+=args['поднять_штук']*args['weight']
-			$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
-			$print['take.obj']+=$func('b.w.s',"take.count "+$args['take/buy'],$args['obj']+'[колво:'+str(args['поднять_штук'])+']')
-			args['pos_lid']=arrpos('$id_array',$args['last_id'])
-			$infop['last_id']=$args['last_id']
-			$infop['past_id']=$args[0]
-			$infop['taked']='true'
-			if $strfind($run_array[args['pos_lid']],'!inbag!')!'':
-			! динамический код помещения при помещении в сумку/инвентарь
-				$args['run_array.used']=$func('run.dynamic.script','!inbag!',$args['last_id'],$args[0])
+			local weight_, $bag_id_
+			weight_ = @em.tag.getNum($obj_body_,'weight')	&	!@ вес одного предмета
+			$bag_id_ = @get.bag($obj_id_)
+			!@ Перемещаем предмет в полученную позицию
+			$last_id_ = @replace.obj($obj_id_, $bag_id_, $obj_kind_, how_many_)
+			$result = @prv.obj.id($obj_id_, $last_id_)
+			property['hero.power.all'] += how_many_ * weight_
+			$print['power.change'] += @int.hero.property(@get.id.obj('<property>[\s\S]*\[:power:\]'))
+			$print['take.obj'] += @b.w.s("take.count <<$take_or_buy_>>", '<<$obj_body_>>[колво:<<how_many_>>]')
+			last_id_['pos'] = arrpos('$id_array',$last_id_)
+			$infop['last_id'] = $last_id_
+			$infop['past_id'] = $obj_id_
+			$infop['taked'] = 'true'
+			if $strfind($run_array[last_id_['pos']],'!inbag!') <> '':
+			!@ динамический код помещения при помещении в сумку/инвентарь
+				$temp_ = @run.dynamic.script('!inbag!', $last_id_, $obj_id_)
 			end
-		else
-		! Количество предметов, которое мы собираемся поднять, не входит в указанные пределы, либо невозможно поднять ни одного предмета
-			$args['res.take.obj']='dont take'
-			$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
-			$print['take.obj']+=$func('base.word.screen','001')
+		else:
+			!@ Количество предметов, которое мы собираемся поднять, не входит в указанные пределы, либо невозможно поднять ни одного предмета
+			$result = 'dont take'
+			$print['power.change'] += @int.hero.property(@get.id.obj('<property>[\s\S]*\[:power:\]'))
+			$print['take.obj'] += @base.word.screen('001')
 		end 
 	end
 end
-! $args['bag'] = $func('get.id.obj','<bag>')	&	!	получаем ай-ди сумки
-! $position_array[args['pit']]=$args['bag']	&	!	помещаем объект в указанную позицию
-! ----------------------------------------------- вывод на печать --------------------------------------------------
+!@ $args['bag'] = $func('get.id.obj','<bag>')	&	!@ получаем ай-ди сумки
+!@ $position_array[pos_]=$args['bag']	&	!@ помещаем объект в указанную позицию
+!@ ----------------------------------------------- вывод на печать --------------------------------------------------
 	:print
-	if $run_array[arrpos('$id_array',$infop['last_id'])]!'':
-	! динамический код при покупке, неважно на тело или в сумку
-		args['pos_lid']=arrpos('$id_array',$infop['last_id'])
-		if $infop['pay']='true' and $strfind($run_array[args['pos_lid']],'!purc!')!'': $args['run_array.purc']=$func('run.dynamic.script','!purc!',$infop['last_id'],$infop['past_id'])
-	! динамический код при взятии, неважно на тело или в сумку
-		if $infop['taked']='true' and $strfind($run_array[args['pos_lid']],'!taked!')!'': $args['run_array.take']=$func('run.dynamic.script','!taked!',$infop['last_id'],$infop['past_id'])
+	if $run_array[arrpos('$id_array',$infop['last_id'])]<>'':
+		last_id_['pos'] = arrpos('$id_array',$infop['last_id'])
+	!@ динамический код при покупке, неважно на тело или в сумку
+		if $infop['pay'] = 'true' and $strfind($run_array[last_id_['pos']],'!purc!') <> '':
+			$temp_ = @run.dynamic.script('!purc!', $infop['last_id'], $infop['past_id'])
+		end
+	!@ динамический код при взятии, неважно на тело или в сумку
+		if $infop['taked'] = 'true' and $strfind($run_array[last_id_['pos']],'!taked!') <> '':
+			$temp_ = @run.dynamic.script('!taked!', $infop['last_id'], $infop['past_id'])
+		end
 	end
-	$result=$args['res.take.obj']
-	gosub 'kill.var.olegus','$infop','pay','taked','last_id','past_id'
+	@kill.var.olegus('$infop','pay','taked','last_id','past_id')
 	killvar '$array_body_part_obj'
 	killvar '$array_body_part'
-	gs 'int.inventory'
-! ----------------------------------------------- вывод на печать --------------------------------------------------
+	@int.inventory
+!@ ----------------------------------------------- вывод на печать --------------------------------------------------
 --- take.obj ---------------------------------

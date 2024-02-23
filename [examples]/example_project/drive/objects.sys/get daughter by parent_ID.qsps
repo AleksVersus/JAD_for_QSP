@@ -33,7 +33,8 @@ loop local pos_, run_, i = -1, 1, -1 while run_:
 	end
 end
 log_finish_=msecscount
-$error_log[]="<<MSECSCOUNT>> get.daughter.obj
+$error_log[]="
+	<<MSECSCOUNT>> get.daughter.obj
 	curloc:<<$curloc>> 
 	parent:<<$parent_id_>> 
 	filter:<<$regexp_>> 

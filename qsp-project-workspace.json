@@ -584,15 +584,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": [
-            [
-                "take.obj",
-                [
-                    2,
-                    10
-                ]
-            ]
-        ],
         "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043f\u0440\u043e\u0431\u0440\u043e\u0441_01.qsps": [
             [
                 "[1.1_game_start]",
@@ -736,15 +727,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\scripts.sys\\influence.script (\u0432\u043b\u0438\u044f\u043d\u0438\u044f \u0438 \u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f).qsps": [
-            [
-                "int.influence.scripts",
-                [
-                    2,
-                    23
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": [
             [
                 "int.diary.task",
@@ -776,15 +758,6 @@
                 [
                     2,
                     18
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\scripts.sys\\text in code.qsps": [
-            [
-                "int.run",
-                [
-                    2,
-                    9
                 ]
             ]
         ],
@@ -891,15 +864,6 @@
                 [
                     2,
                     14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\scripts.sys\\\u0437\u0430\u043f\u0443\u0441\u043a \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432.qsps": [
-            [
-                "run.dynamic.script",
-                [
-                    2,
-                    20
                 ]
             ]
         ],
@@ -1231,24 +1195,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_postprocessor\\launcher.qsps": [
-            [
-                "[launcher]",
-                [
-                    38,
-                    48
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430 \u0438\u043b\u0438 \u0435\u0433\u043e \u0447\u0430\u0441\u0442\u0438.qsps": [
-            [
-                "replace.obj",
-                [
-                    2,
-                    13
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0432\u0440\u0435\u043c\u044f \u0441\u0443\u0442\u043e\u043a.qsps": [
             [
                 "int.time.hours",
@@ -1416,15 +1362,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.put",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": [
             [
                 "menu.obj.spell.teach",
@@ -1531,6 +1468,60 @@
                 ]
             ]
         ],
+        "[examples]\\example_postprocessor\\launcher.qsps": [
+            [
+                "[launcher]",
+                [
+                    38,
+                    48
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\influence.script (\u0432\u043b\u0438\u044f\u043d\u0438\u044f \u0438 \u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f).qsps": [
+            [
+                "int.influence.scripts",
+                [
+                    2,
+                    23
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\text in code.qsps": [
+            [
+                "int.run",
+                [
+                    2,
+                    9
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\\u0437\u0430\u043f\u0443\u0441\u043a \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432.qsps": [
+            [
+                "run.dynamic.script",
+                [
+                    2,
+                    20
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\interface.sys\\hero.stat-scale.qsps": [
+            [
+                "get.scale.hero",
+                [
+                    2,
+                    16
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": [
+            [
+                "menu.obj.put",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
         "[examples]\\example_project\\drive\\objects.sys\\retape object.qsps": [
             [
                 "rtp.obj",
@@ -1612,21 +1603,21 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\decrease objects.qsps": [
-            [
-                "minus.obj",
-                [
-                    136,
-                    145
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\delete object and all daughters.qsps": [
             [
                 "del.obj",
                 [
                     213,
                     220
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\decrease objects.qsps": [
+            [
+                "minus.obj",
+                [
+                    136,
+                    145
                 ]
             ]
         ],
@@ -1688,6 +1679,24 @@
                 [
                     566,
                     579
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430 \u0438\u043b\u0438 \u0435\u0433\u043e \u0447\u0430\u0441\u0442\u0438.qsps": [
+            [
+                "replace.obj",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": [
+            [
+                "take.obj",
+                [
+                    122,
+                    130
                 ]
             ]
         ]
