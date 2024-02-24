@@ -1,84 +1,88 @@
-# menu.obj.put
 ! локация сбрасывает предмет на локации или в сундуке
-if $args[0]='': $args[0]=$OOS['oid']
-args[1] = args[1]	&	!	задаётся количество сбрасываемых предметов. Внимательно!
-$args[2] = $args[2]	&	!	управление
-$args['obj'] = $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-if $strfind($args['obj'],'\[quest\]')='':
-	args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	вес одного предмета
-	$args['short_name']=$func('em.tag.getCont',$args['obj'])	&	!	короткое имя предмета, ай-ди вида.
-	$args['inPut']=$func('get.loc.id')	&	!	получаем айди места, в которое собираемся переместить предмет (id текущей локации)
-	$args['loc.targets']=TRIM($func('em.tag.getCont',$object_array[arrpos('$id_array',$args['inPut'])],'target'))
-	$args['obj.targets']=$func('em.tag.getCont',$args['obj'],'np')
-	$args['target']=$func('prv.onTarget',$args['loc.targets'],$args['obj.targets'],'one')
-	if $args['target'] = 'false' and $args['loc.targets']!'':
-		! невозможно сбросить предмет сюда
-		$print['take.obj']+=$func('b.w.s','nih','loc')
+$[0]
+[1]		&	!	задаётся количество сбрасываемых предметов. Внимательно!
+$[2]	&	!	управление
+# menu.obj.put
+local $obj_id_, number_, $cmd_ = $args[0], args[1], $args[2]
+if $obj_id_ = '': $obj_id_ = $OOS['oid']
+local $obj_body_, weight_, $obj_kind_, $loc_id_, $targets_, $temp_, obj_pos_, bag_pos_
+local $choose_text_, how_many_, $is_pay_, $last_id_, $obj_in_place_, $put_from_, pos_
+$obj_body_ = @get.obj.id($obj_id_)	&	!@	получаем тело предмета
+if $strfind($obj_body_, '\[quest\]') = '':
+	weight_ = @em.tag.getNum($obj_body_,'weight')	&	!@	вес одного предмета
+	$obj_kind_ = @em.tag.getCont($obj_body_)	&	!@	короткое имя предмета, ай-ди вида.
+	$loc_id_ = @get.loc.id()	&	!@	получаем айди места, в которое собираемся переместить предмет (id текущей локации)
+	$targets_['loc'] = $trim(@em.tag.getCont($object_array[arrpos('$id_array',$loc_id_)],'target'))
+	$targets_['obj'] = @em.tag.getCont($obj_body_,'np')
+	$temp_ = @prv.onTarget($targets_['loc'],$targets_['obj'],'one')
+	if $temp_ = 'false' and $targets_['loc'] <> '':
+		!@ невозможно сбросить предмет сюда
+		$print['take.obj'] += @b.w.s('nih','loc')
 		jump 'print'
 	end
-	args['pos']=arrpos('$id_array',$args[0])	&	!	вычислем позицию предмета в базе
-	args['bag']=arrpos('$id_array',$position_array[args['pos']])	&	!	вычисляем позицию сумки в базе
-	! перемещаем предмет. Если предметов меньше шести, то по-одному. Если больше шести, то спрашиваем, сколько хочешь переместить.
-	if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
-		$args['выбросить']='продать'
-		$args['#']='011.2'
-	else
-		$args['выбросить']='выбросить'
-		$args['#']='011.1'
+	obj_pos_ = arrpos('$id_array',$obj_id_)	&	!@	вычислем позицию предмета в базе
+	bag_pos_ = arrpos('$id_array', $position_array[obj_pos_])	&	!@	вычисляем позицию сумки в базе
+	!@ перемещаем предмет. Если предметов меньше шести, то по-одному. Если больше шести, то спрашиваем, сколько хочешь переместить.
+	if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')<>'':
+		$temp_ = 'продать'
+		$choose_text_ = '011.2'
+	else:
+		$temp_ = 'выбросить'
+		$choose_text_ = '011.1'
 	end
-	if args[1]>0:
-		args['переместить_штук']=args[1]
-	elseif kolvo_array[args['pos']]>5:
-		args['переместить_штук']=$input($func('b.d.t','hmayw',$args['выбросить'],kolvo_array[args['pos']]))
-	else
-		args['переместить_штук']=1
+	if number_ > 0:
+		how_many_ = number_
+	elseif kolvo_array[obj_pos_] > 5:
+		how_many_ = $input(@b.d.t('hmayw', $temp_, kolvo_array[obj_pos_]))
+	else:
+		how_many_ = 1
 	end
-	if args['переместить_штук']<1 or args['переместить_штук']>kolvo_array[args['pos']]:
-		$print['take.obj']+=$func('base.word.screen','013')
-	else
-		if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)')!'':
+	if how_many_ < 1 or how_many_>kolvo_array[obj_pos_]:
+		$print['take.obj'] += @base.word.screen('013')
+	else:
+		if $strfind($func('get.loc.id'),'(\[т:[\d]+\]_[\S\s]+|торговец;|seller;)') <> '':
 			! Если происходит торговля
-			$args['pay']=$func('prv.obj.pay',$args[0],args['переместить_штук'],'sale')
-			if $args['pay']='false': jump 'print'
+			$is_pay_ = @prv.obj.pay($obj_id_, how_many_,'sale')
+			if $is_pay_ = 'false': jump 'print'
 		end
-		$args['last_id']=$func('replace.obj',$args[0],$args['inPut'],$args['short_name'],args['переместить_штук'])
-		$args['menu.obj.put']=$func('prv.obj.id',$args[0],$args['last_id'])
-		if $strfind($object_array[args['bag']],'<bag>|<inventory>')!'':
+		$last_id_ = @replace.obj($obj_id_, $loc_id_, $obj_kind_, how_many_)
+		$obj_in_place_ = @prv.obj.id($obj_id_,$last_id_)
+		if $strfind($object_array[bag_pos_],'<bag>|<inventory>') <> '':
 			! предмет выложен из рюкзака
-			property['hero.power.all']-=args['переместить_штук']*args['weight']
-			$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
-			$args['put.from']='bag'
+			property['hero.power.all'] -= how_many_ * weight_
+			$print['power.change'] += @int.hero.property(@get.id.obj('<property>[\s\S]*\[:power:\]'))
+			$put_from_ = 'bag'
 		else
 			! предмет выложен из части тела
-			$args['short_body_part']='[:'+$func('em.tag.getCont',$object_array[args['bag']])+':]'
-			$args['put.from']='body'
-			$print['take.obj']+=$func('base.new.bodypart',$args['short_body_part'],'put.obj:'+$args['last_id']+':put.obj')
+			$temp_ = '[:'+@em.tag.getCont($object_array[bag_pos_])+':]'
+			$put_from_ = 'body'
+			$print['take.obj'] += @base.new.bodypart($temp_, 'put.obj:<<$last_id_>>:put.obj')
 		end
-		$print['use.obj.actObj']+=$func('base.word.screen',$args['#'],$args['obj']+'[колво:'+str(args['переместить_штук'])+']')
-		args['pos_lid']=arrpos('$id_array',$args['last_id'])
-		if $run_array[args['pos_lid']]!'':
-			if $strfind($run_array[args['pos_lid']],'!passed!')!'':
-				$args['run_array']=$func('run.dynamic.script','!passed!',$args['last_id'],$args[0])
+		$print['use.obj.actObj'] += @base.word.screen($choose_text_, $obj_body_+'[колво:<<how_many_>>]')
+		pos_ = arrpos('$id_array',$last_id_)
+		if $run_array[pos_] <> '':
+			if $strfind($run_array[pos_],'!passed!') <> '':
+				$temp_ = @run.dynamic.script('!passed!',$last_id_,$obj_id_)
 			end
-			if $args['pay']='true' and $strfind($run_array[args['pos_lid']],'!sale!')!'':
-				$args['run_array.purc']=$func('run.dynamic.script','!sale!',$args['last_id'],$args[0])
+			if $is_pay_ = 'true' and $strfind($run_array[pos_],'!sale!') <> '':
+				$temp_ = @run.dynamic.script('!sale!',$last_id_,$obj_id_)
 			end
-			if $args['put.from']='body' and $strfind($run_array[args['pos_lid']],'!deused!')!'':
-				$args['run_array.purc']=$func('run.dynamic.script','!deused!',$args['last_id'],$args[0])
-			elseif $args['put.from']='bag' and $strfind($run_array[args['pos_lid']],'!outbag!')!'':
-				$args['run_array.purc']=$func('run.dynamic.script','!outbag!',$args['last_id'],$args[0])
+			if $put_from_ = 'body' and $strfind($run_array[pos_],'!deused!') <> '':
+				$temp_ = @run.dynamic.script('!deused!',$last_id_,$obj_id_)
+			elseif $put_from_ = 'bag' and $strfind($run_array[pos_],'!outbag!')!'':
+				$temp_ = @run.dynamic.script('!outbag!',$last_id_,$obj_id_)
 			end
 		end
 	end
 else
-	$print['take.obj']+=$func('base.word.screen','010')
+	$print['take.obj']+=@base.word.screen('010')
 end
 :print
-if $strfind($args[2],'no GOTO')='':
-	$result=$args['menu.obj.put']
-	gs 'int.inventory'
-	gs 'true.goto.curloc',$curloc
+if $strfind($cmd_,'no GOTO') = '':
+	$result = $obj_in_place_
+	@int.inventory()
+	@true.goto.curloc($curloc)
 else
-	$result=$args['last_id']
+	$result = $last_id_
 end
 --- menu.obj.put ---------------------------------

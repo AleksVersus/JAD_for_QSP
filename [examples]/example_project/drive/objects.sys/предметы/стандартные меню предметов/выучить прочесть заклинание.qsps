@@ -2,52 +2,56 @@
 
 --- menu.obj.spell.teach ---------------------------------
 
-# menu.obj.spell.read
 ! Функция реализует скрипт прочтения заклинания
 ! Всем заклинаниям передаются одинаковые наборы аргументов
-if $args[0]='': $args[0] = $OOS['oid']
-$args[1] = $func('get.loc.id')
-$args['spell']='!spell.read!'
-args['spell.pit']=arrpos('$id_array',$args[0])
-$args['spell.obj']	=	$object_array[args['spell.pit']]
-if $args[1] = '[chest]':
-! невозможно прочесть заклинание, находясь в сундуке
-	$print['menu.else'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.chest')
-	$args['spell']='!spell.cant.read! chest'
-else
-	args['loc.pit']=arrpos('$id_array',$args[1])
-	$args['loc.obj']=$object_array[args['loc.pit']]
-	$args['place']=$func('em.tag.getCont',$args['loc.obj'],'place')
-	if instr($args['place'],'[молчание]')!0:
-		$args['spell']='!spell.cant.read! silent'
-		$print['menu.in.body'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.location')
+
+# menu.obj.spell.read
+local $obj_id_ = $args[0]
+if $obj_id_ = '': $obj_id_ = $OOS['oid']
+$loc_id_ = @get.loc.id()
+local $spell_mode_, pos_, $spell_body_, loc_pos_, $loc_body_, $terrain_kind_
+$spell_mode_ = '!spell.read!'
+pos_ = arrpos('$id_array',$obj_id_)
+$spell_body_ = $object_array[pos_]
+if $loc_id_ = '[chest]':
+	!@ невозможно прочесть заклинание, находясь в сундуке
+	$print['menu.else'] += @base.word.screen('019.1') + @b.w.s('dont_spell.chest')
+	$spell_mode_='!spell.cant.read! chest'
+else:
+	loc_pos_ = arrpos('$id_array',$loc_id_)
+	$loc_body_ = $object_array[loc_pos_]
+	$terrain_kind_ = @em.tag.getCont($loc_body_, 'place')
+	if instr($terrain_kind_, '[молчание]') <> 0:
+		$spell_mode_ = '!spell.cant.read! silent'
+		$print['menu.in.body'] += @base.word.screen('019.1') + @b.w.s('dont_spell.location')
 	end
 end
-
-! здесь должна находиться проверка на возможность читать заклинание во время боя
-!	пошаговый бой предполагает одно чтение заклинания за ход
-
-$args['menergy.spell'] = $func('em.tag.getCont',$args['spell.obj'],'menergy')
-$args['magic.menergy.spell']=$func('magic.menergy.spell',$args[1],$args['menergy.spell'],'prove')
-if $args['magic.menergy.spell']='false':
-	args['mana']=func('em.tag.getNum',$args['spell.obj'],'mana')
-	if args['mana']>property['hero.mana.all'] or instr($args['spell.obj'],'[mana:')=0:
-		$args['magic.menergy.spell']='false'
-		$args['spell']='!spell.cant.read! not energy'
-		$print['menu.in.bag'] += $func('base.word.screen','019.1')+$func('b.w.s','dont_spell.magic')
-	else
-		$args['magic.menergy.spell']='mana'
+!@ здесь должна находиться проверка на возможность читать заклинание во время боя
+!@ пошаговый бой предполагает одно чтение заклинания за ход
+local $spell_menergy_, $is_spell_menergy_, mana_
+$spell_menergy_ = @em.tag.getCont($spell_body_, 'menergy')
+$is_spell_menergy_ = @magic.menergy.spell($loc_id_, $spell_menergy_, 'prove')
+if $is_spell_menergy_ = 'false':
+	mana_ = @em.tag.getNum($spell_body_, 'mana')
+	if mana_ > property['hero.mana.all'] or instr($spell_body_,'[mana:') = 0:
+		$is_spell_menergy_ = 'false'
+		$spell_mode_ = '!spell.cant.read! not energy'
+		$print['menu.in.bag'] += @base.word.screen('019.1') + @b.w.s('dont_spell.magic')
+	else:
+		$is_spell_menergy_ = 'mana'
 	end
-else
-	$args['magic.menergy.spell']='menergy'
+else:
+	$is_spell_menergy_ = 'menergy'
 end
-if $strfind($run_array[args['spell.pit']],$strfind($args['spell'],'![\s\S]+!'))!'': $args['spell']=$func('run.dynamic.script',$args['spell'],$args[0])
-! В результате имеем два слова: "true" - удалось выполнить заклинание, или "false" - не удалось.
-if $args['spell']='true':
-	if instr($args['spell.obj'],'<obj>')!0:	gosub 'minus.obj',$args[0],1
-	if $args['magic.menergy.spell'] = 'mana': gosub 'hero.mana',args['mana']
-	if $args['magic.menergy.spell'] = 'menergy': gosub 'magic.menergy.spell',$args[1],$args['menergy.spell'],'spell'
+if $strfind($run_array[pos_],$strfind($spell_mode_,'![\s\S]+!')) <> '':
+	$spell_mode_ = @run.dynamic.script($spell_mode_,$obj_id_)
 end
-gs 'int.inventory'
-gs 'true.goto.curloc',$curloc
+!@ В результате имеем два слова: "true" - удалось выполнить заклинание, или "false" - не удалось.
+if $spell_mode_ = 'true':
+	if instr($spell_body_,'<obj>') <> 0:	@minus.obj($obj_id_, 1)
+	if $is_spell_menergy_ = 'mana': @hero.mana(mana_)
+	if $is_spell_menergy_ = 'menergy': @magic.menergy.spell($loc_id_, $spell_menergy_, 'spell')
+end
+@int.inventory()
+@true.goto.curloc($curloc)
 --- menu.obj.spell.read ---------------------------------

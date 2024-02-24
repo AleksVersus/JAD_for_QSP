@@ -1,5 +1,4 @@
-# onNewLoc
-! Выполняется при посещении новой локации
+QSP-Game Выполняется при посещении новой локации
 ! Для правильной работы интерпретатора требуется заблаговременное заполнение переменных:
 !	$object_array[$curloc] - хранит заголовок локации, идентифицируется по её имени
 !	$lvar['локация.исходник'] - хранит исходный текст локации, обрабатываемый различными интерпретаторами с текущей локации
@@ -7,38 +6,40 @@
 !		int.loc.head - обрабатывает заголовок
 !		int.din.text - обрабатывает описание локации
 !		int.loc.obj - воспроизводит, сброшенные на локации объекты.
-! Удаляем временные переменные
+# onNewLoc
+local $loc_id_, $temp_, $loc_type_, $loc_specialize_, loc_pos_, $seller_bank_
+!@ Удаляем временные переменные
 killvar '$int_act_goto'	&	!	поскольку переход совершён, этот массив нам больше не нужен
 
-! ----------------- работа с полем "базовое описание локации" ------------------
-	$SQUARE['SQUARE.loc.maintxt']=$MAINTXT
-	$SQUARE['SQUARE.loc.curacts']=$CURACTS
+!@ ----------------- работа с полем "базовое описание локации" ------------------
+	$SQUARE['SQUARE.loc.maintxt'] = $MAINTXT
+	$SQUARE['SQUARE.loc.curacts'] = $CURACTS
 	*clr
 	cla
-! ----------------- работа с полем "описание локации" ------------------
+!@ ----------------- работа с полем "описание локации" ------------------
 
-! определяем ай-ди текущей локации
-$args['LID']=$func('get.loc.id')
+!@ определяем ай-ди текущей локации
+$loc_id_ = @get.loc.id()
 
-	! -------------------- переход на новую локацию -----------
-		if $id_watch[]<>$args['LID']: $id_watch[] = $args['LID']
-		if arrsize('$id_watch')>100: killvar '$id_watch',0
-	! -------------------- переход на новую локацию -----------
+	!@ -------------------- переход на новую локацию -----------
+		if $id_watch[] <> $loc_id_: $id_watch[] = $loc_id_
+		if arrsize('$id_watch') > 100: killvar '$id_watch',0
+	!@ -------------------- переход на новую локацию -----------
 
-	! -------------------- переход на любую локацию -----------
-		$refresh_watch[]=$args['LID']
+	!@ -------------------- переход на любую локацию -----------
+		$refresh_watch[] = $loc_id_
 		if arrsize('$refresh_watch')>9999: killvar '$refresh_watch',0
-	! -------------------- переход на любую локацию -----------
+	!@ -------------------- переход на любую локацию -----------
 	
-if $refresh_watch[]<>$refresh_watch[arrsize('$refresh_watch')-2]:
+if $refresh_watch[] <> $refresh_watch[arrsize('$refresh_watch')-2]:
 	killvar '$dvar'
-	gosub 'kill.var.olegus','$tvar','приветствие.'+$refresh_watch[arrsize('$refresh_watch')-2]
+	killvar '$tvar', 'приветствие.'+$refresh_watch[arrsize('$refresh_watch')-2]
 end
 
-$GAME_VALUE['way.lock.by.enemy']=''	&	!	новая локация. Мы ещё не знаем заблокирована ли она врагом
-! Передвигаем стрелки часов
+$GAME_VALUE['way.lock.by.enemy'] = ''	&	!@	новая локация. Мы ещё не знаем заблокирована ли она врагом
+!@ Передвигаем стрелки часов
 if GAME_VALUE['goto'] = 1:
-! запоминаем предыдущие показатели времени. Т.е. до изменения календарём
+!@ запоминаем предыдущие показатели времени. Т.е. до изменения календарём
 	time['last.sec']	=	time['sec']
 	time['last.minute']	=	time['minute']
 	time['last.hour']	=	time['hour']
@@ -47,160 +48,160 @@ if GAME_VALUE['goto'] = 1:
 	time['last.weekday']=	time['weekday']
 	time['last.month']	=	time['month']
 	time['last.year']	=	time['year']
-	! генерация календаря
-	gs 'int.time.calendar',$time['goto']
-	! скрипты воздействий. Выполняются до генерации основного описания локации. Это позволяет дополнить исходник локации
-	! каким-нибудь текстом, или вовсе подменить его на другой, если по выполнении скрипта должен проигрываться определённый сюжет.
-	gs 'int.influence.scripts','!onNewLoc.property!',$time['goto']
+	!@ генерация календаря
+	@int.time.calendar($time['goto'])
+	!@ скрипты воздействий. Выполняются до генерации основного описания локации. Это позволяет дополнить исходник локации
+	!@ каким-нибудь текстом, или вовсе подменить его на другой, если по выполнении скрипта должен проигрываться определённый сюжет.
+	@int.influence.scripts('!onNewLoc.property!', $time['goto'])
 end
 
-! ------------------------------------------ эффекты, наложенные на локацию - предобработка -----------------------------------------------
-	! предобработка позволяет добавить к исходнику локации дополнительный текст, а так же посчитать разные эффекы локации до обнуления переменных
-	if $strfind($run_array[arrpos('$id_array',$args['LID'])],'!onNewLoc.pre!')!'': $args['run_array']=$func('run.dynamic.script','!onNewLoc.pre!',$args['LID'])
-! ------------------------------------------ эффекты, наложенные на локацию - предобработка -----------------------------------------------
+!@ ----------------- эффекты, наложенные на локацию - предобработка -----------------
+	!@ предобработка позволяет добавить к исходнику локации дополнительный текст, а так же посчитать разные эффекы локации до обнуления переменных
+	if $strfind($run_array[arrpos('$id_array', $loc_id_)], '!onNewLoc.pre!') <> '':
+		$temp_ = @run.dynamic.script('!onNewLoc.pre!', $loc_id_)
+	end
+!@ ----------------- эффекты, наложенные на локацию - предобработка -----------------
 
-! Генерируется описание локации
-! Для локаций всех типов описание из исходника:
-$SQUARE['SQUARE.loc.fromSource']=$lvar['локация.исходник']
+!@ Генерируется описание локации
+!@ Для локаций всех типов описание из исходника:
+$SQUARE['SQUARE.loc.fromSource'] = $lvar['локация.исходник']
 
-if $strfind($args['LID'],'(\[м:[\d]+\]_[\s\S]+|место;|place;)')!'':
-! путём синтаксического разбора ай-ди локации установлено, что это локация места.
+if $strfind($loc_id_, '(\[м:[\d]+\]_[\s\S]+|место;|place;)') <> '':
+!@ путём синтаксического разбора ай-ди локации установлено, что это локация места.
 
-	! ----------- переход на новую локацию места -----------
-		if $logist[]<>$args['LID']:
-			$logist[]=$args['LID']	&	!	массив, где хранятся последние сто мест, где побывал герой
-			! поскольку это новая локация места:
-			$light_array[$args['LID']]=$func('int.lighting')		&	!	устанавливаем освещённость
-			gosub 'magic.menergy.spell',$args['LID'],'','respawn'	&	!	респавним магическую энергию пространства
+	!@ ----------- переход на новую локацию места -----------
+		if $logist[] <> $loc_id_:
+			$logist[] = $loc_id_	&	!@	массив, где хранятся последние сто мест, где побывал герой
+			!@ поскольку это новая локация места:
+			$light_array[$loc_id_] = @int.lighting()		&	!@	устанавливаем освещённость
+			@magic.menergy.spell($loc_id_,'','respawn')	&	!@	респавним магическую энергию пространства
 		end
-		if arrsize('$logist')>100: killvar '$logist',0	&	!	если размер массива превышает 100 элементов, удаляем нулевой
-	! ----------- переход на новую локацию места -----------
+		if arrsize('$logist') > 100: killvar '$logist', 0	&	!@	если размер массива превышает 100 элементов, удаляем нулевой
+	!@ ----------- переход на новую локацию места -----------
 
-	if здесь_был[$args['LID']]<1:
-	! метка о посещении выставляется при первом посещении
-		здесь_был[$args['LID']]+=1
-		! устанавливаем дефолтное значение магической энергии места:
-		gosub 'magic.menergy.spell',$args['LID'],'','set'
+	if здесь_был[$loc_id_] < 1:
+		!@ метка о посещении выставляется при первом посещении
+		здесь_был[$loc_id_] += 1
+		!@ устанавливаем дефолтное значение магической энергии места:
+		@magic.menergy.spell($loc_id_,'','set')
 	end
 	
-	$args['тип локации']='location'
+	$loc_type_='location'
 	$SQUARE['SQUARE.loc.type']='место'	
-	$args['действия на локации']=$func('int.loc.obj',$args['LID'],'','href','[count][weight][take:lift]')
-	$SQUARE['SQUARE.location.obj.inActs']=$func('int.loc.obj',$args['LID'],'','acts','[count][weight][take:lift]')
-	$SQUARE['SQUARE.location.obj.inHREF']=$func('int.loc.obj',$args['LID'],'','href','[count][weight][take:lift]')
+	$temp_ = @int.loc.obj($loc_id_, '', 'href', '[count][weight][take:lift]')
+	$SQUARE['SQUARE.location.obj.inActs'] = @int.loc.obj($loc_id_, '', 'acts', '[count][weight][take:lift]')
+	$SQUARE['SQUARE.location.obj.inHREF'] = @int.loc.obj($loc_id_, '', 'href', '[count][weight][take:lift]')
 	
-	! выставляем настройки экрана в соответствии с освещением:
-elseif $curloc='[chest]' and $strfind($args['LID'],'(\[с:[\d]+\]_[\s\S]+|сундук;|chest;)')<>'':
-! путём синтаксического разбора установлено, что айди принадлежит локации-хранилищу
-	! получаем заголовок:
-	$args['head.chest']=$func('get.obj.id',$args['LID'])
-	if $args['head.chest']='':
-		! если заголовок не был создан
-		! создаём заголовок и возвращаем его значение
-		gosub 'gen.loc.head',$cvar['loc_id'+$cvar['chest']],$cvar['manage'+$cvar['chest']]
-		$args['head.chest']=$func('get.obj.id',$args['LID'])
+	!@ выставляем настройки экрана в соответствии с освещением:
+elseif $curloc = '[chest]' and $strfind($loc_id_, '(\[с:[\d]+\]_[\s\S]+|сундук;|chest;)') <> '':
+	!@ путём синтаксического разбора установлено, что айди принадлежит локации-хранилищу
+	!@ получаем заголовок:
+	$temp_ = @get.obj.id($loc_id_)
+	if $temp_ = '':
+		!@ если заголовок не был создан
+		!@ создаём заголовок и возвращаем его значение
+		@gen.loc.head($cvar['loc_id'+$cvar['chest']], $cvar['manage'+$cvar['chest']])
+		$temp_ = @get.obj.id($loc_id_)
 	end
-	! получаем специализацию локации
-	$args['spec.chest']=$func('em.tag.getCont',$args['head.chest'],'spec')
+	!@ получаем специализацию локации
+	$loc_specialize_ = @em.tag.getCont($temp_, 'spec')
 	
-	if здесь_смотрел[$args['LID']]<1:
-	! метка о посещении выставляется при первом посещении
-		здесь_смотрел[$args['LID']]+=1
+	if здесь_смотрел[$loc_id_]<1:
+		!@ метка о посещении выставляется при первом посещении
+		здесь_смотрел[$loc_id_]+=1
 	end
 	
 	if $strfind($cvar['back'+$cvar['chest']],'(\[м:[\d]+\]_[\s\S]+|место;|place;)')!'':
-	! если предыдущая локация была 
-		$SQUARE['SQUARE.chest.closeAct']='<a class="plain" href="exec:killvar '+"'$cvar' & killvar 'smithing' & GOTO '"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>'+$func('b.d.t','close','chest')+'</b></font></a>'
+		!@ если предыдущая локация была 
+		$SQUARE['SQUARE.chest.closeAct']='<a class="plain" href="exec:killvar '+"'$cvar' & killvar 'smithing' & GOTO '"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>'+@b.d.t('close','chest')+'</b></font></a>'
 	elseif $strfind($cvar['back'+$cvar['chest']],'(\[с:[\d]+\]_[\s\S]+|сундук;|chest;)')!'' or $strfind($cvar['back'+$cvar['chest']],'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'':
-		$SQUARE['SQUARE.chest.closeAct']='<a class="plain" href="exec:GOTO '+"'[chest]','"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>'+$func('b.d.t','close','chest')+'</b></font></a>'
+		$SQUARE['SQUARE.chest.closeAct']='<a class="plain" href="exec:GOTO '+"'[chest]','"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>'+@b.d.t('close','chest')+'</b></font></a>'
 	end
-	! Заметьте, удаление $cvar происходит только при активации ссылки "Закрыть", выбрасывающей на локацию места
-	! Это связано с тем, что при удалении предмета из сундука происходит повторное обращение к локации сундука,
-	! и исходные данные в этом случае должны быть сохранены. Так же на локации сундука могут быть другие локации сундука
-	if instr($args['spec.chest'],'[smithing]')!0:
-		$SQUARE['SQUARE.smithing.obj.inActs']=$func('int.loc.obj',$args['LID'],'','acts','[count][weight][take:take]')
-		$SQUARE['SQUARE.smithing.obj.inHREF']=$func('int.loc.obj',$args['LID'],'','href','[count][weight][take:take]')
-		$SQUARE['SQUARE.smithing.craftObjs']=$func('base.smithing',$cvar['loc_id'+$cvar['chest']])
-		$SQUARE['SQUARE.loc.type']='кузница'
-	elseif instr($args['spec.chest'],'[altar]')!0:
-		$SQUARE['SQUARE.loc.type']='алтарь'
-		$SQUARE['SQUARE.altar.sacrifice']=$func('int.altar',$cvar['loc_id'+$cvar['chest']])
+	!@ Заметьте, удаление $cvar происходит только при активации ссылки "Закрыть", выбрасывающей на локацию места
+	!@ Это связано с тем, что при удалении предмета из сундука происходит повторное обращение к локации сундука,
+	!@ и исходные данные в этом случае должны быть сохранены. Так же на локации сундука могут быть другие локации сундука
+	if instr($loc_specialize_,'[smithing]') <> 0:
+		$SQUARE['SQUARE.smithing.obj.inActs'] = @int.loc.obj($loc_id_,'','acts','[count][weight][take:take]')
+		$SQUARE['SQUARE.smithing.obj.inHREF'] = @int.loc.obj($loc_id_,'','href','[count][weight][take:take]')
+		$SQUARE['SQUARE.smithing.craftObjs'] = @base.smithing($cvar['loc_id'+$cvar['chest']])
+		$SQUARE['SQUARE.loc.type'] = 'кузница'
+	elseif instr($loc_specialize_,'[altar]') <> 0:
+		$SQUARE['SQUARE.loc.type'] = 'алтарь'
+		$SQUARE['SQUARE.altar.sacrifice'] = @int.altar($cvar['loc_id'+$cvar['chest']])
 	else
-		$SQUARE['SQUARE.chest.obj.inHREF']=$func('int.loc.obj',$args['LID'],'','href','[count][weight][take:take]')	&	!	интерпретатор объектов на локации использует в данном случае не ай-ди локации, а ай-ди сундука.
+		$SQUARE['SQUARE.chest.obj.inHREF'] = @int.loc.obj($loc_id_,'','href','[count][weight][take:take]')	&	!@	интерпретатор объектов на локации использует в данном случае не ай-ди локации, а ай-ди сундука.
 		$SQUARE['SQUARE.loc.type']='хранилище'
 	end
-	$args['тип локации']='chest'
-elseif $curloc='[chest]' and $strfind($args['LID'],'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'':
-	! локация торговли
-	$args['тип локации']='seller'
+	$loc_type_ = 'chest'
+elseif $curloc = '[chest]' and $strfind($loc_id_,'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'':
+	!@ локация торговли
+	$loc_type_ = 'seller'
 	$SQUARE['SQUARE.loc.type']='seller'
 	
-	args['$']=arrpos('$id_array',$args['LID'])
-	if здесь_торговал[$args['LID']]<1:
-		здесь_торговал[$args['LID']]+=1
+	loc_pos_ = arrpos('$id_array',$loc_id_)
+	if здесь_торговал[$loc_id_]<1:
+		здесь_торговал[$loc_id_]+=1
 	end
-	! респавн торговца
-		if $func('sim.time',$respawn_array[args['$']])!'first':
-		! если подошло время респавна
-			args['$bank']=func('em.tag.getNum',$object_array[args['$']],'bank')	&	!	вычисляем каков банк торговца
-			if args['$bank']=0: args['$bank']=1000
-			$args['$respawn']=$func('em.tag.getCont',$object_array[args['$']],'respawn')	&	!	получаем время респавна
-			if $args['$respawn']='': $args['$respawn']='[day:7]'
-			if charge_array[args['$']]<=args['$bank']:
-			!	если денег в банке меньше либо равно, чем должно быть, накидываем денег
-				charge_array[args['$']]=args['$bank']
-			else
-			! если денег в банке больше, чем должно быть, вычитаем якобы растраченную часть. Для этого:
-				args['$respawn.time']=$func('em.tag.getNum',$func('conv.time',$args['$respawn'],'minute'),'minute')	&	!	вычисляем период респавнинга в минутах
-				args['$time.now']=$func('em.tag.getNum',$func('conv.time',$func('get.time.now'),'minute'),'minute')	&	!	вычисляем текущее время в минутах
-				args['$respawn.last']=$func('em.tag.getNum',$func('conv.time',$respawn_array[args['$']],'minute'),'minute')	&	!	вычисляем время последнего респавна
-				charge_array[args['$']]-=(args['$time.now']-args['$respawn.last'])*(charge_array[args['$']]-args['$bank'])/args['$respawn.time']
+	!@ респавн торговца
+		if @sim.time($respawn_array[loc_pos_])!'first':
+		!@ если подошло время респавна
+			$seller_bank_ = @em.tag.getNum($object_array[loc_pos_],'bank')	&	!@	вычисляем каков банк торговца
+			if $seller_bank_ = 0: $seller_bank_ = 1000
+			local $respawn_period_ = @em.tag.getCont($object_array[loc_pos_],'respawn')	&	!@	получаем время респавна
+			if $respawn_period_ = '': $respawn_period_ = '[day:7]'
+			if charge_array[loc_pos_] <= $seller_bank_:
+				!@	если денег в банке меньше либо равно, чем должно быть, накидываем денег
+				charge_array[loc_pos_] = $seller_bank_
+			else:
+				!@ если денег в банке больше, чем должно быть, вычитаем якобы растраченную часть. Для этого:
+				local resp_time_, current_time_, last_resp_
+				resp_time_ = @em.tag.getNum(@conv.time($respawn_period_,'minute'),'minute')	&	!@	вычисляем период респавнинга в минутах
+				current_time_ = @em.tag.getNum(@conv.time($func('get.time.now'),'minute'),'minute')	&	!@	вычисляем текущее время в минутах
+				last_resp_ = @em.tag.getNum(@conv.time($respawn_array[loc_pos_],'minute'),'minute')	&	!@	вычисляем время последнего респавна
+				charge_array[loc_pos_] -= (current_time_- last_resp_) * (charge_array[loc_pos_]-$seller_bank_) / resp_time_
 			end
-			$respawn_array[args['$']]=$func('summ.time',$func('get.time.now'),$args['$respawn'])
+			$respawn_array[loc_pos_] = @summ.time($func('get.time.now'),$respawn_period_)
 		end
-	! респавн торговца
+	!@ респавн торговца
 	if $strfind($cvar['back'+$cvar['chest']],'(\[м:[\d]+\]_[\s\S]+|место;|place;)')!'':
-		$SQUARE['SQUARE.seller.closeAct']='&nbsp;&nbsp;&nbsp;&nbsp;<div align=left><a class="plain" href="exec:killvar '+"'$cvar' & GOTO '"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>.'+$func('b.d.t','close','seller')+'</b></font></a></div>'
+		$SQUARE['SQUARE.seller.closeAct']='&nbsp;&nbsp;&nbsp;&nbsp;<div align=left><a class="plain" href="exec:killvar '+"'$cvar' & GOTO '"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>.'+@b.d.t('close','seller')+'</b></font></a></div>'
 	elseif $strfind($cvar['back'+$cvar['chest']],'(\[т:[\d]+\]_[\s\S]+|торговец;|seller;)')<>'' or $strfind($cvar['back'+$cvar['chest']],'(\[с:[\d]+\]_[\s\S]+|сундук;|chest;)')!'':
-		$SQUARE['SQUARE.seller.closeAct']='&nbsp;&nbsp;&nbsp;&nbsp;<div align=left><a class="plain" href="exec:GOTO '+"'[chest]','"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>'+$func('b.d.t','close','seller')+'</b></font></a></div>'
+		$SQUARE['SQUARE.seller.closeAct']='&nbsp;&nbsp;&nbsp;&nbsp;<div align=left><a class="plain" href="exec:GOTO '+"'[chest]','"+$cvar['back'+$cvar['chest']]+"'"+'"><font color=#ff8800><b>'+@b.d.t('close','seller')+'</b></font></a></div>'
 	end
-	$SQUARE['SQUARE.seller.obj.inActs']=$func('int.loc.obj',$args['LID'],'','acts','[count][take:buy][weight][cost]')
-	$SQUARE['SQUARE.seller.obj.inHREF']=$func('int.loc.obj',$args['LID'],'','href','[count][take:buy][weight][cost]')
+	$SQUARE['SQUARE.seller.obj.inActs']=@int.loc.obj($loc_id_,'','acts','[count][take:buy][weight][cost]')
+	$SQUARE['SQUARE.seller.obj.inHREF']=@int.loc.obj($loc_id_,'','href','[count][take:buy][weight][cost]')
 end
-! ----- динамические скрипты локации. Поствыполнение ------
-	if $strfind($run_array[arrpos('$id_array',$args['LID'])],'!onNewLoc.post!')!'': $args['кккккк2139']=$func('run.dynamic.script','!onNewLoc.post!',$args['LID'])
-! ----- динамические скрипты локации. Поствыполнение ------
+!@ ----- динамические скрипты локации. Поствыполнение ------
+	if $strfind($run_array[arrpos('$id_array',$loc_id_)],'!onNewLoc.post!')!'': $temp_ = @run.dynamic.script('!onNewLoc.post!',$loc_id_)
+!@ ----- динамические скрипты локации. Поствыполнение ------
 
-! ------------------------------ заносим в основное описание дополнительные тексты ----------------------------
-$SQUARE['SQUARE.loc.hallow']=$tvar['приветствие.'+$args['LID']]
+!@ ------------------------------ заносим в основное описание дополнительные тексты ----------------------------
+$SQUARE['SQUARE.loc.hallow']=$tvar['приветствие.'+$loc_id_]
 $SQUARE['SQUARE.loc.plustext']=$lvar['локация.дополнительные тексты']
-! -массив $dvar
+!@ -массив $dvar
 $SQUARE['SQUARE.loc.dvar']=''
-args['d']=0
-:print_Dvar
-if args['d']<arrsize('$dvar'):
-	if $dvar[args['d']]<>'':
-		$SQUARE['SQUARE.loc.dvar']+=$dvar[args['d']]+'<br>'
-	end
-	args['d']+=1
-	jump 'print_Dvar'
+loop local d = 0 while d < arrsize('$dvar') step d += 1:
+	if $dvar[d] <> '': $SQUARE['SQUARE.loc.dvar'] += $dvar[d] + '<br>'
 end
-! ------------------------------ заносим в основное описание дополнительные тексты ----------------------------
+!@ ------------------------------ заносим в основное описание дополнительные тексты ----------------------------
 
-if $GAME_INTERFACE['обучение']='show' and $func('[help]',$args['LID'])!'': $print['help']+="<br>"+$func('[help]',$args['LID'])
-$SQUARE['SQUARE.loc.acts.inActs']=$func('int.loc.act','acts')
-$SQUARE['SQUARE.loc.acts.inHREF']=$func('int.loc.act','href')
-$SQUARE['SQUARE.head']=$func('int.loc.head',$args['LID'],$args['тип локации'])	&	!	интерпретатор заголовков локаций
-$SQUARE['SQUARE.stat']=$func('print.word')
-! теперь когда получены все возможные данные, запускаем интерпретатор интерфейса
-gosub 'int.loc.interface',$args['LID'],$args['тип локации']
-! "---- 
-	Вставить здесь задержку и вывод пустой строки для случаев, когда мы посещаем одну и ту же локацию и нам не нужно читать описание по-новой.
-!"
-! ----- обнуление данных --------------------------------------------------------------------------------------------------------
+if $GAME_INTERFACE['обучение'] = 'show' and $func('[help]', $loc_id_) <> '':
+	$print['help'] += "<br>"+$func('[help]', $loc_id_)
+end
+$SQUARE['SQUARE.loc.acts.inActs'] = @int.loc.act('acts')
+$SQUARE['SQUARE.loc.acts.inHREF'] = @int.loc.act('href')
+$SQUARE['SQUARE.head'] = @int.loc.head($loc_id_,$loc_type_)	&	!	интерпретатор заголовков локаций
+$SQUARE['SQUARE.stat'] = @print.word()
+!@ теперь когда получены все возможные данные, запускаем интерпретатор интерфейса
+@int.loc.interface($loc_id_, $loc_type_)
+!@ ---- 
+	!@ Вставить здесь задержку и вывод пустой строки для случаев, когда мы посещаем одну и ту же локацию и нам не нужно читать описание по-новой.
+!@ -----
+
+!@ ----- обнуление данных -----
 $time['goto']=''
 GAME_VALUE['goto'] = 0
-$kolvo_array[arrpos('$id_array',$args['LID'])]=$time['new.all']
+$kolvo_array[arrpos('$id_array',$loc_id_)]=$time['new.all']
 killvar '$result'
 killvar '$lvar'
 killvar '$avar'

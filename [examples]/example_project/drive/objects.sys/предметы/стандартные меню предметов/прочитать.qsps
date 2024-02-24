@@ -1,22 +1,24 @@
 # menu.obj.read
-$args[0] = $OOS['oid']
-args['pit']=arrpos('$id_array',$args[0])
-$args['obj']=$object_array[args['pit']]
-$args['book']=$func('em.tag.getCont',$args['obj'])
-if instr($args['obj'],'<spell>')!0 and книга_прочитана[$args['book']]=0:
-	$print['read.book']+='Ты не знаешь, как действует это заклинание.'
-	$args['ras']='!book.cant.read!'
+local $obj_id_, $temp_ = $args[0], ''
+$obj_id_ = $OOS['oid']
+local pos_, $obj_body_, $book_kind_, $callback_cmd_
+pos_=arrpos('$id_array',$obj_id_)
+$obj_body_ = $object_array[pos_]
+$book_kind_ = @em.tag.getCont($obj_body_)
+if instr($obj_body_,'<spell>') <> 0 and книга_прочитана[$book_kind_] = 0:
+	$print['read.book'] += 'Ты не знаешь, как действует это заклинание.'
+	$callback_cmd_ = '!book.cant.read!'
 	jump 'end_keep'
 end
-if $light_array[$func('get.loc.id')]='темно' and instr($args['obj'],'<spell>')=0:
-	$print['read.book']+='Нельзя читать книги в полной темноте.'
-	$args['ras']='!book.cant.read!'
-else
-	$print['read.book']+=$func('base.new.obj',$args['obj'],'book')
-	if книга_прочитана[$args['book']]=0: книга_прочитана[$args['book']]+=1
-	if это_прочитано[$args[0]]=0: это_прочитано[$args[0]]+=1
-	$args['ras']='!book.read!'
+if $light_array[@get.loc.id()] = 'темно' and instr($obj_body_,'<spell>') = 0:
+	$print['read.book'] += 'Нельзя читать книги в полной темноте.'
+	$callback_cmd_ = '!book.cant.read!'
+else:
+	$print['read.book'] += @base.new.obj($obj_body_,'book')
+	if книга_прочитана[$book_kind_] = 0: книга_прочитана[$book_kind_] += 1
+	if это_прочитано[$obj_id_] = 0: это_прочитано[$obj_id_] += 1
+	$callback_cmd_ = '!book.read!'
 end
 :end_keep
-if $run_array[args['pit']]!'': $args['func']=$func('run.dynamic.script',$args['ras'],$args[0])
+if $run_array[pos_] <> '': $temp_ = @run.dynamic.script($callback_cmd_, $obj_id_)
 --- menu.obj.read ---------------------------------

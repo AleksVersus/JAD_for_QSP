@@ -959,15 +959,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\sys\\onnewloc.qsps": [
-            [
-                "onNewLoc",
-                [
-                    2,
-                    10
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u043c\u0435\u0441\u044f\u0446.qsps": [
             [
                 "int.time.month",
@@ -1088,30 +1079,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\interface.sys\\\u0432\u0438\u0437\u0443\u0430\u043b\u044c\u043d\u0430\u044f \u0437\u0430\u0434\u0435\u0440\u0436\u043a\u0430.qsps": [
-            [
-                "waiting.string",
-                [
-                    429,
-                    443
-                ]
-            ]
-        ],
         "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0442\u0435\u043a\u0441\u0442\u043e\u043c\\rndstr.qsps": [
             [
                 "em.str.random",
                 [
                     319,
                     332
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0442\u0435\u043a\u0441\u0442\u043e\u043c\\em.const.qsps": [
-            [
-                "em.RN",
-                [
-                    32,
-                    37
                 ]
             ]
         ],
@@ -1149,154 +1122,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043b\u043e\u043a\u0430\u0446\u0438\u0438.qsps": [
-            [
-                "int.loc.interface",
-                [
-                    85,
-                    102
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043c\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u0438.qsps": [
-            [
-                "interface.place",
-                [
-                    46,
-                    61
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u0441\u0443\u043d\u0434\u0443\u043a\u0430.qsps": [
-            [
-                "interface.chest",
-                [
-                    46,
-                    61
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": [
-            [
-                "menu.obj.spell.teach",
-                [
-                    2,
-                    22
-                ]
-            ],
-            [
-                "menu.obj.spell.read",
-                [
-                    86,
-                    105
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0437\u0430\u0440\u044f\u0434\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.inCharge",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u043f\u0443\u043d\u043a\u0442\u043e\u0432 \u043c\u0435\u043d\u044e.qsps": [
-            [
-                "int.menu.obj",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043d\u0430\u0434\u0435\u0442\u044c \u043d\u0430 \u0442\u0435\u043b\u043e.qsps": [
-            [
-                "menu.in.body",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": [
-            [
-                "menu.obj.property",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c.qsps": [
-            [
-                "menu.obj.read",
-                [
-                    2,
-                    15
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c.qsps": [
-            [
-                "menu.obj.unmount",
-                [
-                    2,
-                    18
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u0440\u044f\u0434\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.disCharge",
-                [
-                    2,
-                    20
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0441\u044a\u0435\u0441\u0442\u044c.qsps": [
-            [
-                "menu.obj.eat",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
         "[examples]\\example_postprocessor\\launcher.qsps": [
             [
                 "[launcher]",
                 [
                     38,
                     48
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\scripts.sys\\influence.script (\u0432\u043b\u0438\u044f\u043d\u0438\u044f \u0438 \u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f).qsps": [
-            [
-                "int.influence.scripts",
-                [
-                    2,
-                    23
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\scripts.sys\\text in code.qsps": [
-            [
-                "int.run",
-                [
-                    2,
-                    9
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\scripts.sys\\\u0437\u0430\u043f\u0443\u0441\u043a \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432.qsps": [
-            [
-                "run.dynamic.script",
-                [
-                    2,
-                    20
                 ]
             ]
         ],
@@ -1309,280 +1140,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": [
-            [
-                "menu.obj.put",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\retape object.qsps": [
-            [
-                "rtp.obj",
-                [
-                    155,
-                    162
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\replace in obj regexp on string.qsps": [
-            [
-                "rpl.str.inObj.id",
-                [
-                    159,
-                    175
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\prove regexp in Object.qsps": [
-            [
-                "prv.str.inObj",
-                [
-                    173,
-                    186
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get object_ID by object_Regexp.qsps": [
-            [
-                "get.id.obj",
-                [
-                    170,
-                    180
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get object by ID.qsps": [
-            [
-                "get.obj.id",
-                [
-                    92,
-                    102
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\decrease objects.qsps": [
-            [
-                "minus.obj",
-                [
-                    136,
-                    145
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0432\u0435\u0441\u0430.qsps": [
-            [
-                "prv.obj.weight",
-                [
-                    134,
-                    148
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get similar objects.qsps": [
-            [
-                "get.similar.obj",
-                [
-                    220,
-                    235
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get daughter by parent_ID.qsps": [
-            [
-                "get.daughter.obj",
-                [
-                    488,
-                    504
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\create object.qsps": [
-            [
-                "add.new.obj",
-                [
-                    588,
-                    599
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get all daughters by parent_ID.qsps": [
-            [
-                "get.daughter.obj.all",
-                [
-                    350,
-                    370
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\delete object and all daughters.qsps": [
-            [
-                "del.obj",
-                [
-                    213,
-                    220
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\delete object by id.qsps": [
-            [
-                "del.obj.id",
-                [
-                    63,
-                    73
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\clear all parents.qsps": [
-            [
-                "clr.parent.obj",
-                [
-                    112,
-                    126
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\sys\\onobjsel.qsps": [
             [
                 "onObjSel",
                 [
                     3,
                     11
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0443\u0434\u0430\u043b\u0435\u043d\u0438\u0435 \u043c\u0435\u0442\u043e\u043a \u043d\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0435.qsps": [
-            [
-                "del.markers.obj",
-                [
-                    105,
-                    120
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0441\u043f\u0438\u0441\u043a\u043e\u0432 \u0442\u0438\u043f\u043e\u0432.qsps": [
-            [
-                "prv.onTarget",
-                [
-                    105,
-                    117
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u043a\u0443\u043f\u043a\u0430 \u043f\u0440\u043e\u0434\u0430\u0436\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432.qsps": [
-            [
-                "obj.sale.cost",
-                [
-                    112,
-                    125
-                ]
-            ],
-            [
-                "obj.purc.cost",
-                [
-                    566,
-                    579
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430 \u0438\u043b\u0438 \u0435\u0433\u043e \u0447\u0430\u0441\u0442\u0438.qsps": [
-            [
-                "replace.obj",
-                [
-                    313,
-                    324
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043d\u0430\u0434\u0435\u0432\u0430\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": [
-            [
-                "use.obj.actObj",
-                [
-                    443,
-                    457
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0442\u0430\u0431\u043b\u0438\u0446 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0437\u0430\u0440\u044f\u0434\u0430\u043c.qsps": [
-            [
-                "redo.obj.inCharge",
-                [
-                    290,
-                    307
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0430 \u0442\u0435\u043b\u0435 \u043c\u0435\u0441\u0442\u043e.qsps": [
-            [
-                "prv.pos.inObj",
-                [
-                    231,
-                    244
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e \u043b\u0438 \u043a\u0443\u043f\u0438\u0442\u044c.qsps": [
-            [
-                "prv.obj.pay",
-                [
-                    207,
-                    218
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\prv.obj.id.qsps": [
-            [
-                "prv.obj.id",
-                [
-                    94,
-                    104
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\find right bag.qsps": [
-            [
-                "get.bag",
-                [
-                    182,
-                    189
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\add nocount object in purse.qsps": [
-            [
-                "add.obj.nocount",
-                [
-                    87,
-                    102
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": [
-            [
-                "take.obj",
-                [
-                    122,
-                    130
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": [
-            [
-                "menu.in.inventory",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0441\u0443\u043c\u043a\u0443.qsps": [
-            [
-                "menu.in.bag",
-                [
-                    92,
-                    103
                 ]
             ]
         ],
@@ -1699,20 +1262,99 @@
                     33093
                 ]
             ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": [
+            [
+                "menu.obj.spell.teach",
+                [
+                    2,
+                    22
+                ]
+            ],
+            [
+                "menu.obj.spell.read",
+                [
+                    194,
+                    213
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": [
+            [
+                "menu.obj.put",
+                [
+                    147,
+                    159
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\retape object.qsps": [
+            [
+                "rtp.obj",
+                [
+                    155,
+                    162
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\influence.script (\u0432\u043b\u0438\u044f\u043d\u0438\u044f \u0438 \u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f).qsps": [
+            [
+                "int.influence.scripts",
+                [
+                    141,
+                    162
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0442\u0435\u043a\u0441\u0442\u043e\u043c\\em.const.qsps": [
+            [
+                "em.RN",
+                [
+                    32,
+                    37
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\text in code.qsps": [
+            [
+                "int.run",
+                [
+                    122,
+                    129
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\scripts.sys\\\u0437\u0430\u043f\u0443\u0441\u043a \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432.qsps": [
+            [
+                "run.dynamic.script",
+                [
+                    185,
+                    203
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\sys\\onnewloc.qsps": [
+            [
+                "onNewLoc",
+                [
+                    558,
+                    566
+                ]
+            ]
         ]
     },
     "files_paths": {
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\HTML-\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0438.qsps": "11fe0665c74c535479310dbbcc971b8f",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.tag.num.qsps": "b4b932211a55a7d351a2aa4bd709ae3b",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0432\u0440\u0435\u043c\u044f \u0433\u043e\u0434\u0430.qsps": "31dedfd90b658f71a28c137a922abc2f",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e \u043b\u0438 \u043a\u0443\u043f\u0438\u0442\u044c.qsps": "4ff7866adc2d7bd3027aff7167ed911a",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0441\u0443\u043c\u043a\u0443.qsps": "d6f27c87fb147bf2301da3718089dec1",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0432\u043e\u0437\u043c\u043e\u0436\u043d\u043e \u043b\u0438 \u043a\u0443\u043f\u0438\u0442\u044c.qsps": "e98af4199b8df8ec663b16f8f7f4aab2",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0441\u0443\u043c\u043a\u0443.qsps": "f875bbba360dd4a965314aa4e190cb01",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0447\u0430\u0441\u0442\u0438 \u0442\u0435\u043b\u0430\\base.new.bodypart.qsps": "a007908981617916569abb7893e5a299",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\textincode.qsps": "72e5fb7c8ed6fd81368d5e5a72fdd61b",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0441\u0438\u043b\u0430.qsps": "391806186f958e18bb6e0e0e48cd3b41",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.var.qsps": "8d3aa6987aa7a11b98f2c8cc70ceb936",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\setScreen.qsps": "586ba43c74664c2a7d88ed38ab811993",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c.qsps": "5fbd97f9deea3135946a1d53f8be1145",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c.qsps": "ead5b62461ec4fe6388ddcefa652ae71",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.sex.qsps": "ae59374cff03799074dcad167245bb05",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\search.similar.obj.qsps": "16ba8fea4098eb67a9ad31e6b46292da",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\time.output.addition.qsps": "b9bf37cd6ebb748bd5e60b95f27e02f6",
@@ -1726,7 +1368,7 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u043c\u0430\u0433\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u0441\u0438\u043b\u0430.qsps": "abae75b0fb9d5420132c7d74421ca450",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\sys\\onobjsel.qsps": "fa8a28160861e788e2a4d4dd744124da",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\goto.sys\\open door by key.qsps": "9aeee03201ec987a69198da3e9661e0e",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": "14d8a65fb49e6c9e0aa6ce39ee141341",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": "d53315a0cf28453ade059f590e5a2d96",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u043c\u0430\u0441\u0441\u0438\u0432\u0430\u043c\u0438\\array.prnt.qsps": "b70b879e0afcc467fd82c92f5a46227a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438.qsps": "0edbdd42d1c7835b147ef05d8e7b9e9d",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_02.qsps": "e0d020c58737cc12acbddab0997ab7d3",
@@ -1739,11 +1381,11 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[diary].qsps": "756b77b2d91a49b54948cd5e90ddea2d",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\QSP.sublime-package\\syntax_test_qsp.qsps": "45fb1f432e32c7ae910b7f95a60f526b",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0445 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u043e\u0432 \u0434\u043b\u044f \u043b\u043e\u043a\u0430\u0446\u0438\u0439.qsps": "f1c925be923fe132671e9e6204a2c6cc",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\delete object and all daughters.qsps": "269fbd8ae827f5fb51d1ba12bf0540d6",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\delete object and all daughters.qsps": "cf006ce3e78cb08d1b03af8e98b07f81",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0437\u0434\u043e\u0440\u043e\u0432\u044c\u0435.qsps": "aa6a245952552729b260437d4d802935",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\indiv.qsps": "b6511eee7c5bde462299ca5c7bcd4d5e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043a\u0443\u0437\u043d\u0438\u0446\u044b.qsps": "257ac4e04e20638db36efab18457a119",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0441\u043f\u0438\u0441\u043a\u043e\u0432 \u0442\u0438\u043f\u043e\u0432.qsps": "1c7bc3b006c73a5abf469f683c09fd68",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0440\u0430\u0432\u043d\u0435\u043d\u0438\u0435 \u0441\u043f\u0438\u0441\u043a\u043e\u0432 \u0442\u0438\u043f\u043e\u0432.qsps": "3d96cf1697b25599a247c0347c43ede3",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u044f\\magic.warspell.qsps": "c6590ef2ca2cae1b03371c520770ad48",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0443\u0440\u043e\u043d\u044b \u0438 \u0443\u0449\u0435\u0440\u0431\u044b\\\u043f\u043e\u0438\u0441\u043a \u0443\u0440\u043e\u043d\u043e\u0432-\u0443\u0449\u0435\u0440\u0431\u043e\u0432.qsps": "5025ce74109dfcc282bdb26cb84a8a22",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": "91388ca279d5e5e8b58a906479ec6983",
@@ -1752,17 +1394,17 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.uron.qsps": "6c1f71f500806601aedd2da4261733c5",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u043c\u0435\u0442\u043a\u0430 \u0438\u0437\u043c\u0435\u043d\u0438\u0442\u044c.qsps": "3bd5a6bcc6b11f92aa378de06075ef1e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\print additional description.qsps": "c93dc8f67c562318d95e6af08835e550",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0442\u0430\u0431\u043b\u0438\u0446 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0437\u0430\u0440\u044f\u0434\u0430\u043c.qsps": "8f7f5738a154f8e856e1a431bd1e8c29",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0438\u0437\u043c\u0435\u043d\u0435\u043d\u0438\u0435 \u0442\u0430\u0431\u043b\u0438\u0446 \u0441\u043e\u043e\u0442\u0432\u0435\u0442\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0437\u0430\u0440\u044f\u0434\u0430\u043c.qsps": "c432a10fb3b954490ba443babf35b7db",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\intro\\\u0432\u0432\u043e\u0434\u043d\u044b\u0435 \u0434\u0430\u043d\u043d\u044b\u0435.qsps": "de2513a1d687a6b403ece22128112e28",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": "43b6b6f90d422bb51f1649c9900dc705",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\decrease objects.qsps": "7a167e74488c0d3dc8ba0d8de70bc0ac",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get object by ID.qsps": "f09f5acac65906af69625f96f86269e9",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\create object.qsps": "6449f73d93305acbdff05f555f3656c1",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0443\u0447\u0438\u0442\u044c \u043f\u0440\u043e\u0447\u0435\u0441\u0442\u044c \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0435.qsps": "18b4ce4ec35b4e723b44d70ea47cbc53",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\decrease objects.qsps": "ca8b60f64c11c802a9a66eabe01d58f6",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get object by ID.qsps": "8ffa8c6b456f4178ab0d66ad5f028159",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\create object.qsps": "67b84bc730412726c0d177ff39bd261d",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u0434\u043e\u0431\u0430\u0432\u0438\u0442\u044c.qsps": "f03fb9a4ecf6115c5791d4d50433faad",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": "c99fed01737d5117b709050290a5bbe3",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": "312c8cfd965a2755721b1862525a9e01",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0432\u044b\u0431\u0440\u043e\u0441\u0438\u0442\u044c.qsps": "ac8d9f70838d13fecc9ef5aedc44bdad",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0442\u0435\u043a\u0441\u0442\u043e\u043c\\rndstr.qsps": "b15368f1e06f0fa3ade6a7699b7a7bfd",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u043a\u0443\u043f\u043a\u0430 \u043f\u0440\u043e\u0434\u0430\u0436\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432.qsps": "4169fc6ecca2b15b4eb330d825f00ef5",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u043a\u0443\u043f\u043a\u0430 \u043f\u0440\u043e\u0434\u0430\u0436\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432.qsps": "956b29cc79b29c5236bc68d61ab53638",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u044f\\base.magic.string (\u043d\u0430\u0434\u0441\u0442\u0440\u043e\u0439\u043a\u0430 \u0434\u043b\u044f \u0431\u043e\u0435\u0432\u044b\u0445 \u0437\u0430\u043a\u043b\u0438\u043d\u0430\u043d\u0438\u0439).qsps": "cdeef5d9d3a425c9786bea9a1f3fbb61",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\gen.ahref.inMount.qsps": "2023854bee6666f0d51ba55007a31066",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.obj.pos.qsps": "d588093cb4ef5bdc4de31053b20a2a04",
@@ -1770,35 +1412,35 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\base.new.obj\\01_base.new.obj.qsps": "98d1588ec974c0359f66abf39bc94bf1",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": "6f8853e23c7948edaf7544a4e3a8a4fc",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\base.img (\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u044f).qsps": "51a2cba8ba836ba39a07bea6377ee609",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043c\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u0438.qsps": "535fb2105b07d164c27847ca789516f9",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043c\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u0438.qsps": "0b26b6719d551fc8e12bb445ffe1cb24",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.tag.cont.qsps": "2657a59ebb9fb6db17dbff75c50a03ae",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get all daughters by parent_ID.qsps": "e5d56e05fbc134fc761256b3bd2a1fa3",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get all daughters by parent_ID.qsps": "ecf901a89cc572a7d1b89cb164c348fe",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0443\u0440\u043e\u0432\u0435\u043d\u044c.qsps": "d019ccf06a267925a7ee526aa6a7c27a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0443\u0434\u0430\u0447\u0430.qsps": "efb8d78633c330cb03b153671c69c0fb",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\scale.qsps": "30f3370d3083a26f0120ee51668c1a51",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": "516d10c227735d9996030450c1e06306",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u0441\u0443\u043d\u0434\u0443\u043a\u0430.qsps": "ba3b2243fc50bf621d8e82b642f1ab6c",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get object_ID by object_Regexp.qsps": "ba574c025ec31df170b4e1d28483801d",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": "9cbbe58952132a5807e8f1015506de60",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u0441\u0443\u043d\u0434\u0443\u043a\u0430.qsps": "e9ad32e34f54e5351ba52f4b92160bfb",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get object_ID by object_Regexp.qsps": "5f775c7f59bb05bc0f3d8ce0732fce98",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043f\u0440\u043e\u0431\u0440\u043e\u0441_01.qsps": "00434e270e374d08e14813e576925d2a",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get similar objects.qsps": "1d958dfade3d910442dfd4b50b53b027",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0432\u0435\u0441\u0430.qsps": "8a9e4d23dddbd538073f6ead970a36cb",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get similar objects.qsps": "55303214164efc1b2f87ac120e8403d6",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0432\u0435\u0441\u0430.qsps": "3cbb3976c01e583aa7124f1500ea94b2",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[chest].qsps": "7bd4a754c2b8f88a4c99158211111554",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[help].qsps": "50854025502eb91326ba98887aee7b5f",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\scale.rn.qsps": "cc50153b45a4b5b4810c1e32e277d6fc",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0444\u0443\u043d\u043a\u0446\u0438\u0438 \u0432\u0440\u0435\u043c\u0435\u043d\u0438.qsps": "ef5ea19f287cdcc72f88dc0199fb1ab9",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0432\u0438\u0437\u0443\u0430\u043b\u044c\u043d\u0430\u044f \u0437\u0430\u0434\u0435\u0440\u0436\u043a\u0430.qsps": "26ce3cc1391a278f9f0ca9db7487d59b",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0432\u0438\u0437\u0443\u0430\u043b\u044c\u043d\u0430\u044f \u0437\u0430\u0434\u0435\u0440\u0436\u043a\u0430.qsps": "9c4fec2a1d7ff281052d3e21adac217d",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": "ad1454cfeb1d081d64286061b64b0a99",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.obj.DU.qsps": "85639d9e21e856e043487cbbf8c81aeb",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\goto.sys\\find skeleton key.qsps": "66fd39d69afd870eb5f813cc82b36729",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0448\u0435\u0441\u0442\u043d\u0430\u0434\u0446\u0430\u0442\u0435\u0440\u0438\u0447\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\hex-dec.qsps": "1e629a01e12aa54193a82802a4b38b48",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u043f\u0443\u043d\u043a\u0442\u043e\u0432 \u043c\u0435\u043d\u044e.qsps": "b2e3d68bd129e523bf1441b5b4545495",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\prove regexp in Object.qsps": "1b03f53c77dfc08ef44ef379f56e9e4f",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\delete object by id.qsps": "2a3d2a71a47df38c891a1b8e426ac858",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\clear all parents.qsps": "1ba6783bc2fb623d637954f5a846dce9",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0445 \u043f\u0443\u043d\u043a\u0442\u043e\u0432 \u043c\u0435\u043d\u044e.qsps": "7061b2b22c50409b7b57e6a840fe5680",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\prove regexp in Object.qsps": "11b89df82ff8b72454c1e4f74f188770",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\delete object by id.qsps": "bcd75e1a634ef36019425c5a20fe15eb",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\clear all parents.qsps": "92d02671fa10fef1b055bce29aa94b0e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0430.qsps": "5f4b2be92052dbe25f3b1a8cb2ceff9a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.t.qsps": "f2d063f0181816150a735c4361a400c2",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432 \u043d\u0430 \u043b\u043e\u043a\u0430\u0446\u0438\u044f\u0445.qsps": "c4da61b7237fdce7f91c574f5f82663b",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\add nocount object in purse.qsps": "27fcf763db83d0db2bf3160c5e6b2340",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\add nocount object in purse.qsps": "a949ace8ce9cad45501cde55e756aeea",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u043e\u0432 \u043b\u043e\u043a\u0430\u0446\u0438\u0439.qsps": "7204ed0acdafe73fd2b622b40fbf9189",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\scripts.sys\\influence.script (\u0432\u043b\u0438\u044f\u043d\u0438\u044f \u0438 \u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f).qsps": "180d32e73027d12e5f53566bfc7f4e58",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": "752034c8f7d766aa790a6a3e2a181e01",
@@ -1812,17 +1454,17 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0439.qsps": "c5a9101b1f5ac2dde9c8d07c2b1cb753",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\base.calibr.qsps": "52d59ee5320ab34e48242822e4dd2404",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u043c\u0430\u043b\u0435\u043d\u044c\u043a\u0430\u044f.qsps": "1b8155657b394c8e2f876f7547261511",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get daughter by parent_ID.qsps": "a91cf7871426e04cdaa42fbbd9d95b84",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\get daughter by parent_ID.qsps": "3c04ce98509040a317524c01edf1437c",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\test_location.qsps": "c6f5e5f8acf3bc06f4bd6128cc2e2fc9",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043b\u043e\u043a\u0430\u0446\u0438\u0438.qsps": "3eeb55b442d0b470926b8dd88878dbed",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\\u0438\u043d\u0442\u0435\u0440\u0444\u0435\u0439\u0441 \u043b\u043e\u043a\u0430\u0446\u0438\u0438.qsps": "5843168a51a6d35d509f97ed30d1b66b",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_01.qsps": "2979b62b65c4a95d09c5a9ef3f37e902",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\replace in obj regexp on string.qsps": "e961ee0c8ad88b5c531da4af4d5b63bd",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\replace in obj regexp on string.qsps": "910153c3074f3bd3b41d49a2cde6c73e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\goto.sys\\true goto current location.qsps": "7dbaf520cb2c302d24be6ed0be27ecfe",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\sys\\usercom.qsps": "e5e551651e06d48d13f745060dee3584",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0431\u0435\u0437\u0443\u0441\u043b\u043e\u0432\u043d\u044b\u0435 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u044b \u0432 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0442\u0435\u043a\u0441\u0442\u0430\u0445.qsps": "c9d0111b81c18f356d8624273960f507",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\scripts.sys\\\u0437\u0430\u043f\u0443\u0441\u043a \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432.qsps": "d1c044197c47d1b40f6f7387f0eaa594",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.word.inPos.qsps": "5d11973cfd1e0e4fd2e2c6c01e5d3a39",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0430 \u0442\u0435\u043b\u0435 \u043c\u0435\u0441\u0442\u043e.qsps": "41c228b7691e893600c034bfeeb7653a",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0435\u0441\u0442\u044c \u043b\u0438 \u043d\u0430 \u0442\u0435\u043b\u0435 \u043c\u0435\u0441\u0442\u043e.qsps": "71166338c0dcdb8da05f9640c21029b0",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440.qsps": "5e7684b0bc99dc4260ccb33d8af98b33",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": "50ebc6e734b3d1a692d00635c04b6140",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\remastering.obj.qsps": "7d8ead1d7c5f7adbb5476261af26a383",
@@ -1831,10 +1473,10 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0434\u0440\u043e\u0431\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\dz.qsps": "5fe02d319b76ceab2e5e3b6bea7d3a6a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[death].qsps": "93c73d24ff2027ff0eb70944d2fc5dc7",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0410\u043b\u0442\u0430\u0440\u044c\\\u043c\u0435\u0445\u0430\u043d\u0438\u043a\u0430 \u0430\u043b\u0442\u0430\u0440\u0435\u0439.qsps": "8e2732d517c8d92bfceaa790056a5760",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\prv.obj.id.qsps": "fef7adb702ce490f5236148c27c482c2",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\prv.obj.id.qsps": "277a1105a65b88b263a64ffb355d6ba5",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\goto.sys\\find key for open.qsps": "1f621ac8e7df200d145193d5f9eecf29",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\hero.stat-scale.qsps": "d1930587acbfb093b5a6dfb3bfa38d26",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043d\u0430\u0434\u0435\u0442\u044c \u043d\u0430 \u0442\u0435\u043b\u043e.qsps": "12f8d0639722ad3a1b5d25a3b9711e37",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043d\u0430\u0434\u0435\u0442\u044c \u043d\u0430 \u0442\u0435\u043b\u043e.qsps": "f4fe4bd7f863ff721222865c22b40174",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0434\u0435\u043d\u044c \u043d\u0435\u0434\u0435\u043b\u0438.qsps": "fcf39efeeb470b092e63ee513666f846",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": "d13fd29334756b16f61c0a74753785ad",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u0433\u043b\u0430\u0432\u043d\u043e\u0435 \u043c\u0435\u043d\u044e\\main_screen.qsps": "a955e9cfca1ce4f5762dbc3982f61610",
@@ -1847,15 +1489,15 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u0431\u043e\u043b\u044c\u0448\u0430\u044f. \u0432\u0430\u0440\u0438\u0430\u043d\u0442 2.qsps": "b64bfceb295d2b2b4eb1785179795cae",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0435\u043a\u0441\u0442 \u0437\u0430\u0434\u0430\u043d\u0438\u044f.qsps": "63feed279f68817ddf614f0eee1da16c",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0442\u0435\u043a\u0441\u0442 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043b\u043e\u043a\u0430\u0446\u0438\u0438.qsps": "ff5b4d9d3b21bd86881633d8e57b6345",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\retape object.qsps": "6248e58d790f92f5fb523981b6a6467d",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\retape object.qsps": "732f4a58e6ec677052e115a53e6ae881",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u0434\u0430\u043d\u0438\u0435 \u043f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u0435.qsps": "b44a14d60320bd8e2c1af1ef505cb205",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0443\u0434\u0430\u043b\u0435\u043d\u0438\u0435 \u043c\u0435\u0442\u043e\u043a \u043d\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0435.qsps": "539f129fd60c41ed475db50910a1f5d3",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0443\u0434\u0430\u043b\u0435\u043d\u0438\u0435 \u043c\u0435\u0442\u043e\u043a \u043d\u0430 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0435.qsps": "173339f27dfcdd0a8ef53506ffa25bb4",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": "53a5b3e7e4df35dda801c39f31b2b7bd",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u043c\u0430\u0441\u0441\u0438\u0432\u0430\u043c\u0438\\array.prnt.few.qsps": "b23d1eb836db124bee822f028f3f5459",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0441\u044a\u0435\u0441\u0442\u044c.qsps": "5f67986874ee22641a186608a1df091b",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0441\u044a\u0435\u0441\u0442\u044c.qsps": "dde99f4e487fc5367c46414f67c6dbad",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044f.qsps": "f281b0372d8579edb933ba773136e5df",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\find right bag.qsps": "d5dd566335048690d527b0995e606bd1",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c.qsps": "cb9e35016a1d2666faa7c72c33196b41",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\find right bag.qsps": "8f963f8aca87c6550f92e4b24bcc77b0",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u0440\u043e\u0447\u0438\u0442\u0430\u0442\u044c.qsps": "5eb40e98db31ccca6c849ccd0096bff5",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_postprocessor\\adding_lib\\01_test.qsps": "8015f33d1022bbcc8aa88f20831ba58a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0437\u0430\u0440\u044f\u0434\u0438\u0442\u044c.qsps": "ebd7eb85d64039d23bc6f6f1b9c9953b",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430 \u0438 \u043f\u0430\u0440\u0430\u043c\u0435\u0442\u0440\u044b\\base.new.property.qsps": "4f2b90e2ca393fabeb1927e78b12faa7",
@@ -1865,13 +1507,14 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u0431\u043e\u043b\u044c\u0448\u0430\u044f. \u0432\u0430\u0440\u0438\u0430\u043d\u0442 1.qsps": "bf8d8f8e500fd6d6ec8951b96e60c1fe",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0434\u043e\u043f.\u043c\u0435\u043d\u044e\\\u0434\u043e\u043f.\u043c\u0435\u043d\u044e.qsps": "c695e0e3134291b724f8ca7f05024bb3",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_postprocessor\\launcher.qsps": "e8ff2d14d7605eddd8b386511312d0e7",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430 \u0438\u043b\u0438 \u0435\u0433\u043e \u0447\u0430\u0441\u0442\u0438.qsps": "5805a00246e67e07026ea7c47d383bc1",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0435\u0440\u0435\u043c\u0435\u0449\u0435\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430 \u0438\u043b\u0438 \u0435\u0433\u043e \u0447\u0430\u0441\u0442\u0438.qsps": "da45df29df7d5a3370f483f2f536647c",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0432\u0440\u0435\u043c\u044f \u0441\u0443\u0442\u043e\u043a.qsps": "76edc984368294c014f1e70fa910d170",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043d\u0430\u0434\u0435\u0432\u0430\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": "2666caa925e161288f51fe56512d0b28",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043d\u0430\u0434\u0435\u0432\u0430\u043d\u0438\u0435 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": "ca47eb569e6dde676d4c45c0e69e5a70",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0448\u0435\u0441\u0442\u043d\u0430\u0434\u0446\u0430\u0442\u0435\u0440\u0438\u0447\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\+col.qsps": "e44c3218c53529ea7d22b3769c5b48c4",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u0440\u044f\u0434\u0438\u0442\u044c.qsps": "c80f2da2aa4e777c465f4bb129fa658c",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u0440\u044f\u0434\u0438\u0442\u044c.qsps": "ed2bfce2ddde67119832c7c8f65c8806",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u044f \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430_.qsps": "70ba66228815267d02c3e2164b14e68e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\em.tpl.in.qsps": "665c447479561b20f75ab7e1a4da8b80",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\+\u0433\u0435\u0440\u043e\u0439. \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": "86f1916a6dd4f14a7fd19ac1d3b3e3e1"
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\+\u0433\u0435\u0440\u043e\u0439. \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": "86f1916a6dd4f14a7fd19ac1d3b3e3e1",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0442\u0435\u043a\u0441\u0442\u043e\u043c\\em.const.qsps": "13d3f544dc60576a6dd2e2088d103d89"
     }
 }

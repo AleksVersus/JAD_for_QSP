@@ -1,15 +1,12 @@
+QSP-Game локация преобразует набор строк в текст и выполняет динамический код.
+$[0]	&	!	строка вида r1: :r1 ... rN: :rN
 # int.run
-! локация преобразует набор строк в текст и выполняет динамический код.
-$args[0] = $args[0]	&	!	строка вида r1: :r1 ... rN: :rN
-args['i']=1
-:for
-if $strfind($args[0],'r[\d]+:[\s\S]*:r[\d]+')!'':
-	$args['string']=$func('em.tag.getCont',$args[0],"r<<args['i']>>")
-	$args[0]=TRIM($replace($args[0],"r<<args['i']>>:"+$args['string']+":r<<args['i']>>"))
-	$args['res.021213']=$args['string']+'
-'
-	args['i']+=1
-	jump 'for'
+local $dyn_string_ = $args[0]
+local $extract_string_, $run_code_
+loop local i = 1 while $strfind($dyn_string_, 'r[\d]+:[\s\S]*:r[\d]+') <> '' step i += 1:
+	$extract_string_ = @em.tag.getCont($dyn_string_, "r<<i>>")
+	$dyn_string_ = $trim($replace($dyn_string_,"r<<i>>:<<$extract_string_>>:r<<i>>"))
+	$run_code_ = $extract_string_ + @em.RN
 end
-dynamic $args['res.021213']
+dynamic $run_code_
 --- int.run ---------------------------------

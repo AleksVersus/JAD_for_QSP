@@ -1,34 +1,38 @@
+QSP-Game локация убирает предмет в инвентарь.
 # menu.in.inventory
-! локация убирает предмет в инвентарь.
-if $args[0]='': $args[0]=$OOS['oid']
-args['pos']=arrpos('$id_array',$args[0]) 	&	!	получаем позицию предмета в базе
-$args['obj']=$func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['weight']=func('em.tag.getNum',$args['obj'],'weight')	&	!	получаем вес предмета
-args['kolvo']=kolvo_array[args['pos']]	&	! запоминаем текущее количество
-$args['short_name']=$func('em.tag.getCont',$args['obj'])
-$args['bag_in']='INVENTORY'
-! Необходимо проверить из какого места перемещается предмет, т.е. проверяем класс родительского объекта <body> или <inventory>
-$args['parent']=$func('get.obj.id',$position_array[args['pos']]) 	&	!	получаем тело родительского объекта
-if instr($args['parent'],'<bag>')!0:
-	args['w']=0
-	$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['kolvo'])
-	$print['menu.in.bag']+=$func('base.word.screen','007',$args['obj']+'[колво:'+str(args['kolvo'])+']')
-elseif instr($args['parent'],'<body>')!0:
-	args['поднять_штук']=func('prv.obj.weight',$args[0],"inInv")	&	!	получаем сколько можно отправить в сумку
-	if args['поднять_штук']!0:
-		$args['last_id']=$func('replace.obj',$args[0],$args['bag_in'],$args['short_name'],args['поднять_штук'])
-		args['w']=args['поднять_штук']*args['weight']
-		args['pit']=arrpos('$id_array',$args['last_id'])
-		if $run_array[args['pit']]!'':
-			if $strfind($run_array[args['pos_lid']],'!deused!')!'':	$args['func']=$func('run.dynamic.script','!deused!',$args['last_id'],$args[0])
-			if $strfind($run_array[args['pos_lid']],'!inbag!')!'':	$args['func']=$func('run.dynamic.script','!inbag!',$args['last_id'],$args[0])
+local $obj_id_ = $args[0]
+if $obj_id_ = '': $obj_id_ = $OOS['oid']
+local pos_, $obj_body_, weight_, number_, $obj_kind_, $bag_id_
+local $parent_id_, w, $last_id_, $temp_
+pos_ = arrpos('$id_array',$obj_id_) 	&	!@ получаем позицию предмета в базе
+$obj_body_ = @get.obj.id($obj_id_)	&	!@ получаем тело предмета
+weight_ = @em.tag.getNum($obj_body_,'weight')	&	!@ получаем вес предмета
+number_ = kolvo_array[pos_]	&	!@ запоминаем текущее количество
+$obj_kind_ = @em.tag.getCont($obj_body_)
+$bag_id_ = 'INVENTORY'
+!@ Необходимо проверить из какого места перемещается предмет, т.е. проверяем класс родительского объекта <body> или <inventory>
+$parent_id_ = @get.obj.id($position_array[pos_]) 	&	!@ получаем тело родительского объекта
+if instr($parent_id_,'<bag>') <> 0:
+	w = 0
+	$last_id_ = @replace.obj($obj_id_, $bag_id_, $obj_kind_,number_)
+	$print['menu.in.bag'] += @base.word.screen('007', '<<$obj_body_>>[колво:<<number_)>>]')
+elseif instr($parent_id_,'<body>') <> 0:
+	local how_many_, pit_
+	how_many_ = @prv.obj.weight($obj_id_, "inInv")	&	!@ получаем сколько можно отправить в сумку
+	if how_many_ <> 0:
+		$last_id_=@replace.obj($obj_id_, $bag_id_, $obj_kind_, how_many_)
+		w = how_many_ * weight_
+		pit_ = arrpos('$id_array',$last_id_)
+		if $run_array[pit_] <> '':
+			if $strfind($run_array[pit_],'!deused!') <> '':	$temp_ = @run.dynamic.script('!deused!', $last_id_,$obj_id_)
+			if $strfind($run_array[pit_],'!inbag!') <> '':	$temp_ = @run.dynamic.script('!inbag!', $last_id_,$obj_id_)
 		end
-		$print['menu.in.bag']+=$func('base.word.screen','004.1',$args['obj']+'[колво:'+str(args['поднять_штук'])+']')
-	else
-		$print['menu.in.bag']+=$func('base.word.screen','005')
+		$print['menu.in.bag'] += @base.word.screen('004.1', '<<$obj_body_>>[колво:<<how_many_>>]')
+	else:
+		$print['menu.in.bag'] += @base.word.screen('005')
 	end
 end
-property['hero.power.all']+=args['w']
-$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
-gs 'int.inventory'
+property['hero.power.all'] += w
+$print['power.change'] += @int.hero.property(@get.id.obj('<property>[\s\S]*\[:power:\]'))
+@int.inventory()
 --- menu.in.inventory ---------------------------------

@@ -1,8 +1,9 @@
-# menu.obj.property
-! Выводит свойства объекта.
+QSP-Game Выводит свойства объекта.
 ! используется переменная $OOS['obj']
-if $args[0]='': $args[0]=$OOS['oid']
-$print['obj.property']=$func('int.obj.property',$args[0])
-args['pit']=arrpos('$id_array',$args[0])
-if $strfind($run_array[args['pit']],'!obj.property!')!'': $args['func']=$func('run.dynamic.script','!obj.property!',$args[0])
+# menu.obj.property
+local $obj_id_, $temp_ = $args[0], ''
+if $obj_id_ = '': $obj_id_ = $OOS['oid']
+$print['obj.property'] = @int.obj.property($obj_id_)
+local pos_ = arrpos('$id_array',$obj_id_)
+if $strfind($run_array[pos_],'!obj.property!') <> '': $temp_ = @run.dynamic.script('!obj.property!',$obj_id_)
 --- menu.obj.property ---------------------------------

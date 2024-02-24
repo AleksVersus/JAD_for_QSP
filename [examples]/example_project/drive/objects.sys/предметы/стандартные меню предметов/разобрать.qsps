@@ -1,45 +1,40 @@
-# menu.obj.unmount
-! локация разбирает предмет на составляющие части
+QSP-Game локация разбирает предмет на составляющие части
 ! Фактически: получает список составляющих по предмету, создаёт на их основе новые предметы
-if $args[0] = '': $args[0]=$OOS['oid']
-$args['obj']= $func('get.obj.id',$args[0])	&	!	получаем тело предмета
-args['pit']	= arrpos('$id_array',$args[0])
-$args['short_word']=$func('em.tag.getCont',$args['obj'])
-args['weight']=func('em.tag.getNum',$args['obj'],'weight')
-$args['unmount.list']=$func('base.new.obj','[:'+$args['short_word']+':]','unmount')
-if $args['unmount.list']='cant unmount':
-	if $strfind($run_array[args['pit']],'!cant.unmount!')!'': $args['flop']=$func('run.dynamic.script','!cant.unmount!',$args[0]) else $args['flop']='cant unmount'
-	if $args['flop']='cant unmount':
-		$print['obj.unmount']+=$func('base.word.screen','023')
+# menu.obj.unmount
+local $obj_id_ = $args[0]
+if $obj_id_ = '': $obj_id_ = $OOS['oid']
+local $obj_body_, pos_, $obj_kind_, weight_, $unmount_list_, $flop_, $temp_
+$obj_body_ = @get.obj.id($obj_id_)	&	!	получаем тело предмета
+pos_ = arrpos('$id_array',$obj_id_)
+$obj_kind_ = @em.tag.getCont($obj_body_)
+weight_ = @em.tag.getNum($obj_body_,'weight')
+$unmount_list_ = @base.new.obj('[:<<$obj_kind_>>:]','unmount')
+if $unmount_list_ = 'cant unmount':
+	$flop_ = $iif($strfind($run_array[pos_],'!cant.unmount!') <> '', @run.dynamic.script('!cant.unmount!', $obj_id_), 'cant unmount')
+	if $flop_='cant unmount':
+		$print['obj.unmount'] += @base.word.screen('023')
 		jump 'print'
 	end
 end
-if kolvo_array[args['pit']]>5:
-	args['unmount.iner']=$input($func('b.d.t','rebuild',kolvo_array[args['pit']]))
-else
-	args['unmount.iner']=1
-end
-if args['unmount.iner']>0 and no args['unmount.iner']>kolvo_array[args['pit']]:
-	args['i']=1
-	:for
-	if strfind($args['unmount.list'],"\[[\d]+:[\s\S]*:[\d]+\]")!'':
-		$args['str']=$replace($replace($strfind($args['unmount.list'],"\[<<args['i']>>:[\s\S]+:<<args['i']>>\]"),"[<<args['i']>>:"),":<<args['i']>>]")
-		$args['unmount.name']=$func('em.tag.getCont',$args['str'],'name')
-		args['unmount.weight']=func('em.tag.getNum',$args['str'],'count')
-		$args['ingredients.id']=$func('base.new.obj','[:'+$args['unmount.name']+':]','','INVENTORY',args['unmount.iner']*args['unmount.weight'])
-		$args['last_id']=$func('replace.obj',$args['ingredients.id'],$cvar['loc_id'+$cvar['chest']],$args['short_word'],args['unmount.iner']*args['unmount.weight'])
-		$args['unmount.list']=TRIM($replace($args['unmount.list'],"[<<args['i']>>:"+$args['str']+":<<args['i']>>]"))
-		args['i']+=1
-		jump 'for'
+local unmount_iner_, $unmount_name_, $cut_str_, unmount_weight_, $ingr_id_
+unmount_iner_ = iif(kolvo_array[pos_] > 5, $input(@b.d.t('rebuild',kolvo_array[pos_])), 1)
+if unmount_iner_ > 0 and no unmount_iner_ > kolvo_array[pos_]:
+	loop local i = 1 while $strfind($unmount_list_,"\[[\d]+:[\s\S]*:[\d]+\]") <> '' step i += 1:
+		$cut_str_ = $replace($replace($strfind($unmount_list_, "\[<<i>>:[\s\S]+:<<i>>\]"), "[<<i>>:"), ":<<i>>]")
+		$unmount_name_ = @em.tag.getCont($cut_str_, 'name')
+		unmount_weight_ = @em.tag.getNum($cut_str_, 'count')
+		$ingr_id_ = @base.new.obj('[:<<$unmount_name_>>:]', '', 'INVENTORY', unmount_iner_ * unmount_weight_)
+		$temp_ = @replace.obj($ingr_id_, $cvar['loc_id'+$cvar['chest']], $obj_kind_, unmount_iner_ * unmount_weight_)
+		$unmount_list_ = $trim($replace($unmount_list_,"[<<i>>:<<$cut_str_>>:<<i>>]"))
 	end
-	$print['obj.unmount']+=$func('base.word.screen','024',$args['obj']+' [колво:'+str(args['unmount.iner'])+']')
-	gs 'minus.obj',$args[0],args['unmount.iner']
-	property['hero.power.all']-=args['unmount.iner']*args['weight']
-	$print['power.change']+=$func('int.hero.property',$func('get.id.obj','<property>[\s\S]*\[:power:\]'))
+	$print['obj.unmount'] += @base.word.screen('024', '<<$obj_body_>> [колво:<<unmount_iner_>>]')
+	@minus.obj($obj_id_, unmount_iner_)
+	property['hero.power.all'] -= unmount_iner_ * weight_
+	$print['power.change'] += @int.hero.property(@get.id.obj('<property>[\s\S]*\[:power:\]'))
 else
-	$print['obj.unmount']+=$func('base.word.screen','022')
+	$print['obj.unmount'] += @base.word.screen('022')
 end
 :print
-gs 'int.inventory'
-gs 'true.goto.curloc',$curloc
+@int.inventory
+@true.goto.curloc($curloc)
 --- menu.obj.unmount ---------------------------------

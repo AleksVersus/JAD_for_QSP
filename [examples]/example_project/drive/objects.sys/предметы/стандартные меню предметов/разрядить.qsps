@@ -1,29 +1,28 @@
+QSP-Game выгружает из оружия все заряды
 # menu.obj.disCharge
-! выгружает из оружия все заряды
-if $args[0]='': $args[0]=$OOS['oid']
-args['pit']=arrpos('$id_array',$args[0])
-! действует следующим образом:
-! 1. Получаем список дочерних объектов
-$args['daughter']=$func('get.daughter.obj',$args[0],'','$id_modc')
-! вычисляем рюкзак
-:hander_hoch
-if arrsize('$id_modc')>0:
-! каждый дочерний предмет просто перемещается в рюкзак
-	$args['bag_in']=$func('get.bag',$id_modc[0])
-	args['pit.p']=arrpos('$id_array',$id_modc[0])
-	args['-weight']+=func('em.tag.getNum',$object_array[args['pit.p']],'weight')*kolvo_array[args['pit.p']]
-	args['k']=kolvo_array[args['pit.p']]
-	$args['replaced']=$func('replace.obj',$id_modc[0],$args['bag_in'],'',kolvo_array[args['pit.p']],1)
-	$args['np.obj']=$object_array[arrpos('$id_array',$args['replaced'])]
-	$args['text']+='<font color=#'+$func('em.tag.getNum',$args['np.obj'],'color')+'>'+$func('get.word.padez',$func('em.tag.getCont',$args['np.obj'],'name'),'И')+" (<<args['k']>> шт.)</font>, "
-! Уменьшается вес оружия !
-	killvar '$id_modc',0
-	jump 'hander_hoch'
+local $obj_id_ = $args[0]
+if $obj_id_ = '': $obj_id_ = $OOS['oid']
+local pos_, $id_modc_, $temp_, $bag_id_, pit_, weight_decr_, number_
+local $replaced_, $features_set_, $output_text_, weight_
+pos_ = arrpos('$id_array', $obj_id_)
+!@ действует следующим образом:
+!@ 1. Получаем список дочерних объектов
+$temp_ = @get.daughter.obj($obj_id_,'','$id_modc_')
+!@ вычисляем рюкзак
+loop while arrsize('$id_modc_')>0 step killvar '$id_modc_',0:
+	!@ каждый дочерний предмет просто перемещается в рюкзак
+	$bag_id_ = @get.bag($id_modc_[0])
+	pit_ = arrpos('$id_array',$id_modc_[0])
+	weight_decr_ += @em.tag.getNum($object_array[pit_],'weight')*kolvo_array[pit_]
+	number_ = kolvo_array[pit_]
+	$replaced_ = @replace.obj($id_modc_[0], $bag_id_, '', kolvo_array[pit_], 1)
+	$features_set_ = $object_array[arrpos('$id_array', $replaced_)]
+	$output_text_ += '<font color=#'+@em.tag.getNum($features_set_, 'color')+'>'+@get.word.padez(@em.tag.getCont($features_set_,'name'),'И')+" (<<number_>> шт.)</font>, "
 end
-! заряд оружия очищается
-charge_array[args['pit']]=0
-! уменьшаем вес
-args['weight']=func('em.tag.getNum',$object_array[args['pit']],'weight')
-$object_array[args['pit']]=$replace($object_array[args['pit']],"[weight:<<args['weight']>>]","[weight:"+str(args['weight']-args['-weight'])+"]")
-$print['menu.else']+=$func('b.w.s','dch',$args[0],$args['text'],$args['bag_in'])
+!@ заряд оружия очищается
+charge_array[pos_] = 0
+!@ уменьшаем вес
+weight_ = @em.tag.getNum($object_array[pos_], 'weight')
+$object_array[pos_] = $replace($object_array[pos_], "[weight:<<weight_>>]", "[weight:<<weight_-weight_decr_)>>]")
+$print['menu.else'] += @b.w.s('dch', $obj_id_, $output_text_, $bag_id_)
 --- menu.obj.disCharge ---------------------------------
