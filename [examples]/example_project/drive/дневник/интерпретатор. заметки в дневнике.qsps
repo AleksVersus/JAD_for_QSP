@@ -38,10 +38,10 @@ elseif $args['note']='true':
 			$args['link.edtprim']='<a href="exec:'+"gs 'edit.note','"+$array_note[args['i']]+"','sn' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','edtp')+'"></a>'
 			$args['link.del']='<a href="exec:'+"gs 'del.obj.id','"+$array_note[args['i']]+"' & gs 'int.diary','<<$args[0]>>'"+'"><img src="'+$func('base.img','del')+'"></a>'
 		else
-			$args['link.up']=''
-			$args['link.down']=''
-			$args['link.edit']=''
-			$args['link.del']=''
+			$args['link.up'] = ''
+			$args['link.down'] = ''
+			$args['link.edit'] = ''
+			$args['link.del'] = ''
 		end
 		$args['table.note']+='<td >'+$args['название заметки']+'&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;'+$args['содержимое заметки']+'</td><td>'+$args['примечание к заметке']+'&nbsp;	&nbsp;	&nbsp;	&nbsp;	&nbsp;<div align=right>'+$args['link.add']+$args['link.up']+$args['link.down']+$args['link.edit']+$args['link.edtprim']+$args['link.del']+'</div></td>'
 		$args['table.note']+='</tr>'

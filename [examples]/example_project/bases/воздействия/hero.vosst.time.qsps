@@ -33,7 +33,7 @@ $minutes_['on_clock'] = @time.output.addition(minutes_['dig'])
 
 !@ выводим на экран
 $texts_['f_name'] = 'hero.'+ $property_
-$texts_['p_recovery'] = property['hero.'+$property_+'.up']*pik_['count']
+$texts_['p_recovery'] = property['hero.<<$property_>>.up']*pik_['count']
 $texts_['p_output'] = " <font size=-1>(<<$p_name_>>: [<<$hours_['on_clock']>>:<<$minutes_['on_clock']>>])</font>"
 gosub $texts_['f_name'], $texts_['p_recovery'], '+', '', $texts_['p_output']
 

@@ -1,8 +1,13 @@
+QSP-Game Изменить заметку
+$[0]	&	!	id заметки
+$[1]	&	!	v или sn
 # edit.note
-$args[0] = $args[0]	&	!	id заметки
-$args[1] = $args[1]	&	!	v или sn
-if $args[1]='v': $args['t']=$func('b.d.t','a') else $args['t']=$func('b.d.t','b')
-$args['input']=$input($args['t']+$func('b.d.t','c'))
-args['pos']=arrpos('$id_array',$args[0])
-$object_array[args['pos']]=$replace($object_array[args['pos']],$strfind($object_array[args['pos']],'\['+$args[1]+':[\s\S]*:'+$args[1]+'\]'),'['+$args[1]+':'+$args['input']+':'+$args[1]+']')
+local $note_id_, $mode_ = $args[0], $args[1]
+local $temp_, $input_, pos_, $old_value_, $new_value_
+$temp_ = $iif($mode_ = 'v', @b.d.t('a'), @b.d.t('b'))
+$input_ = $input($temp_ + @b.d.t('c'))
+pos_ = arrpos('$id_array',$note_id_)
+$old_value_ = $strfind($object_array[pos_], '\[<<$mode_>>:[\s\S]*:<<$mode_>>\]')
+$new_value_ = '[<<$mode_>>:<<$input_>>:<<$mode_>>]'
+$object_array[pos_] = $replace($object_array[pos_], $old_value_, $new_value_)
 --- edit.note ---------------------------------

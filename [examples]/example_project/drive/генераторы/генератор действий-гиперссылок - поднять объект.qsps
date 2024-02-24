@@ -1,75 +1,82 @@
-# gen.act.obj
-! генерирует действие для поднятия предмета
-$args[0] = $args[0]	&	!	ай-ди предмета
-$args[1] = $args[1]	&	!	ай-ди локации
-$args[2] = $args[2]	&	!	режим: acts - получаем действия в виде динамического кода href - получаем гиперссылки пустое значение - действия добавляются напрямую
-$args[3] = $args[3]	&	!	различные надстройки. Т.е. какую инфу нам хотелось бы видеть при отображении предмета:
+QSP-Game генерирует действие для поднятия предмета
+$[0]	&	!	ай-ди предмета
+$[1]	&	!	ай-ди локации
+$[2]	&	!	режим:
+	- acts - получаем действия в виде динамического кода
+	- href - получаем гиперссылки пустое значение - действия добавляются напрямую
+$[3]	&	!	различные надстройки. Т.е. какую инфу нам хотелось бы видеть при отображении предмета:
 !	[count] - количество
 !	[weight] - только при наличии count - вес
 !	[take: ] - содержимое тега. Указанное слово или слово по-умолчанию из базы.
 !	[cost] - стоимость
 !	[spirit] - духовная ценность
-if $light_array[$args[1]]='темно': jump 'fin'	&	!	в темноте нельзя разглядеть предметов, завершаем
-! ------------------ различные свойства предметов ----------
-	$args['obj']=$func('get.obj.id',$args[0])
-	args['pos']=arrpos('$id_array',$args[0])
-	$args['name']=$func('em.tag.getCont',$args['obj'],'name')
-	$args['name']=$func('get.word.padez',$args['name'],'В')
-	args['weight']=func('em.tag.getNum',$args['obj'],'weight')
-	if kolvo_array[args['pos']]!0 and instr($args[3],'[count]')<>0: $args['kolvo']=' ('+str(kolvo_array[args['pos']])+' штук'+$func('get.word.end',kolvo_array[args['pos']],'а|и|')
-	if args['weight']!0 and instr($args[3],'[weight]')<>0: $args['kolvo']+=' x '+$func('em.indiv',args['weight'],100,10)+')' else $args['kolvo']+=')'
-! ------------------ различные свойства предметов ----------
-! слово подъёма
-$args['[take]']=$func('em.tag.getNum',$args[3],'take')
-if $args['[take]']='' or $args['[take]']='take':
-	$args['поднять']+=$func('b.d.t','take')
-elseif $args['[take]']='lift':
-	$args['поднять']+=$func('b.d.t','lift')
-elseif $args['[take]']='buy':
-	$args['поднять']+=$func('b.d.t','buy')
+# gen.act.obj
+local $obj_id_, $loc_id_, $mode_, $sup_sets_ = $args[0], $args[1], $args[2], $args[3]
+if $light_array[$loc_id_] = 'темно': exit	&	!@	в темноте нельзя разглядеть предметов, завершаем
+local $obj_body_, pos_, $obj_name_, weight_, $number_
+local $temp_, temp_, $take_verb_, $price_, $spirit_, $action_name_
+!@ ------------------ различные свойства предметов ----------
+	$obj_body_ = @get.obj.id($obj_id_)
+	pos_ = arrpos('$id_array', $obj_id_)
+	$obj_name_ = @em.tag.getCont($obj_body_, 'name')
+	$obj_name_ = @get.word.padez($obj_name_, 'В')
+	weight_ = @em.tag.getNum($obj_body_, 'weight')
+	if kolvo_array[pos_] <> 0 and instr($sup_sets_,'[count]') <> 0:
+		$number_ = ' (<<kolvo_array[pos_]>> штук<<@get.word.end(kolvo_array[pos_]>>а|и|')
+	end
+	if weight_ <> 0 and instr($sup_sets_,'[weight]') <> 0:
+		$number_ += ' x '+@em.indiv(weight_,100,10)+')'
+	else:
+		$number_ += ')'
+	end
+!@ ------------------ различные свойства предметов ----------
+!@ слово подъёма
+$temp_ = @em.tag.getNum($sup_sets_, 'take')
+if $temp_ = '' or $temp_ = 'take':
+	$take_verb_ += @b.d.t('take')
+elseif $temp_ = 'lift':
+	$take_verb_ += @b.d.t('lift')
+elseif $temp_ = 'buy':
+	$take_verb_ += @b.d.t('buy')
+else:
+	$take_verb_ += $temp_
+end
+!@ стоимость cost:
+if instr($sup_sets_,'[cost]')<>0:
+	temp_ = @em.tag.getNum($obj_body_,"stoim")
+	$temp_ = @em.indiv(@obj.purc.cost(temp_, $loc_id_), 100, 1)
+	!@	заменить на обращение к базе
+	$price_ = ' по <<$temp_>> дублон' + @get.word.end(val($temp_),'|а|ов') + '.'
+end
+!@ духовная ценность:
+if instr($sup_sets_,'[spirit]')<>0:
+	temp_ = @get.spirit($obj_id_,$loc_id_)
+	$spirit_ = " (<<@em.indiv(temp_, 100, 10)>> ед. кармы) "
 else
-	$args['поднять']+=$args['[take]']
+	$spirit_ = ""
 end
-! стоимость cost:
-if instr($args[3],'[cost]')<>0:
-	args['stoim']=func('em.tag.getNum',$args['obj'],"stoim")
-	$args['stoimost']=$func('em.indiv',func('obj.purc.cost',args['stoim'],$args[1]),100,1)
-	!	заменить на обращение к базе
-	$args['купить за']=" по "+$args['stoimost']+' дублон'+$func('get.word.end',val($args['stoimost']),'|а|ов')+"."
-end
-! духовная ценность:
-if instr($args[3],'[spirit]')<>0:
-	args['духовная ценность']=func('get.spirit',$args[0],$args[1])
-	$args['дух']=" ("+$func('em.indiv',args['духовная ценность'],100,10)+" ед. кармы) "
-else
-	$args['дух']=""
-end
-! формируем название действия из всего вышеперечисленного
-$args['actions.text']=$args['поднять']+$args['name']+$args['kolvo']+$args['купить за']+$args['дух']
+!@ формируем название действия из всего вышеперечисленного
+$action_name_ = $take_verb_ + $obj_name_ + $number_ + $price_ + $spirit_
 
-if $args[2]='href' or $args[2]='':
-	if instr($args['obj'],'[lock-obj]')=0:
-		$args['res.021213']+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="plain" href="exec:'+"gs 'take.obj','<<$args[0]>>' & GS 'true.goto.curloc','"+$curloc+"'"+'"><font color=#880088>'+$args['actions.text']+'</font></a><br>'
-	else
-		$args['res.021213']+='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="plain" href="exec:'+"$print['take.obj']+=$func('b.w.s','loc-obj') & GS 'true.goto.curloc','"+$curloc+"'"+'"><font color=#888888>'+$args['actions.text']+'</a></font><br>'
+if $mode_ = 'href' or $mode_ = '':
+	if instr($obj_body_, '[lock-obj]') = 0:
+		$result += @const.10SP + "<a class=""plain"" href=""exec:@take.obj('<<$obj_id_>>') & @true.goto.curloc($curloc)""><font color=#880088><<$action_name_>></font></a><br>"
+	else:
+		$result += @const.10SP + "<a class=""plain"" href=""exec:$print['take.obj'] += @b.w.s('loc-obj') & @true.goto.curloc($curloc)""><font color=#888888><<$action_name_>></a></font><br>"
 	end
-elseif $args[2]='acts':
-	if instr($args['obj'],'[lock-obj]')=0:
-$args['res.021213']="
-act '<font color=#880088><<$args['actions.text']>><oid:<<$args[0]>>:oid></font>':
-	$args['oid']=$func('em.tag.getCont',$selact,'oid')
-	gs 'take.obj',$args['oid']
-	GS 'true.goto.curloc',$curloc
-end
-"
-	else
-$args['res.021213']="
-act '<font color=#888888><<$args['actions.text']>></font>':
-	$print['take.obj']+=$func('b.w.s','loc-obj')
-	GS 'true.goto.curloc',$curloc
-end"
+elseif $mode_ = 'acts':
+	if instr($obj_body_, '[lock-obj]') = 0:
+	$result = "
+		act '<font color=#880088><<$action_name_>></font>':
+			@take.obj('<<$obj_id_>>')
+			@true.goto.curloc($curloc)
+		end"
+	else:
+	$result = "
+		act '<font color=#888888><<$action_name_>></font>':
+			$print['take.obj'] += @b.w.s('loc-obj')
+			@true.goto.curloc($curloc)
+		end"
 	end
 end
-:fin
-$result=$args['res.021213']
 --- gen.act.obj ---------------------------------

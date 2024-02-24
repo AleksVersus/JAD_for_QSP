@@ -1,12 +1,14 @@
+QSP-Game Добавление заметки
+$[0]	&	!	ай-ди дневника
 # add.new.note
-$args[0] = $args[0]	&	!	ай-ди дневника
-$args[6] = ''
-if $args[1]='':
-	$args[5] = $input($func('b.d.t','d')+$func('b.d.t','c'))
-	$args[1] = "[v:"+$args[5]+":v] "	&	!	тело заметки, может содержать html форматировние
+local $diary_id_, $note_body_, $note_name_, $subnote_, $features_ = $args[0], $args[1], $args[2], $args[3], $args[4]
+local $temp_
+if $note_body_ = '':
+	$temp_ = $input(@b.d.t('d') + @b.d.t('c'))
+	$note_body_ = "[v:<<$temp_>>:v] "	&	!@	тело заметки, может содержать html форматировние
 end
-if $args[2]='': $args[2]="[name:<<time['date']>>/<<time['month']>>/<<time['year']>> <<time['hour']>>:<<time['minute']>>:name] "
-if $args[3]='': $args[3]="[sn:"+$func('em.tag.getCont',$object_array[arrpos('$id_array',$func('get.loc.id'))],'name')+":sn] "
-if $args[4]='': $args[4]='[np:[note]:np]'
-$args['obj']=$func('add.new.obj','<note> '+$args[2]+$args[4]+$args[1]+$args[3],$args[0],'NOTE')
+if $note_name_ = '': $note_name_ = "[name:<<time['date']>>/<<time['month']>>/<<time['year']>> <<time['hour']>>:<<time['minute']>>:name] "
+if $subnote_ = '': $subnote_ = "[sn:" + @em.tag.getCont($object_array[arrpos('$id_array', @get.loc.id())], 'name') + ":sn] "
+if $features_ = '': $features_ = '[np:[note]:np]'
+$temp_ = @add.new.obj('<note> '+$note_name_+$features_+$note_body_+$subnote_, $diary_id_, 'NOTE')
 --- add.new.note ---------------------------------

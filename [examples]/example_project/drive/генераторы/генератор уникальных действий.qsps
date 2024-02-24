@@ -1,35 +1,34 @@
+QSP-Game генератор уникальных действий
+$[0]	&	!	ай-ди действия
+$[1]	&	!	ай-ди локации
+$[2]	&	!	acts href - действия или ссылка
+$[3]	&	!	дополнительные опции
 # gen.act.act
-! генератор уникальных действий
-$args[0] = $args[0]	&	!	ай-ди действия
-$args[1] = $args[1]	&	!	ай-ди локации
-$args[2] = $args[2]	&	!	acts href - действия или ссылка
-$args[3] = $args[3]	&	!	дополнительные опции
-args['pit']=arrpos('$id_array',$args[0])
-$args['obj']=$object_array[args['pit']]
-$args['name']=$func('em.tag.getCont',$args['obj'],'name')
-if instr($args['obj'],'[lock-obj]')<>0: $args['lock']='lock'
-if $light_array[$args[1]]='темно':
-! если на локации темно
-	if instr($args['obj'],'[dark-hide]')<>0: jump 'fin'	&	!	скрывать в темноте. Не выводится
-	$args['dark.name']=$func('em.tag.getCont',$args['obj'],'dark-name')	&	!	имя в темноте
-	if $args['dark.name']<>'': $args['name']=$args['dark.name']
-	if instr($args['obj'],'[dark-lock]')<>0: $args['lock']='lock'
+local $act_id_, $loc_id_, $mode_, $sup_sets_ = $args[0], $args[1], $args[2], $args[3]
+local $act_body_, $temp_, $act_name_, $is_lock_, $act_code_
+$act_body_ = $object_array[arrpos('$id_array', $act_id_)]
+$act_name_ = @em.tag.getCont($act_body_, 'name')
+if instr($act_body_,'[lock-obj]') <> 0: $is_lock_ = 'lock'
+if $light_array[$loc_id_] = 'темно':
+!@ если на локации темно
+	if instr($act_body_,'[dark-hide]')<>0: exit	&	!@	скрывать в темноте. Не выводится
+	$temp_ = @em.tag.getCont($act_body_, 'dark-name')	&	!@	имя в темноте
+	if $temp_ <> '': $act_name_ = $temp_
+	if instr($act_body_, '[dark-lock]') <> 0: $is_lock_ = 'lock'
 end
-if $args['lock']='lock':
-	$args['name']="<font color=#888888>"+$args['name']+"</font>"
-	$args['acts.code']="$print['take.obj']+=$func('b.w.s','loc-act') & gosub 'true.goto.curloc','<<$args[1]>>'"
+if $is_lock_ = 'lock':
+	$act_name_ = "<font color=#888888><<$act_name_>></font>"
+	$act_code_ = "$print['take.obj']+=@b.w.s('loc-act') & @true.goto.curloc('<<$loc_id_>>')"
 else
-	$args['acts.code']="gosub 'run.dynamic.script','!from.act!','<<$args[0]>>'"
+	$act_code_ = "gosub 'run.dynamic.script','!from.act!','<<$act_id_>>'"
 end
-if $args[2]='href' or $args[2]='':
-	$args['res.021213']='<a class="plain" href="exec:<<$args["acts.code"]>>"><<$args["name"]>></a><br>'
-elseif $args[2]='acts':
-$args['res.021213']="
-act '<<$args['name']>>':
-	<<$args['acts.code']>>
+if $mode_ = 'href' or $mode_ = '':
+	$result = '<a class="plain" href="exec:<<$act_code_>>"><<$act_name_>></a><br>'
+elseif $mode_ = 'acts':
+	$result = "
+	act '<<$act_name_>>':
+		<<$act_code_>>
+	end
+	"
 end
-"
-end
-:fin
-$result=$args['res.021213']
 --- gen.act.act ---------------------------------

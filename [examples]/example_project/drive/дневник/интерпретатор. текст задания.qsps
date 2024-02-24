@@ -1,13 +1,17 @@
+QSP-Game интерпретатор заданий
+$[0]	&	!	ай-ди задания
+$[1]	&	!	цвет задания
 # int.notes
-! интерпретатор заданий
-$args[0] = $args[0]	&	!	ай-ди задания
-$args[1] = $args[1]	&	!	цвет задания
-$args['zadanije.obj']=$object_array[arrpos('$id_array',$args[0])]
-$args['zadanije.p']=$func('em.tag.getCont',$args['zadanije.obj'])
-$args['np']=$func('em.tag.getCont',$args['zadanije.obj'],'np')
-if instr($args['np'],'[task]')!0:
-	$args['zadanije.name']=$func('em.tag.getCont',$args['zadanije.obj'],'name')
+local $task_id_, $task_color_ = $args[0], $args[1]
+local $task_body_, $task_kind_, $task_feature_, $task_name_, $note_
+$task_body_ = $object_array[arrpos('$id_array', $task_id_)]
+$task_kind_ = @em.tag.getCont($task_body_)
+$task_feature_= @em.tag.getCont($task_body_,'np')
+if instr($task_feature_,'[task]') <> 0:
+	$task_name_ = @em.tag.getCont($task_body_,'name')
 end
-if $args['zadanije.name']!'': $args['int.notes']='<font color=#'+$args[1]+' face="CyrillicOld" size=+2><b>'+$args['zadanije.name']+':</b></font><br>'
-$result=$args['int.notes']+$func('[diary]',$args['zadanije.p'],$args[1])
+if $task_name_ <> '':
+	$note_ = '<font color=#<<$task_color_>> face="CyrillicOld" size=+2><b><<$task_name_>>:</b></font><br>'
+end
+$result = $note_ + $func('[diary]', $task_kind_, $task_color_)
 --- int.notes ---------------------------------

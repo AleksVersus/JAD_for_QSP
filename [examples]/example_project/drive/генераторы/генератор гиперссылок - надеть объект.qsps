@@ -1,7 +1,10 @@
+QSP-Game Генератор гиперссылок для одевания предмета!
+Внимание ссылки предназначены только для одевания предметов, находящихся в рюкзаке
+$[0]	&	!	id предмета
 # gen.ahref.actObj
-! Генератор гиперссылок для одевания предмета! Внимание ссылки предназначены только для одевания предметов, находящихся в рюкзаке
-$args[0] = $args[0]	&	!	id предмета
-$args['name']=$func('em.tag.getCont',$object_array[arrpos('$id_array',$args[0])],"name")
-$args['name'] = $func('get.word.padez',$args['name'],'В')
-$result = '<a href="exec:gs '+"'menu.in.body','"+$args[0]+"' & gs 'print.word'"+'">Использовать '+$args['name']+"</a>"
+local $obj_id_ = $args[0]
+local $obj_name_
+$obj_name_ = @em.tag.getCont($object_array[arrpos('$id_array',$obj_id_)], "name")
+$obj_name_ = @get.word.padez($obj_name_, 'В')
+$result = "<a href=""exec: @menu.in.body('<<$obj_id_>>') & @print.word"">Использовать <<$obj_name_>></a>"
 --- gen.ahref.actObj ---------------------------------

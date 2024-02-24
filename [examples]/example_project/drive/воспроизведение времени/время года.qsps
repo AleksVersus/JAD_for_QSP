@@ -1,11 +1,13 @@
-# int.time.years
-! $args[0] - сюда передаются слова, необходимые для возврата. Если передано пустое значение, функция возвращает названия времен года
+QSP-Game Интерпретатор времён года.
+ $[0] - сюда передаются слова, необходимые для возврата. Если передано пустое значение, функция возвращает названия времен года
 ! лето|осень|зима|весна
-if $args[0]='': $args[0]=$func('b.d.t','time.my')
-if time['month']=1 or time['month']=12 or time['month']=2: args['i']=3
-if time['month']=3 or time['month']=4 or time['month']=5: args['i']=4
-if time['month']=6 or time['month']=7 or time['month']=8: args['i']=1
-if time['month']=9 or time['month']=10 or time['month']=11: args['i']=2
-$args['gwiP']=$func('em.str.getWord',$args[0],args['i'])
-$result=$args['gwiP']
+# int.time.years
+local $seasons_list_ = $args[0]
+local i
+if $seasons_list_ = '': $seasons_list_ = @b.d.t('time.my')
+if time['month']=1 or time['month']=12 or time['month']=2: i=3
+if time['month']=3 or time['month']=4 or time['month']=5: i=4
+if time['month']=6 or time['month']=7 or time['month']=8: i=1
+if time['month']=9 or time['month']=10 or time['month']=11: i=2
+$result = @em.str.getWord($seasons_list_, i)
 --- int.time.years ---------------------------------
