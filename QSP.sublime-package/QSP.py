@@ -231,7 +231,14 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 					i += 1
 				else:
 					break
-		view.add_regions('local_vars', local_vars, 'variable.language.qsp')
+		view.add_regions('local_vars', local_vars, 'region.orangish', flags=256)
+
+class QspHideHightlight(sublime_plugin.EventListener):
+	def on_modified(self, view):
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		if len(view.get_regions('wrong_location'))>0: view.erase_regions('wrong_location')
+		if len(view.get_regions('local_vars'))>0: view.erase_regions('local_vars')
 
 class QspInvalidInput(sublime_plugin.EventListener):
 	"""
@@ -260,15 +267,16 @@ class QspInvalidInput(sublime_plugin.EventListener):
 			if not input_text in loc_names:
 				return None
 			content = sublime.expand_variables(const.QSP_MSG.WRONG_LOC, {"input_text": input_text})
-			# view.show_popup(content, flags=32+8, location=begin+5, max_width=250)
-			sublime.message_dialog(content)
+			view.add_regions('wrong_location', [sr_locname], scope="region.redish", annotations=[content], flags=2048+256+32)
+			# sublime.message_dialog(content)
 		if begin == end and sr_lblname is not None:
 			input_text = view.substr(sr_lblname)
 			qsp_labels = QspWorkspace.get_qsplbls(view, exclude_inputting=sr_lblname)
 			if input_text in qsp_labels:
 				content = sublime.expand_variables(const.QSP_MSG.WRONG_LBL, {"input_text": input_text})
 				# view.show_popup(content, flags=sublime.HTML, location=-1, max_width=250)
-				sublime.message_dialog(content)
+				# sublime.message_dialog(content)
+				view.add_regions('wrong_location', [sr_lblname], scope="region.redish", annotations=[content], flags=2048+256+32)
 
 class QspTips(sublime_plugin.EventListener):
 	""" Listener of stand caret to keyword of QSP-syntax """
