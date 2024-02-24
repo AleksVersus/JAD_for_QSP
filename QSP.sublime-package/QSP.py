@@ -125,6 +125,114 @@ class QspNewGameCommand(sublime_plugin.WindowCommand):
 		self.window.focus_view(new_view)
 		self.window.run_command('qsp_new_game_head')
 
+class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
+	""" Find and high light local variables command """
+
+	def run(self, edit):
+		def _find_overlap_main(start_find):
+			maximal = view.size()+1
+			mini_data_base = {
+				"sprtr-name": [
+					'assign',
+					'while',
+					'brace'
+				],
+				"sprtr-region":
+				[
+					view.find('=', start_find, flags=1+2),
+					view.find('while', start_find, flags=1+2),
+					view.find('}', start_find, flags=1+2)
+				],
+				"sprtr-instring":
+				[]
+			}
+			for i, string_id in enumerate(mini_data_base['sprtr-name']):
+				region = mini_data_base['sprtr-region'][i]
+				mini_data_base['sprtr-instring'].append(
+					region.begin() if region.begin()!=-1 else maximal)
+			minimal = min(mini_data_base['sprtr-instring'])
+			if minimal != maximal:
+				i = mini_data_base['sprtr-instring'].index(minimal)
+				sprtr_type = mini_data_base['sprtr-name'][i]
+				sprtr_region = mini_data_base['sprtr-region'][i]
+				return sprtr_type, sprtr_region
+			else:
+				return None, None
+
+		view = self.view
+		kw_regions = view.find_all('local', flags=2+4)
+		vars_regions = []
+		_safe_f = lambda x, y, z: view.match_selector(y.begin(),x) and y.begin()<z
+		for r in kw_regions:
+			if not view.match_selector(r.begin(), 'keyword.declaration.variables.qsp'):
+				continue
+			# not use 'local' in string and comment scopes
+			start_region = r.end()
+			end_line = view.line(r).end()
+			end_region = end_line
+			start_find = start_region
+			print(view.substr(sublime.Region(start_region, end_region)))
+			while start_find < end_line:
+				sprtr_type, sprtr_region = _find_overlap_main(start_find)
+				if sprtr_type == 'assign':
+					if _safe_f('keyword.operator.one-sign.qsp', sprtr_region, end_line):
+						end_region = sprtr_region.begin()-1
+						break
+					else:
+						start_find = sprtr_region.end()
+				elif sprtr_type == 'while':
+					if _safe_f('keyword.control.qsp', sprtr_region, end_line):
+						end_region = sprtr_region.begin()-1
+						break
+					else:
+						start_find = sprtr_region.end()
+				elif sprtr_type == 'brace':
+					if _safe_f('avs_brace_end', sprtr_region, end_line):
+						end_region = sprtr_region.begin()-1
+						break
+					else:
+						start_find = sprtr_region.end()
+				else:
+					end_region = end_line
+					break
+				break
+			vars_regions.append(sublime.Region(start_region, end_region))
+			print(view.substr(sublime.Region(start_region, end_region)))
+		if len(vars_regions) == 0: return None
+
+		user_variable = r'\$?[A-Za-zА-Яа-я_][\w\.]*'
+		# uv_regions = view.find_all(user_variable, 2)
+		# start = 0
+		# for uv in uv_regions[0:25]:
+		# 	f = view.find(user_variable, start, 2)
+		# 	start = f.end()
+		# 	print(view.substr(f))
+		# 	print(view.substr(uv))
+		start_point = vars_regions[0].begin()
+		edge_point = vars_regions[0].end()
+		end_point = vars_regions[-1].end()
+		i = 1
+		u = 0
+		local_vars = []
+		while start_point < end_point and not u > 999:
+			u += 1
+			find_var = view.find(user_variable, start_point, flags=2)
+			if find_var.begin()!=-1 and find_var.begin() < edge_point:
+				print(start_point, view.substr(find_var), find_var)
+				for var in view.find_all(view.substr(find_var).replace('$', r'\$'), flags=2):
+					if not find_var.begin() > var.begin() and view.match_selector(var.begin(), 'meta.user-variables.qsp'):
+						print(var, view.substr(var))
+						local_vars.append(var)
+			start_point = find_var.end()+1
+			if start_point > edge_point:
+				if i < len(vars_regions):
+					start_point = vars_regions[i].begin()
+					edge_point = vars_regions[i].end()
+					i += 1
+				else:
+					break
+		view.add_regions('local_vars', local_vars, 'variable.language.qsp')
+
 class QspInvalidInput(sublime_plugin.EventListener):
 	"""
 		Wrong input of qsp-locs names or labels names
@@ -317,3 +425,17 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
 QSP_MARKERS = {'files_is_changed': False}
+
+# 	def on_selection_modified(self, view):
+# 		""" HighLight- """
+# 		global QSP_TRYER
+# 		if view.syntax() is not None and view.syntax().name == 'QSP':
+# 			if QSP_TRYER:
+# 				user_variable = r'\$?[A-Za-zА-Яа-я_][\w\.]*'
+# 				regions = view.find_all(user_variable, 2)
+# 				variables = set()
+# 				for r in regions:
+# 					if view.match_selector(r.begin(), 'meta.user-variables.qsp'):
+# 						variables.add(view.substr(r))
+# 				print(list(variables))
+# 				QSP_TRYER = False
