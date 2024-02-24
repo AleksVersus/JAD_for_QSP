@@ -219,7 +219,7 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 			find_var = view.find(user_variable, start_point, flags=2)
 			if find_var.begin()!=-1 and find_var.begin() < edge_point:
 				# print(start_point, view.substr(find_var), find_var)
-				for var in view.find_all(view.substr(find_var).replace('$', r'\$'), flags=2):
+				for var in view.find_all(view.substr(find_var).replace('$', r'\$')+r'\b', flags=2):
 					if not find_var.begin() > var.begin() and view.match_selector(var.begin(), 'meta.user-variables.qsp'):
 						# print(var, view.substr(var))
 						local_vars.append(var)
