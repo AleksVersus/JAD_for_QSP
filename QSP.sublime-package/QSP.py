@@ -171,7 +171,7 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 			end_line = view.line(r).end()
 			end_region = end_line
 			start_find = start_region
-			print(view.substr(sublime.Region(start_region, end_region)))
+			# print(view.substr(sublime.Region(start_region, end_region)))
 			while start_find < end_line:
 				sprtr_type, sprtr_region = _find_overlap_main(start_find)
 				if sprtr_type == 'assign':
@@ -197,7 +197,7 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 					break
 				break
 			vars_regions.append(sublime.Region(start_region, end_region))
-			print(view.substr(sublime.Region(start_region, end_region)))
+			# print(view.substr(sublime.Region(start_region, end_region)))
 		if len(vars_regions) == 0: return None
 
 		user_variable = r'\$?[A-Za-zА-Яа-я_][\w\.]*'
@@ -218,10 +218,10 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 			u += 1
 			find_var = view.find(user_variable, start_point, flags=2)
 			if find_var.begin()!=-1 and find_var.begin() < edge_point:
-				print(start_point, view.substr(find_var), find_var)
+				# print(start_point, view.substr(find_var), find_var)
 				for var in view.find_all(view.substr(find_var).replace('$', r'\$'), flags=2):
 					if not find_var.begin() > var.begin() and view.match_selector(var.begin(), 'meta.user-variables.qsp'):
-						print(var, view.substr(var))
+						# print(var, view.substr(var))
 						local_vars.append(var)
 			start_point = find_var.end()+1
 			if start_point > edge_point:
