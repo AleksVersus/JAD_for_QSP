@@ -7,7 +7,7 @@ local $task_body_, $task_kind_, $task_feature_, $task_name_, $note_
 $task_body_ = $object_array[arrpos('$id_array', $task_id_)]
 $task_kind_ = @em.tag.getCont($task_body_)
 $task_feature_= @em.tag.getCont($task_body_,'np')
-if instr($task_feature_,'[task]') <> 0:
+if instr($task_feature_, '[task]') <> 0:
 	$task_name_ = @em.tag.getCont($task_body_,'name')
 end
 if $task_name_ <> '':

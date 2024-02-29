@@ -127,10 +127,10 @@ contexts: # теперь необходимо определить "контек
 
   # пользовательские переменные
   users_variables:
-    - match: '{{users_variables}}(?=\s*\b(while|step|else|elseif|and|or|mod)\b)'
-      scope: meta.user-variables.qsp
     - match: '{{users_variables}}(?=(\s+{{right_operand}}|\s*\({{right_operand}}))'
       scope: invalid.illegal.qsp
+    - match: '{{users_variables}}(?=\s*\b(while|step|else|elseif|and|or|mod)\b)'
+      scope: meta.user-variables.qsp
     - match: '{{users_variables}}'
       scope: meta.user-variables.qsp
 
@@ -367,6 +367,12 @@ contexts: # теперь необходимо определить "контек
 
   system_variables:
     - match: (?<!\$)(\b{{system_vars_string}}\b) # подсвечивает все системные переменные текстового типа без символа $
+      scope: invalid.illegal.qsp avs_illegal_textvariables
+    - match: ({{system_vars}}|{{system_vars_string}})(?=(\s+{{right_operand}}|\s*\({{right_operand}}))
+      scope: invalid.illegal.qsp
+    - match: ({{system_vars}}|{{system_vars_string}})(?=\$({{system_vars}}|{{system_vars_string}}))
+      scope: invalid.illegal.qsp avs_illegal_textvariables
+    - match: (?<=[\w\.\$]\$)({{system_vars}}|{{system_vars_string}})
       scope: invalid.illegal.qsp avs_illegal_textvariables
     - match: (\$)(?=\b({{system_vars_string}}|{{system_vars}})\b)
       scope: variable.language.qsp punctuation.definition.variable avs_sysvar
