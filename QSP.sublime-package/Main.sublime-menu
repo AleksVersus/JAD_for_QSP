@@ -47,6 +47,27 @@
 								"command": "qsp_split_project"
 							}
 						]
+					},
+					{
+						"id": "qsp_tools_splitters",
+						"caption": "Analyse",
+						"children": [
+							{
+								"id": "qsp_show_local_vars",
+								"caption": "Show Local Vars",
+								"command": "qsp_local_vars_highlight"
+							},
+							{
+								"id": "qsp_show_global_vars",
+								"caption": "Show Global Vars",
+								"command": "qsp_global_vars_highlight"
+							},
+							{
+								"id": "qsp_show_dupl_locs",
+								"caption": "Show Duplicates of Locations",
+								"command": "qsp_show_dupl_locs"
+							}
+						]
 					}
 				]
 			}

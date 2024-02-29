@@ -129,116 +129,72 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 	""" Find and high light local variables command """
 
 	def run(self, edit):
-		def _find_overlap_main(start_find):
-			maximal = view.size()+1
-			mini_data_base = {
-				"sprtr-name": [
-					'assign',
-					'while',
-					'brace'
-				],
-				"sprtr-region":
-				[
-					view.find('=', start_find, flags=1+2),
-					view.find('while', start_find, flags=1+2),
-					view.find('}', start_find, flags=1+2)
-				],
-				"sprtr-instring":
-				[]
-			}
-			for i, string_id in enumerate(mini_data_base['sprtr-name']):
-				region = mini_data_base['sprtr-region'][i]
-				mini_data_base['sprtr-instring'].append(
-					region.begin() if region.begin()!=-1 else maximal)
-			minimal = min(mini_data_base['sprtr-instring'])
-			if minimal != maximal:
-				i = mini_data_base['sprtr-instring'].index(minimal)
-				sprtr_type = mini_data_base['sprtr-name'][i]
-				sprtr_region = mini_data_base['sprtr-region'][i]
-				return sprtr_type, sprtr_region
-			else:
-				return None, None
-
 		view = self.view
-		kw_regions = view.find_all('local', flags=2+4)
-		vars_regions = []
-		_safe_f = lambda x, y, z: view.match_selector(y.begin(),x) and y.begin()<z
-		for r in kw_regions:
-			if not view.match_selector(r.begin(), 'keyword.declaration.variables.qsp'):
-				continue
-			# not use 'local' in string and comment scopes
-			start_region = r.end()
-			end_line = view.line(r).end()
-			end_region = end_line
-			start_find = start_region
-			# print(view.substr(sublime.Region(start_region, end_region)))
-			while start_find < end_line:
-				sprtr_type, sprtr_region = _find_overlap_main(start_find)
-				if sprtr_type == 'assign':
-					if _safe_f('keyword.operator.one-sign.qsp', sprtr_region, end_line):
-						end_region = sprtr_region.begin()-1
-						break
-					else:
-						start_find = sprtr_region.end()
-				elif sprtr_type == 'while':
-					if _safe_f('keyword.control.qsp', sprtr_region, end_line):
-						end_region = sprtr_region.begin()-1
-						break
-					else:
-						start_find = sprtr_region.end()
-				elif sprtr_type == 'brace':
-					if _safe_f('avs_brace_end', sprtr_region, end_line):
-						end_region = sprtr_region.begin()-1
-						break
-					else:
-						start_find = sprtr_region.end()
-				else:
-					end_region = end_line
-					break
-				break
-			vars_regions.append(sublime.Region(start_region, end_region))
-			# print(view.substr(sublime.Region(start_region, end_region)))
-		if len(vars_regions) == 0: return None
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		if project_folder in QSP_WORKSPACES:
+			qsp_ws = QSP_WORKSPACES[project_folder]
+		else:
+			qsp_ws = QspWorkspace(QSP_WORKSPACES)
+		qsp_ws.refresh_vars(view)
+		view.run_command('qsp_hide_highlight')
+		view.add_regions('local_vars', qsp_ws.get_local_vars(), 'region.orangish', flags=256)
 
-		user_variable = r'\$?[A-Za-zА-Яа-я_][\w\.]*'
-		# uv_regions = view.find_all(user_variable, 2)
-		# start = 0
-		# for uv in uv_regions[0:25]:
-		# 	f = view.find(user_variable, start, 2)
-		# 	start = f.end()
-		# 	print(view.substr(f))
-		# 	print(view.substr(uv))
-		start_point = vars_regions[0].begin()
-		edge_point = vars_regions[0].end()
-		end_point = vars_regions[-1].end()
-		i = 1
-		u = 0
-		local_vars = []
-		while start_point < end_point and not u > 999:
-			u += 1
-			find_var = view.find(user_variable, start_point, flags=2)
-			if find_var.begin()!=-1 and find_var.begin() < edge_point:
-				# print(start_point, view.substr(find_var), find_var)
-				for var in view.find_all(view.substr(find_var).replace('$', r'\$')+r'\b', flags=2):
-					if not find_var.begin() > var.begin() and view.match_selector(var.begin(), 'meta.user-variables.qsp'):
-						# print(var, view.substr(var))
-						local_vars.append(var)
-			start_point = find_var.end()+1
-			if start_point > edge_point:
-				if i < len(vars_regions):
-					start_point = vars_regions[i].begin()
-					edge_point = vars_regions[i].end()
-					i += 1
-				else:
-					break
-		view.add_regions('local_vars', local_vars, 'region.orangish', flags=256)
+class QspGlobalVarsHighlightCommand(sublime_plugin.TextCommand):
+	""" Find and high light global variables command """
+
+	def run(self, edit):
+		view = self.view
+		if view.syntax() is None or view.syntax().name != 'QSP':
+			return None
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		if project_folder in QSP_WORKSPACES:
+			qsp_ws = QSP_WORKSPACES[project_folder]
+		else:
+			qsp_ws = QspWorkspace(QSP_WORKSPACES)
+		qsp_ws.refresh_vars(view)
+		view.run_command('qsp_hide_highlight')
+		print('global', qsp_ws.global_vars_names)
+		view.add_regions('global_vars', qsp_ws.get_global_vars(), 'region.yellowish', flags=256)
+
+class QspHideHighlightCommand(sublime_plugin.TextCommand):
+
+	def run(self, edit):
+		view = self.view
+		if len(view.get_regions('wrong_location'))>0: view.erase_regions('wrong_location')
+		if len(view.get_regions('local_vars'))>0: view.erase_regions('local_vars')
+		if len(view.get_regions('global_vars'))>0: view.erase_regions('global_vars')
+
+class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
+
+	def run(self, edit):
+		view = self.view
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		if project_folder in QSP_WORKSPACES:
+			qsp_ws = QSP_WORKSPACES[project_folder]
+		else:
+			qsp_ws = QspWorkspace(QSP_WORKSPACES)
+		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
+		qsp_locs = qsp_ws.get_dupl_locs()
+		content = ''
+		for i, qsp_loc in enumerate(qsp_locs):
+			content += f'{i+1}. {qsp_loc[0]}. <a href="{qsp_loc[2]}">{qsp_loc[2]}</a><br>'
+		w = self.view.viewport_extent()[0]/2*1.5
+		vr = self.view.visible_region().begin()
+		self.view.show_popup(content, max_width=w, location=vr, on_navigate=self.on_navigate)
+
+	def on_navigate(self, link:str) -> None: # link - relpath or abspath
+		current_qsps, project_folder = QspWorkspace.get_main_pathes(self.view)
+		if not project_folder is None and link != '':
+			link = QspWorkspace.absing_path(project_folder, link)
+		self.view.window().run_command('open_file', {'file': link, 'encoded_position': True})
+
 
 class QspHideHightlight(sublime_plugin.EventListener):
 	def on_modified(self, view):
 		if view.syntax() is None or view.syntax().name != 'QSP':
 			return None
-		if len(view.get_regions('wrong_location'))>0: view.erase_regions('wrong_location')
-		if len(view.get_regions('local_vars'))>0: view.erase_regions('local_vars')
 
 class QspInvalidInput(sublime_plugin.EventListener):
 	"""
@@ -388,6 +344,7 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		if current_qsps is None or project_folder is None: return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
 		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
+		qsp_ws.refresh_vars(view)
 		if len(qsp_ws.files_paths) == 0:
 			qsp_ws.refresh_files()
 

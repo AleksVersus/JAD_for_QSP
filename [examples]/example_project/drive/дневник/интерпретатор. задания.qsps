@@ -12,7 +12,7 @@ if $task_stady_ = 'eror': $color_[1]='aa4400' & $color_[2]='880000'
 $temp_ = @get.daughter.obj($diary_id_, $regexp_, '$ids_notes_')
 if $temp_ = 'true':
 	loop local note_ = 0 while note_ < arrsize('$ids_notes_') step note_ += 1:
-		local $ids_staies_, $task_text_, pos_, $features_
+		local $ids_stadies_, $task_text_, pos_, $features_
 		$task_text_ += @int.notes($ids_notes_[note_], $color_[1]) + '<br>'
 		$temp_ = @get.daughter.obj($ids_notes_[note_], '\[stady\]', '$ids_stadies_')
 		loop local stage_, sn_ = 0, 1 while stage_ < arrsize('$ids_stadies_') step stage_+=1:
