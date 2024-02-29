@@ -54,17 +54,17 @@
 						"children": [
 							{
 								"id": "qsp_show_local_vars",
-								"caption": "Show Local Vars",
+								"caption": "Show local vars",
 								"command": "qsp_local_vars_highlight"
 							},
 							{
 								"id": "qsp_show_global_vars",
-								"caption": "Show Global Vars",
+								"caption": "Show global vars",
 								"command": "qsp_global_vars_highlight"
 							},
 							{
 								"id": "qsp_show_dupl_locs",
-								"caption": "Show Duplicates of Locations",
+								"caption": "Show duplicates of Locations",
 								"command": "qsp_show_dupl_locs"
 							}
 						]
