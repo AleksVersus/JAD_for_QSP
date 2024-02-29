@@ -1,48 +1,52 @@
+QSP-game Интерпретатор ссылок
+Воспроизводит ту или инную ссылку из объекта
+$[0] - строка вида SHORT_WORD|Первый вариант|Второй вариант|...|Последний вариант
 # int.link
-! Интерпретатор ссылок
-! Воспроизводит ту или инную ссылку из объекта
-! $args[0] - строка вида SHORT_WORD|Первый вариант|Второй вариант|...|Последний вариант
-$args[0] = $args[0]
-! получаем короткое слово - часть идентификатора ссылки
-$args['short_word']=TRIM($func('em.str.getWord',$args[0],1))
-! получаем объект по ай-ди
-$args['link']=$func('get.obj.id','link.'+$args['short_word'])
-if $strfind($args['link'],'<goto:[\s\S]+:goto>')!'':
-! если гиперссылка является объектом-переходом:
-	! получаем текст по-умолчанию. Этот текст будет выводиться во всех случаях, когда не найден иной текст
-	$args['name']=TRIM($func('em.str.getWord',$args[0],2))
-	$result='<a class="plain" href="exec:gs '+"'int.act.goto','"+'link.'+$args['short_word']+"'"+'"><font color=#009988>'+$args['name']+'</font></a>'
+local $string_ = $args[0]
+local $short_word_, $link_, $name_, $out_obj_, $default_, pos_
+!@ получаем короткое слово - часть идентификатора ссылки
+$short_word_ = $trim(@em.str.getWord($string_,1))
+!@ получаем объект по ай-ди
+$link_ = @get.obj.id('link.'+$short_word_)
+if $strfind($link_, '<goto:[\s\S]+:goto>') <> '':
+	!@ если гиперссылка является объектом-переходом:
+	!@ получаем текст по-умолчанию. Этот текст будет выводиться во всех случаях, когда не найден иной текст
+	$name_ = $trim(@em.str.getWord($string_, 2))
+	$result = '<a class="plain" href="exec:gs '+"'int.act.goto','"+'link.'+$short_word_+"'"+'"><font color=#009988>'+$name_+'</font></a>'
 	exit
-elseif $strfind($args['link'],'<obj:[\s\S]+:obj>')!'':
-	$args['outObj']=$replace($args['link'],$strfind($args['link'],'<obj:[\s\S]+:obj>'))
-	$args['name']=TRIM($func('em.str.getWord',$args[0],3))
-	$args['other']=TRIM($func('em.str.getWord',$args[0],2))
-	args['pos']	= arrpos('$id_array','link.'+$args['short_word'])
-	if $func('sim.time',$respawn_array[args['pos']])!'first':
-	! если время респавна меньше или равно текущему.
-	! есть два варианта: ссылка спавнится несколько раз
-	! (устанавливается значением [repeat:1] Необходимо учитывать,
-	! что 0 - это нулевой спавн, то есть, когда игрок первый раз натыкается на ссылку)
-	! второй вариант: ссылка спавнится постоянно
-	! в charge_array[] производится отсчёт, сколько раз заспавнена ссылка
-		args['repeat']=func('em.tag.getNum',$args['outObj'],'repeat')	&	!	получаем, сколько раз должна спавниться ссылка
-		if (instr($args['link'],'[respawn:')=0 and no charge_array[args['pos']]>args['repeat']) or (instr($args['link'],'[respawn:')!0):
-			charge_array[args['pos']]+=1	&	!	сколько раз спавнилась ссылка
-			kolvo_array[args['pos']]=0	&	!	играет роль метки. 0 - предметы в ссылке полностью респавнятся
-			if instr($args['link'],'[respawn:')!0:
-				$args['now']=$func('get.time.now')
-				$args['new']=$func('em.tag.getCont',$args['outObj'],'respawn')
-				$respawn_array[args['pos']]=$func('summ.time',$args['now'],$args['new'])
+elseif $strfind($link_,'<obj:[\s\S]+:obj>') <> '':
+	$out_obj_ = $replace($link_,$strfind($link_,'<obj:[\s\S]+:obj>'))
+	$name_ = $trim(@em.str.getWord($string_,3))
+	$default_ = $trim(@em.str.getWord($string_,2))
+	pos_	= arrpos('$id_array','link.'+$short_word_)
+	if @sim.time($respawn_array[pos_]) <> 'first':
+		!@ если время респавна меньше или равно текущему.
+		!@ есть два варианта: ссылка спавнится несколько раз
+		!@ (устанавливается значением [repeat:1] Необходимо учитывать,
+		!@ что 0 - это нулевой спавн, то есть, когда игрок первый раз натыкается на ссылку)
+		!@ второй вариант: ссылка спавнится постоянно
+		!@ в charge_array[] производится отсчёт, сколько раз заспавнена ссылка
+		dynamic {
+			local repeat_, $now_, $new_
+			repeat_ = @em.tag.getNum($out_obj_,'repeat')	&	!@ получаем, сколько раз должна спавниться ссылка
+			if (instr($link_,'[respawn:') = 0 and no charge_array[pos_] > repeat_) or (instr($link_, '[respawn:') <> 0):
+				charge_array[pos_] += 1	&	!@ сколько раз спавнилась ссылка
+				kolvo_array[pos_] = 0	&	!@ играет роль метки. 0 - предметы в ссылке полностью респавнятся
+				if instr($link_, '[respawn:') <> 0:
+					$now_ = @get.time.now()
+					$new_ = @em.tag.getCont($out_obj_, 'respawn')
+					$respawn_array[pos_]=@summ.time($now_, $new_)
+				end
 			end
-		end
+		}
 	end
-	if kolvo_array[args['pos']]=0 or kolvo_array[args['pos']]=1:
-	! если ссылка только что отспавнилась, или спавнилась недавно, но предметы взяты не все.
-		$result='<a class="plain" href="exec:gs '+"'int.link.obj','"+'link.'+$args['short_word']+"'"+'"><font color=#009966>'+$args['name']+'</font></a>'
+	if kolvo_array[pos_]=0 or kolvo_array[pos_]=1:
+		!@ если ссылка только что отспавнилась, или спавнилась недавно, но предметы взяты не все.
+		$result = '<a class="plain" href="exec:gs '+"'int.link.obj','"+'link.'+$short_word_+"'"+'"><font color=#009966>'+$name_+'</font></a>'
 		exit
-	elseif kolvo_array[args['pos']]=2:
-	! если ссылка недавно спавнилась и выбраны все предметы
-		$result='<font color=#009966>'+$args['other']+'</font>'
+	elseif kolvo_array[pos_]=2:
+		!@ если ссылка недавно спавнилась и выбраны все предметы
+		$result = '<font color=#009966><<$default_>></font>'
 		exit
 	end
 end

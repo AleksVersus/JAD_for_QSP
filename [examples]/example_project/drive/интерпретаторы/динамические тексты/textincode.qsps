@@ -1,36 +1,37 @@
-# int.DIN
-! Интерпретатор получает текст, преобразует текст в код и выдаёт на гора результат.
+QSP-Game Интерпретатор получает текст, преобразует текст в код и выдаёт на гора результат.
 ! Если в интерпретатор попадает неизвестная конструкция, интерпретатор херит текст к чертям
-$args[0] = $args[0]	&	!	-	динамический текст
-$args[1] = $args[1]	&	!	-	дополнительные данные
-if $strfind($args[0],'\[th\][\s\S]*?\[\/th\]')!'' and instr($args[0],'[th]')=1:
-	$args['int.DIN']=$func('int.time.hours',$func('em.tag.getCont',$args[0],'th'))
-elseif $strfind($args[0],'\[ty\][\s\S]*?\[\/ty\]')!'' and instr($args[0],'[ty]')=1:
-	$args['int.DIN']=$func('int.time.years',$func('em.tag.getCont',$args[0],'ty'))
-elseif $strfind($args[0],'\[tm\][\s\S]*\[\/tm\]')!'' and instr($args[0],'[tm]')=1:
-	$args['int.DIN']=$func('int.time.month',$func('em.tag.getCont',$args[0],'tm'))
-elseif $strfind($args[0],'\[td\][\s\S]*\[\/td\]')!'' and instr($args[0],'[td]')=1:
-	$args['int.DIN']=$func('int.time.days',$func('em.tag.getCont',$args[0],'td'))
-elseif $strfind($args[0],'\[chestname\][\s\S]+\[\/chestname\]')!'' and instr($args[0],'[chestname]')=1:
-	$args['int.DIN']=$func('int.chest.name',$func('em.tag.getCont',$args[0],'chestname'))
-elseif $strfind($args[0],'\[var\][\s\S]+\[\/var\]')!'' and instr($args[0],'[var]')=1:
-	$args['int.DIN']=$func('int.var',$func('em.tag.getCont',$args[0],'var'))
-elseif $strfind($args[0],'\[lnk\][\s\S]+\[\/lnk\]')!'' and instr($args[0],'[lnk]')=1:
-	$args['int.DIN']=$func('int.link',TRIM($func('em.tag.getCont',$args[0],'lnk')))
-elseif $strfind($args[0],'\[goto\][\s\S]+\[\/goto\]')!'' and instr($args[0],'[goto]')=1:
-	$args['int.DIN']=$func('int.dyn.goto',TRIM($func('em.tag.getCont',$args[0],'goto')))
-elseif $strfind($args[0],'\[back\][\s\S]+\[\/back\]')!'' and instr($args[0],'[back]')=1:
-	$args['int.DIN']=$func('int.dyn.back',TRIM($func('em.tag.getCont',$args[0],'back')))
-elseif $strfind($args[0],'\[[\s\S]*?\/\/[\s\S]*?\]')!'' or $strfind($args[0],'\([\s\S]*?\/\/[\s\S]*?\)')!'':
-	$args['int.DIN']=$func('int.word.SEX',$args[0])
-elseif $strfind($args[0],'<DIN(\d+):[\s\S]*:\1DIN>')!0:
-	args['num.sup']=val($strfind($strfind($args[0],'<DIN\d+:'),'\d+'))
-	$args[0]=$replace($replace($args[0],"<DIN<<args['num.sup']>>:"),":<<args['num.sup']>>DIN>")
-	$args['int.DIN']=DYNEVAL($args[0])
-elseif $strfind($args[0],'(\+{2,4})[^+]+(\+?[^+]+)*\1')=$args[0] or $strfind($args[0],'(={2,4})[^=]+(=?[^=]+)*\1')=$args[0]:
-	$args['int.DIN']=$func('int.html.Hn',$args[0])
+$[0]	&	!	-	динамический текст
+$[1]	&	!	-	дополнительные данные
+# int.DIN
+local $dyn_txt_, $mode_ = $args[0], $args[1]
+if $strfind($dyn_txt_,'\[th\][\s\S]*?\[\/th\]') <> '' and instr($dyn_txt_,'[th]')=1:
+	$result = @int.time.hours(@em.tag.getCont($dyn_txt_,'th'))
+elseif $strfind($dyn_txt_,'\[ty\][\s\S]*?\[\/ty\]') <> '' and instr($dyn_txt_,'[ty]')=1:
+	$result = @int.time.years(@em.tag.getCont($dyn_txt_,'ty'))
+elseif $strfind($dyn_txt_,'\[tm\][\s\S]*\[\/tm\]') <> '' and instr($dyn_txt_,'[tm]')=1:
+	$result = @int.time.month(@em.tag.getCont($dyn_txt_,'tm'))
+elseif $strfind($dyn_txt_,'\[td\][\s\S]*\[\/td\]') <> '' and instr($dyn_txt_,'[td]')=1:
+	$result = @int.time.days(@em.tag.getCont($dyn_txt_,'td'))
+elseif $strfind($dyn_txt_,'\[chestname\][\s\S]+\[\/chestname\]') <> '' and instr($dyn_txt_,'[chestname]')=1:
+	$result = @int.chest.name(@em.tag.getCont($dyn_txt_,'chestname'))
+elseif $strfind($dyn_txt_,'\[var\][\s\S]+\[\/var\]') <> '' and instr($dyn_txt_,'[var]')=1:
+	$result = @int.var(@em.tag.getCont($dyn_txt_,'var'))
+elseif $strfind($dyn_txt_,'\[lnk\][\s\S]+\[\/lnk\]') <> '' and instr($dyn_txt_,'[lnk]')=1:
+	$result = @int.link($TRIM(@em.tag.getCont($dyn_txt_,'lnk')))
+elseif $strfind($dyn_txt_,'\[goto\][\s\S]+\[\/goto\]') <> '' and instr($dyn_txt_,'[goto]')=1:
+	$result = @int.dyn.goto($TRIM(@em.tag.getCont($dyn_txt_,'goto')))
+elseif $strfind($dyn_txt_,'\[back\][\s\S]+\[\/back\]') <> '' and instr($dyn_txt_,'[back]')=1:
+	$result = @int.dyn.back($TRIM(@em.tag.getCont($dyn_txt_,'back')))
+elseif $strfind($dyn_txt_,'\[[\s\S]*?\/\/[\s\S]*?\]') <> '' or $strfind($dyn_txt_,'\([\s\S]*?\/\/[\s\S]*?\)') <> '':
+	$result = @int.word.SEX($dyn_txt_)
+elseif $strfind($dyn_txt_,'<DIN(\d+):[\s\S]*:\1DIN>') <> 0:
+	local temp_ = val($strfind($strfind($dyn_txt_,'<DIN\d+:'),'\d+'))
+	$dyn_txt_ = $replace($replace($dyn_txt_,"<DIN<<temp_>>:"),":<<temp_>>DIN>")
+	$result = DYNEVAL($dyn_txt_)
+elseif $strfind($dyn_txt_,'(\+{2,4})[^+]+(\+?[^+]+)*\1') = $dyn_txt_ or $strfind($dyn_txt_,'(={2,4})[^=]+(=?[^=]+)*\1')=$dyn_txt_:
+	$result = @int.html.Hn($dyn_txt_)
 else
-	$args['int.DIN']=$args[0]
+	$result = $dyn_txt_
 end
-$result=TRIM($args['int.DIN'])
+$result = $TRIM($result)
 --- int.DIN ---------------------------------

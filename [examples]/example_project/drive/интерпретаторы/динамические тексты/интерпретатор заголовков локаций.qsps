@@ -1,73 +1,76 @@
+QSP-Game интерпретатор заголовков по исходному содержимому заголовков
+$[0]	&	ай-ди локации
+$[1]	&	управляющее слово
 # int.loc.head
-! интерпретатор заголовков по исходному содержимому заголовков
-$args[0] = $args[0]	&	!	ай-ди локации
-$args[1] = $args[1]	&	!	управляющее слово
-$args['obj']=$func('get.obj.id',$args[0])
-$args['name'] = $func('em.tag.getCont',$args['obj'],'name')
-$args['spec'] = $func('em.tag.getCont',$args['obj'],'spec')
-if $args['name'] = '':
-	if $args[1]='location': $args['name'] = $func('b.d.t','place.neverland')
-	if $args[1]='chest':
-		if TRIM($args['spec'])='[smithing]':
-			$args['name'] = $func('b.d.t','place.smithing')
-		elseif TRIM($args['spec'])='[altar]':
-			$args['name'] = $func('b.d.t','place.altar')
-		elseif TRIM($args['spec'])='[alchemic]':
-			$args['name'] = $func('b.d.t','place.alchemic')
-		elseif $strfind($args['spec'],'(\[altar\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[altar\])+')!'':
-			$args['name'] = $func('b.d.t','place.smithal')
-		elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[alchemic\])+')!'':
-			$args['name'] = $func('b.d.t','place.alsmith')
-		elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[altar\]|\[smithing\][\s\S]*\[altar\])+')!'':
-			$args['name'] = $func('b.d.t','place.alal')
+local $loc_id_, $cmd_ = $args[0], $args[1]
+local $loc_body_, $loc_name_, $loc_specialize_, $loc_type_
+local $head_color_, temp_, $temp_, $head_bank_
+$loc_body_ = @get.obj.id($loc_id_)
+$loc_name_ = @em.tag.getCont($loc_body_, 'name')
+$loc_specialize_ = @em.tag.getCont($loc_body_, 'spec')
+if $loc_name_ = '':
+	if $cmd_='location': $loc_name_ = @b.d.t('place.neverland')
+	if $cmd_='chest':
+		if $trim($loc_specialize_)='[smithing]':
+			$loc_name_ = @b.d.t('place.smithing')
+		elseif $trim($loc_specialize_)='[altar]':
+			$loc_name_ = @b.d.t('place.altar')
+		elseif $trim($loc_specialize_)='[alchemic]':
+			$loc_name_ = @b.d.t('place.alchemic')
+		elseif $strfind($loc_specialize_,'(\[altar\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[altar\])+')!'':
+			$loc_name_ = @b.d.t('place.smithal')
+		elseif $strfind($loc_specialize_,'(\[alchemic\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[alchemic\])+')!'':
+			$loc_name_ = @b.d.t('place.alsmith')
+		elseif $strfind($loc_specialize_,'(\[alchemic\][\s\S]*\[altar\]|\[smithing\][\s\S]*\[altar\])+')!'':
+			$loc_name_ = @b.d.t('place.alal')
 		else
-			$args['name'] = $func('b.d.t','place.chest')
+			$loc_name_ = @b.d.t('place.chest')
 		end
 	end
-	if $args[1]='seller': $args['name'] = $func('b.d.t','place.seller')
+	if $cmd_='seller': $loc_name_ = @b.d.t('place.seller')
 end
-$args['type'] = $func('em.tag.getCont',$args['obj'],'type')
-if $func('em.tag.getNum',$args['obj'],'color')!'':
-	$args['color'] = $func('em.tag.getNum',$args['obj'],'color')
-	if $args[1]='seller': $cvar['seller.color']=$args['color']
-elseif $args[1]='location':
-	if $args['type']='строение':	
-		$args['color']='994099' & ! здания вне городов
-	elseif $args['type']='принадлежит игроку':
-		$args['color']='880055'	&	!	любое помещение, которое стало собственностью героя
-	elseif $args['type']='город':
-		$args['color']='004477' & ! открытая местность в городе
-	elseif $args['type']='здание':
-		$args['color']='550088' & ! здания в городах
-	elseif $args['type']='просторы':
-		$args['color']='007799' & ! открытая местность вне городов
+$loc_type_ = @em.tag.getCont($loc_body_,'type')
+if @em.tag.getNum($loc_body_,'color') <> '':
+	$head_color_ = @em.tag.getNum($loc_body_,'color')
+	if $cmd_='seller': $cvar['seller.color']=$head_color_
+elseif $cmd_='location':
+	if $loc_type_='строение':	
+		$head_color_='994099' & ! здания вне городов
+	elseif $loc_type_='принадлежит игроку':
+		$head_color_='880055'	&	!	любое помещение, которое стало собственностью героя
+	elseif $loc_type_='город':
+		$head_color_='004477' & ! открытая местность в городе
+	elseif $loc_type_='здание':
+		$head_color_='550088' & ! здания в городах
+	elseif $loc_type_='просторы':
+		$head_color_='007799' & ! открытая местность вне городов
 	else
-		$args['color']='007799'
+		$head_color_='007799'
 	end
-elseif $args[1]='chest':
-	if TRIM($args['spec'])='[smithing]':
-		$args['color']='dd6600' & ! кузница
-	elseif TRIM($args['spec'])='[altar]':
-		$args['color']='ff4400' & ! алтарь
-	elseif TRIM($args['spec'])='[alchemic]':
-		$args['color']='667733' & ! алхимический стол
-	elseif $strfind($args['spec'],'(\[altar\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[altar\])+')!'':
-		$args['color']='ff4466' & ! волшебная кузница
-	elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[alchemic\])+')!'':
-		$args['color']='663377' & ! алхимическая кузница
-	elseif $strfind($args['spec'],'(\[alchemic\][\s\S]*\[altar\]|\[smithing\][\s\S]*\[altar\])+')!'':
-		$args['color']='336677' & ! алхимический алтарь
+elseif $cmd_='chest':
+	if $trim($loc_specialize_)='[smithing]':
+		$head_color_='dd6600' & ! кузница
+	elseif $trim($loc_specialize_)='[altar]':
+		$head_color_='ff4400' & ! алтарь
+	elseif $trim($loc_specialize_)='[alchemic]':
+		$head_color_='667733' & ! алхимический стол
+	elseif $strfind($loc_specialize_,'(\[altar\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[altar\])+')!'':
+		$head_color_='ff4466' & ! волшебная кузница
+	elseif $strfind($loc_specialize_,'(\[alchemic\][\s\S]*\[smithing\]|\[smithing\][\s\S]*\[alchemic\])+')!'':
+		$head_color_='663377' & ! алхимическая кузница
+	elseif $strfind($loc_specialize_,'(\[alchemic\][\s\S]*\[altar\]|\[smithing\][\s\S]*\[altar\])+')!'':
+		$head_color_='336677' & ! алхимический алтарь
 	else
-		$args['color']='663300' & ! прочие хранилища
+		$head_color_='663300' & ! прочие хранилища
 	end
-elseif $args[1]='seller':
-	$args['color']	=	'006600' & ! локации торговли
+elseif $cmd_='seller':
+	$head_color_	=	'006600' & ! локации торговли
 	$cvar['seller.color']	=	'006600'
-	args['колво']	=	charge_array[arrpos('$id_array',$args[0])]
-	$args['bank']	=	$func('b.d.t','place.bank',$args['color'],args['колво'])
+	temp_['number']	=	charge_array[arrpos('$id_array',$loc_id_)]
+	$head_bank_	=	@b.d.t('place.bank', $head_color_, temp_['number'])
 else
-	$args['color']='007799'
+	$head_color_='007799'
 end
-$args['time']=$func('b.d.t','time.calendar',time['date'],time['year'],$time['hour.onClock'],$time['minute.onClock'])
-$result = '<table width=90% border=0 cellpadding=2 cellspacing=0><tr><td align=left><font color=#' +$args['color']+ ' face="CyrillicOld" size=6>' + $args['name'] + '</font>' +$args['bank'] + '</td><td align=right><font color=#' + $args['color'] + ' face="CyrillicOld" size=6>' + $args['time'] + ':' + $func('int.time.days') +'</font></td></tr></table>'
+$temp_ = @b.d.t('time.calendar',time['date'],time['year'],$time['hour.onClock'],$time['minute.onClock'])
+$result = '<table width=90% border=0 cellpadding=2 cellspacing=0><tr><td align=left><font color=#<<$head_color_>> face="CyrillicOld" size=6><<$loc_name_>></font><<$head_bank_>></td><td align=right><font color=#<<$head_color_>> face="CyrillicOld" size=6><<$temp_>>:<<@int.time.days()>></font></td></tr></table>'
 --- int.loc.head ---------------------------------

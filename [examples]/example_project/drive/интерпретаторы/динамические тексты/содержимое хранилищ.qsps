@@ -1,16 +1,18 @@
+QSP-Game получает информацию о дочерних предметах сундука и преобразует имя сундука
+$[0]	&	!	строка вида		Название сундука[did:[с:1]_ай-ди_сундука:did]
 # int.chest.name
-! получает информацию о дочерних предметах сундука и преобразует имя сундука
-$args[0] = $args[0]	&	!	строка вида		Название сундука[did:[с:1]_ай-ди_сундука:did]
-$args['id']=$func('em.tag.getCont',$args[0],'did')
-$args['name']=$replace($args[0],$strfind($args[0],'.did:'+$args['id']+':did.'))
-if здесь_смотрел[$args['id']]<1:
-	$result=$args['name']+$func('b.d.t','chest.dont_know')
-else
-	if $func('get.daughter.obj',$args['id'],'<obj>')='false':
-		$result=$args['name']+$func('b.d.t','chest.nope')
+local $chest_ = $args[0]
+local $chest_id_, $chest_name_
+$chest_id_ = @em.tag.getCont($chest_,'did')
+$chest_name_ = $replace($chest_, $strfind($chest_, '.did:<<$chest_id_>>:did.'))
+if здесь_смотрел[$chest_id_] < 1:
+	$result = $chest_name_ + @b.d.t('chest.dont_know')
+else:
+	local $temp_id_
+	if @get.daughter.obj($chest_id_,'<obj>') = 'false':
+		$result = $chest_name_ + @b.d.t('chest.nope')
 	else
-		$result=$args['name']+$func('b.d.t','chest.yep')
+		$result = $chest_name_ + @b.d.t('chest.yep')
 	end
-	killvar '$temp_id'
 end
 --- int.chest.name ---------------------------------

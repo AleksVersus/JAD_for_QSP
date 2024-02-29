@@ -1,28 +1,30 @@
-# int.dyn.goto
-! локация интерпретации безусловных переходов в динамическом тексте:
+QSP-Game локация интерпретации безусловных переходов в динамическом тексте:
 ! текст ссылки, выводимый на экран|название_локации|идентификатор_локации|время|управляющая конструкция|идентификатор исходной локации
-$args[0] = $args[0]
-$args['text'] = TRIM($func('em.str.getWord',$args[0],1))
-$args['last']=$args['text']
-$args['loc.name'] = TRIM($func('em.str.getWord',$args[0],2))
-if $args['last']=$args['loc.name']: $args['loc.name']='' else $args['last']=$args['loc.name']
-$args['loc.id'] = TRIM($func('em.str.getWord',$args[0],3))
-if $args['loc.id']='': $args['loc.id']=$args['loc.name']
-if $args['last']=$args['loc.id']: $args['loc.id']=$args['loc.name'] else $args['last']=$args['loc.id']
-$args['time']=TRIM($func('em.str.getWord',$args[0],4))
-if $args['last']=$args['time']: $args['time']='' else $args['last']=$args['time']
-$args['manage'] = TRIM($func('em.str.getWord',$args[0],5))
-if $args['last']=$args['manage']: $args['manage']='' else $args['last']=$args['manage']
-$args['back'] = TRIM($func('em.str.getWord',$args[0],6))
-if $args['last']=$args['back']: $args['back']='' else $args['last']=$args['back']
+$[0]
+# int.dyn.goto
+local $goto_text_ = $args[0]
+local $temp_, $text_, $loc_name_, $goto_time_, $cmd_, $back_loc_, $loc_id_
+$text_ = $trim(@em.str.getWord($goto_text_, 1))
+$temp_ = $text_
+$loc_name_ = $trim(@em.str.getWord($goto_text_,2))
+if $temp_ = $loc_name_: $loc_name_ = '' else $temp_ = $loc_name_
+$loc_id_ = $trim(@em.str.getWord($goto_text_,3))
+if $loc_id_='': $loc_id_ = $loc_name_
+if $temp_ = $loc_id_: $loc_id_ = $loc_name_ else $temp_ = $loc_id_
+$goto_time_ = $trim(@em.str.getWord($goto_text_,4))
+if $temp_ = $goto_time_: $goto_time_='' else $temp_ = $goto_time_
+$cmd_ = $trim(@em.str.getWord($goto_text_,5))
+if $temp_ = $cmd_: $cmd_ = '' else $temp_ = $cmd_
+$back_loc_ = $trim(@em.str.getWord($goto_text_,6))
+if $temp_ = $back_loc_: $back_loc_ = '' else $temp_ = $back_loc_
 $log_error[]="
-text:<<$args['text']>>
-name:<<$args['loc.name']>>
-id:<<$args['loc.id']>>
-manage:<<$args['manage']>>
-back:<<$args['back']>>
+text:<<$text_>>
+name:<<$loc_name_>>
+id:<<$loc_id_>>
+manage:<<$cmd_>>
+back:<<$back_loc_>>
 "
-$result = "<a class='plain' href=""exec:$time['goto']='<<$args['time']>>' & GAME_VALUE['goto'] = 1"
-$result+= " & goto '<<$args['loc.name']>>','<<$args['loc.id']>>','<<$args['manage']>>','<<$args['back']>>'"">"
-$result+="<font color=#009988><<$args['text']>></font></a>"
+$result = "<a class=""plain"" href=""exec:$time['goto']='<<$goto_time_>>' & GAME_VALUE['goto'] = 1"
+$result += " & goto '<<$loc_name_>>','<<$loc_id_>>','<<$cmd_>>','<<$back_loc_>>'"">"
+$result += "<font color=#009988><<$text_>></font></a>"
 --- int.dyn.goto ---------------------------------

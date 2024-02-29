@@ -1,29 +1,25 @@
+QSP-Game Интерпретатор Объектов на локации
+$[0]	-	ай-ди локации
+$[1]	-	регулярное выражение для поиска определённых объектов
+$[2]	-	режим получения объектов acts - в виде действий href - в виде гиперссылок
+$[3]	-	дополнительные команды
 # int.loc.obj
-! Интерпретатор Объектов на локации
-$args[0] = $args[0]	&	!	ай-ди локации
-$args[1] = $args[1]	&	!	регулярное выражение для поиска определённых объектов
-$args[2] = $args[2]	&	!	режим получения объектов acts - в виде действий href - в виде гиперссылок
-$args[3] = $args[3]	&	!	дополнительные команды
-args['moment1']=MSECSCOUNT
-if $func('get.daughter.obj',$args[0],$args[1],'$temp_id_ilo')='true':
-! первая строка условия находит все объекты
-	:for1
-	if arrsize('$temp_id_ilo')>0:
-	! перебираются все объекты, стоящие в начале списка
-		$args['obj']=$func('get.obj.id',$temp_id_ilo[0])
-		if instr($args['obj'],'[hide]')=0:
-		! если это не скрытый объект
-			if instr($args['obj'],'<obj>')!0: $args['res.int']+=$func('gen.act.obj',$temp_id_ilo[0],$args[0],$args[2],$args[3])
-			if instr($args['obj'],'<goto>')!0: $args['res.int']+=$func('gen.act.goto',$temp_id_ilo[0],$args[0],$args[2],$args[3])
-			if instr($args['obj'],'<act>')!0: $args['res.int']+=$func('gen.act.act',$temp_id_ilo[0],$args[0],$args[2],$args[3])
+local $loc_id_, $regexp_, $mode_, $cmd_ = $args[0], $args[1], $args[2], $args[3]
+local time_, $temp_id_ilo_
+time_[1] = msecscount
+if @get.daughter.obj($loc_id_,$regexp_,'$temp_id_ilo_') = 'true':
+	!@ первая строка условия находит все объекты
+	loop local $obj_body_ while arrsize('$temp_id_ilo_')>0 step killvar '$temp_id_ilo_',0:
+		!@ перебираются все объекты, стоящие в начале списка
+		$obj_body_ = @get.obj.id($temp_id_ilo_[0])
+		if instr($obj_body_, '[hide]') = 0:
+			!@ если это не скрытый объект
+			if instr($obj_body_, '<obj>') <> 0:		$result += @gen.act.obj($temp_id_ilo_[0],$loc_id_,$mode_,$cmd_)
+			if instr($obj_body_, '<goto>') <> 0:	$result += @gen.act.goto($temp_id_ilo_[0],$loc_id_,$mode_,$cmd_)
+			if instr($obj_body_, '<act>') <> 0:		$result += @gen.act.act($temp_id_ilo_[0],$loc_id_,$mode_,$cmd_)
 		end
-		killvar '$temp_id_ilo',0	&	!	удаляем первый объект списка
-		jump 'for1'
 	end
 end
-args['moment2']=MSECSCOUNT
-$log_error[]='<br>Генерация выводимых на локации объектов заняла мсек: '+str(args['moment2']-args['moment1'])
-killvar '$temp_id_ilo'
-killvar '$result'
-$result=$args['res.int']
+time_[2] = msecscount
+$log_error[] = '<br>Генерация выводимых на локации объектов заняла мсек: <<time_[2]-time_[1]>>'
 --- int.loc.obj ---------------------------------

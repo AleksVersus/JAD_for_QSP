@@ -1,38 +1,40 @@
-# int.diary
-! Интерпретатор дневника.
+QSP-Game Интерпретатор дневника.
 ! Сохраняем данные из основного окна
-$args[0] = $args[0]	&	!	ай-ди дневника
-if $args[1]='':
-	if $diary['view']='': $args[1]='small' else $args[1]=$diary['view']
+$[0]	&	!	ай-ди дневника
+# int.diary
+local $diary_id_, $mode_ = $args[0], $args[1]
+local $text_, $table_
+if $mode_='':
+	$mode_ = $iif($diary['view'] = '', 'small', $diary['view'])
 end
-$diary['view']=$args[1]
-if $diary['tab']='': $diary['tab']='next'
-if instr($setScreen,'diary.')=0: $diary['setScreen']=$setScreen
-gs 'setScreen','diary.'+$args[1]
-if $diary['maintxt']='': $diary['maintxt']=MAINTXT
-! В дневнике несколько вкладок. Активная выделена. Неактивные - нет
-! Вкладки
-!	info - информация о времени в мире и других важных вещах
-!	next - задания, которые нужно выполнить
-!	last - выполненные задания
-!	eror - проваленные задания
-!	note - заметки
-!	sets - настройки
+$diary['view'] = $mode_
+if $diary['tab'] = '': $diary['tab'] = 'next'
+if instr($setScreen, 'diary.') = 0: $diary['setScreen'] = $setScreen
+@setScreen('diary.' + $mode_)
+if $diary['maintxt'] = '': $diary['maintxt'] = $maintxt
+!@ В дневнике несколько вкладок. Активная выделена. Неактивные - нет
+!@ Вкладки
+!@	info - информация о времени в мире и других важных вещах
+!@	next - задания, которые нужно выполнить
+!@	last - выполненные задания
+!@	eror - проваленные задания
+!@	note - заметки
+!@	sets - настройки
 
-! создаём выводимый текст:
+!@ создаём выводимый текст:
 if $diary['tab']='info':
-	$args['text']=$func('int.diary.info')
-elseif $diary['tab']='next' or $diary['tab']='last' or $diary['tab']='eror':
-	$args['text']=$func('int.diary.task',$args[0],$diary['tab'])
-elseif $diary['tab']='note':
-	$args['text']=$func('int.diary.note',$args[0])
-elseif $diary['tab']='sets':
-	$args['text']=$func('int.diary.sets',$args[0])
+	$text_=$func('int.diary.info')
+elseif instr('[next][last][eror]', '['+$diary['tab']+']') <> 0:
+	$text_= @int.diary.task($diary_id_, $diary['tab'])
+elseif $diary['tab'] = 'note':
+	$text_= @int.diary.note($diary_id_)
+elseif $diary['tab'] = 'sets':
+	$text_= @int.diary.sets($diary_id_)
 end
-if $GAME_INTERFACE['подсказки']="show": $args['text']=$func('game.help',$diary['tab'])+$func('b.w.s','help')+'<br>'+$args['text']
-! рисуем таблицу
-$args['diary.table']=''
-$args['diary.table']+=$func('int.diary.'+$args[1],$args[0],$args['text'])
+if $GAME_INTERFACE['подсказки'] = "show": $text_ = @game.help($diary['tab']) + @b.w.s('help')+'<br>'+$text_
+!@ рисуем таблицу
+$table_ = ''
+$table_ += $func('int.diary.'+$mode_, $diary_id_,$text_)
 *CLEAR
-*pl $args['diary.table']
+*pl $table_
 --- int.diary ---------------------------------

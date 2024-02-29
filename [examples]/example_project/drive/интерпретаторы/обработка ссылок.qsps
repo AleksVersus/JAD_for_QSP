@@ -1,61 +1,60 @@
+QSP-Game Локация обрабатывает гиперссылку поднятия предмета
+Если есть тег [respawn:] и текущее время превышает время респауна, в kolvo_array восстанавливается количество из тела ссылки.
+Ссылку с таким тегом невозможно удалить с текущей локации.
+$[0] - id ссылки
 # int.link.obj
-! Локация обрабатывает гиперссылку поднятия предмета
-! Если есть тег [respawn:] и текущее время превышает время респауна, в kolvo_array восстанавливается количество из тела ссылки.
-! Ссылку с таким тегом невозможно удалить с текущей локации.
-$args[0] = $args[0]	&	!	id ссылки
-args['pos.link'] = arrpos('$id_array',$args[0])	&	!	получаем позицию ссылки в базе
-$args['link'] = $object_array[args['pos.link']]	&	!	получаем тело ссылки
-if kolvo_array[args['pos.link']]=0:
-! kolvo_array[] - используется в качестве метки респавна. 0 - означает, что можно респавнить объект
-	! спавн представляет собой следующее:
-	! Все дочерние объекты ссылки удаляются
-	gosub 'del.obj',$args[0],'not parent'
-	! генерируются новые объекты
-	! внимание: для генерации объектов, не внесённых в базу, используйте короткое слово пустого объекта [:?:]
-	$args['objs.inLink']=$TRIM($func('em.tag.getCont',$args['link'],'obj'))	&	!	получаем все объекты, какие есть в ссылке
-	args['i']=1
-	! начинаем генерацию объектов
-	:Game_Adventure_Master
-	if $strfind($args['objs.inLink'],'\[io[\d]+:[\s\S]*:io[\d]+\]')!'' and args['i']<999:
-	! пока в строке присутствует запись \[io[\d]+:[\s\S]*:io[\d]+\] делаем
-		$args['io']=$func('em.tag.getCont',$args['objs.inLink'],"io<<args['i']>>")	&	!	вычленяем тело объекта
-		args['kolvo']=DYNEVAL($func('em.tag.getCont',$args['io'],'kolvo'))	&	!	получаем количество
-		args['charge']=DYNEVAL($func('em.tag.getCont',$args['io'],'hapj'))	&	!	получаем заряд. Помните: если не указать заряд, он будет равным максимальному значению для предмета или 0
-		$args['dyn']=$func('em.tag.getCont',$args['io'],'dynamic')	&	!	получаем динамический код. Подробнее смотри в спецификации
-		$args['for base']=$replace($args['io'],$strfind($args['io'],'\[kolvo:[\s\S]*:kolvo\]'))	&	!	удаляем количество из тела
-		$args['for base']=$replace($args['for base'],$strfind($args['io'],'\[hapj:[\s\S]*:hapj\]'))	&	!	удаляем заряд из тела
-		$args['for base']=$replace($args['for base'],$strfind($args['io'],'\[dynamic:[\s\S]*:dynamic\]'))	&	!	удаляем заряд из тела
-		gosub 'base.new.obj',$args['for base'],'',$args[0],args['kolvo'],args['charge'],$args['dyn']	&	!	добавляем новый объект
-		$args['objs.inLink']=$TRIM($replace($args['objs.inLink'],"[io<<args['i']>>:"+$args['io']+":io<<args['i']>>]"))	&	!	вырезаем из списка исходников обработанный исходник
-		args['i']+=1
-		jump 'Game_Adventure_Master'
+local $link_id_ = $args[0]
+local pos_, $link_body_, $link_objs_, $daughters_
+pos_ = arrpos('$id_array',$link_id_)	&	!@ получаем позицию ссылки в базе
+$link_body_ = $object_array[pos_]	&	!@ получаем тело ссылки
+if kolvo_array[pos_] = 0:
+	!@ kolvo_array[] - используется в качестве метки респавна. 0 - означает, что можно респавнить объект
+	!@ спавн представляет собой следующее:
+	!@ Все дочерние объекты ссылки удаляются
+	@del.obj($link_id_, 'not parent')
+	!@ генерируются новые объекты
+	!@ внимание: для генерации объектов, не внесённых в базу, используйте короткое слово пустого объекта [:?:]
+	$link_objs_ = $trim(@em.tag.getCont($link_body_, 'obj'))	&	!@ получаем все объекты, какие есть в ссылке
+	!@ начинаем генерацию объектов
+	loop local i, $io_, $t = 1, '', '' while $strfind($link_objs_, '\[io[\d]+:[\s\S]*:io[\d]+\]') <> '' and i<999 step i += 1:
+		!@ пока в строке присутствует запись \[io[\d]+:[\s\S]*:io[\d]+\] делаем
+		$io_ = @em.tag.getCont($link_objs_, "io<<i>>")	&	!@	вычленяем тело объекта
+		t['num'] = DYNEVAL($func('em.tag.getCont', $io_, 'kolvo'))	&	!@	получаем количество
+		t['chrg'] = DYNEVAL($func('em.tag.getCont', $io_, 'hapj'))	&	!@	получаем заряд. Помните: если не указать заряд, он будет равным максимальному значению для предмета или 0
+		$t['dyn'] = @em.tag.getCont($io_, 'dynamic')	&	!@ получаем динамический код. Подробнее смотри в спецификации
+		$t['for_base'] = $replace($io_, $strfind($io_,'\[kolvo:[\s\S]*:kolvo\]'))	&	!@ удаляем количество из тела
+		$t['for_base'] = $replace($t['for_base'], $strfind($io_, '\[hapj:[\s\S]*:hapj\]'))	&	!@ удаляем заряд из тела
+		$t['for_base'] = $replace($t['for_base'], $strfind($io_, '\[dynamic:[\s\S]*:dynamic\]'))	&	!@ удаляем заряд из тела
+		$t['r'] = @base.new.obj($t['for_base'], '', $link_id_, t['num'], t['chrg'], $t['dyn'])	&	!@ добавляем новый объект
+		$link_objs_ = $trim($replace($link_objs_, "[io<<i>>:<<$io_>>:io<<i>>]"))	&	!@ вырезаем из списка исходников обработанный исходник
 	end
-	kolvo_array[args['pos.link']]=1	&	!	объекты респавнились
+	kolvo_array[pos_]=1	&	!@ объекты респавнились
 end
-$args['get.daughters']=$func('get.daughter.obj',$args[0],'','$temp_iliob')	&	!	получаем список дочерних объектов ссылки
-if $args['get.daughters']='true':
-! если дочерние объекты у ссылки существуют
-! поочерёдно поднимаем каждый из них
-	args['i']=arrsize('$temp_iliob')
-	:AVS_int_link_obj
-	if arrsize('$temp_iliob')>0:
-		! -----------здесь будет проверка на удачу и всё такое----------
-		
-		! -----------здесь будет проверка на удачу и всё такое----------
-		$args['take']=$func('take.obj',$temp_iliob[0])
-		! В результате получаем одно из ключевых слов, но нас интересует только одно
-		! если объект взят полностью уменьшаем args['i']
-		if $args['take']='taken': args['i']-=1
-		killvar '$temp_iliob',0
-		jump 'AVS_int_link_obj'
-	end
-	if args['i']=0: kolvo_array[args['pos.link']]=2
+local $temp_iliob_
+$daughters_ = @get.daughter.obj($link_id_, '', '$temp_iliob_')	&	!@ получаем список дочерних объектов ссылки
+if $daughters_ = 'true':
+	!@ если дочерние объекты у ссылки существуют
+	!@ поочерёдно поднимаем каждый из них
+	dynamic {
+		local i, $take_
+		i = arrsize('$temp_iliob_')
+		loop while arrsize('$temp_iliob_')>0:
+			!@ -----------здесь будет проверка на удачу и всё такое----------
+			
+			!@ -----------здесь будет проверка на удачу и всё такое----------
+			$take_ = @take.obj($temp_iliob_[0])
+			!@ В результате получаем одно из ключевых слов, но нас интересует только одно
+			!@ если объект взят полностью уменьшаем args['i']
+			if $take_ = 'taken': i -= 1
+			killvar '$temp_iliob_',0
+		end
+		if i = 0: kolvo_array[pos_]=2
+	}
 else
-	! в случае, когда дочерних объектов у ссылки нет, выставляем метку
-	kolvo_array[args['pos.link']]=2
-	! однако такая ситуация теоретически невозможна, поэтому необходимо пополнить лог ошибок
+	!@ в случае, когда дочерних объектов у ссылки нет, выставляем метку
+	kolvo_array[pos_]=2
+	!@ однако такая ситуация теоретически невозможна, поэтому необходимо пополнить лог ошибок
 	$error_log += 'location name: "int.link.obj" ERROR!: Link do not have a daughter.<br>'
 end
-:print
-gs 'true.goto.curloc',$curloc
+@true.goto.curloc($curloc)
 --- int.link.obj ---------------------------------

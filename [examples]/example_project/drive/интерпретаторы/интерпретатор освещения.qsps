@@ -5,13 +5,13 @@
 !	$func('get.loc.id') - id текущей локации
 !	time - vremia
 $args['obj']=$object_array[arrpos('$id_array',$func('get.loc.id'))] & ! получаем тело заголовка
-$args['place']=$strfind($func('em.tag.getCont',$args['obj'],'place'),'\[зависит от времени\]|\[тёмная комната\]|\[вечные сумерки\]') & ! получаем значение свойства местности
+$args['place']=$strfind(@em.tag.getCont($args['obj'],'place'),'\[зависит от времени\]|\[тёмная комната\]|\[вечные сумерки\]') & ! получаем значение свойства местности
 killvar '$result'
 if $args['place']="[тёмная комната]": $result = 'темно' & exit
 if $args['place']="[вечные сумерки]": $result = 'сумерки' & exit
 if $args['place']='[зависит от времени]':
 	args['time_minute']=time['hour']*60 + time['minute']
-	$args['res.021213'] = $func('int.time.hours','сумерки||сумерки|темно')
+	$args['res.021213'] = @int.time.hours('сумерки||сумерки|темно')
 	$result = $args['res.021213']
 end
 --- int.lighting ---------------------------------

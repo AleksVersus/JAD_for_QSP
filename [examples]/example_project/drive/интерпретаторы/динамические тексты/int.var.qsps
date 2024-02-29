@@ -1,52 +1,55 @@
-# int.var
-! Интерпретатор получает строку вида
+QSP-Game Интерпретатор получает строку вида
 ! ИМЯ_ПЕРЕМЕННОЙ;;Индекс|строка 1|строка 2|строка 3|строка 4 и т.д.
 ! в зависимости от состояния переменной возвращает строку, между ||
 ! if ИМЯ_ПЕРЕМЕННОЙ[индекс] = 0: $result ='строка 1' и т.д.
-$args[0] = $args[0]
-! первой частью идут имя и индекс переменной - отделяем их от прочей строки
-$args['var']=TRIM(mid($args[0],1,instr($args[0],'|')-1))
-if $args['var']='': $result ='Ошибка использования динамической записи &#91;var&#93;&#91;/var&#93;!! Не указано  имя переменной' & exit	&	!	pfobnf от дурака
-$args[0]=TRIM(mid($args[0],instr($args[0],'|')))+'|'
-! выделяем переменную и индекс:
-if instr($args['var'],';;')=0:
-	$args['var.name']=$args['var']
-	$args['var.index']='0'
+$[0]
+# int.var
+local $string_ = $args[0]
+local $var_, $var_name_, $var_index_, $var_value_, $default_, $find_str_, $word_
+!@ первой частью идут имя и индекс переменной - отделяем их от прочей строки
+$var_ = $trim($mid($string_,1,instr($string_,'|')-1))
+if $var_ = '': $result ='Ошибка использования динамической записи &#91;var&#93;&#91;/var&#93;!! Не указано  имя переменной' & exit	&	!@ pfobnf от дурака
+$string_ = $trim($mid($string_,instr($string_,'|')))+'|'
+!@ выделяем переменную и индекс:
+if instr($var_,';;')=0:
+	$var_name_ = $var_
+	$var_index_ = '0'
 else
-	$args['var.name']=TRIM(mid($args['var'],1,instr($args['var'],';;')-1))
-	$args['var.index']=TRIM(mid($args['var'],instr($args['var'],';;')+2))
-	! преобразуем индекс в удобоваримый вид.
-	if strcomp($args['var.index'],'("|'+"'"+').*\1')=0 and ISNUM($args['var.index'])=0: $args['var.index']="'"+$replace($args['var.index'],'''','"')+"'" 
-end
-$log_error[]='n:'+$args['var.name']
-$log_error[]='i:'+$args['var.index']
-! получаем результат по-умолчанию. Это первая строка, которой не приписаны значения.
-! Если результат по-умолчанию должен быть пустым, его можно опустить, a не писать ||
-$args['text.null']=$replace($strfind($args[0],'(\|([^;|]+(;|[^|])[^;|]*)+\|)'),'|')
-$log_error[]='0:'+$args['text.null']
-! получаем значение переменной
-$args['var.num']=$DYNEVAL("$result = <<$args['var.name']>>[<<$args['var.index']>>]")
-$log_error[]='v:'+$args['var.num']
-! ищем среди строк ту, которой соответствует наше значение:
-$args['find.str']=$strfind($args[0],'\|([^|]*;;)?\s*(('+"'"+'|")?)\s*'+$args['var.num']+'\s*\2\s*;;[^|]*\|')
-$log_error[]="f:"+$args['find.str']
-if arrsize($args['var.name'])=0:
-	jump 'null'
-elseif $args['find.str']!'':
-! если значение найдено, возвращаем в результат ту строку, которую отыскали
-	$args['result']=$replace($replace($args['find.str'],$mid($args['find.str'],1,instr($args['find.str'],';;')+1)),'|')
-elseif isnum($args['var.num'])=-1 and val($args['var.num'])>=0 and instr($args[0],';;')=0:
-! если прямо указанное значение не найдено, но оно является не отрицательным числом, получаем строку по этому числу:
-	$args['wip']=$func('em.str.getWord',mid($args[0],2,len($args[0])-2),val($args['var.num']))
-	if instr($args['wip'],';;')!0:
-		$args['result']=$replace($strfind($args['wip'],'([^;]+(\|)*)'),'|')
-	else
-		$args['result']=$replace($args['wip'],'|')
+	$var_name_ = $trim($mid($var_,1,instr($var_,';;')-1))
+	$var_index_ = $trim($mid($var_,instr($var_,';;')+2))
+	!@ преобразуем индекс в удобоваримый вид.
+	if strcomp($var_index_,'("|'').*\1') = 0 and isnum($var_index_) = 0:
+		$var_index_ = "'" + $replace($var_index_,'''','"')+"'"
 	end
-else
-! если прямо указанное значение не найдено, и оно не является числом, или число меньше нуля, возвращаем значение по-умолчанию
-	:null
-	$args['result']=$args['text.null']
 end
-$result = $args['result']
+$log_error[] = 'n:' + $var_name_
+$log_error[] = 'i:' + $var_index_
+!@ получаем результат по-умолчанию. Это первая строка, которой не приписаны значения.
+!@ Если результат по-умолчанию должен быть пустым, его можно опустить, a не писать ||
+$default_ = $replace($strfind($string_,'(\|([^;|]+(;|[^|])[^;|]*)+\|)'),'|')
+$log_error[] = '0:' + $default_
+!@ получаем значение переменной
+$var_value_ = $DYNEVAL("$result = <<$var_name_>>[<<$var_index_>>]")
+$log_error[] = 'v:'+$var_value_
+!@ ищем среди строк ту, которой соответствует наше значение:
+$find_str_ = $strfind($string_,'\|([^|]*;;)?\s*(('+"'"+'|")?)\s*'+$var_value_+'\s*\2\s*;;[^|]*\|')
+$log_error[] = "f:" + $find_str_
+if arrsize($var_name_) = 0:
+	jump 'default'
+elseif $find_str_ <> '':
+	!@ если значение найдено, возвращаем в результат ту строку, которую отыскали
+	$result = $replace($replace($find_str_,$mid($find_str_,1,instr($find_str_,';;')+1)),'|')
+elseif isnum($var_value_)=-1 and val($var_value_)>=0 and instr($string_,';;')=0:
+	!@ если прямо указанное значение не найдено, но оно является не отрицательным числом, получаем строку по этому числу:
+	$word_ = @em.str.getWord($mid($string_,2,len($string_)-2),val($var_value_))
+	if instr($word_,';;') <> 0:
+		$result = $replace($strfind($word_,'([^;]+(\|)*)'),'|')
+	else:
+		$result = $replace($word_,'|')
+	end
+else:
+	!@ если прямо указанное значение не найдено, и оно не является числом, или число меньше нуля, возвращаем значение по-умолчанию
+	:default
+	$result = $default_
+end
 --- int.var ---------------------------------
