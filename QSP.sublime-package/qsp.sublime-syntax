@@ -106,11 +106,11 @@ contexts: # теперь необходимо определить "контек
     - include: kw_declarations
     - include: sugarfunc
     - match: (?i:(\bend\b)) # подсветка лишнего end'а
-      scope: invalid.illegal.qsp
+      scope: invalid.illegal.qsp meta.excess_end.qsp
     - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
-      scope: invalid.illegal.qsp
+      scope: invalid.illegal.qsp meta.excess_else.qsp
     - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
-      scope: invalid.illegal.qsp
+      scope: invalid.illegal.qsp meta.excess_elseif.qsp
     - include: preprocessor
     - include: comments
     - include: location_call
@@ -127,10 +127,10 @@ contexts: # теперь необходимо определить "контек
 
   # пользовательские переменные
   users_variables:
-    - match: '{{users_variables}}(?=(\s+{{right_operand}}|\s*\({{right_operand}}))'
-      scope: invalid.illegal.qsp
     - match: '{{users_variables}}(?=\s*\b(while|step|else|elseif|and|or|mod)\b)'
       scope: meta.user-variables.qsp
+    - match: '{{users_variables}}(?=(\s+{{right_operand}}|\s*\({{right_operand}}))'
+      scope: invalid.illegal.qsp meta.wrong_operator.qsp
     - match: '{{users_variables}}'
       scope: meta.user-variables.qsp
 
@@ -594,6 +594,8 @@ contexts: # теперь необходимо определить "контек
           scope: invalid.illegal.qsp
         - include: preprocessor
         - include: comments
+        - include: location_call
+        - include: jump_to_label
         - include: labels
         - include: operators
         - include: operacion
@@ -602,6 +604,7 @@ contexts: # теперь необходимо определить "контек
         - include: numeric
         - include: strings
         - include: separator_continuation
+        - include: users_variables
         - match: '\}'
           scope: punctuation.section.block.end.qsp avs_brace_end
           pop: true
