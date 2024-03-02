@@ -47,15 +47,6 @@
 			]
 		},
 		{
-			"build":"..\\example_game\\lib\\easy.titles.qsp",
-			"folders":
-			[
-				{
-					"path":"[lib]\\easy.titles"
-				}
-			]
-		},
-		{
 			"build":"..\\example_game\\pp-test\\pp-test.qsp",
 			"folders":
 			[
@@ -67,6 +58,6 @@
 	],
 	"start":"..\\example_game\\game.sam.qsp",
 	"save_txt2gam":"True",
-	"preprocessor":"Off",
-	"scans":{"location":"prvFile","folders":["..\\example_game\\res\\img"]}
+	"preprocessor":"Off"
+	
 }

@@ -12,11 +12,10 @@ QSP-Game <= это слово первой строкой файла (после
 inclib	'drive.qsp'	&	!@	игра Steel & Magic использует те же драйвер и базы, что и игра fantastic battles
 inclib	'bases.qsp'
 inclib	'intro.qsp'
-inclib	'lib/easy.titles.qsp'
 inclib	'lib/easy.math.qsp'
 
 !@ Очищаем всё
-if $GAME_VALUE['no_restart'] = 0:
+if GAME_VALUE['no_restart'] = 0:
 	KILLALL
 	!@ Настройка интерфейса
 	$GAME_INTERFACE['обучение']="show"
@@ -27,7 +26,7 @@ if $GAME_VALUE['no_restart'] = 0:
 	$GAME_INTERFACE['show.stat']="show"
 	$GAME_INTERFACE['hero.stat']='hide'
 	$GAME_INTERFACE['obj.image.stat']='hide'
-	GAME_VALUE['no_restart']= 1
+	GAME_VALUE['no_restart'] = 1
 	@setScreen('black-green')
 end
 !@ инициализируем переменные
