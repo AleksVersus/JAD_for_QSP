@@ -66,8 +66,6 @@
 		}
 	],
 	"start":"..\\example_game\\game.sam.qsp",
-	"converter":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\txt2gam.exe",
-	"player":"D:\\my\\GameDev\\QuestSoftPlayer\\QSP 570 QG 400b\\qspgui.exe",
 	"save_txt2gam":"True",
 	"preprocessor":"Off",
 	"scans":{"location":"prvFile","folders":["..\\example_game\\res\\img"]}
