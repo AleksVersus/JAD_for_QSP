@@ -219,7 +219,7 @@ $[0]	&	!	приводимое время
 $[1]	&	!	к чему нужно привести day hour minute secunde
 [2] !@ год, от которого считаются добавочные дни (+1 на каждый високосный)
 # conv.time
-local $conv_time_, $conv_to_, from_year_ = $args
+local $conv_time_, $conv_to_, from_year_ = $args[0], $args[1], args[2]
 local res_, add_day_, time_
 if from_year_ = 0: from_year_ = time['year']
 time_['day']=@em.tag.getNum($conv_time_,'day')
