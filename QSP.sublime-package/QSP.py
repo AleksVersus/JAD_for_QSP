@@ -104,7 +104,7 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 		sublproj_path = jont(argv['folder'], fname + '.sublime-project')
 		if not os.path.isfile(sublproj_path):
 			with open(sublproj_path, 'w', encoding='utf-8') as file:
-				file.writelines(const.QSP_SUBLIME_PROJECT)
+				file.writelines(dict(const.QSP_SUBLIME_PROJECT))
 		# create startfile
 		start_file_path = jont(argv['folder'], '[source]', '00_start.qsps')
 		if not os.path.isfile(start_file_path):
