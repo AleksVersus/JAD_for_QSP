@@ -98,7 +98,7 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 		project_json_path = jont(argv['folder'], '[source]', 'project.json')
 		if not os.path.isfile(project_json_path):
 			with open(project_json_path, 'w', encoding='utf-8') as file:
-				json.dump(const.QSP_PROJECT_JSON, file, indent=4)
+				json.dump(dict(const.QSP_PROJECT_JSON), file, indent=4)
 		# create sublime-project
 		path, fname = os.path.split(argv['folder'])
 		sublproj_path = jont(argv['folder'], fname + '.sublime-project')
