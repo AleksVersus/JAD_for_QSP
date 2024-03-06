@@ -15,7 +15,7 @@ $parent_id_ = @get.obj.id($position_array[pos_]) 	&	!@ получаем тело
 if instr($parent_id_,'<bag>') <> 0:
 	w = 0
 	$last_id_ = @replace.obj($obj_id_, $bag_id_, $obj_kind_,number_)
-	$print['menu.in.bag'] += @base.word.screen('007', '<<$obj_body_>>[колво:<<number_)>>]')
+	$print['menu.in.bag'] += @base.word.screen('007', '<<$obj_body_>>[колво:<<number_>>]')
 elseif instr($parent_id_,'<body>') <> 0:
 	local how_many_, pit_
 	how_many_ = @prv.obj.weight($obj_id_, "inInv")	&	!@ получаем сколько можно отправить в сумку

@@ -12,7 +12,7 @@ if instr($obj_body_, '[number]') <> 0:
 elseif  instr($obj_body_, '[count]')<> 0:
 	how_many_ = number_
 end
-$use_ = @use.obj.actObj($obj_id_,'dont.pay',how_many_)	&	!@	перемещаем объект если это возможно
+$use_ = @use.obj.actObj($obj_id_, 'dont.pay', how_many_)	&	!@	перемещаем объект если это возможно
 if $use_ = 'taken':
 	!@ Предмет взят полностью. Значит вес уменьшается на полное число
 	w = number_ * weight_
