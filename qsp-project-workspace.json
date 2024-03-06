@@ -1,98 +1,5 @@
 {
     "locations": {
-        "[examples]\\example_game\\game.sam.txt": [
-            [
-                "prvFile",
-                [
-                    48,
-                    55
-                ]
-            ],
-            [
-                "[start]",
-                [
-                    561,
-                    568
-                ]
-            ],
-            [
-                "[0.1_game_info]",
-                [
-                    2440,
-                    2455
-                ]
-            ],
-            [
-                "[0.2_drive_info]",
-                [
-                    7123,
-                    7139
-                ]
-            ],
-            [
-                "[\u043c:1]_\u043c\u043e\u044f_\u043a\u043e\u043c\u043d\u0430\u0442\u0430",
-                [
-                    8358,
-                    8375
-                ]
-            ],
-            [
-                "[chest]",
-                [
-                    14052,
-                    14059
-                ]
-            ],
-            [
-                "[death]",
-                [
-                    20898,
-                    20905
-                ]
-            ],
-            [
-                "[diary]",
-                [
-                    21092,
-                    21099
-                ]
-            ],
-            [
-                "[help]",
-                [
-                    23399,
-                    23405
-                ]
-            ],
-            [
-                "[1.0_game_start]",
-                [
-                    25340,
-                    25356
-                ]
-            ],
-            [
-                "[1.2_story_start]",
-                [
-                    28371,
-                    28388
-                ]
-            ],
-            [
-                "[1.3_story_next]",
-                [
-                    34410,
-                    34426
-                ]
-            ],
-            [
-                "[1.1_game_start]",
-                [
-                    38697,
-                    38713
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0437\u0430\u043c\u0435\u0442\u043a\u0430 \u0438\u0437\u043c\u0435\u043d\u0438\u0442\u044c.qsps": [
             [
                 "edit.note",
@@ -138,15 +45,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0442\u0435\u043a\u0441\u0442 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043b\u043e\u043a\u0430\u0446\u0438\u0438.qsps": [
-            [
-                "int.dyn.back",
-                [
-                    272,
-                    284
-                ]
-            ]
-        ],
         "[examples]\\example_project\\main\\\u043c\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u044c\\01_\u043c\u043e\u044f \u043a\u043e\u043c\u043d\u0430\u0442\u0430.qsps": [
             [
                 "[\u043c:1]_\u043c\u043e\u044f_\u043a\u043e\u043c\u043d\u0430\u0442\u0430",
@@ -180,24 +78,6 @@
                 [
                     185,
                     203
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f.qsps": [
-            [
-                "int.lighting",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": [
-            [
-                "int.loc.act",
-                [
-                    2,
-                    13
                 ]
             ]
         ],
@@ -279,15 +159,6 @@
                 [
                     218,
                     232
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": [
-            [
-                "int.act.goto",
-                [
-                    272,
-                    284
                 ]
             ]
         ],
@@ -483,24 +354,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\textincode.qsps": [
-            [
-                "int.DIN",
-                [
-                    248,
-                    255
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0431\u0435\u0437\u0443\u0441\u043b\u043e\u0432\u043d\u044b\u0435 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u044b \u0432 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0442\u0435\u043a\u0441\u0442\u0430\u0445.qsps": [
-            [
-                "int.dyn.goto",
-                [
-                    218,
-                    230
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u043c\u0430\u043b\u0435\u043d\u044c\u043a\u0430\u044f.qsps": [
             [
                 "int.diary.small",
@@ -593,22 +446,6 @@
                 [
                     2,
                     14
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u043c\u0430\u0433\u0438\u044f\\\u043c\u0430\u0433\u0438.qsps": [
-            [
-                "magic.menergy.spell",
-                [
-                    2,
-                    21
-                ]
-            ],
-            [
-                "magic.add.spell",
-                [
-                    2844,
-                    2859
                 ]
             ]
         ],
@@ -720,15 +557,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": [
-            [
-                "int.link",
-                [
-                    159,
-                    167
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\test_location.qsps": [
             [
                 "!--tester--!",
@@ -801,33 +629,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u044f \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": [
-            [
-                "int.obj.property",
-                [
-                    2,
-                    18
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\HTML-\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0438.qsps": [
-            [
-                "int.html.Hn",
-                [
-                    109,
-                    120
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.var.qsps": [
-            [
-                "int.var",
-                [
-                    247,
-                    254
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": [
             [
                 "hero.vosst.time",
@@ -897,15 +698,6 @@
                 [
                     518,
                     535
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432 \u043d\u0430 \u043b\u043e\u043a\u0430\u0446\u0438\u044f\u0445.qsps": [
-            [
-                "int.loc.obj",
-                [
-                    238,
-                    249
                 ]
             ]
         ],
@@ -1238,15 +1030,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442 \u0441\u0447\u0451\u0442\u0447\u0438\u043a \u043f\u043e \u0430\u0439-\u0434\u0438.qsps": [
-            [
-                "int.counter",
-                [
-                    2,
-                    13
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0434\u043e\u043f\u043e\u043b\u043d\u0438\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\base.word.screen.qsps": [
             [
                 "base.word.screen",
@@ -1307,15 +1090,6 @@
                 [
                     44,
                     56
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0439.qsps": [
-            [
-                "int.din.text",
-                [
-                    180,
-                    192
                 ]
             ]
         ],
@@ -1514,15 +1288,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.sex.qsps": [
-            [
-                "int.word.SEX",
-                [
-                    2,
-                    14
-                ]
-            ]
-        ],
         "[examples]\\example_project\\bases\\\u0434\u0438\u0430\u043b\u043e\u0433\u0438\\b.d.s (\u043d\u043e\u0432\u044b\u0435 \u0431\u0430\u0437\u044b).qsps": [
             [
                 "b.d.s",
@@ -1568,22 +1333,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044f.qsps": [
-            [
-                "int.inventory",
-                [
-                    2,
-                    15
-                ]
-            ],
-            [
-                "int.inventory.obj",
-                [
-                    1843,
-                    1860
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\objects.sys\\retape object.qsps": [
             [
                 "rtp.obj",
@@ -1599,15 +1348,6 @@
                 [
                     255,
                     268
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449.qsps": [
-            [
-                "int.chest.name",
-                [
-                    154,
-                    168
                 ]
             ]
         ],
@@ -1645,24 +1385,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0430.qsps": [
-            [
-                "int.hero.property",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u043e\u0432 \u043b\u043e\u043a\u0430\u0446\u0438\u0439.qsps": [
-            [
-                "int.loc.head",
-                [
-                    118,
-                    130
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\interface.sys\\print additional description.qsps": [
             [
                 "print.word",
@@ -1688,15 +1410,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\main\\[start].qsps": [
-            [
-                "[start]",
-                [
-                    350,
-                    357
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\sys\\onnewloc.qsps": [
             [
                 "onNewLoc",
@@ -1712,57 +1425,6 @@
                 [
                     48,
                     55
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\intro\\\u0432\u0432\u043e\u0434\u043d\u044b\u0435 \u0434\u0430\u043d\u043d\u044b\u0435.qsps": [
-            [
-                "!intro!",
-                [
-                    85,
-                    92
-                ]
-            ],
-            [
-                "hero.intro",
-                [
-                    189,
-                    199
-                ]
-            ],
-            [
-                "hero.sex",
-                [
-                    687,
-                    695
-                ]
-            ],
-            [
-                "hero.property",
-                [
-                    1516,
-                    1529
-                ]
-            ],
-            [
-                "hero.bodypart",
-                [
-                    6511,
-                    6524
-                ]
-            ],
-            [
-                "hero.uron",
-                [
-                    6900,
-                    6909
-                ]
-            ],
-            [
-                "hero.count",
-                [
-                    8674,
-                    8684
                 ]
             ]
         ],
@@ -1908,56 +1570,458 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\remastering.obj.qsps": [
+        "[examples]\\example_project\\drive\\\u043c\u0430\u0433\u0438\u044f\\\u043c\u0430\u0433\u0438.qsps": [
             [
-                "remastering.obj",
+                "magic.menergy.spell",
                 [
-                    212,
-                    227
+                    2,
+                    21
+                ]
+            ],
+            [
+                "magic.add.spell",
+                [
+                    2844,
+                    2859
                 ]
             ]
         ],
-        "[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0444\u0443\u043d\u043a\u0446\u0438\u0438 \u0432\u0440\u0435\u043c\u0435\u043d\u0438.qsps": [
+        "[examples]\\example_game\\bases.txt": [
             [
-                "int.time.calendar",
+                "hero.vosst.time",
                 [
-                    925,
-                    942
+                    247,
+                    262
                 ]
             ],
             [
-                "get.time.now",
+                "gen.ahref.inMount",
                 [
-                    3150,
-                    3162
+                    2394,
+                    2411
                 ]
             ],
             [
-                "sim.time",
+                "get.obj.DU",
                 [
-                    3577,
-                    3585
+                    2912,
+                    2922
                 ]
             ],
             [
-                "summ.time",
+                "get.obj.pos",
                 [
-                    6254,
-                    6263
+                    3413,
+                    3424
                 ]
             ],
             [
-                "get.leapYear",
+                "remastering.obj",
                 [
-                    9512,
-                    9524
+                    4707,
+                    4722
                 ]
             ],
             [
-                "conv.time",
+                "search.similar.obj",
                 [
-                    10157,
-                    10166
+                    9159,
+                    9177
+                ]
+            ],
+            [
+                "time.output.addition",
+                [
+                    9811,
+                    9831
+                ]
+            ],
+            [
+                "b.d.s",
+                [
+                    10264,
+                    10269
+                ]
+            ],
+            [
+                "b.d.t",
+                [
+                    12606,
+                    12611
+                ]
+            ],
+            [
+                "b.w.s",
+                [
+                    23033,
+                    23038
+                ]
+            ],
+            [
+                "menu.rainbowsword.color.change",
+                [
+                    31252,
+                    31282
+                ]
+            ],
+            [
+                "menu.backer.back",
+                [
+                    32547,
+                    32563
+                ]
+            ],
+            [
+                "menu.backer.memory",
+                [
+                    32716,
+                    32734
+                ]
+            ],
+            [
+                "base.word.screen",
+                [
+                    32796,
+                    32812
+                ]
+            ],
+            [
+                "base.word.uron",
+                [
+                    44968,
+                    44982
+                ]
+            ],
+            [
+                "base.calibr",
+                [
+                    47041,
+                    47052
+                ]
+            ],
+            [
+                "base.new.obj.get",
+                [
+                    47417,
+                    47433
+                ]
+            ],
+            [
+                "base.smithing",
+                [
+                    47827,
+                    47840
+                ]
+            ],
+            [
+                "base.new.obj",
+                [
+                    50299,
+                    50311
+                ]
+            ],
+            [
+                "base.new.property",
+                [
+                    188009,
+                    188026
+                ]
+            ],
+            [
+                "base.img",
+                [
+                    192786,
+                    192794
+                ]
+            ],
+            [
+                "game.help",
+                [
+                    197600,
+                    197609
+                ]
+            ],
+            [
+                "base.magic.string",
+                [
+                    201710,
+                    201727
+                ]
+            ],
+            [
+                "magic.warspell",
+                [
+                    202080,
+                    202094
+                ]
+            ],
+            [
+                "base.new.bodypart",
+                [
+                    202853,
+                    202870
+                ]
+            ]
+        ],
+        "[examples]\\example_game\\game.sam.txt": [
+            [
+                "[start]",
+                [
+                    350,
+                    357
+                ]
+            ],
+            [
+                "[0.1_game_info]",
+                [
+                    2200,
+                    2215
+                ]
+            ],
+            [
+                "[0.2_drive_info]",
+                [
+                    6883,
+                    6899
+                ]
+            ],
+            [
+                "[\u043c:1]_\u043c\u043e\u044f_\u043a\u043e\u043c\u043d\u0430\u0442\u0430",
+                [
+                    8118,
+                    8135
+                ]
+            ],
+            [
+                "[chest]",
+                [
+                    13812,
+                    13819
+                ]
+            ],
+            [
+                "[death]",
+                [
+                    20658,
+                    20665
+                ]
+            ],
+            [
+                "[diary]",
+                [
+                    20852,
+                    20859
+                ]
+            ],
+            [
+                "[help]",
+                [
+                    23159,
+                    23165
+                ]
+            ],
+            [
+                "[1.0_game_start]",
+                [
+                    25100,
+                    25116
+                ]
+            ],
+            [
+                "[1.2_story_start]",
+                [
+                    28131,
+                    28148
+                ]
+            ],
+            [
+                "[1.3_story_next]",
+                [
+                    34170,
+                    34186
+                ]
+            ],
+            [
+                "[1.1_game_start]",
+                [
+                    38457,
+                    38473
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\textincode.qsps": [
+            [
+                "int.DIN",
+                [
+                    248,
+                    255
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0431\u0435\u0437\u0443\u0441\u043b\u043e\u0432\u043d\u044b\u0435 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u044b \u0432 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u0442\u0435\u043a\u0441\u0442\u0430\u0445.qsps": [
+            [
+                "int.dyn.goto",
+                [
+                    218,
+                    230
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0445 \u043a\u043e\u043d\u0441\u0442\u0440\u0443\u043a\u0446\u0438\u0439.qsps": [
+            [
+                "int.din.text",
+                [
+                    180,
+                    192
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u043e\u0432 \u043b\u043e\u043a\u0430\u0446\u0438\u0439.qsps": [
+            [
+                "int.loc.head",
+                [
+                    118,
+                    130
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0441\u043e\u0434\u0435\u0440\u0436\u0438\u043c\u043e\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449.qsps": [
+            [
+                "int.chest.name",
+                [
+                    154,
+                    168
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\\u0442\u0435\u043a\u0441\u0442 \u0432 \u0437\u0430\u0432\u0438\u0441\u0438\u043c\u043e\u0441\u0442\u0438 \u043e\u0442 \u043b\u043e\u043a\u0430\u0446\u0438\u0438.qsps": [
+            [
+                "int.dyn.back",
+                [
+                    272,
+                    284
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u044f \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": [
+            [
+                "int.obj.property",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043f\u0435\u0440\u0441\u043e\u043d\u0430\u0436\u0430.qsps": [
+            [
+                "int.hero.property",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442 \u0441\u0447\u0451\u0442\u0447\u0438\u043a \u043f\u043e \u0430\u0439-\u0434\u0438.qsps": [
+            [
+                "int.counter",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": [
+            [
+                "int.loc.act",
+                [
+                    2,
+                    13
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043e\u0441\u0432\u0435\u0449\u0435\u043d\u0438\u044f.qsps": [
+            [
+                "int.lighting",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0435\u0440\u0435\u0445\u043e\u0434\u043e\u0432.qsps": [
+            [
+                "int.act.goto",
+                [
+                    272,
+                    284
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432 \u043d\u0430 \u043b\u043e\u043a\u0430\u0446\u0438\u044f\u0445.qsps": [
+            [
+                "int.loc.obj",
+                [
+                    238,
+                    249
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": [
+            [
+                "int.link",
+                [
+                    159,
+                    167
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044f.qsps": [
+            [
+                "int.inventory",
+                [
+                    2,
+                    15
+                ]
+            ],
+            [
+                "int.inventory.obj",
+                [
+                    1843,
+                    1860
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\HTML-\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0438.qsps": [
+            [
+                "int.html.Hn",
+                [
+                    109,
+                    120
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.sex.qsps": [
+            [
+                "int.word.SEX",
+                [
+                    2,
+                    14
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.var.qsps": [
+            [
+                "int.var",
+                [
+                    247,
+                    254
+                ]
+            ],
+            [
+                "int.var",
+                [
+                    2609,
+                    2616
                 ]
             ]
         ]
@@ -2023,7 +2087,7 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u043c\u0430\u0433\u0438\u044f\\\u043c\u0430\u0433\u0438.qsps": "3ccfaca5d169c4c01c279d462a700ec5",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_01.qsps": "2979b62b65c4a95d09c5a9ef3f37e902",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": "b801cc205d7abc35e98e8cba142242f7",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\remastering.obj.qsps": "7d8ead1d7c5f7adbb5476261af26a383",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\remastering.obj.qsps": "ac992beec6e23762179fa51f3fe8c8d4",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0440\u0430\u0437\u043e\u0431\u0440\u0430\u0442\u044c.qsps": "ead5b62461ec4fe6388ddcefa652ae71",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\goto.sys\\find key for open.qsps": "1f621ac8e7df200d145193d5f9eecf29",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0437\u0434\u043e\u0440\u043e\u0432\u044c\u0435.qsps": "aa6a245952552729b260437d4d802935",
@@ -2040,16 +2104,16 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0448\u0435\u0441\u0442\u043d\u0430\u0434\u0446\u0430\u0442\u0435\u0440\u0438\u0447\u043d\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\hex-dec.qsps": "1e629a01e12aa54193a82802a4b38b48",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043d\u0430\u0434\u0435\u0442\u044c \u043d\u0430 \u0442\u0435\u043b\u043e.qsps": "f4fe4bd7f863ff721222865c22b40174",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[diary].qsps": "756b77b2d91a49b54948cd5e90ddea2d",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\intro\\\u0432\u0432\u043e\u0434\u043d\u044b\u0435 \u0434\u0430\u043d\u043d\u044b\u0435.qsps": "de2513a1d687a6b403ece22128112e28",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\intro\\\u0432\u0432\u043e\u0434\u043d\u044b\u0435 \u0434\u0430\u043d\u043d\u044b\u0435.qsps": "5d013cb49fdcf4ad4ee5a57be9d5e34f",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\setScreen.qsps": "586ba43c74664c2a7d88ed38ab811993",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 \u0432\u0435\u0441\u0430.qsps": "3cbb3976c01e583aa7124f1500ea94b2",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0432\u0440\u0435\u043c\u044f \u0441\u0443\u0442\u043e\u043a.qsps": "3a96266489be2af280e08d4b14ed54d7",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0444\u0443\u043d\u043a\u0446\u0438\u0438 \u0432\u0440\u0435\u043c\u0435\u043d\u0438.qsps": "ef5aaa828347e270f22c48f3497723e3",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u043a\u0430\u043b\u0435\u043d\u0434\u0430\u0440\u044c \u0438 \u0444\u0443\u043d\u043a\u0446\u0438\u0438 \u0432\u0440\u0435\u043c\u0435\u043d\u0438.qsps": "f0a7c5618343880cff9277057d31509d",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0432\u0440\u0435\u043c\u044f \u0433\u043e\u0434\u0430.qsps": "571f690684d2498ebf6f5d8896fc12fc",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430 \u0441\u0441\u044b\u043b\u043e\u043a.qsps": "d631dcaf9c36162daea0d8ddd1b224b3",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u043e\u043f\u0438\u0441\u0430\u043d\u0438\u044f \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u0430.qsps": "4eeb04a7d2daf30c99221f4a640ad591",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\HTML-\u0437\u0430\u0433\u043e\u043b\u043e\u0432\u043a\u0438.qsps": "de66e2363730b0ff4e6e5effed2ddfe4",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.var.qsps": "7241e1fe5a15e7ed5d593f04d1bec9e7",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440\u044b\\\u0434\u0438\u043d\u0430\u043c\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0442\u0435\u043a\u0441\u0442\u044b\\int.var.qsps": "9a0fe4c90e67a6c406a2c59c19370889",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u043e\u0437\u0434\u0435\u0439\u0441\u0442\u0432\u0438\u044f\\hero.vosst.time.qsps": "41a5bc77810106bd407a144f4891c913",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0437\u0430\u043c\u0435\u0442\u043a\u0438 \u0432 \u0434\u043d\u0435\u0432\u043d\u0438\u043a\u0435.qsps": "6c01505016c3a64d04b5cf327cae4a39",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\\u043e\u043f\u0435\u0440\u0430\u0446\u0438\u0438 \u0441 \u0446\u0435\u043b\u044b\u043c\u0438 \u0447\u0438\u0441\u043b\u0430\u043c\u0438\\minus.qsps": "11c6185dc95ffadbbc60226a6f73a922",
@@ -2105,7 +2169,7 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435\\game.help (\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u0430\u044f \u043f\u043e\u043c\u043e\u0449\u044c).qsps": "dff658a233afd543127988351260ebc3",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\sys\\onobjsel.qsps": "e4e87926e7a218a65b4930933855df0e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0447\u0430\u0441\u0442\u0438 \u0442\u0435\u043b\u0430\\base.new.bodypart.qsps": "a007908981617916569abb7893e5a299",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": "53a5b3e7e4df35dda801c39f31b2b7bd",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": "bd15df323352e08761b9650270c1df9a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\\u0432\u0441\u043f\u043e\u043c\u043e\u0433\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u0444\u0443\u043d\u043a\u0446\u0438\u0438\\get.obj.DU.qsps": "85639d9e21e856e043487cbbf8c81aeb",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u043f\u043e\u0434\u043d\u044f\u0442\u044c \u043f\u0440\u0435\u0434\u043c\u0435\u0442.qsps": "9cbbe58952132a5807e8f1015506de60",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043f\u0440\u043e\u0431\u0440\u043e\u0441_01.qsps": "00434e270e374d08e14813e576925d2a",

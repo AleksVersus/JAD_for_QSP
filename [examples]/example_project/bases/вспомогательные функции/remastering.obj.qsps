@@ -7,47 +7,47 @@ QSP-Game
 local $res_	= $args[1]
 
 local $base_tag_, $base_tag_type_
-	$base_tag_[0]='' & $base_tag_type_[0]='cont'					&	!@	идентификатор вида
-	$base_tag_[1]='name' & $base_tag_type_[1]='cont'				&	!@	название объекта
-	$base_tag_[2]='np' & $base_tag_type_[2]='cont'				&	!@	набор признаков
-		$base_tag_[3]='type' & $base_tag_type_[3]='cont'				&	!@	не используется
-		$base_tag_[4]='st' & $base_tag_type_[4]='cont'				&	!@	не используется
-	$base_tag_[5]='color' & $base_tag_type_[5]='num'				&	!@	цвет имени объекта
-	$base_tag_[6]='stoim' & $base_tag_type_[6]='num'				&	!@	стоимость
-	$base_tag_[7]='weight' & $base_tag_type_[7]='num'				&	!@	вес
-		$base_tag_[8]='bgcolor' & $base_tag_type_[8]='num'			&	!@	не используется
-	$base_tag_[9]='force' & $base_tag_type_[9]='num'				&	!@	расход выносливости. Для оружия
-	$base_tag_[10]='pos' & $base_tag_type_[10]='cont'				&	!@	набор позиций, куда помещается предмет	
-	$base_tag_[11]='uron' & $base_tag_type_[11]='cont'			&	!@	набор уронов для оружия и боевых заклинаний
-		$base_tag_[12]='efect' & $base_tag_type_[12]='cont'			&	!@	не используется	
-	$base_tag_[13]='uron_absorb' & $base_tag_type_[13]='cont'		&	!@	поглощение защиты противника
-	$base_tag_[14]='block_absorb' & $base_tag_type_[14]='cont'	&	!@	поглощение урона от атаки
-	$base_tag_[15]='block_repulse' & $base_tag_type_[15]='cont'	&	!@	отражение урона от атаки (т.е. часть урона вычитается из конечного ущерба герою и возвращается врагу)
-	$base_tag_[16]='block' & $base_tag_type_[16]='cont'			&	!@	защита от урона (снижение ущерба от атаки за счёт доспеха)
-	$base_tag_[17]='block_recieve' & $base_tag_type_[17]='cont'	&	!@	рикошет (урон для игрока остаётся тем же, но и врагу наносится ущерб)
-	$base_tag_[18]='charge' & $base_tag_type_[18]='num'			&	!@	заряд предмета по умолчанию
-	$base_tag_[19]='maxchrg' & $base_tag_type_[19]='num'			&	!@	максимальный заряд предмета
-	$base_tag_[20]='boom' & $base_tag_type_[20]='num'				&	!@	расход заряда на выстрел/удар
-	$base_tag_[21]='text' & $base_tag_type_[21]='cont'			&	!@	текст, заменяющий основное описание предмета
-	$base_tag_[22]='end' & $base_tag_type_[22]='cont'				&	!@	текст, добавляющийся к основному описанию предмета
-	$base_tag_[23]='DU' & $base_tag_type_[23]='num'				&	!@	дальность удара для оружия
-	$base_tag_[24]='menu' & $base_tag_type_[24]='cont'			&	!@	перечень дополнительных пунктов меню предмета. Добавляются к основным
-	$base_tag_[25]='runs' & $base_tag_type_[25]='cont'		&	!@	точное время, когда должен сработать скрипт
-	$base_tag_[26]='stos' & $base_tag_type_[26]='cont'		&	!@	точное время, когда должен остановиться скрипт
-	$base_tag_[27]='tims' & $base_tag_type_[27]='cont'		&	!@	промежуток, в течение какого времени должен работать скрипт
-	$base_tag_[28]='frqs' & $base_tag_type_[28]='cont'		&	!@	период срабатывания скрипта
-	$base_tag_[29]='num' & $base_tag_type_[29]='cont'				&	!@	
-	$base_tag_[30]='teaching' & $base_tag_type_[30]='cont'				&	!@	не используется
-	$base_tag_[31]='menergy' & $base_tag_type_[31]='cont'			&	!@	количество магической энергии пространства, арсходуемой на заклинание
-	$base_tag_[32]='mana' & $base_tag_type_[32]='num'				&	!@	количесвто магической энергии расходуемой на заклинание
-	$base_tag_[33]='calibr' & $base_tag_type_[33]='num'			&	!@	калибр патрона или ружья
+	$base_tag_[0]='' & $base_tag_type_[0]='Cont'					&	!@	идентификатор вида
+	$base_tag_[1]='name' & $base_tag_type_[1]='Cont'				&	!@	название объекта
+	$base_tag_[2]='np' & $base_tag_type_[2]='Cont'				&	!@	набор признаков
+		$base_tag_[3]='type' & $base_tag_type_[3]='Cont'				&	!@	не используется
+		$base_tag_[4]='st' & $base_tag_type_[4]='Cont'				&	!@	не используется
+	$base_tag_[5]='color' & $base_tag_type_[5]='Num'				&	!@	цвет имени объекта
+	$base_tag_[6]='stoim' & $base_tag_type_[6]='Num'				&	!@	стоимость
+	$base_tag_[7]='weight' & $base_tag_type_[7]='Num'				&	!@	вес
+		$base_tag_[8]='bgcolor' & $base_tag_type_[8]='Num'			&	!@	не используется
+	$base_tag_[9]='force' & $base_tag_type_[9]='Num'				&	!@	расход выносливости. Для оружия
+	$base_tag_[10]='pos' & $base_tag_type_[10]='Cont'				&	!@	набор позиций, куда помещается предмет	
+	$base_tag_[11]='uron' & $base_tag_type_[11]='Cont'			&	!@	набор уронов для оружия и боевых заклинаний
+		$base_tag_[12]='efect' & $base_tag_type_[12]='Cont'			&	!@	не используется	
+	$base_tag_[13]='uron_absorb' & $base_tag_type_[13]='Cont'		&	!@	поглощение защиты противника
+	$base_tag_[14]='block_absorb' & $base_tag_type_[14]='Cont'	&	!@	поглощение урона от атаки
+	$base_tag_[15]='block_repulse' & $base_tag_type_[15]='Cont'	&	!@	отражение урона от атаки (т.е. часть урона вычитается из конечного ущерба герою и возвращается врагу)
+	$base_tag_[16]='block' & $base_tag_type_[16]='Cont'			&	!@	защита от урона (снижение ущерба от атаки за счёт доспеха)
+	$base_tag_[17]='block_recieve' & $base_tag_type_[17]='Cont'	&	!@	рикошет (урон для игрока остаётся тем же, но и врагу наносится ущерб)
+	$base_tag_[18]='charge' & $base_tag_type_[18]='Num'			&	!@	заряд предмета по умолчанию
+	$base_tag_[19]='maxchrg' & $base_tag_type_[19]='Num'			&	!@	максимальный заряд предмета
+	$base_tag_[20]='boom' & $base_tag_type_[20]='Num'				&	!@	расход заряда на выстрел/удар
+	$base_tag_[21]='text' & $base_tag_type_[21]='Cont'			&	!@	текст, заменяющий основное описание предмета
+	$base_tag_[22]='end' & $base_tag_type_[22]='Cont'				&	!@	текст, добавляющийся к основному описанию предмета
+	$base_tag_[23]='DU' & $base_tag_type_[23]='Num'				&	!@	дальность удара для оружия
+	$base_tag_[24]='menu' & $base_tag_type_[24]='Cont'			&	!@	перечень дополнительных пунктов меню предмета. Добавляются к основным
+	$base_tag_[25]='runs' & $base_tag_type_[25]='Cont'		&	!@	точное время, когда должен сработать скрипт
+	$base_tag_[26]='stos' & $base_tag_type_[26]='Cont'		&	!@	точное время, когда должен остановиться скрипт
+	$base_tag_[27]='tims' & $base_tag_type_[27]='Cont'		&	!@	промежуток, в течение какого времени должен работать скрипт
+	$base_tag_[28]='frqs' & $base_tag_type_[28]='Cont'		&	!@	период срабатывания скрипта
+	$base_tag_[29]='num' & $base_tag_type_[29]='Cont'				&	!@	
+	$base_tag_[30]='teaching' & $base_tag_type_[30]='Cont'				&	!@	не используется
+	$base_tag_[31]='menergy' & $base_tag_type_[31]='Cont'			&	!@	количество магической энергии пространства, арсходуемой на заклинание
+	$base_tag_[32]='mana' & $base_tag_type_[32]='Num'				&	!@	количесвто магической энергии расходуемой на заклинание
+	$base_tag_[33]='calibr' & $base_tag_type_[33]='Num'			&	!@	калибр патрона или ружья
 	local $started_, $finished_, $in_, $out_
 	!@ перебираем каждый тег
 	loop local i=0 while i<arrsize('$base_tag_') step i+=1:
 		$started_='[<<$base_tag_[i]>>:'
-		$finished_= $iif($base_tag_type_[i]='cont', ':<<$base_tag_[i]>>]', ']')
-		$in_ =$func('get.tag.'+$base_tag_type_[i], $res_ ,$base_tag_[i])	&	!@ исходная информация по предмету
-		$out_ = $func('get.tag.'+$base_tag_type_[i], $args[0] ,$base_tag_[i])	&	!@ информация, которую мы хотим получить
+		$finished_= $iif($base_tag_type_[i] = 'Cont', ':<<$base_tag_[i]>>]', ']')
+		$in_ =$func('em.tag.get'+$base_tag_type_[i], $res_ ,$base_tag_[i])	&	!@ исходная информация по предмету
+		$out_ = $func('em.tag.get'+$base_tag_type_[i], $args[0] ,$base_tag_[i])	&	!@ информация, которую мы хотим получить
 		if $out_ <> '':
 			!@ если конечная информация присутствует, т.е. мы хотим заменить исходный тег
 			!@ проверяем существует ли исходный тег

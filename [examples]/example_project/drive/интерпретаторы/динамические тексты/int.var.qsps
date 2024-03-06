@@ -29,7 +29,7 @@ $log_error[] = 'i:' + $var_index_
 $default_ = $replace($strfind($string_,'(\|([^;|]+(;|[^|])[^;|]*)+\|)'),'|')
 $log_error[] = '0:' + $default_
 !@ получаем значение переменной
-$var_value_ = $DYNEVAL("$result = <<$var_name_>>[<<$var_index_>>]")
+$var_value_ = $arritem($var_name_, $var_index_)
 $log_error[] = 'v:'+$var_value_
 !@ ищем среди строк ту, которой соответствует наше значение:
 $find_str_ = $strfind($string_,'\|([^|]*;;)?\s*(('+"'"+'|")?)\s*'+$var_value_+'\s*\2\s*;;[^|]*\|')
