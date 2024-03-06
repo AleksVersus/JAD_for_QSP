@@ -830,15 +830,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043f\u0440\u043e\u0431\u0440\u043e\u0441_01.qsps": [
-            [
-                "[1.1_game_start]",
-                [
-                    126,
-                    142
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\goto.sys\\open door by key.qsps": [
             [
                 "use.key.inDoor",
@@ -1714,24 +1705,6 @@
                 [
                     231,
                     244
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get daughter by parent_ID.qsps": [
-            [
-                "get.daughter.obj",
-                [
-                    489,
-                    505
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\drive\\objects.sys\\get similar objects.qsps": [
-            [
-                "get.similar.obj",
-                [
-                    220,
-                    235
                 ]
             ]
         ],
@@ -2926,15 +2899,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_project\\main\\\u043c\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u044c\\01_\u043c\u043e\u044f \u043a\u043e\u043c\u043d\u0430\u0442\u0430.qsps": [
-            [
-                "[\u043c:1]_\u043c\u043e\u044f_\u043a\u043e\u043c\u043d\u0430\u0442\u0430",
-                [
-                    326,
-                    343
-                ]
-            ]
-        ],
         "[examples]\\example_project\\main\\\u043e\u0431\u044f\u0437\u0430\u0442\u0435\u043b\u044c\u043d\u044b\u0435 \u043b\u043e\u043a\u0430\u0446\u0438\u0438\\[diary].qsps": [
             [
                 "[diary]",
@@ -2950,24 +2914,6 @@
                 [
                     499,
                     505
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_01.qsps": [
-            [
-                "[1.2_story_start]",
-                [
-                    2,
-                    19
-                ]
-            ]
-        ],
-        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_02.qsps": [
-            [
-                "[1.3_story_next]",
-                [
-                    2,
-                    18
                 ]
             ]
         ],
@@ -3038,6 +2984,60 @@
                 [
                     94,
                     104
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\get daughter by parent_ID.qsps": [
+            [
+                "get.daughter.obj",
+                [
+                    489,
+                    505
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\drive\\objects.sys\\get similar objects.qsps": [
+            [
+                "get.similar.obj",
+                [
+                    220,
+                    235
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_01.qsps": [
+            [
+                "[1.2_story_start]",
+                [
+                    2,
+                    19
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043d\u0430\u0447\u0430\u043b\u043e \u0438\u0441\u0442\u043e\u0440\u0438\u0438_02.qsps": [
+            [
+                "[1.3_story_next]",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\main\\\u0441\u044e\u0436\u0435\u0442\\\u043f\u0440\u043e\u0431\u0440\u043e\u0441_01.qsps": [
+            [
+                "[1.1_game_start]",
+                [
+                    126,
+                    142
+                ]
+            ]
+        ],
+        "[examples]\\example_project\\main\\\u043c\u0435\u0441\u0442\u043d\u043e\u0441\u0442\u044c\\01_\u043c\u043e\u044f \u043a\u043e\u043c\u043d\u0430\u0442\u0430.qsps": [
+            [
+                "[\u043c:1]_\u043c\u043e\u044f_\u043a\u043e\u043c\u043d\u0430\u0442\u0430",
+                [
+                    326,
+                    343
                 ]
             ]
         ]

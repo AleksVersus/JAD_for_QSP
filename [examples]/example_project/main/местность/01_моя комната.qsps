@@ -11,7 +11,7 @@ if $args[1]='':
 		@base.new.obj('[:яблоко:]', '', @base.new.obj('[:bag:]','',$curloc), 2)
 		@add.new.obj('<link> [name:выдвижным ящичком:name] <goto:[loc:[chest]:loc] [did:[с:1]_выдвижной_ящичек:did] :goto>','','моя комната\ящик')
 		@add.new.obj('<link> [name:шкаф:name] <goto:[loc:[chest]:loc] [did:[с:2]_стандартный_шкаф_для_вещей:did] :goto>','','моя комната\шкаф')
-		$GAME_VALUE['exit.my_room'] = @add.new.obj('<act> [name:<font color=#888888>Выйти из комнаты</font>:name]','[м:1]_моя_комната','ACTS',0,0,"pl @int.din.text('Ты ещё не гото(в//ва) выйти из комнаты.')")
+		$GAME_VALUE['exit.my_room'] = @add.new.obj('<act> [name:<font color=#888888>Выйти из комнаты</font>:name]','[м:1]_моя_комната','ACTS',0,0,"pl @int.din.text('Ты ещё не гото(в//ва) выйти из комнаты. Возможно, это демо движка, и выхода из комнаты нет.')")
 		help[$curloc]=-1
 	end
 	$help['money'] = @get.daughter.obj('INVENTORY','<money>')

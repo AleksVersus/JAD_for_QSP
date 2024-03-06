@@ -16,7 +16,6 @@ if $col_ = '': $col_='position'
 local log_start_, log_finish_
 log_start_=msecscount
 $result='false'
-pos_=-1
 loop local pos_, run_, i = -1, 1, -1 while run_:
 	pos_ = arrpos('$<<$col_>>_array',$parent_id_, pos_+1)
 	if pos_<>-1 and i<>pos_:
