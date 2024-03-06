@@ -1,38 +1,32 @@
-# int.inventory
-! Интерпретатор инвентаря.
+QSP-Game Интерпретатор инвентаря.
 ! Выводит список объектов, находящихся в позиции $GAME_VALUE['inventory.floor']
 ! используется функция get.daughter.obj
-if $GAME_VALUE['inventory.floor'] = '':
-	$GAME_VALUE['inventory.floor']='INVENTORY'
-else
-	$GAME_VALUE['inventory.floor'] = $GAME_VALUE['inventory.floor']
-end
+# int.inventory
+$GAME_VALUE['inventory.floor'] = $iif($GAME_VALUE['inventory.floor'] = '', 'INVENTORY', $GAME_VALUE['inventory.floor'])
 killobj
-killvar '$infop'
+local back_number_, pos_, $name_
 if $GAME_INTERFACE['hero.stat']='inventory':
-	args['back.number']=2
-	$args['interface']+=$replace($replace($func('get.scale.hero'),'<center>'),'</center>')
-	addobj $args['interface']
-else
-	args['back.number']=1
+	back_number_ = 2
+	addobj $replace($replace(@get.scale.hero(),'<center>'),'</center>')
+else:
+	back_number_ = 1
 end
-args['pos']=arrpos('$id_array',$GAME_VALUE['inventory.floor'])	&	!	вычисляем позицию объекта, дочерние объекты которого мы воспроизводим.
-$args['name']=@em.tag.getCont($object_array[args['pos']],'name') 
-if $position_array[args['pos']]!"":
-	! Если объект, который мы выводим, принадлежит другому объекту, первый предмет в инвентаре должен возвращать нас на предыдущий уровень.
-	addobj '<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td align=left><img src="'+@base.img('back')+'"></td><td align=left><font color=#ff0000><b>&nbsp;&nbsp;&nbsp;'+$args['name']+'</b><font><oid:back:oid><back:'+$position_array[args['pos']]+':back></td></tr></table>','',args['back.number']
+pos_ = arrpos('$id_array', $GAME_VALUE['inventory.floor'])	&	!@	вычисляем позицию объекта, дочерние объекты которого мы воспроизводим.
+$name_ = @em.tag.getCont($object_array[pos_],'name') 
+if $position_array[pos_] <> "":
+	!@ Если объект, который мы выводим, принадлежит другому объекту, первый предмет в инвентаре должен возвращать нас на предыдущий уровень.
+	addobj '<table width=100% cellpadding=0 cellspacing=0 border=0><tr><td align=left><img src="'+@base.img('back')+'"></td><td align=left><font color=#ff0000><b>&nbsp;&nbsp;&nbsp;<<$name_>></b><font><oid:back:oid><back:'+$position_array[pos_]+':back></td></tr></table>','',back_number_
 end
-killvar '$temp_id'	&	! защита от дурака
-if @get.daughter.obj($GAME_VALUE['inventory.floor'])='true':
-	args['i']=0
-	:for
-	$args['obj']=$object_array[arrpos('$id_array',$temp_id[args['i']])]
-	if instr($args['obj'],'[hide]')=0 and instr($args['obj'],'<property>')=0: gs 'int.inventory.obj',$temp_id[args['i']]
-	! если вы хотите, чтобы свойства выводились вместе с основными частями тела, удалите из четырнадцатой строки - and instr($args['obj'],'<property>')=0
-	args['i']+=1
-	if args['i']<arrsize('$temp_id'): jump 'for'
+local $temp_id_, $obj_	&	!@ защита от дурака
+if @get.daughter.obj($GAME_VALUE['inventory.floor'],'', '$temp_id_')='true':
+	loop local i = 0 while i<arrsize('$temp_id_') step i += 1:
+		$obj_ = $object_array[arrpos('$id_array',$temp_id_[i])]
+		if instr($obj_, '[hide]')=0 and instr($obj_, '<property>')=0:
+			gs 'int.inventory.obj',$temp_id_[i]
+		end
+		!@ если вы хотите, чтобы свойства выводились вместе с основными частями тела, удалите из четырнадцатой строки - and instr($obj_,'<property>')=0
+	end
 end
-killvar '$temp_id'
 --- int.inventory ---------------------------------
 
 # int.inventory.obj

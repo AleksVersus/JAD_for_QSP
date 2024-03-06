@@ -21,6 +21,8 @@ $obj_body_ = @get.obj.id($obj_id_)	&	!@	получаем тело предмет
 					$result = $id_array[pos_]
 					jump 'break_1'
 				end
+			else:
+				jump 'break_1'
 			end
 			:continue_1
 		end
@@ -40,6 +42,8 @@ $obj_body_ = @get.obj.id($obj_id_)	&	!@	получаем тело предмет
 					$result = $id_array[pos_]
 					jump 'break_2'
 				end
+			else:
+				jump 'break_2'
 			end
 		end
 		:break_2

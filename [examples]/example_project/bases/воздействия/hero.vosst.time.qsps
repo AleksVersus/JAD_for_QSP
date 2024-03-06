@@ -25,7 +25,7 @@ pik_['count']	= gt_secs_['last']/frequenсy_
 rest_	= gt_secs_['last'] mod frequenсy_
 
 !@ изменяем здоровье
-$pik_['time'] = @summ.time($time['last.all'], "[secunde:<<gt_secs_['now']-rest_)>>]")
+$pik_['time'] = @summ.time($time['last.all'], "[secunde:<<gt_secs_['now']-rest_>>]")
 hours_['dig'] = @em.tag.getNum($pik_['time'],'hour')
 minutes_['dig'] = @em.tag.getNum($pik_['time'],'minute')
 $hours_['on_clock'] = @time.output.addition(hours_['dig'])

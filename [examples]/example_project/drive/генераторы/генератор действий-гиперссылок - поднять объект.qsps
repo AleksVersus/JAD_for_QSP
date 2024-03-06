@@ -22,7 +22,7 @@ local $temp_, temp_, $take_verb_, $price_, $spirit_, $action_name_
 	$obj_name_ = @get.word.padez($obj_name_, 'В')
 	weight_ = @em.tag.getNum($obj_body_, 'weight')
 	if kolvo_array[pos_] <> 0 and instr($sup_sets_,'[count]') <> 0:
-		$number_ = ' (<<kolvo_array[pos_]>> штук<<@get.word.end(kolvo_array[pos_]>>а|и|')
+		$number_ = ' (<<kolvo_array[pos_]>> штук' + @get.word.end(kolvo_array[pos_], 'а|и|')
 	end
 	if weight_ <> 0 and instr($sup_sets_,'[weight]') <> 0:
 		$number_ += ' x '+@em.indiv(weight_,100,10)+')'

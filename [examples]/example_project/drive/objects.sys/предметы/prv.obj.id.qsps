@@ -12,6 +12,6 @@ elseif $new_obj_id_ = '':
 	$result = 'dont take'
 else:
 !@ Если значение не пустое, но и не равно $old_obj_id_, значит предмет взят не полностью
-	$result = '[колво:<<kolvo_array[pos_])>>]'
+	$result = '[колво:<<kolvo_array[pos_]>>]'
 end
 --- prv.obj.id ---------------------------------
