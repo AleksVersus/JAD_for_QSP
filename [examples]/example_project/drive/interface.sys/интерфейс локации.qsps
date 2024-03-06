@@ -3,15 +3,14 @@ QSP-Game ! интерпретатор интерфейса локации
 [1]	&	!	тип локации
 # int.loc.interface
 local $loc_id_, $loc_type_ = $args[0], $args[1]
-local $rn_ = @em.RN
-local $color_design_
+local $color_design_, $to_main_screen_, $to_acts_screen_, $to_stat_screen_
 if $SQUARE['SQUARE.loc.type'] = 'место':
 !@ Тип локации определён, как нормальная локация места, значит вызываем структуру для локации места:
 	if $light_array[$loc_id_] = 'темно': $color_design_ = 'темно'
 	$to_main_screen_ = @interface.place($loc_id_)
 	if $GAME_INTERFACE['show.stat']='show': $to_stat_screen_=$SQUARE['SQUARE.stat']
 	if $GAME_INTERFACE['show.acts']='show':
-		$to_acts_screen_+=$rn_+$SQUARE['SQUARE.loc.curacts']+$rn_
+		$to_acts_screen_+=@em.RN+$SQUARE['SQUARE.loc.curacts']+@em.RN
 		$to_acts_screen_+=$SQUARE['SQUARE.loc.acts.inActs']
 		$to_acts_screen_+=$SQUARE['SQUARE.location.obj.inActs']
 	end
@@ -32,7 +31,7 @@ else
 	$to_main_screen_+=$SQUARE['SQUARE.loc.dvar']
 	if $GAME_INTERFACE['show.stat']='show': $to_stat_screen_=$SQUARE['SQUARE.stat']
 	if $GAME_INTERFACE['show.acts']='show':
-		$to_acts_screen_+=$rn_+$SQUARE['SQUARE.loc.curacts']+$rn_
+		$to_acts_screen_+=@em.RN+$SQUARE['SQUARE.loc.curacts']+@em.RN
 		$to_acts_screen_+=$SQUARE['SQUARE.loc.acts.inActs']
 	end
 end
