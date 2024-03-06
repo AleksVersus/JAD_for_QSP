@@ -2,10 +2,11 @@ QSP-Game ! Удаляет предмет из игры по ай-дишнику.
 $[0] - айдишник
 $[1] - 'not parent' - удалятся все объекты, кроме родительского
 # del.obj
+@log.add('del.obj')
 local $obj_id_, $mode_ = $args[0], $args[1]
 local $temp_id_
 gosub 'get.daughter.obj.all', $obj_id_, '', '$temp_id_'
-if $mode_ <> 'not parent': $temp_id[arrsize('$temp_id_')] = $obj_id_
+if $mode_ <> 'not parent': $temp_id_[] = $obj_id_
 loop local i = 0 while i < arrsize('$temp_id_') step i += 1:
 	@del.obj.id($temp_id_[i])
 	@clr.parent.obj($temp_id_[i])

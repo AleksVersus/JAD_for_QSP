@@ -2,25 +2,30 @@ QSP-Game ! Функция получает позицию объекта, кот
 ! $args[0] - ай-ди исходного объекта
 ! $args[1] - ай-ди искомого местоположения. если пустое значение, ищет вообще по всем объектам в игре.
 # get.similar.obj
+@log.add('get.similar.obj')
 local $obj_id_, $place_id_ = $args[0], $args[1]
-local pit_, pos_, $have_daughter_
+local pit_, pos_, $have_daughter_, $id_temp_
 pit_ = arrpos('$id_array',$obj_id_)	&	!@	получаем номер объекта в базе по его ай-ди
-result=-1	&	!@	результат по умолчанию
-pos_=-1		&	!@	позиция исключаемая из поиска
+result = -1	&	!@	результат по умолчанию
+pos_ = -1		&	!@	позиция исключаемая из поиска
 loop while 1:
 	pos_ = arrpos('$object_array',$object_array[pit_], pos_+1)	&	!@	находим позицию объекта идентичного исходному
-	if no pos_<0:
-	!@ Если позиция не -1
+	if no pos_ < 0:
+		!@ ^^^ Если позиция не -1
 		if pos_ = pit_: jump 'continue'
-		if $position_array[pos_] <> $place_id_ and $place_id_ <> '': jump 'continue'	&	!@	если родительский объект искомого объекта не соответствует исходному повторяем поиск
-		if charge_array[pos_] <> charge_array[pit_]: jump 'continue'	&	!@	если у объектов разные заряды, повторяем поиск
-		$have_daughter_ = @get.daughter.obj($id_array[pos_],'','$id_temp')
-		if $have_daughter_ <> 'false': killvar '$id_temp' & jump 'continue'
-		if $respawn_array[pos_] <> $respawn_array[pit_]:  jump 'continue'	&	!@	если у объектов разное время респаунинга, повторяем поиск
-		if $run_array[pos_] <> $run_array[pit_]:  jump 'continue'	&	!@	если у объектов различаются динамические коды
+		!@	если родительский объект искомого объекта не соответствует исходному повторяем поиск:
+		if $position_array[pos_] <> $place_id_ and $place_id_ <> '': jump 'continue'
+		!@	если у объектов разные заряды, повторяем поиск:
+		if charge_array[pos_] <> charge_array[pit_]: jump 'continue'
+		$have_daughter_ = @get.daughter.obj($id_array[pos_],'','$id_temp_')
+		if $have_daughter_ <> 'false': killvar '$id_temp_' & jump 'continue'
+		!@	если у объектов разное время респаунинга, повторяем поиск:
+		if $respawn_array[pos_] <> $respawn_array[pit_]:  jump 'continue'
+		!@	если у объектов различаются динамические коды:
+		if $run_array[pos_] <> $run_array[pit_]:  jump 'continue'
 		result = pos_
 		exit
-	else
+	else:
 		exit
 	end
 	:continue

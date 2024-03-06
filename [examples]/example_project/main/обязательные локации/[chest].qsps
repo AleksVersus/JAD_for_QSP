@@ -59,10 +59,10 @@ if $cvar['manage'+$cvar['chest']]='':
 			$object_array[pos_]=$replace($object_array[pos_],'[name:Шкаф для вещей со множеством секций:name]','[name:Платяной шкаф в твоей комнате:name]')
 		end
 		$lambda_ = {
-			if $args[0]='!used!':
-				local pos_ =arrpos('$id_array',$args[1])
-				help['одет']+=1
-				$run_array[pos_]=''
+			if $args[0] = '!used!':
+				local pos_ =arrpos('$id_array', $args[1])
+				help['одет'] += 1
+				$run_array[pos_] = ''
 			end
 		}
 		if $cvar['loc_id'+$cvar['chest']]='[с:1]_выдвижной_ящичек' or $cvar['loc_id'+$cvar['chest']]='[с:14002]_полка_для_шапок' or $cvar['loc_id'+$cvar['chest']]='[с:15002]_вешалка_для_рубах' or $cvar['loc_id'+$cvar['chest']]='[с:16002]_вешалка_для_штанов' or $cvar['loc_id'+$cvar['chest']]='[с:17002]_полка_для_обуви' or $cvar['loc_id'+$cvar['chest']]='[с:18002]_ящик_для_оружия' or $cvar['loc_id'+$cvar['chest']]='[с:19002]_ящик_для_стрел':
@@ -70,7 +70,7 @@ if $cvar['manage'+$cvar['chest']]='':
 			$object_array[pos_]+='[respawn.stop]'
 		end
 		if $cvar['loc_id'+$cvar['chest']]='сундук;15002_вешалка_для_рубах':
-			@base.new.obj("[:ученика_куртка:]",'','',1,0,$lambda_)
+			@base.new.obj("[:ученика_куртка:]",'','',2,0,$lambda_)
 			$hide[]=$func('base.new.obj','[:кожаная_куртка:] [lock-obj]')
 		end
 		if $cvar['loc_id'+$cvar['chest']]='сундук;16002_вешалка_для_штанов':

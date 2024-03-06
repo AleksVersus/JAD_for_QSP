@@ -100,8 +100,14 @@ if $input_text_word_[0] = 'logs':
 end
 :end_keep
 moment_2_ = MSECSCOUNT
-if	$use_='func': $result = '<<$res_>><br>Вывод таблицы объектов занял мсек: <<moment_2_-moment_1_>>'
-if	$use_='print' and $input_text_word_[0] <> 'run': *pl $res_
+if $use_='func':
+	$result = '<<$res_>><br>Вывод таблицы объектов занял мсек: <<moment_2_-moment_1_>>'
+elseif $input_text_word_[0] = 'errs':
+	clr
+	pl @em.arr.print('$logging','[only result]')+'<br>'
+elseif	$use_='print' and $input_text_word_[0] <> 'run':
+	*pl $res_
+end
 --- inputText ---------------------------------
 
 # inputText.obj

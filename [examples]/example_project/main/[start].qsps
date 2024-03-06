@@ -24,7 +24,7 @@ if GAME_VALUE['no_restart'] = 0:
 	$GAME_INTERFACE['show.acts']="hide"
 	$GAME_INTERFACE['maintxt']="horizontal"
 	$GAME_INTERFACE['show.stat']="show"
-	$GAME_INTERFACE['hero.stat']='hide'
+	$GAME_INTERFACE['hero.stat']='show'
 	$GAME_INTERFACE['obj.image.stat']='hide'
 	GAME_VALUE['no_restart'] = 1
 	@setScreen('black-green')

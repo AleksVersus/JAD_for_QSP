@@ -135,4 +135,5 @@ else
 	lcolor = rgb(0,80,0)
 end
 $setScreen = $screen_sets_
+showstat 1
 --- setScreen ---------------------------------
