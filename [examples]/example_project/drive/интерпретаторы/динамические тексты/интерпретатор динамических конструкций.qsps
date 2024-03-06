@@ -46,7 +46,7 @@ loop while 1:
 		$dyn_txt_ = $replace($dyn_txt_,$new_txt_,@int.DIN($new_txt_))
 	elseif $strfind($dyn_txt_,'\([^([]*?\/\/[^])]*?\)') <> '':
 		$new_txt_ = $strfind($dyn_txt_,'\([^([]*?\/\/[^])]*?\)')
-		$temp_['sex'] = $func('em.tag.getNum',$cmd_,'sex')
+		$temp_['sex'] = @em.tag.getNum($cmd_, 'sex')
 		$dyn_txt_ = $replace($dyn_txt_,$new_txt_,@int.DIN($new_txt_, $temp_['sex']))
 	elseif $strfind($dyn_txt_,'(\+{2,4})[^+]+(\+?[^+]+)*\1')<>'':
 		$sup_['last'] = $strfind($dyn_txt_,'(\+{2,4})[^+]+(\+?[^+]+)*\1')	&	!@ запоминаем, как выглядит разбираемая строка

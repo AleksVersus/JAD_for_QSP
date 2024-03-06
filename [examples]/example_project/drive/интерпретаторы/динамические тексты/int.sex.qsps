@@ -1,8 +1,8 @@
 # int.word.SEX
 local $string_, $sex_ = $args[0], $args[1]
-if instr($string_,'[') = 1 and $sex_= '': $sex_= $tvar['personage.sex']
-if $sex_= '': $sex_= 'мужской'
-if $sex_= 'мужской':
+if instr($string_,'[') = 1 and $sex_= '': $sex_ = $tvar['personage.sex']
+if $sex_ = '': $sex_= 'мужской'
+if $sex_ = 'мужской':
 	$result = $mid($string_,2,instr($string_,'//')-2)
 elseif $sex_= 'женский':
 	$result = $mid($string_,instr($string_,'//')+2,len($string_)-instr($string_,'//')-2)
