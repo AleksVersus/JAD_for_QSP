@@ -7,7 +7,6 @@ $[2]	&	!	ключевое слово
 [4]
 # replace.obj
 local $obj_id_, $place_id_, $cmd_, how_many_ = $args[0], $args[1], $args[2], args[3]
-@log.add('<b>replace.obj obj_id:<<$obj_id_>>, place_id:<<$place_id_>>, <<how_many_>></b>')
 if $cmd_ = '': $cmd_ = $mid($obj_id_, 1, instr($obj_id_, '.')-1)
 local pos_, number_, place_pos_, $t
 pos_ = arrpos('$id_array', $obj_id_)
@@ -16,17 +15,13 @@ number_ = kolvo_array[pos_]
 !@ количество предметов в позиции
 if number_ < how_many_: how_many_ = number_
 !@ Если в позиции меньше предметов, чем хочется переместить, Количество перемещаемых предметов приравнивается количеству предметов в позиции
-@log.add('replace.obj.old_pos:<<pos_>>, number:<<number_>>, how_many:<<how_many_>>')
 place_pos_ = @get.similar.obj($obj_id_, $place_id_)	&	!@	находит идентичный объект в указанном месте
-@log.add('replace.obj.new_pos:<<place_pos_>>')
 if number_ > how_many_:
 	!@ переносится часть объекта
-	@log.add('replace.obj: number > how_many')
 	local charge_, $run_code_, out_number_
 	if charge_array[pos_] > 0: charge_ = charge_array[pos_]
 	if $run_array[pos_] <> '': $run_code_ = $run_array[pos_]
 	if how_many_ > 0: out_number_ = how_many_
-	@log.add('replace.obj: charge:<<charge_>>, run-code:{<<$run_code_>>}, out_number:<<out_number_>>')
 	if place_pos_ = -1:
 		$result = @add.new.obj($object_array[pos_], $place_id_, $cmd_, out_number_, charge_, $run_code_)
 	else:
@@ -37,18 +32,15 @@ if number_ > how_many_:
 else:
 	!@ переносится весь объект
 	if place_pos_ = -1:
-		@log.add('Нет похожего объекта. Просто перезаписываем текущий объект.')
 		@clr.parent.obj($obj_id_)	&	!@	удаляются все связи с родительскими объектами
 		$position_array[pos_] = $place_id_
 		$result = $obj_id_
 	else:
-		@log.add('Есть похожий объект. Удаляем исходный.')
 		kolvo_array[place_pos_] += how_many_
 		$result = $id_array[place_pos_]
 		@del.obj($obj_id_)
 	end
 end
-@log.add('replace.obj.result:<<$result>>')
 --- replace.obj ---------------------------------
 
 ! Результатом может быть:

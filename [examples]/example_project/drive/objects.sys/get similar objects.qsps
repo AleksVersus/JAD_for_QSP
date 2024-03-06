@@ -2,7 +2,6 @@ QSP-Game ! Функция получает позицию объекта, кот
 ! $args[0] - ай-ди исходного объекта
 ! $args[1] - ай-ди искомого местоположения. если пустое значение, ищет вообще по всем объектам в игре.
 # get.similar.obj
-@log.add('get.similar.obj')
 local $obj_id_, $place_id_ = $args[0], $args[1]
 local pit_, pos_, $have_daughter_, $id_temp_
 pit_ = arrpos('$id_array',$obj_id_)	&	!@	получаем номер объекта в базе по его ай-ди
