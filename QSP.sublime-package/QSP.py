@@ -195,6 +195,7 @@ class QspHideHightlight(sublime_plugin.EventListener):
 	def on_modified(self, view):
 		if view.syntax() is None or view.syntax().name != 'QSP':
 			return None
+		view.run_command('qsp_hide_highlight')
 
 class QspInvalidInput(sublime_plugin.EventListener):
 	"""
