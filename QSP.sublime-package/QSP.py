@@ -74,7 +74,7 @@ class QspSplitterCommand(sublime_plugin.WindowCommand):
 		elif argv['file_extension'] == 'qsp':
 			QspSplitter(args = {'game-file': argv['file']}).split_file()
 		else:
-			print('Wrong extension of file. Can not convert.')
+			print('QSP-Splitter: Wrong extension of file. Can not convert.')
 
 class QspSplitProjectCommand(sublime_plugin.WindowCommand):
 	""" Start command of convert and split QSP-pproject """
