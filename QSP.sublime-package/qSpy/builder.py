@@ -64,47 +64,47 @@ class BuildQSP():
 			os.chdir(self.work_dir)
 
 	def fields_init(self):
-		if self.work_dir is not None:
-			os.chdir(self.work_dir)
-			# Deserializing project-file:
-			with open("project.json","r",encoding="utf-8") as project_file:
-				self.root = json.load(project_file)
+		if self.work_dir is None:
+			qsp.write_error_log("error.log", "[102] Builder design error. Work dir is not init.\n")
+			return
+		os.chdir(self.work_dir)
+		# Deserializing project-file:
+		with open("project.json","r",encoding="utf-8") as project_file:
+			self.root = json.load(project_file)
 
-			# Get paths to converter and player (not Deafault)
-			if "converter" in self.root:
-				if os.path.isfile(os.path.abspath(self.root["converter"])):
-					self.converter = os.path.abspath(self.root["converter"])
-			if "player" in self.root:
-				if os.path.isfile(os.path.abspath(self.root["player"])):
-					self.player = os.path.abspath(self.root["player"])
+		# Get paths to converter and player (not Deafault)
+		if "converter" in self.root:
+			if os.path.isfile(os.path.abspath(self.root["converter"])):
+				self.converter = os.path.abspath(self.root["converter"])
+		if "player" in self.root:
+			if os.path.isfile(os.path.abspath(self.root["player"])):
+				self.player = os.path.abspath(self.root["player"])
 
-			# Save temp-files Mode:
-			if "save_txt2gam" in self.root:
-				if self.root["save_txt2gam"] == "True":
-					self.save_txt2gam = True
-				else:
-					self.save_txt2gam = False
+		# Save temp-files Mode:
+		if "save_txt2gam" in self.root:
+			if self.root["save_txt2gam"] == "True":
+				self.save_txt2gam = True
 			else:
 				self.save_txt2gam = False
-
-			# Postprocessor's scripts list (or none):
-			if "postprocessors" in self.root:
-				self.include_scripts = self.root["postprocessors"]
-			else:
-				self.include_scripts = None
-
-			# Preprocessor's mode init.
-			if not "preprocessor" in self.root:
-				self.root["preprocessor"]="Off"
-
-			# Location's of scaned files name init.
-			if ("scans" in self.root) and ("start" in self.root):
-				if "location" in self.root["scans"]:
-					self.prove_file_loc=self.root["scans"]["location"]
-				else:
-					self.prove_file_loc="prvFile"
 		else:
-			qsp.write_error_log("error.log", "[102] Builder design error. Work dir is not init.\n")
+			self.save_txt2gam = False
+
+		# Postprocessor's scripts list (or none):
+		if "postprocessors" in self.root:
+			self.include_scripts = self.root["postprocessors"]
+		else:
+			self.include_scripts = None
+
+		# Preprocessor's mode init.
+		if not "preprocessor" in self.root:
+			self.root["preprocessor"]="Off"
+
+		# Location's of scaned files name init.
+		if ("scans" in self.root) and ("start" in self.root):
+			if "destination" in self.root["scans"]:
+				self.prove_file_loc = self.root["scans"]["destination"]
+			else:
+				self.prove_file_loc = None
 
 	def start_file_init(self):
 		if self.work_dir is not None:
@@ -140,59 +140,64 @@ class BuildQSP():
 
 	def create_scans_loc(self):
 		# FoolProof.
-		if ("scans" in self.root) and ("start" in self.root):
-
-			found_files = [] # Absolute files paths.
-			start_file_folder = os.path.split(self.start_file)[0]
-
-			if "folders" in self.root["scans"]:
-				for folder in self.root["scans"]["folders"]:
-					# Iterate through the folders, comparing the paths with start_file,
-					# to understand if the folder lies deeper relative to it.
-					sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(folder))
-					if sf == '':
-						# Folder relative to path.
-						found_files.extend(qsp.get_files_list(folder, filters=[]))
-					else:
-						# Folder is not relative to path. Is error.
-						qsp.write_error_log("error.log", "[106] Folder '"+folder+"' is not in the project.\n")
-
-			if "files" in self.root["scans"]:
-				for file in self.root["scans"]["files"]:
-					sf, f = qsp.compare_paths(start_file_folder,os.path.abspath(file))
-					if sf == '':
-						found_files.append(os.path.abspath(file))
-					else:
-						qsp.write_error_log("error.log", "[107] File '"+file+"' is not in the project.\n")
-
-			qsp_file_body = [
-				'QSP-Game Функция для проверки наличия файлов.\n',
-				'# '+self.prove_file_loc+'\n',
-				'$args[0]=$args[0] & !@ путь к файлу, который нужно проверить\n',
-				'$args[1]="\n'
-			]
-
-			for file in found_files:
-				sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(file))
-				qsp_file_body.append('['+f+']\n')
-
-			qsp_file_body.extend([
-				'"\n',
-				'if instr($args[1],"[<<$args[0]>>]")<>0: result=1 else result=0\n',
-				'--- '+self.prove_file_loc+' ---\n'
-			])
-
-			# Create file next to project-file:
-			with open('.\\prvFile_location.qspst', 'w',encoding='utf-8') as file:
-				file.writelines(qsp_file_body)
-			# Add file-path to build:
-			if "files" in self.root["project"][0]:
-				self.root["project"][0]["files"].append({"path":".\\prvFile_location.qspst"})
-			else:
-				self.root["project"][0]["files"] = [{"path":".\\prvFile_location.qspst"}]
-
-		else:
+		if not (("scans" in self.root) and ("start" in self.root)):
 			qsp.write_error_log("error.log", "[105] Builder design error. Prove file locations is not defined.\n")
+			return
+
+		found_files = [] # Absolute files paths.
+		start_file_folder = os.path.split(self.start_file)[0]
+		func_name = (self.root['scans']['location'] if 'location' in self.root['scans'] else 'prv_file')
+
+		if "folders" in self.root["scans"]:
+			for folder in self.root["scans"]["folders"]:
+				# Iterate through the folders, comparing the paths with start_file,
+				# to understand if the folder lies deeper relative to it.
+				sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(folder))
+				# print(f'sff:{start_file_folder}, f:{folder}, sf:{sf}, fl:{f}')
+				if sf == '.' or sf == '':
+					# Folder relative to path.
+					found_files.extend(qsp.get_files_list(folder, filters=[]))
+				else:
+					# Folder is not relative to path. Is error.
+					qsp.write_error_log("error.log", "[106] Folder '"+folder+"' is not in the project.\n")
+
+		if "files" in self.root["scans"]:
+			for file in self.root["scans"]["files"]:
+				sf, f = qsp.compare_paths(start_file_folder,os.path.abspath(file))
+				if sf == '':
+					found_files.append(os.path.abspath(file))
+				else:
+					qsp.write_error_log("error.log", "[107] File '"+file+"' is not in the project.\n")
+
+		qsp_file_body = [
+			'QSP-Game Функция для проверки наличия файлов.\n',
+			f'# {func_name}\n',
+			'$args[0]=$args[0] & !@ путь к файлу, который нужно проверить\n',
+			'$args[1]="\n'
+		]
+
+		for file in found_files:
+			sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(file))
+			qsp_file_body.append('['+f+']\n')
+
+		qsp_file_body.extend([
+			'"\n',
+			'result = iif(instr($args[1],"[<<$args[0]>>]")<>0, 1, 0)\n',
+			f'--- {func_name} ---\n'
+		])
+
+		# create folder if it's not exist
+		qsp.safe_mk_fold(self.prove_file_loc)
+		# Create file next to project-file:
+		of = os.path.join(self.prove_file_loc, 'prove_file_func.qsps_')
+		with open(of, 'w',encoding='utf-8') as file:
+			file.writelines(qsp_file_body)
+		self.prove_file_loc = of
+		# Add file-path to build:
+		# if "files" in self.root["project"][0]:
+		# 	self.root["project"][0]["files"].append({"path":".\\prvFile_location.qspst"})
+		# else:
+		# 	self.root["project"][0]["files"] = [{"path":".\\prvFile_location.qspst"}]		
 
 	def build_qsp_files(self):
 		pp_markers={"Initial":True,"True":True,"False":False} # Preproc markers.
@@ -206,6 +211,9 @@ class BuildQSP():
 					build_files.extend(qsp.get_files_list(os.path.abspath(path["path"])))
 			if (not "files" in instruction) and (not "folders" in instruction):
 				build_files.extend(qsp.get_files_list(os.getcwd()))
+			if not self.prove_file_loc is None:
+				build_files.extend(qsp.gen_files_paths([{"path": self.prove_file_loc}]))
+				self.prove_file_loc = None
 			# if "top_location" in instruction:
 				# Instruction is not supported.
 				# pass
