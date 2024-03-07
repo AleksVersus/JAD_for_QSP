@@ -180,8 +180,9 @@ class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
 		content = ''
 		for i, qsp_loc in enumerate(qsp_locs):
 			count = ''
-			fn = os.path.join(project_folder, qsp_loc[2])
+			fn = QspWorkspace.absing_path(project_folder, qsp_loc[2])
 			if not os.path.isfile(fn):
+				qsp_ws.del_all_locs_by_place(qsp_loc[2])
 				continue
 			if qsp_loc[2] != '':
 				with open(fn, 'r', encoding='utf-8') as file:
