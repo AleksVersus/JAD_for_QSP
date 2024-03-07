@@ -191,5 +191,22 @@ def print_builder_mode(build, run):
 	elif run:
 		print("Run Mode")
 
+def clear_locnames(loc_name:str) -> str:
+	return (loc_name.replace('\\', '\\\\')
+		.replace('[', r'\[')
+		.replace(']', r'\]')
+		.replace('(', r'\(')
+		.replace(')', r'\)')
+		.replace('.', r'\.')
+		.replace('#', r'\#')
+		.replace('$', r'\$')
+		.replace('&', r'\&')
+		.replace('*', r'\*')
+		.replace('+', r'\+')
+		.replace('-', r'\-')
+		.replace('?', r'\?')
+		.replace('|', r'\|')
+		.replace('/', r'\/'))
+
 if __name__=="__main__":
 	pass

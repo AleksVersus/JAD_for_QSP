@@ -5,6 +5,7 @@
 import sys
 import os
 import re
+from .function import clear_locnames
 
 class NewQspLocation():
 	"""
@@ -115,22 +116,7 @@ class NewQspsFile():
 	def get_qsplocs(self):
 		qsp_locs = []
 		for location in self.locations:
-			re_name = (location.name.replace('\\', '\\\\')
-				.replace('[', r'\[')
-				.replace(']', r'\]')
-				.replace('(', r'\(')
-				.replace(')', r'\)')
-				.replace('.', r'\.')
-				.replace('#', r'\#')
-				.replace('$', r'\$')
-				.replace('&', r'\&')
-				.replace('*', r'\*')
-				.replace('+', r'\+')
-				.replace('-', r'\-')
-				.replace('?', r'\?')
-				.replace('|', r'\|')
-				.replace('/', r'\/')
-				)
+			re_name = clear_locnames(location.name)
 			match = re.search(r'^\#\s*('+re_name+')$', self.file_body, flags=re.MULTILINE)
 			if not match is None:
 				qsp_locs.append([location.name, [match.start(1), match.end(1)]])

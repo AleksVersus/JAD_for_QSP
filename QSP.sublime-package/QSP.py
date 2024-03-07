@@ -179,8 +179,20 @@ class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
 		qsp_locs = qsp_ws.get_dupl_locs()
 		content = ''
 		for i, qsp_loc in enumerate(qsp_locs):
-			content += f'{i+1}. {qsp_loc[0]}. <a href="{qsp_loc[2]}">{qsp_loc[2]}</a><br>'
-		w = self.view.viewport_extent()[0]/2*1.5
+			count = ''
+			fn = os.path.join(project_folder, qsp_loc[2])
+			if not os.path.isfile(fn):
+				continue
+			if qsp_loc[2] != '':
+				with open(fn, 'r', encoding='utf-8') as file:
+					string = file.read()
+				match = re.search(
+					r'^\#\s*'+qspf.clear_locnames(qsp_loc[0])+'$', 
+					string, 
+					flags=re.MULTILINE)
+				if not match is None: count = ':'+str(len(string[:match.start()].split('\n')))
+			content += f'{i+1}. {qsp_loc[0]}. <a href="{qsp_loc[2]}{count}">{qsp_loc[2]}{count}</a><br>'
+		w = self.view.viewport_extent()[0]/1.5
 		vr = self.view.visible_region().begin()
 		self.view.show_popup(content, max_width=w, location=vr, on_navigate=self.on_navigate)
 

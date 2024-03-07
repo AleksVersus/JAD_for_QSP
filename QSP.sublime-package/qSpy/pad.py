@@ -2,6 +2,7 @@ from .function import parse_args
 from .function import search_project_folder
 from .function import get_files_list
 from .function import safe_mk_fold
+from .function import clear_locnames
 
 class QSpyFuncs:
 	"""
@@ -22,3 +23,7 @@ class QSpyFuncs:
 	@staticmethod
 	def safe_mk_fold(new_path:str) -> None:
 		safe_mk_fold(new_path)
+
+	@staticmethod
+	def clear_locnames(loc_name:str) -> str:
+		return clear_locnames(loc_name)
