@@ -162,9 +162,9 @@ class QspWorkspace:
 		"""	Return list of QSP-locations created on this view """
 		if not current_qsps is None:
 			qsps_relpath = self.reling_path(project_folder, current_qsps)
-			self.del_all_locs_by_place(qsps_relpath)
 		else:
 			qsps_relpath = ''
+		self.del_all_locs_by_place(qsps_relpath)
 		for s in view.symbol_regions():
 			if s.name.startswith('Локация: '):
 				self.add_loc(s.name[9:], [s.region.begin(), s.region.end()], qsps_relpath)
