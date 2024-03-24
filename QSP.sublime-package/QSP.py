@@ -155,6 +155,7 @@ class QspGlobalVarsHighlightCommand(sublime_plugin.TextCommand):
 			qsp_ws = QspWorkspace(QSP_WORKSPACES)
 		qsp_ws.refresh_vars(view)
 		view.run_command('qsp_hide_highlight')
+		print('global', qsp_ws.global_vars_names)
 		view.add_regions('global_vars', qsp_ws.get_global_vars(), 'region.yellowish', flags=256)
 
 class QspHideHighlightCommand(sublime_plugin.TextCommand):

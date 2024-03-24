@@ -24,7 +24,7 @@ class QspWorkspace:
 		self.global_vars = []  # list[sublime.Region]
 		self.global_vars_names = set()  # set[variables names]
 
-	def add_loc(self, name:str, region:tuple, place:str) -> int:
+	def add_loc(self, name:str, region:tuple, place:str):
 		""" Add qsp_location to workspace """
 		if not (name, region[0], region[1], place) in self.loc_hashs:
 			self.loc_names.append(name)
