@@ -104,7 +104,7 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 		sublproj_path = jont(argv['folder'], fname + '.sublime-project')
 		if not os.path.isfile(sublproj_path):
 			with open(sublproj_path, 'w', encoding='utf-8') as file:
-				file.writelines(dict(const.QSP_SUBLIME_PROJECT))
+				json.dump(dict(const.QSP_SUBLIME_PROJECT), file, indent=4)
 		# create startfile
 		start_file_path = jont(argv['folder'], '[source]', '00_start.qsps')
 		if not os.path.isfile(start_file_path):
@@ -155,7 +155,6 @@ class QspGlobalVarsHighlightCommand(sublime_plugin.TextCommand):
 			qsp_ws = QspWorkspace(QSP_WORKSPACES)
 		qsp_ws.refresh_vars(view)
 		view.run_command('qsp_hide_highlight')
-		print('global', qsp_ws.global_vars_names)
 		view.add_regions('global_vars', qsp_ws.get_global_vars(), 'region.yellowish', flags=256)
 
 class QspHideHighlightCommand(sublime_plugin.TextCommand):
@@ -202,7 +201,6 @@ class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
 		if not project_folder is None and link != '':
 			link = QspWorkspace.absing_path(project_folder, link)
 		self.view.window().run_command('open_file', {'file': link, 'encoded_position': True})
-
 
 class QspHideHightlight(sublime_plugin.EventListener):
 	def on_modified(self, view):
