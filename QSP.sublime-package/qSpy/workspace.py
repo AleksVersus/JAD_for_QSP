@@ -32,6 +32,21 @@ class QspWorkspace:
 			self.loc_places.append(place)
 			self.loc_hashs.append((name, region[0], region[1], place))
 
+	def del_loc_by_index(self, i:int) -> None:
+		if i < 0 or i > len(self.loc_names)-1:
+			return None
+		del self.loc_places[i]
+		del self.loc_names[i]
+		del self.loc_regions[i]
+		del self.loc_hashs[i]
+
+	def loc_hash_update(self, i:int) -> None:
+		self.loc_hashs[i] = (
+			self.loc_names[i],
+			self.loc_regions[i][0],
+			self.loc_regions[i][1],
+			self.loc_places[i])
+
 	def get_dupl_locs(self):
 		""" получаем локации с одинаковыми названиями """
 		_cr_loc = lambda x: [self.loc_names[x], self.loc_regions[x], self.loc_places[x]]
@@ -57,17 +72,13 @@ class QspWorkspace:
 		""" del location by place """
 		if loc_place in self.loc_places:
 			i = self.loc_places.index(loc_place)
-			del self.loc_places[i]
-			del self.loc_names[i]
-			del self.loc_regions[i]
+			self.del_loc_by_index(i)
 
 	def del_all_locs_by_place(self, loc_place:str) -> None:
 		""" del all locations by place """
 		while loc_place in self.loc_places:
 			i = self.loc_places.index(loc_place)
-			del self.loc_places[i]
-			del self.loc_names[i]
-			del self.loc_regions[i]
+			self.del_loc_by_index(i)
 
 	def extract_from_file(self, ws_path:str) -> None:
 		"""
@@ -152,6 +163,7 @@ class QspWorkspace:
 			if old_path in self.loc_places:
 				i = self.loc_places.index(old_path)
 				self.loc_places[i] = new_path
+				self.loc_hash_update(i)
 			else:
 				break
 
