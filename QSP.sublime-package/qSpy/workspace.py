@@ -24,21 +24,13 @@ class QspWorkspace:
 		self.global_vars = []  # list[sublime.Region]
 		self.global_vars_names = set()  # set[variables names]
 
-	def add_loc(self, name:str, region:tuple, place:str) -> None:
+	def add_loc(self, name:str, region:tuple, place:str) -> int:
 		""" Add qsp_location to workspace """
 		if not (name, region[0], region[1], place) in self.loc_hashs:
 			self.loc_names.append(name)
 			self.loc_regions.append(region)
 			self.loc_places.append(place)
 			self.loc_hashs.append((name, region[0], region[1], place))
-
-	def del_loc_by_index(self, i:int) -> None:
-		if i < 0 or i > len(self.loc_names)-1:
-			return None
-		del self.loc_places[i]
-		del self.loc_names[i]
-		del self.loc_regions[i]
-		del self.loc_hashs[i]
 
 	def get_dupl_locs(self):
 		""" получаем локации с одинаковыми названиями """
@@ -65,13 +57,17 @@ class QspWorkspace:
 		""" del location by place """
 		if loc_place in self.loc_places:
 			i = self.loc_places.index(loc_place)
-			self.del_loc_by_index(i)
+			del self.loc_places[i]
+			del self.loc_names[i]
+			del self.loc_regions[i]
 
 	def del_all_locs_by_place(self, loc_place:str) -> None:
 		""" del all locations by place """
 		while loc_place in self.loc_places:
 			i = self.loc_places.index(loc_place)
-			self.del_loc_by_index(i)
+			del self.loc_places[i]
+			del self.loc_names[i]
+			del self.loc_regions[i]
 
 	def extract_from_file(self, ws_path:str) -> None:
 		"""
