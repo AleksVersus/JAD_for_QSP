@@ -15,20 +15,22 @@ class QspWorkspace:
 		self.loc_names = [] # names of location [str]
 		self.loc_regions = [] # regions of locs initiate list[start, end]
 		self.loc_places = [] # file path, where is qsp_locs [str]
+		self.loc_hashs = [] # all datas in tuple
 		# microbase of files_path
 		self.files_paths = [] # all files in project (rel or abs pathes)
 		self.files_hashs = []
 		# microbase of variables
-		self.local_vars = []
-		self.global_vars = []
-		self.global_vars_names = set()
+		self.local_vars = []  # list[sublime.Region]
+		self.global_vars = []  # list[sublime.Region]
+		self.global_vars_names = set()  # set[variables names]
 
 	def add_loc(self, name:str, region:tuple, place:str) -> int:
-		""" Добавление локации в воркспейс """
-		self.loc_names.append(name)
-		self.loc_regions.append(region)
-		self.loc_places.append(place)
-		return len(self.loc_names)-1
+		""" Add qsp_location to workspace """
+		if not (name, region[0], region[1], place) in self.loc_hashs:
+			self.loc_names.append(name)
+			self.loc_regions.append(region)
+			self.loc_places.append(place)
+			self.loc_hashs.append((name, region[0], region[1], place))
 
 	def get_dupl_locs(self):
 		""" получаем локации с одинаковыми названиями """
@@ -78,9 +80,10 @@ class QspWorkspace:
 		if len(self.loc_names)>0:
 			self.__init__()
 			print('Error: QSP WORKSPACE already initialised!!!')
-		for path, qsp_locs in qsp_ws['locations'].items():
+		for place, qsp_locs in qsp_ws['locations'].items(): # qsp_ws['locations'] - dict[rel_path: qsp_locs]
+			# qsp_locs - list[qsp_loc], qsp_loc - list[name, list[start_point, end_point]]
 			for name, region in qsp_locs:
-				self.add_loc(name, region, path)
+				self.add_loc(name, region, place)
 		# print(ws_path, 'files_paths' in qsp_ws)
 		for path, md5 in qsp_ws['files_paths'].items():
 			self.files_paths.append(path)
@@ -105,13 +108,13 @@ class QspWorkspace:
 		try:
 			to_del_paths, to_del_hashs = [], []
 			if len(to_del)>0:
-				print('unpack this')
+				print('unpack this', )
 				to_del_paths, to_del_hashs = zip(*to_del)
 		except ValueError as e:
 			print(to_del, str(e))
 			sublime.message_dialog('Error RAISE in this moment!!!')
 			raise e
-			
+		to_del_hashs = list(to_del_hashs)
 		# replace on new paths
 		for new_path, md5 in to_add[:]:
 			if md5 in to_del_hashs:
