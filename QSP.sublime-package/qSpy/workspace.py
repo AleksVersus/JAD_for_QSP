@@ -126,6 +126,7 @@ class QspWorkspace:
 			sublime.message_dialog('Error RAISE in this moment!!!')
 			raise e
 		to_del_hashs = list(to_del_hashs)
+		to_del_paths = list(to_del_paths)
 		# replace on new paths
 		for new_path, md5 in to_add[:]:
 			if md5 in to_del_hashs:
@@ -135,7 +136,12 @@ class QspWorkspace:
 				self.replace_qsps(old_path, new_path)
 				to_del.pop(i)
 				to_del_hashs.pop(i)
-				to_del_paths.pop(i)
+				try:
+					to_del_paths.pop(i)
+				except AttributeError as e:
+					print(to_del_paths)
+					sublime.message_dialog('Error RAISE in this moment!!!')
+					raise e
 			else:
 				path = self.reling_path(project_folder, new_path)
 				for loc_name, loc_region in NewQspsFile(new_path).get_qsplocs():
