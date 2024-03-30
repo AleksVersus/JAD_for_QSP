@@ -162,6 +162,10 @@ contexts: # теперь необходимо определить "контек
       captures:
         1: punctuation.definition.function.qsp support.function.builtin.qsp
         2: variable.function.qsp markup.italic.qsp
+    - match: (\@)([\w\.\#]+)(?=\s*\b(while|step|else|elseif|and|or|mod)\b)
+      captures:
+        1: punctuation.definition.function.qsp support.function.builtin.qsp
+        2: variable.function.qsp markup.italic.qsp
     - match: (\@[\w\.\#]+\s+{{right_operand}})
       scope: invalid.illegal.qsp markup.italic.qsp
     - match: (\@)([\w\.\#]+)
