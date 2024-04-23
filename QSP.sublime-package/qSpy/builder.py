@@ -52,10 +52,10 @@ class BuildQSP():
 			project_json = json.dumps(project_dict, indent=4)
 			project_file_path = os.path.join(project_folder, 'project.json')
 
-			with open(project_file_path, "w", encoding="utf-8") as file:
+			with open(project_file_path, 'w', encoding='utf-8') as file:
 				file.write(project_json)
 				
-			qsp.write_error_log(f"[100] File «{project_file_path}» was created.")
+			qsp.write_error_log(f'[100] File «{project_file_path}» was created.')
 
 		self.set_work_dir(project_folder)
 
@@ -68,7 +68,7 @@ class BuildQSP():
 	def fields_init(self) -> None:	
 		# Deserializing project-file:
 		project_json = os.path.join(self.work_dir, 'project.json')
-		with open(project_json,"r",encoding="utf-8") as project_file:
+		with open(project_json, 'r', encoding='utf-8') as project_file:
 			self.root = json.load(project_file)
 
 		# Get paths to converter and player (not Deafault)
@@ -182,8 +182,7 @@ class BuildQSP():
 			'QSP-Game Функция для проверки наличия файлов.\n',
 			f'# {func_name}\n',
 			'$args[0]=$args[0] & !@ путь к файлу, который нужно проверить\n',
-			'$args[1]="\n'
-		]
+			'$args[1]="\n']
 
 		for file in found_files:
 			sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(file))
@@ -192,8 +191,7 @@ class BuildQSP():
 		qsp_file_body.extend([
 			'"\n',
 			'result = iif(instr($args[1],"[<<$args[0]>>]")<>0, 1, 0)\n',
-			f'--- {func_name} ---\n'
-		])
+			f'- {func_name}\n'])
 
 		# create folder if it's not exist
 		qsp.safe_mk_fold(self.prove_file_loc)
@@ -203,51 +201,51 @@ class BuildQSP():
 			file.writelines(qsp_file_body)
 		self.prove_file_loc = of
 		# Add file-path to build:
-		# if "files" in self.root["project"][0]:
-		# 	self.root["project"][0]["files"].append({"path":".\\prvFile_location.qspst"})
+		# if 'files' in self.root['project'][0]:
+		# 	self.root['project'][0]['files'].append({'path':'.\\prvFile_location.qspst'})
 		# else:
-		# 	self.root["project"][0]["files"] = [{"path":".\\prvFile_location.qspst"}]		
+		# 	self.root['project'][0]['files'] = [{'path':'.\\prvFile_location.qspst'}]		
 
 	def build_qsp_files(self):
-		pp_markers={"Initial":True,"True":True,"False":False} # Preproc markers.
-		# Get instructions list from "project".
-		for instruction in self.root["project"]:
+		pp_markers={'Initial':True,'True':True,'False':False} # Preproc markers.
+		# Get instructions list from 'project'.
+		for instruction in self.root['project']:
 			build_files=[] # Files path for build.
-			if "files" in instruction:
-				build_files.extend(qsp.gen_files_paths(instruction["files"]))
-			if "folders" in instruction:
-				for path in instruction["folders"]:
-					build_files.extend(qsp.get_files_list(os.path.abspath(path["path"])))
-			if (not "files" in instruction) and (not "folders" in instruction):
+			if 'files' in instruction:
+				build_files.extend(qsp.gen_files_paths(instruction['files']))
+			if 'folders' in instruction:
+				for path in instruction['folders']:
+					build_files.extend(qsp.get_files_list(os.path.abspath(path['path'])))
+			if (not 'files' in instruction) and (not 'folders' in instruction):
 				build_files.extend(qsp.get_files_list(os.getcwd()))
 			if not self.prove_file_loc is None:
-				build_files.extend(qsp.gen_files_paths([{"path": self.prove_file_loc}]))
+				build_files.extend(qsp.gen_files_paths([{'path': self.prove_file_loc}]))
 				self.prove_file_loc = None
-			# if "top_location" in instruction:
+			# if 'top_location' in instruction:
 				# Instruction is not supported.
 				# pass
-			if "build" in instruction:
-				exit_qsp, exit_txt = qsp.exit_files(instruction["build"])
+			if 'build' in instruction:
+				exit_qsp, exit_txt = qsp.exit_files(instruction['build'])
 			else:
-				exit_qsp, exit_txt = qsp.exit_files('game'+self.root["project"].index(instruction)+'.qsp')
+				exit_qsp, exit_txt = qsp.exit_files('game'+self.root['project'].index(instruction)+'.qsp')
 				qsp.write_error_log(f"[108] Key 'build' not found in project-list. Choose export name {exit_qsp}.")
-			if "postprocessor" in instruction:
+			if 'postprocessor' in instruction:
 				# Include scripts in build instructions have priority.
-				include_scripts = instruction["postprocessors"]
+				include_scripts = instruction['postprocessors']
 			elif self.include_scripts is not None:
 				include_scripts = self.include_scripts
 			else:
 				include_scripts = None
 
 			# Build TXT2GAM-file
-			code_system = ('utf-8' if self.converter == "qsps_to_qsp" else 'utf-16-le')
-			qsp.construct_file(build_files, exit_txt, self.root["preprocessor"], pp_markers, code_system=code_system)
+			code_system = ('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
+			qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
 			# Run Postprocessor if include scripts are exists.
 			if include_scripts is not None:
 				for script in include_scripts:
 					subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
 			# Convert TXT2GAM at `.qsp`
-			if self.converter == "qsps_to_qsp":
+			if self.converter == 'qsps_to_qsp':
 				qsps_file = NewQspsFile(input_file=exit_txt, output_file=exit_qsp)
 				qsps_file.convert()
 			else:
@@ -262,7 +260,7 @@ class BuildQSP():
 		start_file = self.get_start_file()
 
 		if not os.path.isfile(self.player):
-			qsp.write_error_log(f"[109] Path at player is wrong. Prove path «{self.player}».")
+			qsp.write_error_log(f'[109] Path at player is wrong. Prove path «{self.player}».')
 			return None
 		if not os.path.isfile(start_file):
 			qsp.write_error_log("[110] Start-file is wrong. Don't start the player.")
@@ -284,7 +282,7 @@ class BuildQSP():
 		"""
 		cond = all((
 			(not 'start' in self.root) or (not os.path.isfile(self.start_file)),
-			os.path.splitext(self.args['point_file'])[1] == ".qsp"))
+			os.path.splitext(self.args['point_file'])[1] == '.qsp'))
 		return (True if cond else False)
 
 	def need_build_file(self):
