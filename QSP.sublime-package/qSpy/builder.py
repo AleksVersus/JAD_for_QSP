@@ -40,10 +40,9 @@ class BuildQSP():
 			self.start_file_init()
 
 	def work_dir_init(self):
-		# Path to point file.
 		point_file = self.args['point_file']
-		# Search the project-file's folder.
-		self.set_work_dir(qsp.search_project_folder(point_file))
+		project_folder = qsp.search_project_folder(point_file)
+		self.set_work_dir(project_folder)
 
 		if qsp.need_project_file(self.work_dir, point_file, self.player):
 			# If project-file's folder is not found, but other

@@ -88,7 +88,7 @@ def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-1
 	with open(new_file,"w",encoding=code_system) as file:
 		file.write(text)
 
-def search_project_folder(path, print_error=True) -> str:
+def search_project_folder(path:str, print_error:bool=True) -> str:
 	"""
 		Find project-file and return folder path whith project.
 		In other return None.
@@ -129,15 +129,14 @@ def parse_args(arguments):
 		args["point_file"]=os.path.join(os.getcwd(), sys.argv[0])
 	return args
 
-def exit_files(game_path):
+def exit_files(game_path:str) -> list: # list[abs_paths]
 	"""
-		On input QSP-file's path, on output QSP-file's abs.path
-		and temporary txt-file's abs path.
+		On input QSP-file's path,
+		on output QSP-file's abs.path and temporary txt-file's abs path.
 	"""
-	exit_qsp=os.path.abspath(game_path)
-	exit_txt=os.path.abspath(os.path.splitext(game_path)[0]+".txt")
+	exit_qsp = os.path.abspath(game_path)
+	exit_txt = os.path.abspath(os.path.splitext(game_path)[0]+".txt")
 	return [exit_qsp, exit_txt]
-
 
 def need_project_file(work_dir, point_file, player):
 	"""
@@ -189,7 +188,8 @@ def print_builder_mode(build, run):
 	elif run:
 		print("Run Mode")
 
-def clear_locnames(loc_name:str) -> str:
+def clear_locname(loc_name:str) -> str:
+	""" Clear qsp-location name of extra charges """
 	return (loc_name.replace('\\', '\\\\')
 		.replace('[', r'\[')
 		.replace(']', r'\]')

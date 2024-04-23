@@ -184,7 +184,7 @@ class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
 				with open(fn, 'r', encoding='utf-8') as file:
 					string = file.read()
 				match = re.search(
-					r'^\#\s*'+qspf.clear_locnames(qsp_loc[0])+'$', 
+					r'^\#\s*'+qspf.clear_locname(qsp_loc[0])+'$', 
 					string, 
 					flags=re.MULTILINE)
 				if not match is None: count = ':'+str(len(string[:match.start()].split('\n')))
