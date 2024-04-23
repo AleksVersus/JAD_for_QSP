@@ -207,39 +207,37 @@ class BuildQSP():
 		# 	self.root['project'][0]['files'] = [{'path':'.\\prvFile_location.qspst'}]		
 
 	def build_qsp_files(self):
-		pp_markers={'Initial':True,'True':True,'False':False} # Preproc markers.
+		pp_markers = {'Initial':True,'True':True,'False':False} # Preproc markers.
+		project = self.root['project']
 		# Get instructions list from 'project'.
-		for instruction in self.root['project']:
-			build_files = [] # Files path for build.
+		for instruction in project:
+			qsp_module = qsp.ModuleQSP()
 			if 'files' in instruction:
-				build_files.extend(qsp.gen_files_paths(instruction['files']))
+				qsp_module.extend_by_files(instruction['files'])
 			if 'folders' in instruction:
 				for path in instruction['folders']:
-					build_files.extend(qsp.get_files_list(os.path.abspath(path['path'])))
+					qsp_module.extend_by_folder(os.path.abspath(path['path']))
 			if (not 'files' in instruction) and (not 'folders' in instruction):
-				build_files.extend(qsp.get_files_list(os.getcwd()))
+				qsp_module.extend_by_folder(os.getcwd())
 			if not self.prove_file_loc is None:
-				build_files.extend(qsp.gen_files_paths([{'path': self.prove_file_loc}]))
+				qsp_module.extend_by_files([{'path': self.prove_file_loc}])
 				self.prove_file_loc = None
-			# if 'top_location' in instruction:
-				# Instruction is not supported.
-				# pass
 			if 'build' in instruction:
-				exit_qsp, exit_txt = qsp.exit_files(instruction['build'])
+				qsp_module.exit_files(instruction['build'])
 			else:
-				exit_qsp, exit_txt = qsp.exit_files('game'+self.root['project'].index(instruction)+'.qsp')
-				qsp.write_error_log(f'[106] Key «build» not found in project-list. Choose export name {exit_qsp}.')
+				qsp_module.exit_files(f'game{project.index(instruction)}.qsp')
+				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {exit_qsp}.')
+
 			if 'postprocessor' in instruction:
 				# Include scripts in build instructions have priority.
-				include_scripts = instruction['postprocessors']
+				qsp_module.extend_scripts(instruction['postprocessors'])
 			elif self.include_scripts is not None:
-				include_scripts = self.include_scripts
-			else:
-				include_scripts = None
+				qsp_module.extend_scripts(self.include_scripts)
 
 			# Build TXT2GAM-file
-			code_system = ('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
-			qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
+			qsp_module.set_code_system('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
+			# qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
+			qsp_module.construct_qsps(self.root['preprocessor'], pp_markers)
 			# Run Postprocessor if include scripts are exists.
 			if include_scripts is not None:
 				for script in include_scripts:

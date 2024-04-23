@@ -1,1 +1,11 @@
-{}
+{
+	"nodes":[
+		{"id":"b472ae942c664d51","x":-440,"y":-340,"width":250,"height":60,"type":"text","text":"BuildQSP"},
+		{"id":"78bc4824c650ca7c","x":-440,"y":-220,"width":250,"height":60,"type":"text","text":"ModuleQSP"},
+		{"id":"12c2286afa24662a","x":-440,"y":-100,"width":250,"height":60,"type":"text","text":"SrcQspsFile"}
+	],
+	"edges":[
+		{"id":"8c688869a8348c54","fromNode":"b472ae942c664d51","fromSide":"bottom","toNode":"78bc4824c650ca7c","toSide":"top"},
+		{"id":"fafd312ba7629df5","fromNode":"78bc4824c650ca7c","fromSide":"bottom","toNode":"12c2286afa24662a","toSide":"top"}
+	]
+}

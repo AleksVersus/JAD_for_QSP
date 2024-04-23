@@ -12,23 +12,23 @@ def write_error_log(error_text:str) -> None:
 	""" Write message in console. """
 	print(error_text)
 
-def get_files_list(folder, filters=None):
+def get_files_list(folder:str, filters:list=None) -> list:
 	"""
 		Create list of files in folder and includes folders.
 	"""
 	if filters is None: filters = [".qsps",'.qsp-txt','.txt-qsp']
-	build_files=[]
-	tree=os.walk(folder)
+	build_files = []
+	tree = os.walk(folder)
 	for abs_path, folders, files in tree:
 		for file in files:
 			sp = os.path.splitext(file)
-			if len(filters)==0 or (sp[1] in filters):
+			if len(filters) == 0 or (sp[1] in filters):
 				build_files.append(os.path.join(abs_path, file))
-	if len(build_files)==0:
+	if len(build_files) == 0:
 		write_error_log(f'[200] Folder is empty. Prove path «{folder}».')
 	return build_files
 
-def compare_paths(path1, path2):
+def compare_paths(path1:str, path2:str):
 	"""
 		Compare two paths and return tail relative to shared folder. 
 	"""
@@ -129,15 +129,6 @@ def parse_args(arguments):
 		args["point_file"]=os.path.join(os.getcwd(), sys.argv[0])
 	return args
 
-def exit_files(game_path:str) -> list: # list[abs_paths]
-	"""
-		On input QSP-file's path,
-		on output QSP-file's abs.path and temporary txt-file's abs path.
-	"""
-	exit_qsp = os.path.abspath(game_path)
-	exit_txt = os.path.abspath(os.path.splitext(game_path)[0]+".txt")
-	return [exit_qsp, exit_txt]
-
 def need_project_file(work_dir, point_file, player):
 	"""
 		Unloading conditions.
@@ -200,6 +191,104 @@ def clear_locname(loc_name:str) -> str:
 		.replace('?', r'\?')
 		.replace('|', r'\|')
 		.replace('/', r'\/'))
+
+class ModuleQSP():
+
+	def __init__(self):
+
+		self.src_qsps_file = []
+
+		self.output_qsp = None
+		self.output_txt = None
+
+		self.include_scripts = []
+
+		self.code_system = 'utf-8'
+
+		self.qsps_code = []
+
+	def extend_by_files(self, files_paths:list) -> None: # file_paths:list of dict {'path': file_path}
+		"""
+			Convert dictionary list in paths list.
+		"""
+		for el in files_paths:
+			file_path = os.path.abspath(el['path'])
+			if os.path.isfile(file_path):
+				self.src_qsps_file.append(SrcQspsFile(file_path))
+			else:
+				write_error_log(f'[203] File don\'t exist. Prove path {file_path}.')
+
+	def extend_by_folder(self, folder_path:str) -> None:
+		if not os.path.isdir(folder_path):
+			write_error_log(f'[204] Folder don\'t exist. Prove path {folder_path}.')
+			return None
+		for el in get_files_list(folder_path):
+			file_path = os.path.abspath(el)
+			if os.path.isfile(file_path):
+				self.src_qsps_file.append(SrcQspsFile(file_path))
+			else:
+				write_error_log(f'[205] File don\'t exist. Prove path {file_path}.')
+
+	def exit_files(self, game_path:str) -> None:
+		"""
+			On input QSP-file's path,
+			on output QSP-file's abs.path and temporary txt-file's abs path.
+		"""
+		self.output_qsp = os.path.abspath(game_path)
+		self.output_txt = os.path.abspath(os.path.splitext(game_path)[0]+".txt")
+
+	def extend_scripts(self, scripts:list) -> None:
+		self.include_scripts.extend(scripts)
+
+	def set_code_system(self, code_system:str='utf-8') -> None:
+		self.code_system = code_system
+
+	def construct_qsps(self, pponoff, pp_markers):
+		# получив список файлов, из которых мы собираем выходной файл, делаем следующее
+		text="" # выходной текст
+		for path in build_list:
+			# открываем путь как файл
+			with open(path,"r",encoding="utf-8") as file:
+				if pponoff=="Hard-off":
+					text_file=file.read()+"\r\n" # файл не отправляется на препроцессинг
+				elif pponoff=="Off":
+					first_string=file.readline()[:]
+					second_string=file.readline()[:]
+					file.seek(0)
+					if first_string=="!@pp:on\n" or second_string=="!@pp:on\n":
+						arguments={"include":True, "pp":True, "savecomm":False}
+						# файл отправляется на препроцессинг
+						text_file = pp.pp_this_file(path, arguments, pp_markers)+'\r\n'
+					else:
+						text_file=file.read()+"\r\n"
+				elif pponoff=="On":
+					first_string=file.readline()[:]
+					second_string=file.readline()[:]
+					file.seek(0)
+					if first_string=="!@pp:off\n" or second_string=="!@pp:off\n":
+						text_file=file.read()+"\r\n"
+					else:
+						arguments={"include":True, "pp":True, "savecomm":False}
+						text_file=pp.pp_this_file(path,arguments,pp_markers)+'\r\n'
+				text+=text_file
+		# если папка не создана, нужно её создать
+		path_folder=os.path.split(new_file)[0]
+		if os.path.exists(path_folder)!=True:
+			os.makedirs(path_folder)
+		# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
+		text=text.encode(code_system, 'ignore').decode(code_system,'ignore')
+		with open(new_file,"w",encoding=code_system) as file:
+			file.write(text)
+
+
+class SrcQspsFile():
+
+	def __init_(self, file_path:str) -> None:
+
+		self.file_path = file_path
+
+		with open(file_path, 'r', encoding='utf-8') as fp:
+			self.file_strings = fp.readlines()
 
 if __name__=="__main__":
 	pass
