@@ -8,11 +8,9 @@ def safe_mk_fold(new_path:str) -> None:
 	if not os.path.isdir(new_path):
 		os.makedirs(new_path)
 
-def write_error_log(file, string):
+def write_error_log(error_text:str) -> None:
 	""" Write message in console. """
-	# with open(file,"a",encoding="utf-8") as error_file:
-	# 	error_file.write(string)
-	print(string)
+	print(error_text)
 
 def get_files_list(folder, filters=None):
 	"""
@@ -27,7 +25,7 @@ def get_files_list(folder, filters=None):
 			if len(filters)==0 or (sp[1] in filters):
 				build_files.append(os.path.join(abs_path, file))
 	if len(build_files)==0:
-		write_error_log("error.log", f'[201] Folder is empty. Prove path «{folder}».')
+		write_error_log(f'[201] Folder is empty. Prove path «{folder}».')
 	return build_files
 
 def compare_paths(path1, path2):
@@ -49,7 +47,7 @@ def gen_files_paths(files_array):
 		if os.path.isfile(file_path):
 			files_paths.append(file_path)
 		else:
-			write_error_log("error.log", "[202] File don't exist. Prove path "+file_path+".\n")
+			write_error_log(f"[202] File don't exist. Prove path {file_path}.")
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
@@ -90,7 +88,7 @@ def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-1
 	with open(new_file,"w",encoding=code_system) as file:
 		file.write(text)
 
-def search_project_folder(path, print_error=True):
+def search_project_folder(path, print_error=True) -> str:
 	"""
 		Find project-file and return folder path whith project.
 		In other return None.
@@ -101,7 +99,7 @@ def search_project_folder(path, print_error=True):
 	while not os.path.isfile(os.path.join(path, "project.json")):
 		if os.path.ismount(path):
 			if print_error:
-				write_error_log("error.log", "[203] not found 'project.json' file for this project. Prove path "+error+".\n")
+				write_error_log(f"[203] not found 'project.json' file for this project. Prove path {error}.")
 			break
 		path = os.path.split(path)[0]
 	else:

@@ -55,7 +55,7 @@ class BuildQSP():
 
 			with open(os.path.join(self.work_dir, "project.json"), "w", encoding="utf-8") as file:
 				file.write(project_json)
-			qsp.write_error_log("error.log", "[100] File '"+os.path.join(self.work_dir, 'project.json')+"' was created.\n")
+			qsp.write_error_log("[100] File «"+os.path.join(self.work_dir, 'project.json')+"» was created.")
 
 	def set_work_dir(self, work_dir:str=None) -> None:
 		self.work_dir = work_dir
@@ -65,7 +65,7 @@ class BuildQSP():
 
 	def fields_init(self) -> None:
 		if self.work_dir is None:
-			qsp.write_error_log("error.log", "[102] Builder design error. Work dir is not init.\n")
+			qsp.write_error_log("[102] Builder design error. Work dir is not init.")
 			return
 		os.chdir(self.work_dir)
 		# Deserializing project-file:
@@ -115,12 +115,12 @@ class BuildQSP():
 			if ((not "start" in self.root) or (not os.path.isfile(self.start_file))) and len(self.export_files_paths)>0:
 				# Start-file is not defined, but list of build-files is exist.
 				self.start_file=self.export_files_paths[0]
-				qsp.write_error_log("error.log", "[104] main: Start-file is wrong. Used '"+self.start_file+"' for start the player.\n")
+				qsp.write_error_log(f"[104] main: Start-file is wrong. Used «{self.start_file}» for start the player.")
 			if qsp.need_point_file(self.root, self.start_file, self.args["point_file"]):
 				# Start-file is not defined, list of build-files is not exist, but run point_file.
 				self.start_file=self.args["point_file"]
 		else:
-			qsp.write_error_log("error.log", "[103] Builder design error. Work dir is not init.\n")
+			qsp.write_error_log("[103] Builder design error. Work dir is not init.")
 
 	def build_and_run(self):
 		# Print builder's mode.
@@ -141,7 +141,7 @@ class BuildQSP():
 	def create_scans_loc(self):
 		# FoolProof.
 		if not (("scans" in self.root) and ("start" in self.root)):
-			qsp.write_error_log("error.log", "[105] Builder design error. Prove file locations is not defined.\n")
+			qsp.write_error_log("[105] Builder design error. Prove file locations is not defined.")
 			return
 
 		found_files = [] # Absolute files paths.
@@ -159,7 +159,7 @@ class BuildQSP():
 					found_files.extend(qsp.get_files_list(folder, filters=[]))
 				else:
 					# Folder is not relative to path. Is error.
-					qsp.write_error_log("error.log", "[106] Folder '"+folder+"' is not in the project.\n")
+					qsp.write_error_log(f"[106] Folder «{folder}» is not in the project.")
 
 		if "files" in self.root["scans"]:
 			for file in self.root["scans"]["files"]:
@@ -167,7 +167,7 @@ class BuildQSP():
 				if sf == '':
 					found_files.append(os.path.abspath(file))
 				else:
-					qsp.write_error_log("error.log", "[107] File '"+file+"' is not in the project.\n")
+					qsp.write_error_log(f"[107] File «{file}» is not in the project.")
 
 		qsp_file_body = [
 			'QSP-Game Функция для проверки наличия файлов.\n',
@@ -221,7 +221,7 @@ class BuildQSP():
 				exit_qsp, exit_txt = qsp.exit_files(instruction["build"])
 			else:
 				exit_qsp, exit_txt = qsp.exit_files('game'+self.root["project"].index(instruction)+'.qsp')
-				qsp.write_error_log("error.log", "[108] Key 'build' not found in project-list. Choose export name "+exit_qsp+".\n")
+				qsp.write_error_log(f"[108] Key 'build' not found in project-list. Choose export name {exit_qsp}.")
 			if "postprocessor" in instruction:
 				# Include scripts in build instructions have priority.
 				include_scripts = instruction["postprocessors"]
@@ -242,7 +242,7 @@ class BuildQSP():
 				qsps_file = NewQspsFile(input_file=exit_txt, output_file=exit_qsp)
 				qsps_file.convert()
 			else:
-				subprocess.run([self.converter, exit_txt, exit_qsp],stdout=subprocess.PIPE)
+				subprocess.run([self.converter, exit_txt, exit_qsp], stdout=subprocess.PIPE)
 			if os.path.isfile(exit_qsp):
 				self.export_files_paths.append(exit_qsp)
 			# Delete temp file.
@@ -253,10 +253,10 @@ class BuildQSP():
 		self.start_file_init()
 
 		if not os.path.isfile(self.player):
-			qsp.write_error_log("error.log", "[109] Path at player is wrong. Prove path '"+self.player+"'.\n")
+			qsp.write_error_log(f"[109] Path at player is wrong. Prove path «{self.player}».")
 			return None
 		if not os.path.isfile(self.start_file):
-			qsp.write_error_log("error.log", "[110] Start-file is wrong. Don't start the player.\n")
+			qsp.write_error_log("[110] Start-file is wrong. Don't start the player.")
 		else:
 			proc = subprocess.Popen([self.player, self.start_file])
 			# This instruction kill the builder after 100 ms.
