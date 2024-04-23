@@ -21,11 +21,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
 		QSP-Game Builder. Build and run QSP-game from sources. Need a project.json.
 	"""
-	def run(self, qsp_mode = "--br"):
-		# Default paths to converter and player.
-		converter = "qsps_to_qsp" # buil-in converter. WARNING! Test-mode!!!
-		player = "C:\\Program Files\\QSP\\qsp580\\qspgui.exe"
-
+	def run(self, qsp_mode="--br"):
 		# Three commands from arguments.
 		argv = self.window.extract_variables()
 		args = qspf.parse_args([qsp_mode, argv['file']])
@@ -37,7 +33,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		# -----------------------------------------------------------------------
 
 		# Initialise of Builder:
-		builder = BuildQSP(args, converter, player)
+		builder = BuildQSP(args)
 		# Run the Builder to work:
 		builder.build_and_run()
 

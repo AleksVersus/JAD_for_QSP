@@ -15,20 +15,20 @@ class BuildQSP():
 		If we make the class ex, we can use class instance fields as global name-space.
 		Class BuildQSP — is a name-space for procedure scripts.
 	"""
-	def __init__(self, args, converter, player):
+	def __init__(self, args:dict) -> None:
 		# Init main fields:
-		self.args = args 			# Arguments from sys.
-		self.converter = converter	# Converter application path (exe in win).
-		self.player = player		# Player application path (exe in win)
+		self.args = args 											# Arguments from sys.
+		self.converter = 'qsps_to_qsp'								# Converter application path (exe in win).
+		self.player = 'C:\\Program Files\\QSP\\qsp580\\qspgui.exe'	# Player application path (exe in win)
 
 		# Default inits.
-		self.set_work_dir(None)
 		self.root = {}
 		self.save_txt2gam = False
 		self.include_scripts = []
 		self.prove_file_loc = None
 		self.export_files_paths = []
-		self.start_file = "" # File, that start in player.
+		self.start_file = '' # File, that start in player.
+		self.set_work_dir()
 
 		# Init work dir.
 		self.work_dir_init()
@@ -41,7 +41,7 @@ class BuildQSP():
 
 	def work_dir_init(self):
 		# Path to point file.
-		point_file = self.args["point_file"]
+		point_file = self.args['point_file']
 		# Search the project-file's folder.
 		self.set_work_dir(qsp.search_project_folder(point_file))
 
@@ -57,13 +57,13 @@ class BuildQSP():
 				file.write(project_json)
 			qsp.write_error_log("error.log", "[100] File '"+os.path.join(self.work_dir, 'project.json')+"' was created.\n")
 
-	def set_work_dir(self, work_dir):
+	def set_work_dir(self, work_dir:str=None) -> None:
 		self.work_dir = work_dir
 		# Change work dir:
 		if self.work_dir is not None:
 			os.chdir(self.work_dir)
 
-	def fields_init(self):
+	def fields_init(self) -> None:
 		if self.work_dir is None:
 			qsp.write_error_log("error.log", "[102] Builder design error. Work dir is not init.\n")
 			return
