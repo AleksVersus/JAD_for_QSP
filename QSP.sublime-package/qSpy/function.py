@@ -163,20 +163,27 @@ def need_point_file(root, start_file, point_file):
 		))
 	return (True if cond else False)
 
-def get_standart_project(point_file, player):
+def get_standart_project(point_file:str, player:str) -> dict:
 	"""
 		Unloading code.
 		Create standart text of project-file in json-format.
 	"""
-	game_name = os.path.splitext(os.path.split(point_file)[1])[0]
-	return ''.join([
-		'{\n\t"project":\n\t[\n\t\t{\n\t\t\t"build":".\\', game_name,
-		'.qsp",\n\t\t\t"files":\n\t\t\t[\n\t\t\t\t{"path":"',
-		point_file, '"}\n\t\t\t]\n\t\t}\n\t],\n\t"start":".\\',
-		game_name, '.qsp",\n\t"player":"', player, '"\n}'
-		])
+	game_name = os.path.splitext(os.path.split(point_file)[1])[0]+'.qsp'
+	project_dict = {
+		"project":
+		[
+			{
+				"build": game_name,
+				"files":
+				[
+					{"path": point_file}
+				]
+			}
+		],
+		"start": game_name,
+		"player": player}
 
-def print_builder_mode(build, run):
+def print_builder_mode(build:bool, run:bool) -> None:
 	"""
 		Unloading code.
 		Print builder's work mode.

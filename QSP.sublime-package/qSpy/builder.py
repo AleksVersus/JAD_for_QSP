@@ -39,7 +39,7 @@ class BuildQSP():
 			# Init start-file.
 			self.start_file_init()
 
-	def work_dir_init(self):
+	def work_dir_init(self) -> None:
 		point_file = self.args['point_file']
 		project_folder = qsp.search_project_folder(point_file)
 		self.set_work_dir(project_folder)
@@ -49,12 +49,13 @@ class BuildQSP():
 			# conditional is right, generate the new project-file.
 			self.set_work_dir(os.path.split(point_file)[0])
 
-			project_json = qsp.get_standart_project(point_file, self.player)
-			project_json = project_json.replace('\\', '\\\\')
+			project_dict = qsp.get_standart_project(point_file, self.player)
+			project_json = json.dumps(project_dict, indent=4)
+			project_file_path = os.path.join(self.work_dir, 'project.json')
 
-			with open(os.path.join(self.work_dir, "project.json"), "w", encoding="utf-8") as file:
+			with open(project_file_path, "w", encoding="utf-8") as file:
 				file.write(project_json)
-			qsp.write_error_log("[100] File «"+os.path.join(self.work_dir, 'project.json')+"» was created.")
+			qsp.write_error_log(f"[100] File «{project_file_path}» was created.")
 
 	def set_work_dir(self, work_dir:str=None) -> None:
 		self.work_dir = work_dir
