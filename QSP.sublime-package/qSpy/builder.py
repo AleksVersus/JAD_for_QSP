@@ -113,20 +113,20 @@ class BuildQSP():
 				self.prove_file_loc = None
 
 	def start_file_init(self):
-		if self.work_dir is not None:
-			os.chdir(self.work_dir)
-			if "start" in self.root:
-				# Start-file defined. Get from define.
-				self.start_file=os.path.abspath(self.root["start"])
-			if ((not "start" in self.root) or (not os.path.isfile(self.start_file))) and len(self.export_files_paths)>0:
-				# Start-file is not defined, but list of build-files is exist.
-				self.start_file=self.export_files_paths[0]
-				qsp.write_error_log(f"[104] main: Start-file is wrong. Used «{self.start_file}» for start the player.")
-			if qsp.need_point_file(self.root, self.start_file, self.args["point_file"]):
-				# Start-file is not defined, list of build-files is not exist, but run point_file.
-				self.start_file=self.args["point_file"]
-		else:
+		if self.work_dir is None:
 			qsp.write_error_log("[103] Builder design error. Work dir is not init.")
+			return None
+		if "start" in self.root:
+			# Start-file defined. Get from define.
+			self.start_file=os.path.abspath(self.root["start"])
+		if ((not "start" in self.root) or (not os.path.isfile(self.start_file))) and len(self.export_files_paths)>0:
+			# Start-file is not defined, but list of build-files is exist.
+			self.start_file=self.export_files_paths[0]
+			qsp.write_error_log(f"[104] main: Start-file is wrong. Used «{self.start_file}» for start the player.")
+		if self.need_point_file():
+			# Start-file is not defined, list of build-files is not exist, but run point_file.
+			self.start_file=self.args["point_file"]
+			
 
 	def build_and_run(self):
 		# Print builder's mode.
@@ -272,3 +272,15 @@ class BuildQSP():
 				proc.wait(0.1)
 			except subprocess.TimeoutExpired:
 				pass
+
+	def need_point_file(self):
+		"""
+			Unloading conditions.
+			If not `start` in root or not exist start-file, 
+			and running file is qsp, return True, other False.
+		"""
+		cond = all((
+			(not 'start' in self.root) or (not os.path.isfile(self.start_file)),
+			os.path.splitext(self.args['point_file'])[1]==".qsp"
+			))
+		return (True if cond else False)

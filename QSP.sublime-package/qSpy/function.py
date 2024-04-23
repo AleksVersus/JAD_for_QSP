@@ -151,18 +151,6 @@ def need_project_file(work_dir, point_file, player):
 		))
 	return (True if cond else False)
 
-def need_point_file(root, start_file, point_file):
-	"""
-		Unloading conditions.
-		If not `start` in root or not exist start-file, 
-		and running file is qsp, return True, other False.
-	"""
-	cond = all((
-		(not "start" in root) or (not os.path.isfile(start_file)),
-		os.path.splitext(point_file)[1]==".qsp"
-		))
-	return (True if cond else False)
-
 def get_point_project(point_file:str, player:str) -> dict:
 	"""
 		Unloading code.
