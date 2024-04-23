@@ -25,7 +25,7 @@ def get_files_list(folder, filters=None):
 			if len(filters)==0 or (sp[1] in filters):
 				build_files.append(os.path.join(abs_path, file))
 	if len(build_files)==0:
-		write_error_log(f'[201] Folder is empty. Prove path «{folder}».')
+		write_error_log(f'[200] Folder is empty. Prove path «{folder}».')
 	return build_files
 
 def compare_paths(path1, path2):
@@ -47,7 +47,7 @@ def gen_files_paths(files_array):
 		if os.path.isfile(file_path):
 			files_paths.append(file_path)
 		else:
-			write_error_log(f"[202] File don't exist. Prove path {file_path}.")
+			write_error_log(f"[201] File don't exist. Prove path {file_path}.")
 	return files_paths
 
 # из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
@@ -99,7 +99,7 @@ def search_project_folder(path:str, print_error:bool=True) -> str:
 	while not os.path.isfile(os.path.join(path, "project.json")):
 		if os.path.ismount(path):
 			if print_error:
-				write_error_log(f"[203] not found 'project.json' file for this project. Prove path {error}.")
+				write_error_log(f"[202] not found 'project.json' file for this project. Prove path {error}.")
 			break
 		path = os.path.split(path)[0]
 	else:
