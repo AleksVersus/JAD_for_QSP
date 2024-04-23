@@ -148,16 +148,17 @@ class BuildQSP():
 
 	def create_scans_loc(self):
 		# FoolProof.
-		if not (("scans" in self.root) and ("start" in self.root)):
-			qsp.write_error_log("[105] Builder design error. Prove file locations is not defined.")
+		if not (('scans' in self.root) and ('start' in self.root)):
+			qsp.write_error_log('[105] Builder design error. Prove file locations is not defined.')
 			return
 
 		found_files = [] # Absolute files paths.
 		start_file_folder = os.path.split(self.start_file)[0]
-		func_name = (self.root['scans']['location'] if 'location' in self.root['scans'] else 'prv_file')
+		scans = self.root['scans']
+		func_name = (scans['location'] if 'location' in scans else 'prv_file')
 
-		if "folders" in self.root["scans"]:
-			for folder in self.root["scans"]["folders"]:
+		if 'folders' in scans:
+			for folder in scans['folders']:
 				# Iterate through the folders, comparing the paths with start_file,
 				# to understand if the folder lies deeper relative to it.
 				sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(folder))
@@ -167,15 +168,15 @@ class BuildQSP():
 					found_files.extend(qsp.get_files_list(folder, filters=[]))
 				else:
 					# Folder is not relative to path. Is error.
-					qsp.write_error_log(f"[106] Folder «{folder}» is not in the project.")
+					qsp.write_error_log(f'[106] Folder «{folder}» is not in the project.')
 
-		if "files" in self.root["scans"]:
-			for file in self.root["scans"]["files"]:
+		if 'files' in scans:
+			for file in scans['files']:
 				sf, f = qsp.compare_paths(start_file_folder,os.path.abspath(file))
 				if sf == '':
 					found_files.append(os.path.abspath(file))
 				else:
-					qsp.write_error_log(f"[107] File «{file}» is not in the project.")
+					qsp.write_error_log(f'[107] File «{file}» is not in the project.')
 
 		qsp_file_body = [
 			'QSP-Game Функция для проверки наличия файлов.\n',
