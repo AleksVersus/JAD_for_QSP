@@ -210,7 +210,7 @@ class BuildQSP():
 		pp_markers={'Initial':True,'True':True,'False':False} # Preproc markers.
 		# Get instructions list from 'project'.
 		for instruction in self.root['project']:
-			build_files=[] # Files path for build.
+			build_files = [] # Files path for build.
 			if 'files' in instruction:
 				build_files.extend(qsp.gen_files_paths(instruction['files']))
 			if 'folders' in instruction:
@@ -228,7 +228,7 @@ class BuildQSP():
 				exit_qsp, exit_txt = qsp.exit_files(instruction['build'])
 			else:
 				exit_qsp, exit_txt = qsp.exit_files('game'+self.root['project'].index(instruction)+'.qsp')
-				qsp.write_error_log(f"[108] Key 'build' not found in project-list. Choose export name {exit_qsp}.")
+				qsp.write_error_log(f'[108] Key «build» not found in project-list. Choose export name {exit_qsp}.')
 			if 'postprocessor' in instruction:
 				# Include scripts in build instructions have priority.
 				include_scripts = instruction['postprocessors']
@@ -249,7 +249,8 @@ class BuildQSP():
 				qsps_file = NewQspsFile(input_file=exit_txt, output_file=exit_qsp)
 				qsps_file.convert()
 			else:
-				subprocess.run([self.converter, exit_txt, exit_qsp], stdout=subprocess.PIPE)
+				_run = [self.converter, exit_txt, exit_qsp, self.converter_param]
+				subprocess.run(_run, stdout=subprocess.PIPE)
 			if os.path.isfile(exit_qsp):
 				self.export_files_paths.append(exit_qsp)
 			# Delete temp file.
