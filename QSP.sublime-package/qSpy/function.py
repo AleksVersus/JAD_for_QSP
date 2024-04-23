@@ -163,7 +163,7 @@ def need_point_file(root, start_file, point_file):
 		))
 	return (True if cond else False)
 
-def get_standart_project(point_file:str, player:str) -> dict:
+def get_point_project(point_file:str, player:str) -> dict:
 	"""
 		Unloading code.
 		Create standart text of project-file in json-format.

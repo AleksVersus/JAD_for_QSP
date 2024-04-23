@@ -49,7 +49,7 @@ class BuildQSP():
 			# conditional is right, generate the new project-file.
 			self.set_work_dir(os.path.split(point_file)[0])
 
-			project_dict = qsp.get_standart_project(point_file, self.player)
+			project_dict = qsp.get_point_project(point_file, self.player)
 			project_json = json.dumps(project_dict, indent=4)
 			project_file_path = os.path.join(self.work_dir, 'project.json')
 
