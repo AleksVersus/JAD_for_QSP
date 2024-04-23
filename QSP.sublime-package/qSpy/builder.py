@@ -19,6 +19,7 @@ class BuildQSP():
 		# Init main fields:
 		self.args = args 											# Arguments from sys.
 		self.converter = 'qsps_to_qsp'								# Converter application path (exe in win).
+		self.converter_param = ''
 		self.player = 'C:\\Program Files\\QSP\\qsp580\\qspgui.exe'	# Player application path (exe in win)
 
 		# Default inits.
@@ -28,7 +29,7 @@ class BuildQSP():
 		self.prove_file_loc = None
 		self.export_files_paths = []
 		self.start_file = '' # File, that start in player.
-		self.set_work_dir()
+		self.work_dir = None
 
 		# Init work dir.
 		self.work_dir_init()
@@ -64,46 +65,50 @@ class BuildQSP():
 		if self.work_dir is not None:
 			os.chdir(self.work_dir)
 
-	def fields_init(self) -> None:
-		if self.work_dir is None:
-			qsp.write_error_log("[102] Builder design error. Work dir is not init.")
-			return
-		os.chdir(self.work_dir)
+	def fields_init(self) -> None:	
 		# Deserializing project-file:
-		with open("project.json","r",encoding="utf-8") as project_file:
+		project_json = os.path.join(self.work_dir, 'project.json')
+		with open(project_json,"r",encoding="utf-8") as project_file:
 			self.root = json.load(project_file)
 
 		# Get paths to converter and player (not Deafault)
-		if "converter" in self.root:
-			if os.path.isfile(os.path.abspath(self.root["converter"])):
-				self.converter = os.path.abspath(self.root["converter"])
-		if "player" in self.root:
-			if os.path.isfile(os.path.abspath(self.root["player"])):
-				self.player = os.path.abspath(self.root["player"])
+		if 'converter' in self.root:
+			converter = self.root['converter']
+			_is_file = lambda path: os.path.isfile(os.path.abspath(path))
+			if type(converter) == str and _is_file(converter):
+				self.converter = os.path.abspath(converter)
+				self.converter_param = ''
+			elif type(converter) == list and len(converter)>1 and _is_file(converter[0]):
+				self.converter  = os.path.abspath(converter[0])
+				self.converter_param = converter[1]
+			elif type(converter) == list and _is_file(converter[0]):
+				self.converter  = os.path.abspath(converter[0])
+				self.converter_param = ''
+
+		if 'player' in self.root:
+			if os.path.isfile(os.path.abspath(self.root['player'])):
+				self.player = os.path.abspath(self.root['player'])
 
 		# Save temp-files Mode:
-		if "save_txt2gam" in self.root:
-			if self.root["save_txt2gam"] == "True":
-				self.save_txt2gam = True
-			else:
-				self.save_txt2gam = False
+		if ('save_txt2gam' in self.root) and (self.root['save_txt2gam'] == 'True'):
+			self.save_txt2gam = True
 		else:
 			self.save_txt2gam = False
 
 		# Postprocessor's scripts list (or none):
-		if "postprocessors" in self.root:
-			self.include_scripts = self.root["postprocessors"]
+		if 'postprocessors' in self.root:
+			self.include_scripts = self.root['postprocessors']
 		else:
 			self.include_scripts = None
 
 		# Preprocessor's mode init.
-		if not "preprocessor" in self.root:
-			self.root["preprocessor"]="Off"
+		if not 'preprocessor' in self.root:
+			self.root['preprocessor'] = 'Off'
 
 		# Location's of scaned files name init.
-		if ("scans" in self.root) and ("start" in self.root):
-			if "destination" in self.root["scans"]:
-				self.prove_file_loc = self.root["scans"]["destination"]
+		if ('scans' in self.root) and ('start' in self.root):
+			if 'destination' in self.root['scans']:
+				self.prove_file_loc = self.root['scans']['destination']
 			else:
 				self.prove_file_loc = None
 
