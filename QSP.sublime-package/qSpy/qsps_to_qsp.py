@@ -25,26 +25,45 @@ class NewQspsFile():
 	"""
 		qsps-file, separated in locations
 	"""
-	def __init__(self, input_file="game.qsps", output_file=""):
-		self.input_file = os.path.abspath(input_file)
-		self.output_folder, file_full_name = os.path.split(self.input_file)
-		self.file_name = os.path.splitext(file_full_name)[0]
-		if output_file != "":
-			self.output_file = os.path.abspath(output_file)
-		else:
-			self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
+	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None):
+		"""
+			initialise. 
+		"""
+		# main fields:
 		self.locations_count = 0
 		self.locations = []
 		self.locations_id = {}
 		self.QSP_CODREMOV = 5
 		self.file_strings = []
-		if os.path.isfile(self.input_file):
-			with open(self.input_file, 'r', encoding='utf-8') as file:
-				self.file_strings = file.readlines()
-			self.file_body = ''.join(self.file_strings)
-			self.split_to_locations(self.file_strings)
+		self.converted_strings = None # output converted strings
+
+		# files fields
+		self.input_file = input_file
+		self.output_folder = None
+		self.file_name = None
+
+		# from file or filestrings
+		if input_file is not None:
+			# convert of exists file
+			self.input_file = os.path.abspath(input_file)
+			self.output_folder, file_full_name = os.path.split(self.input_file)
+			self.file_name = os.path.splitext(file_full_name)[0]
+			
+			if os.path.isfile(self.input_file):
+				with open(self.input_file, 'r', encoding='utf-8') as file:
+					self.file_strings = file.readlines()
+				self.file_body = ''.join(self.file_strings)
+				self.split_to_locations(self.file_strings)
+			else:
+				print(f'File «{self.input_file}» is not exist')
 		else:
-			print(f'File «{self.input_file}» is not exist')
+			# covert of data
+			self.file_strings = file_strings
+
+		if output_file is not None:
+			self.output_file = os.path.abspath(output_file)
+		elif not None in (self.output_folder, self.file_name):
+			self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
 
 	def split_to_locations(self, string_lines:list):
 		input_text = ''.join(string_lines)
@@ -156,17 +175,39 @@ class NewQspsFile():
 			return ""
 
 	def convert(self):
-		new_file_strings = []
-		new_file_strings.append('QSPGAME\n')
-		new_file_strings.append('qsps_to_qsp SublimeText QSP Package\n')
-		new_file_strings.append(self.decode_qsps_line('No')+'\n')
-		new_file_strings.append(self.decode_qsps_line(self.locations_count)+'\n')
+		if self.converted_strings is not None:
+			print('[301] Already converted.')
+			raise Exception('[301] Already converted.')
+			return None
+		self.converted_strings = []
+		self.converted_strings.append('QSPGAME\n')
+		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
+		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
+		self.converted_strings.append(self.decode_qsps_line(self.locations_count)+'\n')
 		for location in self.locations:
-			new_file_strings.append(self.decode_qsps_line(location.name)+'\n\n')
-			new_file_strings.append(self.decode_location(location.code)+'\n')
-			new_file_strings.append(self.decode_qsps_line(0)+'\n')
-		with open(self.output_file, 'w', encoding='utf-16le') as file:
-			file.write(''.join(new_file_strings))
+			self.converted_strings.append(self.decode_qsps_line(location.name)+'\n\n')
+			self.converted_strings.append(self.decode_location(location.code)+'\n')
+			self.converted_strings.append(self.decode_qsps_line(0)+'\n')
+	
+	def save_qsps(self, input_file:str=None) -> None:
+		if self.input_file is None and input_file is None:
+			print('[302] Not input path.')
+			raise Exception('[302] Not input path.')
+			return None
+		if input_file is None:
+			input_file = self.input_file
+		with open(input_file, 'w', encoding='utf-16le') as file:
+			file.write(''.join(self.file_strings))
+
+	def save_qsp(self, output_file:str=None) -> None:
+		if self.output_file is None and output_file is None:
+			print('[303] Not output path.')
+			raise Exception('[303] Not output path.')
+			return None
+		if output_file is None:
+			output_file = self.output_file
+		with open(output_file, 'w', encoding='utf-16le') as file:
+			file.write(''.join(self.converted_strings))
 
 def main():
 	file = NewQspsFile(input_file="example.qsps")

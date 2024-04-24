@@ -206,7 +206,7 @@ class ModuleQSP():
 
 		# self.code_system = 'utf-8'
 		self.converter = 'qsps_to_qsp'
-		self.converter_param
+		self.converter_param = None
 
 		self.qsps_code = []
 
@@ -284,7 +284,9 @@ class ModuleQSP():
 				# text_file = src.read() + '\r\n'
 			# text += src.read() + '\r\n'
 
-	def postprocess_qsps(self, include_scripts:list) -> None:
+	def postprocess_qsps(self) -> None:
+		if len(self.include_scripts) == 0:
+			return None
 		# for script in include_scripts:
 		# 	subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
 
@@ -316,6 +318,18 @@ class ModuleQSP():
 		text = text.encode(code_system, 'ignore').decode(code_system,'ignore')
 		with open(self.output_txt, 'w', encoding=code_system) as file:
 			file.write(text)
+
+	def convert(self, save_temp_file:str) -> None:
+		if self.converter == 'qsps_to_qsp':
+			qsps_file = NewQspsFile(None, self.output_qsp, self.qsps_code)
+			qsps_file.convert()
+			if save_temp_file: self.save_temp_file()
+		else:
+			self.save_temp_file()
+			_run = [self.converter, self.output_txt, self.output_qsp, self.converter_param]
+			subprocess.run(_run, stdout=subprocess.PIPE)
+			if not save_temp_file:
+				os.remove(exit_txt)
 
 class SrcQspsFile():
 

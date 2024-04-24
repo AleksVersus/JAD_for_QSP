@@ -130,7 +130,6 @@ class BuildQSP():
 			self.start_file = self.args['point_file']
 		return self.start_file
 			
-
 	def build_and_run(self):
 		# Print builder's mode.
 		qsp.print_builder_mode(self.args['build'], self.args['run'])
@@ -239,20 +238,11 @@ class BuildQSP():
 			# qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
 			qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
 			# Run Postprocessor if include scripts are exists.
-			if include_scripts is not None:
-				qsp_module.postprocess_qsps(include_scripts)
+			qsp_module.postprocess_qsps()
 			# Convert TXT2GAM at `.qsp`
-			if self.converter == 'qsps_to_qsp':
-				qsps_file = NewQspsFile(input_file=exit_txt, output_file=exit_qsp)
-				qsps_file.convert()
-			else:
-				_run = [self.converter, exit_txt, exit_qsp, self.converter_param]
-				subprocess.run(_run, stdout=subprocess.PIPE)
+			qsp_module.convert(self.save_txt2gam)
 			if os.path.isfile(exit_qsp):
-				self.export_files_paths.append(exit_qsp)
-			# Delete temp file.
-			if not self.save_txt2gam:
-				os.remove(exit_txt)
+				self.export_files_paths.append(exit_qsp)			
 
 	def run_qsp_files(self):
 		start_file = self.get_start_file()
