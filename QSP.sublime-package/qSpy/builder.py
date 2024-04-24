@@ -207,11 +207,12 @@ class BuildQSP():
 		# 	self.root['project'][0]['files'] = [{'path':'.\\prvFile_location.qspst'}]		
 
 	def build_qsp_files(self):
-		pp_markers = {'Initial':True,'True':True,'False':False} # Preproc markers.
+		pp_markers = {'Initial':True, 'True':True, 'False':False} # Preproc markers, variables.
 		project = self.root['project']
 		# Get instructions list from 'project'.
 		for instruction in project:
 			qsp_module = qsp.ModuleQSP()
+			qsp_module.set_converter(self.converter, self.converter_param)
 			if 'files' in instruction:
 				qsp_module.extend_by_files(instruction['files'])
 			if 'folders' in instruction:
@@ -235,13 +236,11 @@ class BuildQSP():
 				qsp_module.extend_scripts(self.include_scripts)
 
 			# Build TXT2GAM-file
-			qsp_module.set_code_system('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
 			# qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
-			qsp_module.construct_qsps(self.root['preprocessor'], pp_markers)
+			qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
 			# Run Postprocessor if include scripts are exists.
 			if include_scripts is not None:
-				for script in include_scripts:
-					subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
+				qsp_module.postprocess_qsps(include_scripts)
 			# Convert TXT2GAM at `.qsp`
 			if self.converter == 'qsps_to_qsp':
 				qsps_file = NewQspsFile(input_file=exit_txt, output_file=exit_qsp)

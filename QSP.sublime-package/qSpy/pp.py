@@ -241,9 +241,15 @@ def pp_string(text_lines, string, args):
 # основная функция
 def pp_this_file(file_path, args, variables = None):
 	""" эта функция будет обрабатывать файл и возвращать результат после препроцессинга """
-	if variables is None: variables = { "Initial": True, "True": True, "False": False } # стандартные значения, если не указаны
+	with open(file_path, 'r', encoding='utf-8') as pp_file:
+		file_lines = pp_file.readlines() # получаем список всех строк файла
+	result_lines = pp_this_lines(file_lines, args, variables)
+	return ''.join(result_lines)
+
+def pp_this_lines(file_lines:list, args:dict, variables:dict = None) -> list:
+	# стандартные значения, если не указаны:
+	if variables is None: variables = { "Initial": True, "True": True, "False": False }
 	result_text = [] # результат обработки: список строк
-	output_text = "" # возвращаемый функцией текст
 	arguments = {
 		# словарь режимов (текущих аргументов):
 		"include": True, # пока включен этот режим, строки добавляются в результат
@@ -255,8 +261,6 @@ def pp_this_file(file_path, args, variables = None):
 		"if": { "include": True, "pp": True, "savecomm": False } # список инструкций до выполнения блока условий
 	}
 	replace_args(arguments, args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
-	with open(file_path, 'r', encoding='utf-8') as pp_file:
-		file_lines = pp_file.readlines() # получаем список всех строк файла
 	# перебираем строки в файле
 	for line in file_lines:
 		command = re.match(r'^!@pp:', line) # проверяем является ли строка командой
@@ -305,9 +309,7 @@ def pp_this_file(file_path, args, variables = None):
 					result_text.append(line)
 	if arguments["openif"] == True:
 		close_condition(arguments)
-	for line in result_text:
-		output_text += line
-	return output_text
+	return result_text
 
 # main
 def main():

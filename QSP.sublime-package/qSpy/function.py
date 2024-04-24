@@ -1,4 +1,5 @@
 import sys
+import subprocess
 import os
 
 from . import pp
@@ -203,7 +204,9 @@ class ModuleQSP():
 
 		self.include_scripts = []
 
-		self.code_system = 'utf-8'
+		# self.code_system = 'utf-8'
+		self.converter = 'qsps_to_qsp'
+		self.converter_param
 
 		self.qsps_code = []
 
@@ -240,46 +243,79 @@ class ModuleQSP():
 	def extend_scripts(self, scripts:list) -> None:
 		self.include_scripts.extend(scripts)
 
-	def set_code_system(self, code_system:str='utf-8') -> None:
-		self.code_system = code_system
+	def choose_code_system(self) -> str:
+		return ('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
 
-	def construct_qsps(self, pponoff, pp_markers):
-		# получив список файлов, из которых мы собираем выходной файл, делаем следующее
-		text="" # выходной текст
-		for path in build_list:
-			# открываем путь как файл
-			with open(path,"r",encoding="utf-8") as file:
-				if pponoff=="Hard-off":
-					text_file=file.read()+"\r\n" # файл не отправляется на препроцессинг
-				elif pponoff=="Off":
-					first_string=file.readline()[:]
-					second_string=file.readline()[:]
-					file.seek(0)
-					if first_string=="!@pp:on\n" or second_string=="!@pp:on\n":
-						arguments={"include":True, "pp":True, "savecomm":False}
-						# файл отправляется на препроцессинг
-						text_file = pp.pp_this_file(path, arguments, pp_markers)+'\r\n'
-					else:
-						text_file=file.read()+"\r\n"
-				elif pponoff=="On":
-					first_string=file.readline()[:]
-					second_string=file.readline()[:]
-					file.seek(0)
-					if first_string=="!@pp:off\n" or second_string=="!@pp:off\n":
-						text_file=file.read()+"\r\n"
-					else:
-						arguments={"include":True, "pp":True, "savecomm":False}
-						text_file=pp.pp_this_file(path,arguments,pp_markers)+'\r\n'
-				text+=text_file
+	def set_converter(self, converter:str='qsps_to_qsp', args:str='') -> None:
+		""" set path to converter, or converter name """
+		self.converter = converter
+		self.converter_param = args
+
+	def preprocess_qsps(self, pponoff:str, pp_markers:dict) -> None:
+		""" 
+			На данном этапе у нас есть объекты класса SrcQspsFile, которые включают в себя список
+			строк для каждого файла, т.е. цикл чтения уже завершён. Теперь мы можем обработать эти
+			виртуальные файлы, прогнав их через препроцессор.
+
+			При этом, если используется внешний конвертер,
+			то файлы сохраняются в виде временных файлов.
+			pponoff — управление препроцессором main
+			pp_markers — переменные и метки
+		"""
+		# text = "" # выходной текст
+		for src in self.src_qsps_file:
+			if pponoff == 'Hard-off':
+				# text_file = src.read() + '\r\n' # файл не отправляется на препроцессинг
+				...
+			elif pponoff == 'Off':
+				first_string = src.string(0)
+				second_string = src.string(1)
+				if first_string == "!@pp:on\n" or second_string == "!@pp:on\n":
+					arguments = {"include": True, "pp": True, "savecomm": False}
+					# файл отправляется на препроцессинг
+					src.preprocess(arguments, pp_markers)
+				# text_file = src.read() + "\r\n"
+			elif pponoff == 'On':
+				first_string = src.string(0)
+				second_string = src.string(1)
+				if not (first_string == "!@pp:off\n" or second_string == "!@pp:off\n"):
+					arguments = {"include":True, "pp":True, "savecomm":False}
+					src.preprocess(arguments, pp_markers)
+				# text_file = src.read() + '\r\n'
+			# text += src.read() + '\r\n'
+
+	def postprocess_qsps(self, include_scripts:list) -> None:
+		# for script in include_scripts:
+		# 	subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
+
+		# ПЕрехват принта
+		# import sys
+		# from subprocess import Popen, PIPE
+
+		# with Popen([sys.executable, '-u', 'child.py'],
+		#            stdout=PIPE, universal_newlines=True) as process:
+		#     for line in process.stdout:
+		#         print(line.replace('!', '#'), end='')
+		...
+
+	def read(self) -> str:
+		""" Get outer text of module """
+		text = ""
+		for src in self.src_qsps_file:
+			text += src.read() + '\r\n'
+		return text
+
+	def save_temp_file(self):
 		# если папка не создана, нужно её создать
-		path_folder=os.path.split(new_file)[0]
-		if os.path.exists(path_folder)!=True:
+		path_folder = os.path.split(self.output_txt)[0]
+		if not os.path.exists(path_folder):
 			os.makedirs(path_folder)
+		text = self.read()
+		code_system = self.choose_code_system()
 		# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
-		text=text.encode(code_system, 'ignore').decode(code_system,'ignore')
-		with open(new_file,"w",encoding=code_system) as file:
+		text = text.encode(code_system, 'ignore').decode(code_system,'ignore')
+		with open(self.output_txt, 'w', encoding=code_system) as file:
 			file.write(text)
-
 
 class SrcQspsFile():
 
@@ -289,6 +325,20 @@ class SrcQspsFile():
 
 		with open(file_path, 'r', encoding='utf-8') as fp:
 			self.file_strings = fp.readlines()
+
+	def read(self) -> str:
+		""" Return of src in text-format """
+		return ''.join(self.files_strings)
+
+	def get_string(self, number:int) -> str:
+		""" return string of src """
+		return self.file_strings[number]
+
+	def preprocess(self, args:dict, pp_variables:dict) -> None:
+		"""
+			Препроцессинг файла. Пока что используется внешний файл
+		"""
+		self.file_strings = pp.pp_this_lines(self.file_strings, args, variables)
 
 if __name__=="__main__":
 	pass
