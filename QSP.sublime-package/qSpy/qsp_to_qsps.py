@@ -1,11 +1,10 @@
-import sys
 import os
-import re
 
 class QspToQsps():
 	"""Converter ".qsp" game files into qsps-files. Based on converter by Werewolf in JS.
 	stand `game-file` and run script for getting qsps-format file"""
-	def __init__(self, args={}):
+	def __init__(self, args:dict=None):
+		if args is None: args = {}
 		self.QSP_CODREMOV = 5 #constanta
 		self.args = args
 		if 'game-file' in self.args:

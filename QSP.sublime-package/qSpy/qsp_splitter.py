@@ -1,6 +1,4 @@
 # Sorry my Bad English.
-
-import sys
 import os
 import re
 import codecs

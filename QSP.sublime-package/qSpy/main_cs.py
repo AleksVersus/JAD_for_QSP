@@ -1,8 +1,5 @@
 # Sorry my bad English.
-import sys
 import os
-
-import re
 
 from .qsp_splitter import QspSplitter
 

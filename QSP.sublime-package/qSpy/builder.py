@@ -1,12 +1,10 @@
-import sys
 import os 
 import subprocess
 import json
 
 # Importing my modules.
 from . import function as qsp
-from .qsps_to_qsp import NewQspsFile
-from .qsps_to_qsp import NewQspLocation
+from .qsps_to_qsp import ModuleQSP
 # import qSpy.pp as pp
 
 class BuildQSP():
@@ -210,7 +208,7 @@ class BuildQSP():
 		project = self.root['project']
 		# Get instructions list from 'project'.
 		for instruction in project:
-			qsp_module = qsp.ModuleQSP()
+			qsp_module = ModuleQSP()
 			qsp_module.set_converter(self.converter, self.converter_param)
 			if 'files' in instruction:
 				qsp_module.extend_by_files(instruction['files'])
@@ -226,7 +224,7 @@ class BuildQSP():
 				qsp_module.exit_files(instruction['build'])
 			else:
 				qsp_module.exit_files(f'game{project.index(instruction)}.qsp')
-				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {exit_qsp}.')
+				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
 
 			if 'postprocessor' in instruction:
 				# Include scripts in build instructions have priority.
@@ -241,8 +239,8 @@ class BuildQSP():
 			qsp_module.postprocess_qsps()
 			# Convert TXT2GAM at `.qsp`
 			qsp_module.convert(self.save_txt2gam)
-			if os.path.isfile(exit_qsp):
-				self.export_files_paths.append(exit_qsp)			
+			if os.path.isfile(qsp_module.output_qsp):
+				self.export_files_paths.append(qsp_module.output_qsp)			
 
 	def run_qsp_files(self):
 		start_file = self.get_start_file()
