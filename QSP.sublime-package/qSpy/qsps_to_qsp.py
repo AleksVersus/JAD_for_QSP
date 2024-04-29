@@ -7,7 +7,7 @@ import os
 import re
 import subprocess
 
-import pp
+from .pp import pp_this_lines
 from .function import clear_locname
 from .function import get_files_list
 from .function import write_error_log
@@ -58,17 +58,19 @@ class NewQspsFile():
 				with open(self.input_file, 'r', encoding='utf-8') as file:
 					self.file_strings = file.readlines()
 				self.file_body = ''.join(self.file_strings)
-				self.split_to_locations(self.file_strings)
 			else:
 				print(f'File «{self.input_file}» is not exist')
 		else:
 			# covert of data
 			self.file_strings = file_strings
+		self.split_to_locations(self.file_strings)
 
 		if output_file is not None:
 			self.output_file = os.path.abspath(output_file)
 		elif not None in (self.output_folder, self.file_name):
 			self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
+
+		self.byte_size = 0
 
 	def split_to_locations(self, string_lines:list):
 		input_text = ''.join(string_lines)
@@ -167,6 +169,7 @@ class NewQspsFile():
 		exit_line = ""
 		for point in qsps_line:
 			exit_line += (chr(-self.QSP_CODREMOV) if ord(point) == self.QSP_CODREMOV else chr(ord(point) - self.QSP_CODREMOV))
+		self.byte_size += len(exit_line)
 		return exit_line
 
 	def decode_location(self, code):
@@ -193,6 +196,7 @@ class NewQspsFile():
 			self.converted_strings.append(self.decode_qsps_line(location.name)+'\n\n')
 			self.converted_strings.append(self.decode_location(location.code)+'\n')
 			self.converted_strings.append(self.decode_qsps_line(0)+'\n')
+		print(f'byte_size {self.byte_size}')
 	
 	def save_qsps(self, input_file:str=None) -> None:
 		if self.input_file is None and input_file is None:
@@ -346,10 +350,15 @@ class ModuleQSP():
 		with open(self.output_txt, 'w', encoding=code_system) as file:
 			file.write(text)
 
-	def convert(self, save_temp_file:str) -> None:
+	def extract_qsps(self):
+		for src in self.src_qsps_file:
+			self.qsps_code.extend(src.get_strings())
+
+	def convert(self, save_temp_file:bool) -> None:
 		if self.converter == 'qsps_to_qsp':
 			qsps_file = NewQspsFile(None, self.output_qsp, self.qsps_code)
 			qsps_file.convert()
+			qsps_file.save_qsp(self.output_qsp)
 			if save_temp_file: self.save_temp_file()
 		else:
 			self.save_temp_file()
@@ -375,11 +384,14 @@ class SrcQspsFile():
 		""" return string of src """
 		return self.file_strings[number]
 
+	def get_strings(self) -> list:
+		return self.file_strings
+
 	def preprocess(self, args:dict, pp_variables:dict) -> None:
 		"""
 			Препроцессинг файла. Пока что используется внешний файл
 		"""
-		self.file_strings = pp.pp_this_lines(self.file_strings, args, pp_variables)
+		self.file_strings = pp_this_lines(self.file_strings, args, pp_variables)
 
 def main():
 	file = NewQspsFile(input_file="example.qsps")
