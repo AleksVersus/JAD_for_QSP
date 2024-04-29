@@ -5,7 +5,8 @@ import json
 # Importing my modules.
 from . import function as qsp
 from .qsps_to_qsp import ModuleQSP
-# import qSpy.pp as pp
+import time
+
 
 class BuildQSP():
 	"""
@@ -204,6 +205,7 @@ class BuildQSP():
 		# 	self.root['project'][0]['files'] = [{'path':'.\\prvFile_location.qspst'}]		
 
 	def build_qsp_files(self):
+		start_time = time.time()
 		pp_markers = {'Initial':True, 'True':True, 'False':False} # Preproc markers, variables.
 		project = self.root['project']
 		# Get instructions list from 'project'.
@@ -220,6 +222,7 @@ class BuildQSP():
 			if not self.prove_file_loc is None:
 				qsp_module.extend_by_files([{'path': self.prove_file_loc}])
 				self.prove_file_loc = None
+			# print(f'extended files: {start_time - time.time()}')
 			if 'build' in instruction:
 				qsp_module.exit_files(instruction['build'])
 			else:
@@ -235,10 +238,15 @@ class BuildQSP():
 			# Build TXT2GAM-file
 			# qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
 			qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
+			# print(f'preprocess: {start_time - time.time()}')
+			qsp_module.extract_qsps()
+			# print(f'extracting qsps: {start_time - time.time()}')
 			# Run Postprocessor if include scripts are exists.
 			qsp_module.postprocess_qsps()
+			print(f'postprocess: {time.time() - start_time}')
 			# Convert TXT2GAM at `.qsp`
 			qsp_module.convert(self.save_txt2gam)
+			print(f'convert: {time.time() - start_time}')
 			if os.path.isfile(qsp_module.output_qsp):
 				self.export_files_paths.append(qsp_module.output_qsp)			
 
