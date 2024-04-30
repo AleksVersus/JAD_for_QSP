@@ -37,57 +37,6 @@ def compare_paths(path1:str, path2:str):
 	path2 = os.path.relpath(path2, start)
 	return path1, path2
 
-def gen_files_paths(files_array):
-	"""
-		Convert dictionary list in paths list.
-	"""
-	files_paths=[]
-	for el in files_array:
-		file_path=os.path.abspath(el["path"])
-		if os.path.isfile(file_path):
-			files_paths.append(file_path)
-		else:
-			write_error_log(f"[201] File don't exist. Prove path {file_path}.")
-	return files_paths
-
-# из списка файлов .qsps .qsp-txt и .txt-qsp создаём файл .txt в фформате TXT2GAM по указанному пути
-def construct_file(build_list, new_file, pponoff, pp_markers, code_system='utf-16-le'):
-	# получив список файлов, из которых мы собираем выходной файл, делаем следующее
-	text="" # выходной текст
-	for path in build_list:
-		# открываем путь как файл
-		with open(path,"r",encoding="utf-8") as file:
-			if pponoff=="Hard-off":
-				text_file=file.read()+"\r\n" # файл не отправляется на препроцессинг
-			elif pponoff=="Off":
-				first_string=file.readline()[:]
-				second_string=file.readline()[:]
-				file.seek(0)
-				if first_string=="!@pp:on\n" or second_string=="!@pp:on\n":
-					arguments={"include":True, "pp":True, "savecomm":False}
-					# файл отправляется на препроцессинг
-					text_file = pp.pp_this_file(path, arguments, pp_markers)+'\r\n'
-				else:
-					text_file=file.read()+"\r\n"
-			elif pponoff=="On":
-				first_string=file.readline()[:]
-				second_string=file.readline()[:]
-				file.seek(0)
-				if first_string=="!@pp:off\n" or second_string=="!@pp:off\n":
-					text_file=file.read()+"\r\n"
-				else:
-					arguments={"include":True, "pp":True, "savecomm":False}
-					text_file=pp.pp_this_file(path,arguments,pp_markers)+'\r\n'
-			text+=text_file
-	# если папка не создана, нужно её создать
-	path_folder=os.path.split(new_file)[0]
-	if os.path.exists(path_folder)!=True:
-		os.makedirs(path_folder)
-	# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
-	text=text.encode(code_system, 'ignore').decode(code_system,'ignore')
-	with open(new_file,"w",encoding=code_system) as file:
-		file.write(text)
-
 def search_project_folder(path:str, print_error:bool=True) -> str:
 	"""
 		Find project-file and return folder path whith project.
@@ -154,6 +103,7 @@ def get_point_project(point_file:str, player:str) -> dict:
 		],
 		"start": game_name,
 		"player": player}
+	return project_dict
 
 def print_builder_mode(build:bool, run:bool) -> None:
 	"""
