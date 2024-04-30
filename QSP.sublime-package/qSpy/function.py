@@ -106,27 +106,20 @@ def search_project_folder(path:str, print_error:bool=True) -> str:
 		return path
 
 # функция возвращает словарь команд, в зависимости от полученных от системы аргументов
-def parse_args(arguments):
+def parse_args(qsp_mode:str, point_file:str) -> dict:
 	"""
 		Returns modes dictionary, based on systems arguments.
 	"""
-	args={}
-	for a in arguments:
-		if a in ("--buildandrun", "--br", "--b", "--build"):
-			args["build"]=True
-		if a in ("--buildandrun", "--br", "--r", "--run"):
-			args["run"]=True
-		if os.path.isfile(a):
-			args["point_file"]=os.path.abspath(a)
-	if (not "build" in args) and (not "run" in args):
-		args["build"]=True
-		args["run"]=True
-	if not "build" in args:
-		args["build"]=False
-	if not "run" in args:
-		args["run"]=False
-	if not "point_file" in args:
-		args["point_file"]=os.path.join(os.getcwd(), sys.argv[0])
+	args = {}
+
+	args['build'] = (qsp_mode in ('--br', '--build'))
+	args['run'] = (qsp_mode in ('--br', '--run'))	
+
+	if os.path.isfile(point_file):
+		args['point_file'] = os.path.abspath(point_file)
+	else:
+		args['point_file'] = os.path.join(os.getcwd(), sys.argv[0])
+
 	return args
 
 def need_project_file(work_dir, point_file, player):

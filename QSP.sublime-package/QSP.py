@@ -25,7 +25,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 	def run(self, qsp_mode="--br"):
 		# Three commands from arguments.
 		argv = self.window.extract_variables()
-		args = qspf.parse_args([qsp_mode, argv['file']])
+		args = qspf.parse_args(qsp_mode, argv['file'])
 
 		# -----------------------------------------------------------------------
 		# args["point_file"] - start point for search `project.json`

@@ -9,8 +9,8 @@ class QSpyFuncs:
 		Pad for extract functions in namespace.
 	"""
 	@staticmethod
-	def parse_args(arguments:dict) -> dict:
-		return parse_args(arguments)
+	def parse_args(qsp_mode:str, point_file:str) -> dict:
+		return parse_args(qsp_mode, point_file)
 
 	@staticmethod
 	def search_project_folder(path:str, print_error:bool=True) -> str:
