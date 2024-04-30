@@ -378,7 +378,7 @@ class SrcQspsFile():
 
 	def read(self) -> str:
 		""" Return of src in text-format """
-		return ''.join(self.files_strings)
+		return ''.join(self.file_strings)
 
 	def get_string(self, number:int) -> str:
 		""" return string of src """
