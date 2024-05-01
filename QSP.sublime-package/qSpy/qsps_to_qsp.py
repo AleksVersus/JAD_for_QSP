@@ -6,31 +6,40 @@ import sys
 import os
 import re
 import subprocess
+import concurrent.futures
 
 from .pp import pp_this_lines
 from .function import clear_locname
 from .function import get_files_list
 from .function import write_error_log
+import time
 
 class NewQspLocation():
 	"""
 		qsp-locations from qsps-file
 	"""
-	def __init__(self, name, code=None):
+	def __init__(self, name:str, code:list=None) -> None:
 		self.name = name
 		self.code = ([] if code == None else code)
 
-	def change_name(self, name):
+		self.decode_name = None
+		self.decode_code = None
+
+	def change_name(self, name:str) -> None:
 		self.name = name
 
-	def change_code(self, code):
+	def change_code(self, code:list) -> None:
 		self.code = code
+
+	def decode(self) -> None:
+		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
+		self.decode_code = NewQspsFile.decode_location(self.code)
 
 class NewQspsFile():
 	"""
 		qsps-file, separated in locations
 	"""
-	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None):
+	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None) -> None:
 		"""
 			initialise. 
 		"""
@@ -70,9 +79,9 @@ class NewQspsFile():
 		elif not None in (self.output_folder, self.file_name):
 			self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
 
-		self.byte_size = 0
+		self.qsploc_end = NewQspsFile.decode_qsps_line(str(0))
 
-	def split_to_locations(self, string_lines:list):
+	def split_to_locations(self, string_lines:list) -> None:
 		input_text = ''.join(string_lines)
 		location_code = ""
 		mode = {'location-name': ""}
@@ -139,7 +148,8 @@ class NewQspsFile():
 		else:
 			return None, '', '', string_line
 
-	def get_qsplocs(self):
+	def get_qsplocs(self) -> list:
+		""" Return qsp-location for adding to ws """
 		qsp_locs = []
 		for location in self.locations:
 			re_name = clear_locname(location.name)
@@ -164,25 +174,25 @@ class NewQspsFile():
 			print("'"+location_name+"'")
 			print(location_code)
 
-	def decode_qsps_line(self, qsps_line):
-		if type(qsps_line) == int: qsps_line = str(qsps_line)
-		exit_line = ""
+	@staticmethod
+	def decode_qsps_line(qsps_line:str='', qsp_codremov:int=5) -> str:
+		""" Decode qsps_line to qsp_coded_line """
+		exit_line = ''
 		for point in qsps_line:
-			exit_line += (chr(-self.QSP_CODREMOV) if ord(point) == self.QSP_CODREMOV else chr(ord(point) - self.QSP_CODREMOV))
-		self.byte_size += len(exit_line)
+			exit_line += (chr(-qsp_codremov) if ord(point) == qsp_codremov else chr(ord(point) - qsp_codremov))
 		return exit_line
 
-	def decode_location(self, code):
+	@staticmethod
+	def decode_location(code:list, qsp_codremov:int=5) -> str:
 		if len(code)>0:
-			exit_line = ""
 			last_line = code.pop()[:-1]
-			for string in code:
-				exit_line += string.replace('\n', '\r\n')
-			return self.decode_qsps_line(exit_line)+self.decode_qsps_line(last_line)
+			exit_line = ''.join(code).replace('\n', '\r\n')
+			return NewQspsFile.decode_qsps_line(exit_line)+NewQspsFile.decode_qsps_line(last_line)
 		else:
-			return ""
+			return ''
 
 	def convert(self):
+		start_time = time.time()
 		if self.converted_strings is not None:
 			print('[301] Already converted.')
 			raise Exception('[301] Already converted.')
@@ -191,12 +201,16 @@ class NewQspsFile():
 		self.converted_strings.append('QSPGAME\n')
 		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
 		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
-		self.converted_strings.append(self.decode_qsps_line(self.locations_count)+'\n')
+		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\n')
+		_decode_location = lambda l: l.decode()
+		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
+		    for location in self.locations:
+		        executor.submit(_decode_location, location)
 		for location in self.locations:
-			self.converted_strings.append(self.decode_qsps_line(location.name)+'\n\n')
-			self.converted_strings.append(self.decode_location(location.code)+'\n')
-			self.converted_strings.append(self.decode_qsps_line(0)+'\n')
-		print(f'byte_size {self.byte_size}')
+			self.converted_strings.append(location.decode_name + '\n\n')
+			self.converted_strings.append(location.decode_code + '\n')
+			self.converted_strings.append(self.qsploc_end + '\n')
+		print(f'qsps.converted: {time.time() - start_time}')
 	
 	def save_qsps(self, input_file:str=None) -> None:
 		if self.input_file is None and input_file is None:
