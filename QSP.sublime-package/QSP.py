@@ -28,9 +28,9 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		args = qspf.parse_args(qsp_mode, argv['file'])
 
 		# -----------------------------------------------------------------------
-		# args["point_file"] - start point for search `project.json`
-		# args["build"] - command for build the project
-		# args["run"] - command for run the project
+		# args['point_file'] - start point for search `project.json`
+		# args['build'] - command for build the project
+		# args['run'] - command for run the project
 		# -----------------------------------------------------------------------
 		# old_time = time.time()
 		# Initialise of Builder:
