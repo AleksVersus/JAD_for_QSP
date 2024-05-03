@@ -18,17 +18,17 @@ class BuildQSP():
 		# Init main fields:
 		self.args = args 											# Arguments from sys.
 		self.converter = 'qsps_to_qsp'								# Converter application path (exe in win).
-		self.converter_param = ''
+		self.converter_param = ''									# Converter's parameters (key etc.)
 		self.player = 'C:\\Program Files\\QSP\\qsp580\\qspgui.exe'	# Player application path (exe in win)
 
 		# Default inits.
-		self.root = {}
-		self.save_txt2gam = False
-		self.include_scripts = []
-		self.prove_file_loc = None
-		self.export_files_paths = []
-		self.start_file = '' # File, that start in player.
-		self.work_dir = None
+		self.root = {}					# qsp-project.json
+		self.save_temp_files = False	# save temporary qsps-files or not
+		self.include_scripts = None		# postprocessor's py-scripts
+		self.scanned_files_qsps = None	# name of location for scanned files
+		self.export_files_paths = []	# Output files' paths (QSP-files, modules)
+		self.start_file = ''			# File, that start in player.
+		self.work_dir = None			# workdir - is dir of qsp-project.json
 
 		# Init work dir.
 		self.work_dir_init()
@@ -40,6 +40,10 @@ class BuildQSP():
 			self.start_file_init()
 
 	def work_dir_init(self) -> None:
+		"""
+			Initialise of workdir. If qsp-project.json is not exist,
+			workdir sets at dir of point file.
+		"""
 		point_file = self.args['point_file']
 		project_folder = qsp.search_project_folder(point_file)
 
@@ -89,16 +93,12 @@ class BuildQSP():
 				self.player = os.path.abspath(self.root['player'])
 
 		# Save temp-files Mode:
-		if ('save_txt2gam' in self.root) and (self.root['save_txt2gam'] == 'True'):
-			self.save_txt2gam = True
-		else:
-			self.save_txt2gam = False
+		if ('save_temp_files' in self.root):
+			self.save_temp_files = self.root['save_temp_files']
 
 		# Postprocessor's scripts list (or none):
 		if 'postprocessors' in self.root:
 			self.include_scripts = self.root['postprocessors']
-		else:
-			self.include_scripts = None
 
 		# Preprocessor's mode init.
 		if not 'preprocessor' in self.root:
@@ -107,9 +107,9 @@ class BuildQSP():
 		# Location's of scaned files name init.
 		if ('scans' in self.root) and ('start' in self.root):
 			if 'destination' in self.root['scans']:
-				self.prove_file_loc = self.root['scans']['destination']
+				self.scanned_files_qsps = self.root['scans']['destination']
 			else:
-				self.prove_file_loc = None
+				self.scanned_files_qsps = None
 
 	def start_file_init(self):
 		if self.work_dir is None:
@@ -119,7 +119,8 @@ class BuildQSP():
 			# Start-file defined. Get from define.
 			self.start_file = os.path.abspath(self.root['start'])
 
-	def get_start_file(self) -> None:
+	def get_start_file(self) -> str:
+		""" Get file what run in player after building """
 		if self.need_build_file():
 			# Start-file is not defined, but list of build-files is exist.
 			self.start_file = self.export_files_paths[0]
@@ -134,7 +135,7 @@ class BuildQSP():
 		qsp.print_builder_mode(self.args['build'], self.args['run'])
 
 		if self.args['build']:
-			if self.prove_file_loc is not None:
+			if self.scanned_files_qsps is not None:
 				# Generate location with files-list.
 				self.create_scans_loc()
 			# Build QSP-files.
@@ -192,12 +193,12 @@ class BuildQSP():
 			f'- {func_name}\n'])
 
 		# create folder if it's not exist
-		qsp.safe_mk_fold(self.prove_file_loc)
+		qsp.safe_mk_fold(self.scanned_files_qsps)
 		# Create file next to project-file:
-		of = os.path.join(self.prove_file_loc, 'prove_file_func.qsps_')
+		of = os.path.join(self.scanned_files_qsps, 'prove_file_func.qsps_')
 		with open(of, 'w',encoding='utf-8') as file:
 			file.writelines(qsp_file_body)
-		self.prove_file_loc = of
+		self.scanned_files_qsps = of
 		# Add file-path to build:
 		# if 'files' in self.root['project'][0]:
 		# 	self.root['project'][0]['files'].append({'path':'.\\prvFile_location.qspst'})
@@ -219,9 +220,9 @@ class BuildQSP():
 					qsp_module.extend_by_folder(os.path.abspath(path['path']))
 			if (not 'files' in instruction) and (not 'folders' in instruction):
 				qsp_module.extend_by_folder(os.getcwd())
-			if not self.prove_file_loc is None:
-				qsp_module.extend_by_files([{'path': self.prove_file_loc}])
-				self.prove_file_loc = None
+			if not self.scanned_files_qsps is None:
+				qsp_module.extend_by_files([{'path': self.scanned_files_qsps}])
+				self.scanned_files_qsps = None
 			# print(f'extended files: {start_time - time.time()}')
 			if 'build' in instruction:
 				qsp_module.exit_files(instruction['build'])
@@ -245,12 +246,12 @@ class BuildQSP():
 			qsp_module.postprocess_qsps()
 			print(f'postprocess: {time.time() - start_time}')
 			# Convert TXT2GAM at `.qsp`
-			qsp_module.convert(self.save_txt2gam)
+			qsp_module.convert(self.save_temp_files)
 			print(f'convert: {time.time() - start_time}')
 			if os.path.isfile(qsp_module.output_qsp):
 				self.export_files_paths.append(qsp_module.output_qsp)			
 
-	def run_qsp_files(self):
+	def run_qsp_files(self) -> None:
 		start_file = self.get_start_file()
 
 		if not os.path.isfile(self.player):
@@ -268,7 +269,7 @@ class BuildQSP():
 			except subprocess.TimeoutExpired:
 				pass
 
-	def need_point_file(self):
+	def need_point_file(self) -> bool:
 		"""
 			Unloading conditions.
 			If not `start` in root or not exist start-file, 
@@ -279,7 +280,7 @@ class BuildQSP():
 			os.path.splitext(self.args['point_file'])[1] == '.qsp'))
 		return (True if cond else False)
 
-	def need_build_file(self):
+	def need_build_file(self) -> bool:
 		cond = all((
 			(not 'start' in self.root) or (not os.path.isfile(self.start_file)),
 			len(self.export_files_paths) > 0))
