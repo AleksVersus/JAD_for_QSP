@@ -20,7 +20,7 @@ from .qSpy import const
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
 	"""
-		QSP-Game Builder. Build and run QSP-game from sources. Need a project.json.
+		QSP-Game Builder. Build and run QSP-game from sources. Need a qsp-project.json.
 	"""
 	def run(self, qsp_mode="--br"):
 		# Three commands from arguments.
@@ -28,7 +28,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		args = qspf.parse_args(qsp_mode, argv['file'])
 
 		# -----------------------------------------------------------------------
-		# args['point_file'] - start point for search `project.json`
+		# args['point_file'] - start point for search `qsp-project.json`
 		# args['build'] - command for build the project
 		# args['run'] - command for run the project
 		# -----------------------------------------------------------------------
@@ -93,8 +93,8 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 		qspf.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'vid'))
 		qspf.safe_mk_fold(jont(argv['folder'], '[output_game]', 'lib'))
 		qspf.safe_mk_fold(jont(argv['folder'], '[source]'))
-		# crete project.json
-		project_json_path = jont(argv['folder'], '[source]', 'project.json')
+		# crete qsp-project.json
+		project_json_path = jont(argv['folder'], '[source]', 'qsp-project.json')
 		if not os.path.isfile(project_json_path):
 			with open(project_json_path, 'w', encoding='utf-8') as file:
 				json.dump(dict(const.QSP_PROJECT_JSON), file, indent=4)

@@ -163,7 +163,7 @@ QSP_START_TEMPLATE = (
 	'Отредактируйте этот файл и добавьте новые."\n',
 	'--- [start] ---\n')
 
-# No changable dict for project.json simple file
+# No changable dict for qsp-project.json simple file
 
 _t = {
 		"project":

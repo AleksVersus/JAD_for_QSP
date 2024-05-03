@@ -49,7 +49,7 @@ class BuildQSP():
 			project_folder = os.path.split(point_file)[0]
 			project_dict = qsp.get_point_project(point_file, self.player)
 			project_json = json.dumps(project_dict, indent=4)
-			project_file_path = os.path.join(project_folder, 'project.json')
+			project_file_path = os.path.join(project_folder, 'qsp-project.json')
 
 			with open(project_file_path, 'w', encoding='utf-8') as file:
 				file.write(project_json)
@@ -66,7 +66,7 @@ class BuildQSP():
 
 	def fields_init(self) -> None:	
 		# Deserializing project-file:
-		project_json = os.path.join(self.work_dir, 'project.json')
+		project_json = os.path.join(self.work_dir, 'qsp-project.json')
 		with open(project_json, 'r', encoding='utf-8') as project_file:
 			self.root = json.load(project_file)
 

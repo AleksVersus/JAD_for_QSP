@@ -42,17 +42,15 @@ def search_project_folder(path:str, print_error:bool=True) -> str:
 		Find project-file and return folder path whith project.
 		In other return None.
 	"""
-	error = path
-	if os.path.isfile(path):
-		path = os.path.split(path)[0]
-	while not os.path.isfile(os.path.join(path, "project.json")):
-		if os.path.ismount(path):
+	project_folder = (os.path.split(path)[0] if os.path.isfile(path) else path)
+	while not os.path.isfile(os.path.join(project_folder, "qsp-project.json")):
+		if os.path.ismount(project_folder):
 			if print_error:
-				write_error_log(f"[202] not found 'project.json' file for this project. Prove path {error}.")
-			break
-		path = os.path.split(path)[0]
+				write_error_log(f"[202] not found 'qsp-project.json' file for this project. Prove path {path}.")
+			return None
+		project_folder = os.path.split(project_folder)[0]
 	else:
-		return path
+		return project_folder
 
 # функция возвращает словарь команд, в зависимости от полученных от системы аргументов
 def parse_args(qsp_mode:str, point_file:str) -> dict:

@@ -1,0 +1,6 @@
+{
+	"nodes":[
+		{"id":"8d3b6b554fb6422c","x":-680,"y":-580,"width":640,"height":480,"type":"text","text":"инициализация\n\nargs {build, run, point_file}\nconverter = 'qsps_to_qsp'\nconverter_param = ''\nplayer = 'standart'\nroot = {} qsp-project.json\nsave_temp_files = False\ninclude_scripts = None\nscanned_files_loc = None\n\n"}
+	],
+	"edges":[]
+}
