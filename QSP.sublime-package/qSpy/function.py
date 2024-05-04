@@ -29,9 +29,7 @@ def get_files_list(folder:str, filters:list=None) -> list:
 	return build_files
 
 def compare_paths(path1:str, path2:str):
-	"""
-		Compare two paths and return tail relative to shared folder. 
-	"""
+	"""	Compare two paths and return tail relative to shared folder. """
 	start = os.path.commonprefix([path1, path2])
 	path1 = os.path.relpath(path1, start)
 	path2 = os.path.relpath(path2, start)

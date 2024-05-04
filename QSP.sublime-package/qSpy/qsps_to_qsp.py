@@ -249,10 +249,8 @@ class ModuleQSP():
 
 		self.qsps_code = []
 
-	def extend_by_files(self, files_paths:list) -> None: # file_paths:list of dict {'path': file_path}
-		"""
-			Convert dictionary list in paths list.
-		"""
+	def extend_by_files(self, files_paths:list) -> None: # file_paths:list of dict{'path': file_path}
+		"""	Convert dictionary list in paths list. """
 		for el in files_paths:
 			file_path = os.path.abspath(el['path'])
 			if os.path.isfile(file_path):
@@ -302,8 +300,6 @@ class ModuleQSP():
 			строк для каждого файла, т.е. цикл чтения уже завершён. Теперь мы можем обработать эти
 			виртуальные файлы, прогнав их через препроцессор.
 
-			При этом, если используется внешний конвертер,
-			то файлы сохраняются в виде временных файлов.
 			pponoff — управление препроцессором main
 			pp_markers — переменные и метки
 		"""
@@ -315,7 +311,7 @@ class ModuleQSP():
 			elif pponoff == 'Off':
 				first_string = src.get_string(0)
 				second_string = src.get_string(1)
-				if first_string == "!@pp:on\n" or second_string == "!@pp:on\n":
+				if "!@pp:on\n" in (first_string, second_string):
 					arguments = {"include": True, "pp": True, "savecomm": False}
 					# файл отправляется на препроцессинг
 					src.preprocess(arguments, pp_markers)
@@ -323,14 +319,14 @@ class ModuleQSP():
 			elif pponoff == 'On':
 				first_string = src.get_string(0)
 				second_string = src.get_string(1)
-				if not (first_string == "!@pp:off\n" or second_string == "!@pp:off\n"):
+				if not "!@pp:off\n" in (first_string, second_string):
 					arguments = {"include":True, "pp":True, "savecomm":False}
 					src.preprocess(arguments, pp_markers)
 				# text_file = src.read() + '\r\n'
 			# text += src.read() + '\r\n'
 
 	def postprocess_qsps(self) -> None:
-		if len(self.include_scripts) == 0:
+		if not self.include_scripts:
 			return None
 		# for script in include_scripts:
 		# 	subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
@@ -402,9 +398,7 @@ class SrcQspsFile():
 		return self.file_strings
 
 	def preprocess(self, args:dict, pp_variables:dict) -> None:
-		"""
-			Препроцессинг файла. Пока что используется внешний файл
-		"""
+		""" Препроцессинг файла. Пока что используется внешний файл	"""
 		self.file_strings = pp_this_lines(self.file_strings, args, pp_variables)
 
 def main():

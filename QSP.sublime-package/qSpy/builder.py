@@ -208,9 +208,9 @@ class BuildQSP():
 					qsp_module.extend_by_folder(os.path.abspath(path['path']))
 			if (not 'files' in instruction) and (not 'folders' in instruction):
 				qsp_module.extend_by_folder(os.getcwd())
-			if not self.scanned_files_qsps is None:
-				qsp_module.extend_by_files([{'path': self.scanned_files_qsps}])
-				self.scanned_files_qsps = None
+			if self.scan_the_files:
+				# TODO: extend module by scanned location
+				self.scan_the_files = False
 			# print(f'extended files: {start_time - time.time()}')
 			if 'build' in instruction:
 				qsp_module.exit_files(instruction['build'])
