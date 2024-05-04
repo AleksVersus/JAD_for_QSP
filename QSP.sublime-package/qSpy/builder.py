@@ -61,11 +61,12 @@ class BuildQSP():
 		if self.work_dir is not None:
 			os.chdir(self.work_dir)
 
-	def fields_init(self) -> None:	
-		# Deserializing project-file:
-		project_json = os.path.join(self.work_dir, 'qsp-project.json')
-		with open(project_json, 'r', encoding='utf-8') as project_file:
-			self.root = json.load(project_file)
+	def fields_init(self) -> None:
+		if not self.root: # self.root is empty
+			# Deserializing project-file:
+			project_json = os.path.join(self.work_dir, 'qsp-project.json')
+			with open(project_json, 'r', encoding='utf-8') as project_file:
+				self.root = json.load(project_file)
 
 		# Get paths to converter and player (not Deafault)
 		if 'converter' in self.root:
@@ -287,6 +288,7 @@ class BuildQSP():
 		project_json = json.dumps(project_dict, indent=4)
 		project_file_path = os.path.join(project_folder, 'qsp-project.json')
 
+		self.root = project_dict
 		with open(project_file_path, 'w', encoding='utf-8') as file:
 			file.write(project_json)
 			
