@@ -25,10 +25,15 @@ class BuildQSP():
 		self.root = {}					# qsp-project.json
 		self.save_temp_files = False	# save temporary qsps-files or not
 		self.include_scripts = None		# postprocessor's py-scripts
-		self.scanned_files_qsps = None	# name of location for scanned files
 		self.modules_paths = []			# Output files' paths (QSP-files, modules)
 		self.start_module_path = ''		# File, that start in player.
 		self.work_dir = None			# workdir - is dir of qsp-project.json
+
+		# Scanned files proves location
+		self.scan_the_files = False		# Marker of scanning files
+		self.scan_files_locname = None	# location name
+		self.scan_files_locbody = []	# location body
+		self.SCANFILES_LOCNAME = 'prv_file' # constanta of standart locname
 
 		# Init work dir.
 		self.work_dir_init()
@@ -100,10 +105,18 @@ class BuildQSP():
 
 		# Location's of scaned files name init.
 		if ('scans' in self.root) and ('start' in self.root):
-			if 'destination' in self.root['scans']:
-				self.scanned_files_qsps = self.root['scans']['destination']
+			# mode is switchon, if folders or files adding
+			if 'folders'in self.root['scans'] or 'files' in self.root['scans']:
+				self.scan_the_files = True
+			# choose name of location
+			if 'location' in self.root['scans']:
+				self.scan_files_locname = self.root['scans']['location']
 			else:
-				self.scanned_files_qsps = None
+				self.scan_files_locname = self.SCANFILES_LOCNAME
+			# if 'destination' in self.root['scans']:
+			# 	self.scanned_files_qsps = self.root['scans']['destination']
+			# else:
+			# 	self.scanned_files_qsps = None
 
 		if 'start' in self.root:
 			# Start-file defined. Get from define.
@@ -113,7 +126,7 @@ class BuildQSP():
 		self.print_mode()
 
 		if self.modes['build']:
-			if self.scanned_files_qsps is not None:
+			if self.scan_the_files:
 				# Generate location with files-list.
 				self.create_scans_loc()
 			# Build QSP-files.
@@ -135,16 +148,12 @@ class BuildQSP():
 		return self.start_module_path
 			
 	
-	def create_scans_loc(self):
-		# FoolProof.
-		if not (('scans' in self.root) and ('start' in self.root)):
-			qsp.write_error_log('[103] Builder design error. Prove file locations is not defined.')
-			return
-
+	def create_scans_loc(self) -> None:
+		""" Prepare and creation location-function of scanned files """
 		found_files = [] # Absolute files paths.
 		start_file_folder = os.path.split(self.start_module_path)[0]
 		scans = self.root['scans']
-		func_name = (scans['location'] if 'location' in scans else 'prv_file')
+		func_name = self.scan_files_locname
 
 		if 'folders' in scans:
 			for folder in scans['folders']:
@@ -175,25 +184,14 @@ class BuildQSP():
 
 		for file in found_files:
 			sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(file))
-			qsp_file_body.append('['+f+']\n')
+			qsp_file_body.append(f'[{f}]\n')
 
 		qsp_file_body.extend([
 			'"\n',
 			'result = iif(instr($args[1],"[<<$args[0]>>]")<>0, 1, 0)\n',
 			f'- {func_name}\n'])
 
-		# create folder if it's not exist
-		qsp.safe_mk_fold(self.scanned_files_qsps)
-		# Create file next to project-file:
-		of = os.path.join(self.scanned_files_qsps, 'prove_file_func.qsps_')
-		with open(of, 'w',encoding='utf-8') as file:
-			file.writelines(qsp_file_body)
-		self.scanned_files_qsps = of
-		# Add file-path to build:
-		# if 'files' in self.root['project'][0]:
-		# 	self.root['project'][0]['files'].append({'path':'.\\prvFile_location.qspst'})
-		# else:
-		# 	self.root['project'][0]['files'] = [{'path':'.\\prvFile_location.qspst'}]		
+		self.scan_files_locbody = qsp_file_body	
 
 	def build_qsp_files(self):
 		start_time = time.time()
