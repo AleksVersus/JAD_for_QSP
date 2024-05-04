@@ -51,14 +51,7 @@ class BuildQSP():
 			# If project_folder is not found, but other
 			# conditional is right, generate the new project-file.
 			project_folder = os.path.split(point_file)[0]
-			project_dict = self.get_point_project(point_file, self.player)
-			project_json = json.dumps(project_dict, indent=4)
-			project_file_path = os.path.join(project_folder, 'qsp-project.json')
-
-			with open(project_file_path, 'w', encoding='utf-8') as file:
-				file.write(project_json)
-				
-			qsp.write_error_log(f'[100] File «{project_file_path}» was created.')
+			self.create_point_project(project_folder, point_file)
 
 		self.set_work_dir(project_folder)
 
@@ -288,9 +281,20 @@ class BuildQSP():
 		return all((
 			(not 'start' in self.root) or (not os.path.isfile(self.start_module_path)),
 			self.modules_paths))
+	
+	def create_point_project(self, project_folder:str, point_file:str) -> None:
+		project_dict = self.get_point_project(point_file, self.player)
+		project_json = json.dumps(project_dict, indent=4)
+		project_file_path = os.path.join(project_folder, 'qsp-project.json')
+
+		with open(project_file_path, 'w', encoding='utf-8') as file:
+			file.write(project_json)
+			
+		qsp.write_error_log(f'[100] File «{project_file_path}» was created.')
+
 
 	@staticmethod
-	def project_file_is_need(work_dir:str, point_file:str, player_path:str) -> bool:
+	def project_file_is_need(project_folder:str, point_file:str, player_path:str) -> bool:
 		"""
 			Return True if:
 			- project-file not found,
@@ -298,7 +302,7 @@ class BuildQSP():
 			- player-path is right.
 		"""
 		return all((
-			work_dir is None,
+			project_folder is None,
 			os.path.splitext(point_file)[1] == '.qsps',
 			os.path.isfile(player_path)))
 
