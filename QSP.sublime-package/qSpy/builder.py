@@ -36,8 +36,6 @@ class BuildQSP():
 		if self.work_dir is not None:
 			# Reinit main fields and init other fields.
 			self.fields_init()
-			# Init start-file.
-			self.start_module_init()
 
 	def work_dir_init(self) -> None:
 		"""
@@ -56,19 +54,21 @@ class BuildQSP():
 		self.set_work_dir(project_folder)
 
 	def set_work_dir(self, work_dir:str=None) -> None:
+		""" Set self.work_dir and change work dir """
 		self.work_dir = work_dir
 		# Change work dir:
 		if self.work_dir is not None:
 			os.chdir(self.work_dir)
 
 	def fields_init(self) -> None:
+		""" Filling the BuildQSP fields from project_file """
 		if not self.root: # self.root is empty
 			# Deserializing project-file:
 			project_json = os.path.join(self.work_dir, 'qsp-project.json')
 			with open(project_json, 'r', encoding='utf-8') as project_file:
 				self.root = json.load(project_file)
 
-		# Get paths to converter and player (not Deafault)
+		# Get paths to converter and player (not Default)
 		if 'converter' in self.root:
 			converter = self.root['converter']
 			_is_file = lambda path: os.path.isfile(os.path.abspath(path))
@@ -105,22 +105,10 @@ class BuildQSP():
 			else:
 				self.scanned_files_qsps = None
 
-	def start_module_init(self):
 		if 'start' in self.root:
 			# Start-file defined. Get from define.
 			self.start_module_path = os.path.abspath(self.root['start'])
 
-	def get_start_module(self) -> str:
-		""" Get file what run in player after building """
-		if self.need_build_file():
-			# Start-file is not defined, but list of module-files is exist.
-			self.start_module_path = self.modules_paths[0]
-			qsp.write_error_log(f'[102] Start-file is wrong. Used «{self.start_module_path}» for run.')
-		if self.need_point_file():
-			# Start-file is not defined, list of build-files is not exist, but run point_file.
-			self.start_module_path = self.modes['point_file']
-		return self.start_module_path
-			
 	def build_and_run(self):
 		# Print builder's mode.
 		qsp.print_builder_mode(self.modes['build'], self.modes['run'])
@@ -136,6 +124,18 @@ class BuildQSP():
 			# Run Start QSP-file.
 			self.run_qsp_files()
 
+	def get_start_module(self) -> str:
+		""" Get file what run in player after building """
+		if self.need_build_file():
+			# Start-file is not defined, but list of module-files is exist.
+			self.start_module_path = self.modules_paths[0]
+			qsp.write_error_log(f'[102] Start-file is wrong. Used «{self.start_module_path}» for run.')
+		if self.need_point_file():
+			# Start-file is not defined, list of build-files is not exist, but run point_file.
+			self.start_module_path = self.modes['point_file']
+		return self.start_module_path
+			
+	
 	def create_scans_loc(self):
 		# FoolProof.
 		if not (('scans' in self.root) and ('start' in self.root)):
