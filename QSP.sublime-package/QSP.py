@@ -1,5 +1,5 @@
-import sublime
-import sublime_plugin
+import sublime			# type: ignore
+import sublime_plugin   # type: ignore
 
 import os
 import re
@@ -25,7 +25,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 	def run(self, qsp_mode="--br"):
 		# Three commands from arguments.
 		argv = self.window.extract_variables()
-		if not 'file' in argv:
+		if 'file' not in argv:
 			print('[0] Save file before building!')
 			return None
 		args = qspf.parse_args(qsp_mode, argv['file'])

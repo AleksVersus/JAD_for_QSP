@@ -206,7 +206,7 @@ class BuildQSP():
 			if 'folders' in instruction:
 				for path in instruction['folders']:
 					qsp_module.extend_by_folder(os.path.abspath(path['path']))
-			if (not 'files' in instruction) and (not 'folders' in instruction):
+			if ('files' not in instruction) and ('folders' not in instruction):
 				qsp_module.extend_by_folder(os.getcwd())
 			if self.scan_the_files:
 				# TODO: extend module by scanned location
