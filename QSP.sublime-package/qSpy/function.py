@@ -69,18 +69,6 @@ def parse_args(qsp_mode:str, point_file:str) -> dict:
 
 	return args
 
-def print_builder_mode(build:bool, run:bool) -> None:
-	"""
-		Unloading code.
-		Print builder's work mode.
-	"""
-	if build and run:
-		print("Build and Run Mode")
-	elif build:
-		print("Build Mode")
-	elif run:
-		print("Run Mode")
-
 def clear_locname(loc_name:str) -> str:
 	""" Clear qsp-location name of extra charges """
 	return (loc_name.replace('\\', '\\\\')

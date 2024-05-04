@@ -110,8 +110,7 @@ class BuildQSP():
 			self.start_module_path = os.path.abspath(self.root['start'])
 
 	def build_and_run(self):
-		# Print builder's mode.
-		qsp.print_builder_mode(self.modes['build'], self.modes['run'])
+		self.print_mode()
 
 		if self.modes['build']:
 			if self.scanned_files_qsps is not None:
@@ -291,6 +290,14 @@ class BuildQSP():
 			
 		qsp.write_error_log(f'[100] File «{project_file_path}» was created.')
 
+	def print_mode(self) -> None:
+		""" Print builder's work mode. """
+		if self.modes['build'] and self.modes['run']:
+			print("Build and Run Mode")
+		elif self.modes['build']:
+			print("Build Mode")
+		elif self.modes['run']:
+			print("Run Mode")
 
 	@staticmethod
 	def project_file_is_need(project_folder:str, point_file:str, player_path:str) -> bool:
