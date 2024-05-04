@@ -106,9 +106,6 @@ class BuildQSP():
 				self.scanned_files_qsps = None
 
 	def start_module_init(self):
-		if self.work_dir is None:
-			qsp.write_error_log('[101] Builder design error. Work dir is not init.')
-			return None
 		if 'start' in self.root:
 			# Start-file defined. Get from define.
 			self.start_module_path = os.path.abspath(self.root['start'])
