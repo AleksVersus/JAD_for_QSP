@@ -14,9 +14,9 @@ class BuildQSP():
 		If we make the class ex, we can use class instance fields as global name-space.
 		Class BuildQSP — is a name-space for procedure scripts.
 	"""
-	def __init__(self, args:dict) -> None:
+	def __init__(self, modes:dict) -> None:
 		# Init main fields:
-		self.args = args 											# Arguments from sys.
+		self.modes = modes 											# Arguments from sys. Modes of build.
 		self.converter = 'qsps_to_qsp'								# Converter application path (exe in win).
 		self.converter_param = ''									# Converter's parameters (key etc.)
 		self.player = 'C:\\Program Files\\QSP\\qsp580\\qspgui.exe'	# Player application path (exe in win)
@@ -26,8 +26,8 @@ class BuildQSP():
 		self.save_temp_files = False	# save temporary qsps-files or not
 		self.include_scripts = None		# postprocessor's py-scripts
 		self.scanned_files_qsps = None	# name of location for scanned files
-		self.export_files_paths = []	# Output files' paths (QSP-files, modules)
-		self.start_file = ''			# File, that start in player.
+		self.modules_paths = []			# Output files' paths (QSP-files, modules)
+		self.start_module_path = ''		# File, that start in player.
 		self.work_dir = None			# workdir - is dir of qsp-project.json
 
 		# Init work dir.
@@ -37,21 +37,21 @@ class BuildQSP():
 			# Reinit main fields and init other fields.
 			self.fields_init()
 			# Init start-file.
-			self.start_file_init()
+			self.start_module_init()
 
 	def work_dir_init(self) -> None:
 		"""
 			Initialise of workdir. If qsp-project.json is not exist,
 			workdir sets at dir of point file.
 		"""
-		point_file = self.args['point_file']
+		point_file = self.modes['point_file']
 		project_folder = qsp.search_project_folder(point_file)
 
-		if qsp.need_project_file(project_folder, point_file, self.player):
-			# If project-file's folder is not found, but other
+		if self.project_file_is_need(project_folder, point_file, self.player):
+			# If project_folder is not found, but other
 			# conditional is right, generate the new project-file.
 			project_folder = os.path.split(point_file)[0]
-			project_dict = qsp.get_point_project(point_file, self.player)
+			project_dict = self.get_point_project(point_file, self.player)
 			project_json = json.dumps(project_dict, indent=4)
 			project_file_path = os.path.join(project_folder, 'qsp-project.json')
 
@@ -111,37 +111,37 @@ class BuildQSP():
 			else:
 				self.scanned_files_qsps = None
 
-	def start_file_init(self):
+	def start_module_init(self):
 		if self.work_dir is None:
 			qsp.write_error_log('[101] Builder design error. Work dir is not init.')
 			return None
 		if 'start' in self.root:
 			# Start-file defined. Get from define.
-			self.start_file = os.path.abspath(self.root['start'])
+			self.start_module_path = os.path.abspath(self.root['start'])
 
-	def get_start_file(self) -> str:
+	def get_start_module(self) -> str:
 		""" Get file what run in player after building """
 		if self.need_build_file():
-			# Start-file is not defined, but list of build-files is exist.
-			self.start_file = self.export_files_paths[0]
-			qsp.write_error_log(f'[102] Start-file is wrong. Used «{self.start_file}» for run.')
+			# Start-file is not defined, but list of module-files is exist.
+			self.start_module_path = self.modules_paths[0]
+			qsp.write_error_log(f'[102] Start-file is wrong. Used «{self.start_module_path}» for run.')
 		if self.need_point_file():
 			# Start-file is not defined, list of build-files is not exist, but run point_file.
-			self.start_file = self.args['point_file']
-		return self.start_file
+			self.start_module_path = self.modes['point_file']
+		return self.start_module_path
 			
 	def build_and_run(self):
 		# Print builder's mode.
-		qsp.print_builder_mode(self.args['build'], self.args['run'])
+		qsp.print_builder_mode(self.modes['build'], self.modes['run'])
 
-		if self.args['build']:
+		if self.modes['build']:
 			if self.scanned_files_qsps is not None:
 				# Generate location with files-list.
 				self.create_scans_loc()
 			# Build QSP-files.
 			self.build_qsp_files()
 
-		if self.args['run']:
+		if self.modes['run']:
 			# Run Start QSP-file.
 			self.run_qsp_files()
 
@@ -152,7 +152,7 @@ class BuildQSP():
 			return
 
 		found_files = [] # Absolute files paths.
-		start_file_folder = os.path.split(self.start_file)[0]
+		start_file_folder = os.path.split(self.start_module_path)[0]
 		scans = self.root['scans']
 		func_name = (scans['location'] if 'location' in scans else 'prv_file')
 
@@ -249,10 +249,10 @@ class BuildQSP():
 			qsp_module.convert(self.save_temp_files)
 			print(f'convert: {time.time() - start_time}')
 			if os.path.isfile(qsp_module.output_qsp):
-				self.export_files_paths.append(qsp_module.output_qsp)			
+				self.modules_paths.append(qsp_module.output_qsp)			
 
 	def run_qsp_files(self) -> None:
-		start_file = self.get_start_file()
+		start_file = self.get_start_module()
 
 		if not os.path.isfile(self.player):
 			qsp.write_error_log(f'[107] Path at player is wrong. Prove path «{self.player}».')
@@ -271,18 +271,54 @@ class BuildQSP():
 
 	def need_point_file(self) -> bool:
 		"""
-			Unloading conditions.
-			If not `start` in root or not exist start-file, 
-			and running file is qsp, return True, other False.
+			Return True if:
+			- start-file not defined
+			- point file is '.qsp'
 		"""
-		cond = all((
-			(not 'start' in self.root) or (not os.path.isfile(self.start_file)),
-			os.path.splitext(self.args['point_file'])[1] == '.qsp'))
-		return (True if cond else False)
+		return all((
+			(not 'start' in self.root) or (not os.path.isfile(self.start_module_path)),
+			os.path.splitext(self.modes['point_file'])[1] == '.qsp'))
 
 	def need_build_file(self) -> bool:
-		cond = all((
-			(not 'start' in self.root) or (not os.path.isfile(self.start_file)),
-			len(self.export_files_paths) > 0))
-		return (True if cond else False)
+		""" 
+			Return True if:
+			- start-file is not define
+			- modules path's list not empty
+		"""
+		return all((
+			(not 'start' in self.root) or (not os.path.isfile(self.start_module_path)),
+			self.modules_paths))
+
+	@staticmethod
+	def project_file_is_need(work_dir:str, point_file:str, player_path:str) -> bool:
+		"""
+			Return True if:
+			- project-file not found,
+			- point file is '.qsps', 
+			- player-path is right.
+		"""
+		return all((
+			work_dir is None,
+			os.path.splitext(point_file)[1] == '.qsps',
+			os.path.isfile(player_path)))
+
+	@staticmethod
+	def get_point_project(point_file:str, player:str) -> dict:
+		"""	Create standart structure of project-file for start from point_file. """
+		game_name = os.path.splitext(os.path.split(point_file)[1])[0]+'.qsp'
+		project_dict = {
+			"project":
+			[
+				{
+					"build": game_name,
+					"files":
+					[
+						{"path": point_file}
+					]
+				}
+			],
+			"start": game_name,
+			"player": player
+		}
+		return project_dict
 

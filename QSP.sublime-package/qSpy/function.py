@@ -69,40 +69,6 @@ def parse_args(qsp_mode:str, point_file:str) -> dict:
 
 	return args
 
-def need_project_file(work_dir, point_file, player):
-	"""
-		Unloading conditions.
-		If project-file is not found, and start point file is .qsps, 
-		and paths to converter and player are right, return True.
-	"""
-	cond = all((
-		work_dir is None,
-		os.path.splitext(point_file)[1] == '.qsps',
-		os.path.isfile(player)
-		))
-	return (True if cond else False)
-
-def get_point_project(point_file:str, player:str) -> dict:
-	"""
-		Unloading code.
-		Create standart text of project-file in json-format.
-	"""
-	game_name = os.path.splitext(os.path.split(point_file)[1])[0]+'.qsp'
-	project_dict = {
-		"project":
-		[
-			{
-				"build": game_name,
-				"files":
-				[
-					{"path": point_file}
-				]
-			}
-		],
-		"start": game_name,
-		"player": player}
-	return project_dict
-
 def print_builder_mode(build:bool, run:bool) -> None:
 	"""
 		Unloading code.
