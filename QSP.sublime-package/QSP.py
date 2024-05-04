@@ -25,6 +25,9 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 	def run(self, qsp_mode="--br"):
 		# Three commands from arguments.
 		argv = self.window.extract_variables()
+		if not 'file' in argv:
+			print('[0] Save file before building!')
+			return None
 		args = qspf.parse_args(qsp_mode, argv['file'])
 
 		# -----------------------------------------------------------------------
