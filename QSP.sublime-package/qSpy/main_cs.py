@@ -25,8 +25,8 @@ class FinderSplitter():
 		qsps_files_list = []
 		for path in path_list:
 			if os.path.isfile(path):
-				folder_path, full_file_name = os.path.split(path)
-				file_name, file_ext = os.path.splitext(full_file_name)
+				_, full_file_name = os.path.split(path)
+				_, file_ext = os.path.splitext(full_file_name)
 				if file_ext == '.qsp':
 					qsp_files_list.append(path)
 				elif file_ext == '.qsps':

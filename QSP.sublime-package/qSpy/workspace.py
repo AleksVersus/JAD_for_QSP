@@ -246,7 +246,7 @@ class QspWorkspace:
 				"sprtr-instring":
 				[]
 			}
-			for i, string_id in enumerate(mini_data_base['sprtr-name']):
+			for i, _ in enumerate(mini_data_base['sprtr-name']):
 				region = mini_data_base['sprtr-region'][i]
 				mini_data_base['sprtr-instring'].append(
 					region.begin() if region.begin()!=-1 else maximal)
@@ -361,7 +361,7 @@ class QspWorkspace:
 		if not project_folder is None:
 			return project_folder
 		folders = sublime.active_window().folders()
-		return (folders[0] if len(folders)>0 else None)
+		return (folders[0] if folders else None)
 
 	@staticmethod
 	def get_main_pathes(view:sublime.View):

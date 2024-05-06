@@ -2,7 +2,6 @@
 # stand `file_path` and run script for getting QSP-format file.
 # Sorry my bad English.
 
-import sys
 import os
 import re
 import subprocess

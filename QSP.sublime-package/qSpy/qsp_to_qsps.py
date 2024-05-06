@@ -120,7 +120,6 @@ class QspToQsps():
 	def split_into_lines(self, qsp_source_text):
 		offset = 0
 		lines = []
-		count = 0
 		while (offset < len(qsp_source_text)):
 			end = self.index_of(qsp_source_text, '\n', start=offset)
 			if end < 0:

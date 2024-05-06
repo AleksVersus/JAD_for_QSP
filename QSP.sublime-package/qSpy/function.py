@@ -1,8 +1,6 @@
 import sys
 import os
 
-from . import pp
-
 def safe_mk_fold(new_path:str) -> None:
 	""" Safe make dir with making all chain of dir """
 	if not os.path.isdir(new_path):
@@ -19,7 +17,7 @@ def get_files_list(folder:str, filters:list=None) -> list:
 	if filters is None: filters = [".qsps",'.qsp-txt','.txt-qsp']
 	build_files = []
 	tree = os.walk(folder)
-	for abs_path, folders, files in tree:
+	for abs_path, _, files in tree:
 		for file in files:
 			sp = os.path.splitext(file)
 			if not filters or (sp[1] in filters):
@@ -86,4 +84,4 @@ def clear_locname(loc_name:str) -> str:
 		.replace('/', r'\/'))
 
 if __name__=="__main__":
-	pass
+	...

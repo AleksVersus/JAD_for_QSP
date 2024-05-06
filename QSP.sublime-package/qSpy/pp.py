@@ -133,7 +133,7 @@ def find_speccom_scope(string_line:str):
 		"scope-instring":
 		[]
 	}
-	for i, string_id in enumerate(mini_data_base['scope-name']):
+	for i, _ in enumerate(mini_data_base['scope-name']):
 		match_in = mini_data_base['scope-regexp'][i]
 		mini_data_base['scope-instring'].append(
 			string_line.index(match_in.group(0)) if match_in is not None else maximal)
