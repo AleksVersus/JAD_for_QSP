@@ -134,7 +134,7 @@ class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 		view = self.view
 		if view.syntax() is None or view.syntax().name != 'QSP':
 			return None
-		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		_, project_folder = QspWorkspace.get_main_pathes(view)
 		if project_folder in QSP_WORKSPACES:
 			qsp_ws = QSP_WORKSPACES[project_folder]
 		else:
@@ -150,7 +150,7 @@ class QspGlobalVarsHighlightCommand(sublime_plugin.TextCommand):
 		view = self.view
 		if view.syntax() is None or view.syntax().name != 'QSP':
 			return None
-		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
+		_, project_folder = QspWorkspace.get_main_pathes(view)
 		if project_folder in QSP_WORKSPACES:
 			qsp_ws = QSP_WORKSPACES[project_folder]
 		else:
@@ -200,7 +200,7 @@ class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
 		self.view.show_popup(content, max_width=w, location=vr, on_navigate=self.on_navigate)
 
 	def on_navigate(self, link:str) -> None: # link - relpath or abspath
-		current_qsps, project_folder = QspWorkspace.get_main_pathes(self.view)
+		_, project_folder = QspWorkspace.get_main_pathes(self.view)
 		if not project_folder is None and link != '':
 			link = QspWorkspace.absing_path(project_folder, link)
 		self.view.window().run_command('open_file', {'file': link, 'encoded_position': True})

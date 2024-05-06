@@ -18,30 +18,28 @@ class NewQspLocation():
 		qsp-locations from qsps-file
 	"""
 	def __init__(self, name:str, code:list=None) -> None:
-		self.name = name
-		self.code = ([] if code == None else code)
+		""" Initialise QSP-location """
+		self.name:str = name							# location name
+		self.code:list = ([] if code == None else code)	# location code
 
-		self.decode_name = None
-		self.decode_code = None
+		self.decode_name:str = None	# decode in QSP-format location name
+		self.decode_code:str = None	# decode in QSP-format location name
 
 	def change_name(self, name:str) -> None:
+		""" Set location name, n decode it to QSP-format """
 		self.name = name
+		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
 
 	def change_code(self, code:list) -> None:
+		""" Set location code, n decode it to QSP-format """
 		self.code = code
-
-	def decode(self) -> None:
-		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
 		self.decode_code = NewQspsFile.decode_location(self.code)
+		
 
 class NewQspsFile():
-	"""
-		qsps-file, separated in locations
-	"""
+	"""	qsps-file, separated in locations """
 	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None) -> None:
-		"""
-			initialise. 
-		"""
+		"""	initialise """
 		# main fields:
 		self.locations_count = 0
 		self.locations = []
