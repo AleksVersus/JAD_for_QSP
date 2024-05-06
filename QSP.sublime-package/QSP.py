@@ -6,13 +6,13 @@ import re
 import json
 
 # Importing my modules from qSpy package.
-from .qSpy.pad import QSpyFuncs as qspf
 from .qSpy.builder import BuildQSP
 from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
 from .qSpy.qsp_splitter import QspSplitter
 from .qSpy.main_cs import FinderSplitter
 from .qSpy.workspace import QspWorkspace
+from .qSpy import function as qsp
 # Import constants
 from .qSpy import const
 # import time
@@ -28,7 +28,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		if 'file' not in argv:
 			print('[0] Save file before building!')
 			return None
-		args = qspf.parse_args(qsp_mode, argv['file'])
+		args = qsp.parse_args(qsp_mode, argv['file'])
 
 		# -----------------------------------------------------------------------
 		# args['point_file'] - start point for search `qsp-project.json`
@@ -90,12 +90,12 @@ class QspNewProjectCommand(sublime_plugin.WindowCommand):
 		argv = self.window.extract_variables()
 		if not 'folder' in argv: return None
 		jont = os.path.join
-		qspf.safe_mk_fold(jont(argv['folder'],'[disdocs]'))
-		qspf.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'img'))
-		qspf.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'snd'))
-		qspf.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'vid'))
-		qspf.safe_mk_fold(jont(argv['folder'], '[output_game]', 'lib'))
-		qspf.safe_mk_fold(jont(argv['folder'], '[source]'))
+		qsp.safe_mk_fold(jont(argv['folder'],'[disdocs]'))
+		qsp.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'img'))
+		qsp.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'snd'))
+		qsp.safe_mk_fold(jont(argv['folder'], '[output_game]', 'assets', 'vid'))
+		qsp.safe_mk_fold(jont(argv['folder'], '[output_game]', 'lib'))
+		qsp.safe_mk_fold(jont(argv['folder'], '[source]'))
 		# crete qsp-project.json
 		project_json_path = jont(argv['folder'], '[source]', 'qsp-project.json')
 		if not os.path.isfile(project_json_path):
@@ -190,7 +190,7 @@ class QspShowDuplLocsCommand(sublime_plugin.TextCommand):
 				with open(fn, 'r', encoding='utf-8') as file:
 					string = file.read()
 				match = re.search(
-					r'^\#\s*'+qspf.clear_locname(qsp_loc[0])+'$', 
+					r'^\#\s*'+qsp.clear_locname(qsp_loc[0])+'$', 
 					string, 
 					flags=re.MULTILINE)
 				if not match is None: count = ':'+str(len(string[:match.start()].split('\n')))

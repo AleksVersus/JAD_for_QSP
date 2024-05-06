@@ -1,12 +1,11 @@
-import sublime
-import sublime_plugin
+import sublime			# type: ignore
 
 import os
 import json
 import hashlib
 
 from .qsps_to_qsp import NewQspsFile
-from .pad import QSpyFuncs as qspf
+from . import function as qsp
 
 class QspWorkspace:
 	def __init__(self, all_workspaces:dict) -> None:
@@ -109,7 +108,7 @@ class QspWorkspace:
 		files = []
 		for f in folders:
 			pf_ = self.absing_path(project_folder, f)
-			files.extend(qspf.get_files_list(pf_))
+			files.extend(qsp.get_files_list(pf_))
 		new = set()
 		for f in files:
 			pf_ = self.absing_path(project_folder, f)

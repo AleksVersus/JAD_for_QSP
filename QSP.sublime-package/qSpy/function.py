@@ -22,9 +22,9 @@ def get_files_list(folder:str, filters:list=None) -> list:
 	for abs_path, folders, files in tree:
 		for file in files:
 			sp = os.path.splitext(file)
-			if len(filters) == 0 or (sp[1] in filters):
+			if not filters or (sp[1] in filters):
 				build_files.append(os.path.join(abs_path, file))
-	if len(build_files) == 0:
+	if not build_files:
 		write_error_log(f'[200] Folder is empty. Prove path «{folder}».')
 	return build_files
 

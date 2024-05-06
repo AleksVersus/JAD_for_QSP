@@ -204,8 +204,8 @@ class NewQspsFile():
 		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\n')
 		_decode_location = lambda l: l.decode()
 		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
-		    for location in self.locations:
-		        executor.submit(_decode_location, location)
+			for location in self.locations:
+				executor.submit(_decode_location, location)
 		for location in self.locations:
 			self.converted_strings.append(location.decode_name + '\n\n')
 			self.converted_strings.append(location.decode_code + '\n')
