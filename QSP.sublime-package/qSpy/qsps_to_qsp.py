@@ -28,11 +28,13 @@ class NewQspLocation():
 	def change_name(self, name:str) -> None:
 		""" Set location name, n decode it to QSP-format """
 		self.name = name
-		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
 
 	def change_code(self, code:list) -> None:
 		""" Set location code, n decode it to QSP-format """
 		self.code = code
+
+	def decode(self) -> None:
+		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
 		self.decode_code = NewQspsFile.decode_location(self.code)
 		
 
@@ -213,25 +215,24 @@ class NewQspsFile():
 		if self.input_file is None and input_file is None:
 			print('[302] Not input path.')
 			raise Exception('[302] Not input path.')
-			return None
 		if input_file is None:
 			input_file = self.input_file
-		with open(input_file, 'w', encoding='utf-16le') as file:
-			file.write(''.join(self.src_strings))
+		with open(input_file, 'w', encoding='utf-8') as file:
+			file.writelines(self.src_strings)
 
 	def save_qsp(self, output_file:str=None) -> None:
 		if self.output_file is None and output_file is None:
 			print('[303] Not output path.')
 			raise Exception('[303] Not output path.')
-			return None
 		if output_file is None:
 			output_file = self.output_file
 		with open(output_file, 'w', encoding='utf-16le') as file:
-			file.write(''.join(self.converted_strings))
+			file.writelines(self.converted_strings)
 
 def main():
 	file = NewQspsFile(input_file="example.qsps")
 	file.convert()
+	file.save_qsp()
 
 if __name__ == "__main__": 
 	main()

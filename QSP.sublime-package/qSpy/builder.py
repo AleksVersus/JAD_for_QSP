@@ -210,7 +210,7 @@ class BuildQSP():
 			if 'module' in instruction:
 				qsp_module.set_exit_files(instruction['module'])
 			else:
-				qsp_module.exit_files(f'game{project.index(instruction)}.qsp')
+				qsp_module.set_exit_files(f'game{project.index(instruction)}.qsp')
 				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
 
 			# Build TXT2GAM-file
