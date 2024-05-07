@@ -14,8 +14,6 @@ class ModuleQSP():
 		self.output_qsp = None		# path of output QSP-file (module)
 		self.output_txt = None		# path of temp file in txt2gam format
 
-		self.include_scripts = []	# include_scripts
-
 		# self.code_system = 'utf-8'
 		self.converter = 'qsps_to_qsp' # converter qsps -> QSP
 		self.converter_param = ''	# string of parameters for converting
@@ -55,9 +53,6 @@ class ModuleQSP():
 		self.output_qsp = os.path.abspath(game_path)
 		self.output_txt = os.path.splitext(self.output_qsp)[0]+".txt"
 
-	def extend_scripts(self, scripts:list) -> None:
-		self.include_scripts.extend(scripts)
-
 	def choose_code_system(self) -> str:
 		return ('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
 
@@ -92,22 +87,6 @@ class ModuleQSP():
 					src.preprocess(arguments, pp_markers)
 				# text_file = src.read() + '\r\n'
 			# text += src.read() + '\r\n'
-
-	def postprocess_qsps(self) -> None:
-		if not self.include_scripts:
-			return None
-		# for script in include_scripts:
-		# 	subprocess.run([sys.executable, script, exit_txt], stdout=subprocess.PIPE)
-
-		# ПЕрехват принта
-		# import sys
-		# from subprocess import Popen, PIPE
-
-		# with Popen([sys.executable, '-u', 'child.py'],
-		#            stdout=PIPE, universal_newlines=True) as process:
-		#     for line in process.stdout:
-		#         print(line.replace('!', '#'), end='')
-		...
 
 	def read(self) -> str:
 		""" Get outer text of module """

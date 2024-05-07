@@ -24,7 +24,6 @@ class BuildQSP():
 		# Default inits.
 		self.root = {}					# qsp-project.json
 		self.save_temp_files = False	# save temporary qsps-files or not
-		self.include_scripts = None		# postprocessor's py-scripts
 		self.modules_paths = []			# Output files' paths (QSP-files, modules)
 		self.start_module_path = ''		# File, that start in player.
 		self.work_dir = None			# workdir - is dir of qsp-project.json
@@ -94,10 +93,6 @@ class BuildQSP():
 		# Save temp-files Mode:
 		if ('save_temp_files' in self.root):
 			self.save_temp_files = self.root['save_temp_files']
-
-		# Postprocessor's scripts list (or none):
-		if 'postprocessors' in self.root:
-			self.include_scripts = self.root['postprocessors']
 
 		# Preprocessor's mode init.
 		if not 'preprocessor' in self.root:
@@ -218,12 +213,6 @@ class BuildQSP():
 				qsp_module.exit_files(f'game{project.index(instruction)}.qsp')
 				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
 
-			if 'postprocessor' in instruction:
-				# Include scripts in build instructions have priority.
-				qsp_module.extend_scripts(instruction['postprocessors'])
-			elif self.include_scripts is not None:
-				qsp_module.extend_scripts(self.include_scripts)
-
 			# Build TXT2GAM-file
 			# preprocessor work if not Hard-off mode
 			if self.root['preprocessor'] != 'Hard-off':
@@ -231,9 +220,6 @@ class BuildQSP():
 			# print(f'preprocess: {start_time - time.time()}')
 			qsp_module.extract_qsps()
 			# print(f'extracting qsps: {start_time - time.time()}')
-			# Run Postprocessor if include scripts are exists.
-			qsp_module.postprocess_qsps()
-			print(f'postprocess: {time.time() - start_time}')
 			# Convert TXT2GAM at `.qsp`
 			qsp_module.convert(self.save_temp_files)
 			print(f'convert: {time.time() - start_time}')
