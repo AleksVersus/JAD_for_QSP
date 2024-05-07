@@ -4,7 +4,7 @@ import json
 
 # Importing my modules.
 from . import function as qsp
-from .qsps_to_qsp import ModuleQSP
+from .moduleqsp import ModuleQSP
 import time
 
 
@@ -177,10 +177,9 @@ class BuildQSP():
 					qsp.write_error_log(f'[105] File «{file}» is not in the project.')
 
 		qsp_file_body = [
-			'QSP-Game Функция для проверки наличия файлов.\n',
 			f'# {func_name}\n',
-			'$args[0]=$args[0] & !@ путь к файлу, который нужно проверить\n',
-			'$args[1]="\n']
+			'$args[0] = $args[0]\n',
+			'$args[1] = "\n']
 
 		for file in found_files:
 			sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(file))
@@ -202,18 +201,19 @@ class BuildQSP():
 			qsp_module = ModuleQSP()
 			qsp_module.set_converter(self.converter, self.converter_param)
 			if 'files' in instruction:
-				qsp_module.extend_by_files(instruction['files'])
+				for file in instruction['files']:
+					qsp_module.extend_by_file(os.path.abspath(file['path']))
 			if 'folders' in instruction:
 				for path in instruction['folders']:
 					qsp_module.extend_by_folder(os.path.abspath(path['path']))
 			if ('files' not in instruction) and ('folders' not in instruction):
-				qsp_module.extend_by_folder(os.getcwd())
+				qsp_module.extend_by_folder(self.work_dir) # if not pathes, scan all current folder
 			if self.scan_the_files:
-				# TODO: extend module by scanned location
+				qsp_module.extend_by_src(self.scan_files_locbody)
 				self.scan_the_files = False
 			# print(f'extended files: {start_time - time.time()}')
-			if 'build' in instruction:
-				qsp_module.exit_files(instruction['build'])
+			if 'module' in instruction:
+				qsp_module.set_exit_files(instruction['module'])
 			else:
 				qsp_module.exit_files(f'game{project.index(instruction)}.qsp')
 				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
@@ -225,8 +225,9 @@ class BuildQSP():
 				qsp_module.extend_scripts(self.include_scripts)
 
 			# Build TXT2GAM-file
-			# qsp.construct_file(build_files, exit_txt, self.root['preprocessor'], pp_markers, code_system=code_system)
-			qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
+			# preprocessor work if not Hard-off mode
+			if self.root['preprocessor'] != 'Hard-off':
+				qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
 			# print(f'preprocess: {start_time - time.time()}')
 			qsp_module.extract_qsps()
 			# print(f'extracting qsps: {start_time - time.time()}')
@@ -240,11 +241,12 @@ class BuildQSP():
 				self.modules_paths.append(qsp_module.output_qsp)			
 
 	def run_qsp_files(self) -> None:
-		start_file = self.get_start_module()
-
 		if not os.path.isfile(self.player):
 			qsp.write_error_log(f'[107] Path at player is wrong. Prove path «{self.player}».')
 			return None
+		
+		start_file = self.get_start_module()
+
 		if not os.path.isfile(start_file):
 			qsp.write_error_log(f'[108] Start-file is wrong. Don\'t start the player.')
 		else:

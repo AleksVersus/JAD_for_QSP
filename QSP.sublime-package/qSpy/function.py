@@ -11,9 +11,7 @@ def write_error_log(error_text:str) -> None:
 	print(error_text)
 
 def get_files_list(folder:str, filters:list=None) -> list:
-	"""
-		Create list of files in folder and includes folders.
-	"""
+	""" Create list of files in folder and includes folders. """
 	if filters is None: filters = [".qsps",'.qsp-txt','.txt-qsp']
 	build_files = []
 	tree = os.walk(folder)
