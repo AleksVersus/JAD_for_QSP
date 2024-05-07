@@ -15,7 +15,7 @@ from .qSpy.workspace import QspWorkspace
 from .qSpy import function as qsp
 # Import constants
 from .qSpy import const
-# import time
+import time
 
 
 class QspBuildCommand(sublime_plugin.WindowCommand):

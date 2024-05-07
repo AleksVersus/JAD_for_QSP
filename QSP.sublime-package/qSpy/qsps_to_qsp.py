@@ -40,7 +40,7 @@ class NewQspLocation():
 
 class NewQspsFile():
 	"""	qsps-file, separated in locations """
-	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None) -> None:
+	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None, start_time=time.time()) -> None:
 		"""	initialise """
 		# main fields:
 		self.locations_count = 0		# location count for set at file
@@ -54,6 +54,8 @@ class NewQspsFile():
 		self.input_file = input_file
 		self.output_folder = None
 		self.file_name = None
+
+		self.start_time = start_time
 
 		# from file or filestrings
 		if input_file is not None:
@@ -71,7 +73,10 @@ class NewQspsFile():
 		else:
 			# covert of data
 			self.src_strings = file_strings
+
+		print(f'NewQsps.init fields {time.time() - start_time}, {time.time() - self.start_time}')
 		self.split_to_locations(self.src_strings)
+		print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
 
 		if output_file is not None:
 			self.output_file = os.path.abspath(output_file)
@@ -81,7 +86,9 @@ class NewQspsFile():
 		self.qsploc_end = NewQspsFile.decode_qsps_line(str(0))
 
 	def split_to_locations(self, string_lines:list) -> None:
+		start_time = time.time()
 		input_text = ''.join(string_lines)
+		print(f'NewQsps.splitloc.get input {time.time() - start_time}, {time.time() - self.start_time}')
 		location_code = ""
 		mode = {'location-name': ""}
 		while len(input_text) > 0:
@@ -112,6 +119,7 @@ class NewQspsFile():
 					input_text = post_text
 				else:
 					input_text = ''
+		print(f'NewQsps.splitloc.after {time.time() - start_time}, {time.time() - self.start_time}')
 
 	def find_overlap_main(self, string_line:str):
 		maximal = len(string_line)+1

@@ -28,6 +28,8 @@ class BuildQSP():
 		self.start_module_path = ''		# File, that start in player.
 		self.work_dir = None			# workdir - is dir of qsp-project.json
 
+		self.start_time = time.time()
+
 		# Scanned files proves location
 		self.scan_the_files = False		# Marker of scanning files
 		self.scan_files_locname = None	# location name
@@ -41,11 +43,14 @@ class BuildQSP():
 			# Reinit main fields and init other fields.
 			self.fields_init()
 
+		print(f'BuildQSP.init {time.time() - self.start_time}')
+
 	def work_dir_init(self) -> None:
 		"""
 			Initialise of workdir. If qsp-project.json is not exist,
 			workdir sets at dir of point file.
 		"""
+		start_time = time.time()
 		point_file = self.modes['point_file']
 		project_folder = qsp.search_project_folder(point_file)
 
@@ -57,6 +62,8 @@ class BuildQSP():
 
 		self.set_work_dir(project_folder)
 
+		print(f'BuildQSP.work_dir {time.time() - start_time}, {time.time() - self.start_time}')
+
 	def set_work_dir(self, work_dir:str=None) -> None:
 		""" Set self.work_dir and change work dir """
 		self.work_dir = work_dir
@@ -66,6 +73,7 @@ class BuildQSP():
 
 	def fields_init(self) -> None:
 		""" Filling the BuildQSP fields from project_file """
+		start_time = time.time()
 		if not self.root: # self.root is empty
 			# Deserializing project-file:
 			project_json = os.path.join(self.work_dir, 'qsp-project.json')
@@ -117,6 +125,8 @@ class BuildQSP():
 			# Start-file defined. Get from define.
 			self.start_module_path = os.path.abspath(self.root['start'])
 
+		print(f'BuildQSP.fields_init {time.time() - start_time}, {time.time() - self.start_time}')
+
 	def build_and_run(self):
 		self.print_mode()
 
@@ -145,6 +155,7 @@ class BuildQSP():
 	
 	def create_scans_loc(self) -> None:
 		""" Prepare and creation location-function of scanned files """
+		start_time = time.time()
 		found_files = [] # Absolute files paths.
 		start_file_folder = os.path.split(self.start_module_path)[0]
 		scans = self.root['scans']
@@ -185,7 +196,9 @@ class BuildQSP():
 			'result = iif(instr($args[1],"[<<$args[0]>>]")<>0, 1, 0)\n',
 			f'- {func_name}\n'])
 
-		self.scan_files_locbody = qsp_file_body	
+		self.scan_files_locbody = qsp_file_body
+
+		print(f'BuildQSP.create_scans_loc {time.time() - start_time}, {time.time() - self.start_time}')
 
 	def build_qsp_files(self):
 		start_time = time.time()
@@ -193,7 +206,7 @@ class BuildQSP():
 		project = self.root['project']
 		# Get instructions list from 'project'.
 		for instruction in project:
-			qsp_module = ModuleQSP()
+			qsp_module = ModuleQSP(self.start_time)
 			qsp_module.set_converter(self.converter, self.converter_param)
 			if 'files' in instruction:
 				for file in instruction['files']:
@@ -222,9 +235,11 @@ class BuildQSP():
 			# print(f'extracting qsps: {start_time - time.time()}')
 			# Convert TXT2GAM at `.qsp`
 			qsp_module.convert(self.save_temp_files)
-			print(f'convert: {time.time() - start_time}')
+			print(f'BuildQSP.build.convert {time.time() - start_time}, {time.time() - self.start_time}')
 			if os.path.isfile(qsp_module.output_qsp):
-				self.modules_paths.append(qsp_module.output_qsp)			
+				self.modules_paths.append(qsp_module.output_qsp)
+
+		print(f'BuildQSP.build_module {time.time() - start_time}, {time.time() - self.start_time}')			
 
 	def run_qsp_files(self) -> None:
 		if not os.path.isfile(self.player):
