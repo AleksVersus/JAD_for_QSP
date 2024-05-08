@@ -29,6 +29,9 @@ class NewQspLocation():
 		""" Set location name, n decode it to QSP-format """
 		self.name = name
 
+	def add_code_string(self, code_string:str) -> None:
+		self.code.append(code_string)
+
 	def change_code(self, code:list) -> None:
 		""" Set location code, n decode it to QSP-format """
 		self.code = code
@@ -51,13 +54,12 @@ class NewQspsFile():
 		self.converted_strings = None	# output converted strings
 
 		# files fields
-		self.input_file = input_file
-		self.output_folder = None
-		self.file_name = None
+		self.input_file = input_file	# abspath of qsps-file
+		self.output_folder = None		# output folder name
+		self.file_name = None			# qsps file-name or QSP-file name
 
 		self.start_time = start_time
 
-		# from file or filestrings
 		if input_file is not None:
 			# convert of exists file
 			self.input_file = os.path.abspath(input_file)
@@ -65,17 +67,19 @@ class NewQspsFile():
 			self.file_name = os.path.splitext(file_full_name)[0]
 			
 			if os.path.isfile(self.input_file):
-				with open(self.input_file, 'r', encoding='utf-8') as file:
-					self.src_strings = file.readlines()
-				self.file_body = ''.join(self.src_strings)
+				with open(self.input_file, 'r', encoding='utf-8') as fp:
+					self.src_strings = fp.readlines()
+				with open(self.input_file, 'r', encoding='utf-8') as fp:
+					self.file_body = fp.read()
 			else:
 				print(f'File «{self.input_file}» is not exist')
 		else:
 			# covert of data
 			self.src_strings = file_strings
+			self.file_body = ''.join(self.src_strings)
 
 		print(f'NewQsps.init fields {time.time() - start_time}, {time.time() - self.start_time}')
-		self.split_to_locations(self.src_strings)
+		self.split_to_locations()
 		print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
 
 		if output_file is not None:
@@ -85,9 +89,62 @@ class NewQspsFile():
 
 		self.qsploc_end = NewQspsFile.decode_qsps_line(str(0))
 
-	def split_to_locations(self, string_lines:list) -> None:
+	def append_location(self, location:NewQspLocation) -> None:
+		""" Add location in NewQsps """
+		self.locations.append(location)
+		self.locations_id[scope_regexp_obj.group(1)] = self.locations_count
+		self.locations_count += 1
+
+	def split_to_locations(self) -> None:
+		"""  """
 		start_time = time.time()
-		input_text = ''.join(string_lines)
+
+		new_strings = []
+		mode = {
+			'location-name': '',
+			'open-string': ''}
+		location_code = ''
+
+		for string in self.src_strings:
+			if mode['location-name'] == '':
+				match = re.search(r'^\#\s*(.+)$', string)
+				if match is not None:
+					# open location
+					locname = match.group(1).replace('\r', '')
+					location = NewQspLocation(locname)
+					self.append_location(location)
+					# location_code = ''
+					mode['location-name'] = locname
+			elif mode['open-string'] == '':
+				match = re.search(r'^\-(.*)$', string)
+				if match is not None:
+					# close location
+					# location.change_code(location_code.replace('\n','\n\r').split('\r')[1:-1])
+					mode['location-name'] = ''
+				else:
+					self.parse_string(string, mode)
+					location.add_code_string(string)
+			else:
+				self.parse_string(string, mode)
+				location.add_code_string(string)
+
+	def parse_string(self, string:str, mode:dict) -> None:
+		for char in string:
+			if mode['open-string'] == '':
+				# string not open
+				if char in ('"', '\'', '{'):
+					mode['open-string'] = char
+			else:
+				if char in ('"', '\'') and mode['open-string'][-1] == char:
+					mode['open-string'] = mode['open-string'][:-1]
+				elif char == '}' and mode['open-string'][-1] == '{':
+					mode['open-string'] = mode['open-string'][:-1]
+				elif char == '{':
+					mode['open-string'] += char
+
+	def split_to_locations_(self) -> None:
+		start_time = time.time()
+		input_text = self.file_body
 		print(f'NewQsps.splitloc.get input {time.time() - start_time}, {time.time() - self.start_time}')
 		location_code = ""
 		mode = {'location-name': ""}
@@ -96,9 +153,7 @@ class NewQspsFile():
 			if scope_type=='location-start' and mode['location-name']=='':
 				location = NewQspLocation(scope_regexp_obj.group(1).replace('\r',''))
 				location_code = ""
-				self.locations.append(location)
-				self.locations_id[scope_regexp_obj.group(1)] = self.locations_count
-				self.locations_count += 1
+				self.append_location(location)
 				mode['location-name'] = scope_regexp_obj.group(1)
 				input_text = post_text
 			elif scope_type=='location-end' and mode['location-name']!='':
