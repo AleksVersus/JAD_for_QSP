@@ -17,7 +17,7 @@ class BuildQSP():
 	def __init__(self, modes:dict) -> None:
 		# Init main fields:
 		self.modes = modes 											# Arguments from sys. Modes of build.
-		self.converter = 'qsps_to_qsp'								# Converter application path (exe in win).
+		self.converter = ('qgc_path' if 'qgc_path' in modes else 'qsps_to_qsp') # Converter application path (exe in win).
 		self.converter_param = ''									# Converter's parameters (key etc.)
 		self.player = 'C:\\Program Files\\QSP\\qsp580\\qspgui.exe'	# Player application path (exe in win)
 
@@ -84,15 +84,15 @@ class BuildQSP():
 		if 'converter' in self.root:
 			converter = self.root['converter']
 			_is_file = lambda path: os.path.isfile(os.path.abspath(path))
-			if type(converter) == str and _is_file(converter):
-				self.converter = os.path.abspath(converter)
+			if type(converter) == str:
+				if _is_file(converter):
+					self.converter = os.path.abspath(converter)
+				elif converter == 'qsps_to_qsp':
+					self.converter = converter
 				self.converter_param = ''
-			elif type(converter) == list and len(converter)>1 and _is_file(converter[0]):
-				self.converter  = os.path.abspath(converter[0])
-				self.converter_param = converter[1]
 			elif type(converter) == list and _is_file(converter[0]):
 				self.converter  = os.path.abspath(converter[0])
-				self.converter_param = ''
+				self.converter_param = (converter[1] if len(converter)>1 else '')
 
 		if 'player' in self.root:
 			if os.path.isfile(os.path.abspath(self.root['player'])):

@@ -29,6 +29,15 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 			print('[0] Save file before building!')
 			return None
 		args = qsp.parse_args(qsp_mode, argv['file'])
+		if sublime.platform() == 'windows':
+			qgc_path = os.path.join(
+				sublime.packages_path(),
+				'QSP',
+				'qgc',
+				'app',
+				'QGC.exe')
+			if os.path.isfile(qgc_path):
+				args['qgc_path'] = qgc_path
 
 		# -----------------------------------------------------------------------
 		# args['point_file'] - start point for search `qsp-project.json`
