@@ -4,11 +4,11 @@ import subprocess
 from . import function as qsp
 from .qsps_to_qsp import NewQspsFile
 from .pp import pp_this_lines
-import time
+# import time
 
 class ModuleQSP():
 
-	def __init__(self, start_time=time.time()):
+	def __init__(self):
 
 		self.src_qsps_file = []		# list[SrcQspsFile]
 
@@ -20,7 +20,7 @@ class ModuleQSP():
 		self.converter_param = ''	# string of parameters for converting
 
 		self.qsps_code = []			# all strings of module code
-		self.start_time = start_time
+		# self.start_time = start_time
 	
 	def set_converter(self, converter:str='qsps_to_qsp', args:str='') -> None:
 		""" set path to converter, or converter name """
@@ -114,16 +114,16 @@ class ModuleQSP():
 			self.qsps_code.extend(src.get_strings())
 
 	def convert(self, save_temp_file:bool) -> None:
-		start_time = time.time()
+		# start_time = time.time()
 		if self.converter == 'qsps_to_qsp':
-			qsps_file = NewQspsFile(None, self.output_qsp, self.qsps_code, self.start_time)
-			print(f'Module.newqsps {time.time() - start_time}, {time.time() - self.start_time}')
+			qsps_file = NewQspsFile(None, self.output_qsp, self.qsps_code)
+			# print(f'Module.newqsps {time.time() - start_time}, {time.time() - self.start_time}')
 			qsps_file.convert()
-			print(f'Module.convert {time.time() - start_time}, {time.time() - self.start_time}')
+			# print(f'Module.convert {time.time() - start_time}, {time.time() - self.start_time}')
 			qsps_file.save_qsp(self.output_qsp)
-			print(f'Module.save_qsp {time.time() - start_time}, {time.time() - self.start_time}')
+			# print(f'Module.save_qsp {time.time() - start_time}, {time.time() - self.start_time}')
 			if save_temp_file: self.save_temp_file()
-			print(f'Module.temp {time.time() - start_time}, {time.time() - self.start_time}')
+			# print(f'Module.temp {time.time() - start_time}, {time.time() - self.start_time}')
 		else:
 			self.save_temp_file()
 			_run = [self.converter, self.output_txt, self.output_qsp, self.converter_param]

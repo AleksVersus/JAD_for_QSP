@@ -11,7 +11,7 @@ from .pp import pp_this_lines
 from .function import clear_locname
 from .function import get_files_list
 from .function import write_error_log
-import time
+# import time
 
 class NewQspLocation():
 	"""
@@ -43,7 +43,7 @@ class NewQspLocation():
 
 class NewQspsFile():
 	"""	qsps-file, separated in locations """
-	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None, start_time=time.time()) -> None:
+	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None) -> None:
 		"""	initialise """
 		# main fields:
 		self.locations_count = 0		# location count for set at file
@@ -58,7 +58,7 @@ class NewQspsFile():
 		self.output_folder = None		# output folder name
 		self.file_name = None			# qsps file-name or QSP-file name
 
-		self.start_time = start_time
+		# self.start_time = start_time
 
 		if input_file is not None:
 			# convert of exists file
@@ -78,9 +78,9 @@ class NewQspsFile():
 			self.src_strings = file_strings
 			self.file_body = ''.join(self.src_strings)
 
-		print(f'NewQsps.init fields {time.time() - start_time}, {time.time() - self.start_time}')
+		# print(f'NewQsps.init fields {time.time() - start_time}, {time.time() - self.start_time}')
 		self.split_to_locations()
-		print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
+		# print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
 
 		if output_file is not None:
 			self.output_file = os.path.abspath(output_file)
@@ -92,12 +92,12 @@ class NewQspsFile():
 	def append_location(self, location:NewQspLocation) -> None:
 		""" Add location in NewQsps """
 		self.locations.append(location)
-		self.locations_id[scope_regexp_obj.group(1)] = self.locations_count
+		self.locations_id[location.name] = self.locations_count
 		self.locations_count += 1
 
 	def split_to_locations(self) -> None:
 		"""  """
-		start_time = time.time()
+		# start_time = time.time()
 
 		new_strings = []
 		mode = {
@@ -127,6 +127,7 @@ class NewQspsFile():
 			else:
 				self.parse_string(string, mode)
 				location.add_code_string(string)
+		# print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
 
 	def parse_string(self, string:str, mode:dict) -> None:
 		for char in string:
@@ -141,74 +142,6 @@ class NewQspsFile():
 					mode['open-string'] = mode['open-string'][:-1]
 				elif char == '{':
 					mode['open-string'] += char
-
-	def split_to_locations_(self) -> None:
-		start_time = time.time()
-		input_text = self.file_body
-		print(f'NewQsps.splitloc.get input {time.time() - start_time}, {time.time() - self.start_time}')
-		location_code = ""
-		mode = {'location-name': ""}
-		while len(input_text) > 0:
-			scope_type, prev_text, scope_regexp_obj, post_text = self.find_overlap_main(input_text)
-			if scope_type=='location-start' and mode['location-name']=='':
-				location = NewQspLocation(scope_regexp_obj.group(1).replace('\r',''))
-				location_code = ""
-				self.append_location(location)
-				mode['location-name'] = scope_regexp_obj.group(1)
-				input_text = post_text
-			elif scope_type=='location-end' and mode['location-name']!='':
-				location_code += prev_text
-				input_text = post_text
-				location.change_code(location_code.replace('\n','\n\r').split('\r')[1:-1])
-				mode['location-name'] = ""
-			elif scope_type == "string" and mode['location-name']!='':
-				# adding code work where location is open
-				location_code += prev_text + scope_regexp_obj.group(0)
-				input_text = post_text
-			elif scope_type == 'string' and mode['location-name']=='':
-				# open string between locations
-				# change input text from next symbol
-				input_text = input_text[scope_regexp_obj.end():]
-			else:
-				if input_text != post_text:
-					input_text = post_text
-				else:
-					input_text = ''
-		print(f'NewQsps.splitloc.after {time.time() - start_time}, {time.time() - self.start_time}')
-
-	def find_overlap_main(self, string_line:str):
-		maximal = len(string_line)+1
-		mini_data_base = {
-			"scope-name": [
-				'location-start',
-				'location-end',
-				'string'
-			],
-			"scope-regexp":
-			[
-				re.search(r'^\#\s?(.*?)$', string_line, flags=re.MULTILINE),
-				re.search(r'^\-.*$', string_line, flags=re.MULTILINE),
-				re.search(r'("|\')[\S\s]*?(\1)', string_line, flags=re.MULTILINE)
-			],
-			"scope-instring":
-			[]
-		}
-		for i, string_id in enumerate(mini_data_base['scope-name']):
-			match_in = mini_data_base['scope-regexp'][i]
-			mini_data_base['scope-instring'].append(
-				match_in.start() if match_in is not None else maximal)
-		minimal = min(mini_data_base['scope-instring'])
-		if minimal!=maximal:
-			i = mini_data_base['scope-instring'].index(minimal)
-			scope_type = mini_data_base['scope-name'][i]
-			scope_regexp_obj = mini_data_base['scope-regexp'][i]
-			scope = scope_regexp_obj.group(0)
-			q = scope_regexp_obj.start()
-			prev_line = string_line[0:q]
-			post_line = string_line[q+len(scope):]
-			return scope_type, prev_line, scope_regexp_obj, post_line
-		else:
-			return None, '', '', string_line
 
 	def get_qsplocs(self) -> list:
 		""" Return qsp-location for adding to ws """
@@ -254,7 +187,7 @@ class NewQspsFile():
 			return ''
 
 	def convert(self):
-		start_time = time.time()
+		# start_time = time.time()
 		if self.converted_strings is not None:
 			print('[301] Already converted.')
 			raise Exception('[301] Already converted.')
@@ -272,7 +205,7 @@ class NewQspsFile():
 			self.converted_strings.append(location.decode_name + '\n\n')
 			self.converted_strings.append(location.decode_code + '\n')
 			self.converted_strings.append(self.qsploc_end + '\n')
-		print(f'qsps.converted: {time.time() - start_time}')
+		# print(f'qsps.converted: {time.time() - start_time}')
 	
 	def save_qsps(self, input_file:str=None) -> None:
 		if self.input_file is None and input_file is None:

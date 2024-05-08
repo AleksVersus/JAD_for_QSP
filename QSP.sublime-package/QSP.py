@@ -35,13 +35,13 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		# args['build'] - command for build the project
 		# args['run'] - command for run the project
 		# -----------------------------------------------------------------------
-		# old_time = time.time()
+		old_time = time.time()
 		# Initialise of Builder:
 		builder = BuildQSP(args)
 		# Run the Builder to work:
 		builder.build_and_run()
-		# new_time = time.time()
-		# print(new_time - old_time)
+		new_time = time.time()
+		print(new_time - old_time)
 
 class QspToQspsCommand(sublime_plugin.WindowCommand):
 	""" Command to start converting QSP-Game to qsps """
