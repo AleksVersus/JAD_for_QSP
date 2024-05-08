@@ -17,7 +17,7 @@ class BuildQSP():
 	def __init__(self, modes:dict) -> None:
 		# Init main fields:
 		self.modes = modes 											# Arguments from sys. Modes of build.
-		self.converter = ('qgc_path' if 'qgc_path' in modes else 'qsps_to_qsp') # Converter application path (exe in win).
+		self.converter = ('qgc' if 'qgc_path' in modes else 'qsps_to_qsp') # Converter application path (exe in win).
 		self.converter_param = ''									# Converter's parameters (key etc.)
 		self.player = 'C:\\Program Files\\QSP\\qsp580\\qspgui.exe'	# Player application path (exe in win)
 
@@ -206,40 +206,84 @@ class BuildQSP():
 		project = self.root['project']
 		# Get instructions list from 'project'.
 		for instruction in project:
-			qsp_module = ModuleQSP()
-			qsp_module.set_converter(self.converter, self.converter_param)
-			if 'files' in instruction:
-				for file in instruction['files']:
-					qsp_module.extend_by_file(os.path.abspath(file['path']))
-			if 'folders' in instruction:
-				for path in instruction['folders']:
-					qsp_module.extend_by_folder(os.path.abspath(path['path']))
-			if ('files' not in instruction) and ('folders' not in instruction):
-				qsp_module.extend_by_folder(self.work_dir) # if not pathes, scan all current folder
-			if self.scan_the_files:
-				qsp_module.extend_by_src(self.scan_files_locbody)
-				self.scan_the_files = False
-			# print(f'extended files: {start_time - time.time()}')
-			if 'module' in instruction:
-				qsp_module.set_exit_files(instruction['module'])
+			if self.converter == 'qgc' and self.root['preprocessor'] == 'Hard-off':
+				self.qgc_build(instruction, pp_markers, project)
 			else:
-				qsp_module.set_exit_files(f'game{project.index(instruction)}.qsp')
-				qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
+				self.qsps_build(instruction, pp_markers, project)
 
-			# Build TXT2GAM-file
-			# preprocessor work if not Hard-off mode
-			if self.root['preprocessor'] != 'Hard-off':
-				qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
-			# print(f'preprocess: {start_time - time.time()}')
-			qsp_module.extract_qsps()
-			# print(f'extracting qsps: {start_time - time.time()}')
-			# Convert TXT2GAM at `.qsp`
-			qsp_module.convert(self.save_temp_files)
-			# print(f'BuildQSP.build.convert {time.time() - start_time}, {time.time() - self.start_time}')
-			if os.path.isfile(qsp_module.output_qsp):
-				self.modules_paths.append(qsp_module.output_qsp)
+	def qsps_build(self, instruction:dict, pp_markers:dict, project:dict) -> None:
+		qsp_module = ModuleQSP()
+		qsp_module.set_converter(self.converter, self.converter_param)
+		if 'files' in instruction:
+			for file in instruction['files']:
+				qsp_module.extend_by_file(os.path.abspath(file['path']))
+		if 'folders' in instruction:
+			for path in instruction['folders']:
+				qsp_module.extend_by_folder(os.path.abspath(path['path']))
+		if ('files' not in instruction) and ('folders' not in instruction):
+			qsp_module.extend_by_folder(self.work_dir) # if not pathes, scan all current folder
+		if self.scan_the_files:
+			qsp_module.extend_by_src(self.scan_files_locbody)
+			self.scan_the_files = False
+		# print(f'extended files: {start_time - time.time()}')
+		if 'module' in instruction:
+			qsp_module.set_exit_files(instruction['module'])
+		else:
+			qsp_module.set_exit_files(f'game{project.index(instruction)}.qsp')
+			qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
 
-		# print(f'BuildQSP.build_module {time.time() - start_time}, {time.time() - self.start_time}')			
+		# Build TXT2GAM-file
+		# preprocessor work if not Hard-off mode
+		if self.root['preprocessor'] != 'Hard-off':
+			qsp_module.preprocess_qsps(self.root['preprocessor'], pp_markers)
+		qsp_module.extract_qsps()
+		# Convert TXT2GAM at `.qsp`
+		qsp_module.convert(self.save_temp_files)
+		if os.path.isfile(qsp_module.output_qsp):
+			self.modules_paths.append(qsp_module.output_qsp)		
+
+	def qgc_build(self, instruction:dict, pp_markers:dict, project:dict) -> None:
+		# prepare parameters
+		i = [] # pathes to source files and folders
+		folder_to_conv = os.path.split(self.modes['qgc_path'])[0]
+		root_folder_qgc = os.path.split(folder_to_conv)[0]
+		plugin_path = os.path.join(root_folder_qgc, 'plugins', 'a_txt2gam.dll')
+		if 'files' in instruction:
+			for file in instruction['files']:
+				i.append(os.path.abspath(file['path']))
+		if 'folders' in instruction:
+			for path in instruction['folders']:
+				i.append(os.path.abspath(path['path']))
+		if ('files' not in instruction) and ('folders' not in instruction):
+			i.append(self.work_dir) # if not pathes, scan all current folder
+
+		if self.scan_the_files:
+			folder_to_conv = os.path.split(self.modes['qgc_path'])
+			scan_files_path = os.path.join(folder_to_conv, 'prv_file.qsps')
+			with open(scan_files_path, 'w', encoding='utf-8') as fp:
+				fp.writelines(self.scan_files_locbody)
+			i.append(scan_files_path)
+			self.scan_the_files = False
+
+		if 'module' in instruction:
+			module_path = os.path.abspath(instruction['module'])
+		else:
+			module_path = os.path.abspath(f'game{project.index(instruction)}.qsp')
+			qsp.write_error_log(f'[106] Key «build» not found. Choose export name {module_path}.')
+
+		params = f' -m a -r -p"{plugin_path}" -o "{module_path}"'
+		params += ' -i ' + ' '.join([f'"{i_}"' for i_ in i])		
+
+		# Build TXT2GAM-file
+		print(params)
+		
+		_run = [self.modes['qgc_path'], params]
+		complete_process = subprocess.run(_run, stdout=subprocess.PIPE)
+		if complete_process.returncode != 0:
+			print(f'Error of QGC #{complete_process.returncode}. If this Error will be repeat, change "converter" to "qsps_to_qsp".')
+
+		if os.path.isfile(module_path):
+			self.modules_paths.append(module_path)	
 
 	def run_qsp_files(self) -> None:
 		if not os.path.isfile(self.player):
