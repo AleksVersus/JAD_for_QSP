@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QSP Sublime-Package"
-#define MyAppVersion "0.14"
+#define MyAppVersion "0.15"
 #define MyAppPublisher "Aleks Versus'GAM'RUS"
 #define MyAppURL "https://github.com/AleksVersus/JAD_for_QSP"
 
@@ -50,6 +50,7 @@ Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\qsp.subl
 Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\qsp_locations.sublime-syntax"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\syntax_test_qsp.qsps"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\qSpy\*"; DestDir: "{app}\qSpy"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\qgc\*"; DestDir: "{app}\qgc"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\Snippets\*"; DestDir: "{app}\Snippets"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "D:\my\GameDev\QuestSoftPlayer\projects\JAD\QSP.sublime-package\Completions\*"; DestDir: "{app}\Completions"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files

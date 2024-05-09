@@ -2,7 +2,7 @@
 	"project":
 	[
 		{
-			"build": "..\\example_game\\game.sam.qsp",
+			"module": "..\\example_game\\game.sam.qsp",
 			"folders":
 			[
 				{
@@ -11,7 +11,7 @@
 			]
 		},
 		{
-			"build" :"..\\example_game\\drive.qsp",
+			"module" :"..\\example_game\\drive.qsp",
 			"folders":
 			[
 				{
@@ -20,7 +20,7 @@
 			]
 		},
 		{
-			"build": "..\\example_game\\bases.qsp",
+			"module": "..\\example_game\\bases.qsp",
 			"folders":
 			[
 				{
@@ -29,7 +29,7 @@
 			]
 		},
 		{
-			"build": "..\\example_game\\intro.qsp",
+			"module": "..\\example_game\\intro.qsp",
 			"folders":
 			[
 				{
@@ -38,7 +38,7 @@
 			]
 		},
 		{
-			"build": "..\\example_game\\lib\\easy.math.qsp",
+			"module": "..\\example_game\\lib\\easy.math.qsp",
 			"folders":
 			[
 				{
@@ -47,7 +47,7 @@
 			]
 		},
 		{
-			"build": "..\\example_game\\pp-test\\pp-test.qsp",
+			"module": "..\\example_game\\pp-test\\pp-test.qsp",
 			"folders":
 			[
 				{
@@ -58,11 +58,10 @@
 	],
 	"start": "..\\example_game\\game.sam.qsp",
 	"scans": {
-		"destination": ".\\bases",
 		"location": "pf",
 		"folders":["..\\example_game\\res\\img"]
 	},
-	"save_txt2gam": "True",
-	"preprocessor": "Off"
+	"save_temp_files": true,
+	"preprocessor": "Hard-off"
 	
 }
