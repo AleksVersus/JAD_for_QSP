@@ -31,13 +31,13 @@ def compare_paths(path1:str, path2:str):
 	path2 = os.path.relpath(path2, start)
 	return path1, path2
 
-def search_project_folder(path:str, print_error:bool=True) -> str:
+def search_project_folder(path:str, print_error:bool=True, project_file:str='qsp-project.json') -> str:
 	"""
 		Find project-file and return folder path whith project.
 		In other return None.
 	"""
 	project_folder = (os.path.split(path)[0] if os.path.isfile(path) else path)
-	while not os.path.isfile(os.path.join(project_folder, "qsp-project.json")):
+	while not os.path.isfile(os.path.join(project_folder, project_file)):
 		if os.path.ismount(project_folder):
 			if print_error:
 				write_error_log(f"[202] not found 'qsp-project.json' file for this project. Prove path {path}.")
