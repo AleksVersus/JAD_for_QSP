@@ -15,7 +15,7 @@ from .qSpy.workspace import QspWorkspace
 from .qSpy import function as qsp
 # Import constants
 from .qSpy import const
-import time
+# import time
 
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
@@ -26,7 +26,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		# Three commands from arguments.
 		argv = self.window.extract_variables()
 		if 'file' not in argv:
-			print('[0] Save file before building!')
+			qsp.write_error_log('[0] Save file before building!')
 			return None
 		args = qsp.parse_args(qsp_mode, argv['file'])
 		if sublime.platform() == 'windows':
@@ -43,14 +43,36 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 		# args['point_file'] - start point for search `qsp-project.json`
 		# args['build'] - command for build the project
 		# args['run'] - command for run the project
+		# args['qgc_path'] — path to win-converter
 		# -----------------------------------------------------------------------
-		old_time = time.time()
+
+		# change project.json -> qsp-project.json before beta-release
+		if 'point_file' in args:
+			project_file = 'project.json'
+			project_folder = qsp.search_project_folder(
+				args['point_file'],
+				print_error=False,
+				project_file=project_file)
+			if project_folder is not None:
+				with open(os.path.join(project_folder, project_file), 'r', encoding='utf-8') as fp:
+					root = json.load(fp)
+				for instruction in root['project']:
+					if 'build' in instruction:
+						instruction['module'] = instruction['build']
+						del instruction['build']
+				if 'save_txt2gam' in root:
+					root['save_temp_files'] = root['save_txt2gam']
+					del root['save_txt2gam']
+				with open(os.path.join(project_folder, 'qsp-project.json'), 'w', encoding='utf-8') as fp:
+					json.dump(root, fp, indent=4, ensure_ascii=False)
+				os.remove(os.path.join(project_folder, project_file))
+		# old_time = time.time()
 		# Initialise of Builder:
 		builder = BuildQSP(args)
 		# Run the Builder to work:
 		builder.build_and_run()
-		new_time = time.time()
-		print(new_time - old_time)
+		# new_time = time.time()
+		# print(new_time - old_time)
 
 class QspToQspsCommand(sublime_plugin.WindowCommand):
 	""" Command to start converting QSP-Game to qsps """
@@ -61,7 +83,7 @@ class QspToQspsCommand(sublime_plugin.WindowCommand):
 			qsp_to_qsps = QspToQsps(args = {'game-file': file})
 			qsp_to_qsps.convert()
 		else:
-			print('Wrong extension of file. Can not convert.')
+			qsp.write_error_log('Wrong extension of file. Can not convert.')
 
 class QspsToQspCommand(sublime_plugin.WindowCommand):
 	""" Comand to start converting qsps-file to QSP-Game """
@@ -71,7 +93,7 @@ class QspsToQspCommand(sublime_plugin.WindowCommand):
 			file = NewQspsFile(input_file = argv['file'])
 			file.convert()
 		else:
-			print('Wrong extension of file. Can not convert.')
+			qsp.write_error_log('Wrong extension of file. Can not convert.')
 
 class QspSplitterCommand(sublime_plugin.WindowCommand):
 	"""
