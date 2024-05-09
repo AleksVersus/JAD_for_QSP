@@ -238,14 +238,17 @@ class BuildQSP():
 		folder_to_conv = os.path.split(self.modes['qgc_path'])[0]
 		root_folder_qgc = os.path.split(folder_to_conv)[0]
 		plugin_path = os.path.join(root_folder_qgc, 'plugins', 'a_txt2gam.dll')
+		start_qsploc_file = None
 		if 'files' in instruction:
 			for file in instruction['files']:
 				i.append(os.path.abspath(file['path']))
+		if i: start_qsploc_file = i[0]
 		if 'folders' in instruction:
 			for path in instruction['folders']:
 				i.append(os.path.abspath(path['path']))
 		if ('files' not in instruction) and ('folders' not in instruction):
 			i.append(self.work_dir) # if not pathes, scan all current folder
+		if start_qsploc_file is None: start_qsploc_file = qsp.get_files_list(i[0])[0]
 
 		if self.scan_the_files:
 			folder_to_conv = os.path.split(self.modes['qgc_path'])
@@ -261,18 +264,13 @@ class BuildQSP():
 			module_path = os.path.abspath(f'game{project.index(instruction)}.qsp')
 			qsp.write_error_log(f'[106] Key «build» not found. Choose export name {module_path}.')
 
-		params = '"' +self.modes['qgc_path']+ '"' + f' -m a -r -p "{plugin_path}" -o "{module_path}"'
-		params += ' -i ' + ' '.join([f'"{i_}"' for i_ in i])		
+		params = '"' +self.modes['qgc_path']+ '"'
+		params += f' -m a -r -p "{plugin_path}" -o "{module_path}" -qp4st'
+		params += ' -e "qsps" -i ' + ' '.join([f'"{i_}"' for i_ in i])
+		if start_qsploc_file is not None: params += f' -im "{start_qsploc_file}"'		
 
 		# Build TXT2GAM-file
-		
-		_run = [self.modes['qgc_path'], '-m', 'a', '-r', '-p', plugin_path, '-o', module_path]
-		_run.append('-i')
-		_run.extend(i)
-		with open('comp.bat', 'w', encoding='utf-8') as fp:
-			fp.write(params+'\n')
-			fp.writelines(_run)
-		proc = subprocess.run(params)
+		proc = subprocess.run(params, stdout=subprocess.DEVNULL)
 		if proc.returncode != 0:
 			msg = f'Error of QGC #{proc.returncode}. '
 			msg += 'If this Error will be repeat, change "converter" to "qsps_to_qsp".'
