@@ -251,7 +251,6 @@ class BuildQSP():
 		if start_qsploc_file is None: start_qsploc_file = qsp.get_files_list(i[0])[0]
 
 		if self.scan_the_files:
-			folder_to_conv = os.path.split(self.modes['qgc_path'])
 			scan_files_path = os.path.join(folder_to_conv, 'prv_file.qsps')
 			with open(scan_files_path, 'w', encoding='utf-8') as fp:
 				fp.writelines(self.scan_files_locbody)
