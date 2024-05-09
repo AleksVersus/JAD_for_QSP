@@ -43,8 +43,6 @@ class BuildQSP():
 			# Reinit main fields and init other fields.
 			self.fields_init()
 
-		# print(f'BuildQSP.init {time.time() - self.start_time}')
-
 	def work_dir_init(self) -> None:
 		"""
 			Initialise of workdir. If qsp-project.json is not exist,
@@ -61,8 +59,6 @@ class BuildQSP():
 			self.create_point_project(project_folder, point_file)
 
 		self.set_work_dir(project_folder)
-
-		# print(f'BuildQSP.work_dir {time.time() - start_time}, {time.time() - self.start_time}')
 
 	def set_work_dir(self, work_dir:str=None) -> None:
 		""" Set self.work_dir and change work dir """
@@ -125,8 +121,6 @@ class BuildQSP():
 			# Start-file defined. Get from define.
 			self.start_module_path = os.path.abspath(self.root['start'])
 
-		# print(f'BuildQSP.fields_init {time.time() - start_time}, {time.time() - self.start_time}')
-
 	def build_and_run(self):
 		self.print_mode()
 
@@ -166,7 +160,6 @@ class BuildQSP():
 				# Iterate through the folders, comparing the paths with start_file,
 				# to understand if the folder lies deeper relative to it.
 				sf, f = qsp.compare_paths(start_file_folder, os.path.abspath(folder))
-				# print(f'sff:{start_file_folder}, f:{folder}, sf:{sf}, fl:{f}')
 				if sf == '.' or sf == '':
 					# Folder relative to path.
 					found_files.extend(qsp.get_files_list(folder, filters=[]))
@@ -198,8 +191,6 @@ class BuildQSP():
 
 		self.scan_files_locbody = qsp_file_body
 
-		# print(f'BuildQSP.create_scans_loc {time.time() - start_time}, {time.time() - self.start_time}')
-
 	def build_qsp_files(self):
 		# start_time = time.time()
 		pp_markers = {'Initial':True, 'True':True, 'False':False} # Preproc markers, variables.
@@ -225,7 +216,6 @@ class BuildQSP():
 		if self.scan_the_files:
 			qsp_module.extend_by_src(self.scan_files_locbody)
 			self.scan_the_files = False
-		# print(f'extended files: {start_time - time.time()}')
 		if 'module' in instruction:
 			qsp_module.set_exit_files(instruction['module'])
 		else:
@@ -271,19 +261,25 @@ class BuildQSP():
 			module_path = os.path.abspath(f'game{project.index(instruction)}.qsp')
 			qsp.write_error_log(f'[106] Key «build» not found. Choose export name {module_path}.')
 
-		params = f' -m a -r -p"{plugin_path}" -o "{module_path}"'
+		params = '"' +self.modes['qgc_path']+ '"' + f' -m a -r -p "{plugin_path}" -o "{module_path}"'
 		params += ' -i ' + ' '.join([f'"{i_}"' for i_ in i])		
 
 		# Build TXT2GAM-file
-		print(params)
 		
-		_run = [self.modes['qgc_path'], params]
-		complete_process = subprocess.run(_run, stdout=subprocess.PIPE)
-		if complete_process.returncode != 0:
-			print(f'Error of QGC #{complete_process.returncode}. If this Error will be repeat, change "converter" to "qsps_to_qsp".')
+		_run = [self.modes['qgc_path'], '-m', 'a', '-r', '-p', plugin_path, '-o', module_path]
+		_run.append('-i')
+		_run.extend(i)
+		with open('comp.bat', 'w', encoding='utf-8') as fp:
+			fp.write(params+'\n')
+			fp.writelines(_run)
+		proc = subprocess.run(params)
+		if proc.returncode != 0:
+			msg = f'Error of QGC #{proc.returncode}. '
+			msg += 'If this Error will be repeat, change "converter" to "qsps_to_qsp".'
+			qsp.write_error_log(msg)
 
 		if os.path.isfile(module_path):
-			self.modules_paths.append(module_path)	
+			self.modules_paths.append(module_path)
 
 	def run_qsp_files(self) -> None:
 		if not os.path.isfile(self.player):
