@@ -140,7 +140,7 @@ class BuildQSP():
 		if self.need_build_file():
 			# Start-file is not defined, but list of module-files is exist.
 			self.start_module_path = self.modules_paths[0]
-			qsp.write_error_log(f'[102] Start-file is wrong. Used «{self.start_module_path}» for run.')
+			qsp.write_error_log(f'[101] Start-file is wrong. Used «{self.start_module_path}» for run.')
 		if self.need_point_file():
 			# Start-file is not defined, list of build-files is not exist, but run point_file.
 			self.start_module_path = self.modes['point_file']
@@ -165,7 +165,7 @@ class BuildQSP():
 					found_files.extend(qsp.get_files_list(folder, filters=[]))
 				else:
 					# Folder is not relative to path. Is error.
-					qsp.write_error_log(f'[104] Folder «{folder}» is not in the project.')
+					qsp.write_error_log(f'[102] Folder «{folder}» is not in the project.')
 
 		if 'files' in scans:
 			for file in scans['files']:
@@ -173,7 +173,7 @@ class BuildQSP():
 				if sf == '':
 					found_files.append(os.path.abspath(file))
 				else:
-					qsp.write_error_log(f'[105] File «{file}» is not in the project.')
+					qsp.write_error_log(f'[103] File «{file}» is not in the project.')
 
 		qsp_file_body = [
 			f'# {func_name}\n',
@@ -220,7 +220,7 @@ class BuildQSP():
 			qsp_module.set_exit_files(instruction['module'])
 		else:
 			qsp_module.set_exit_files(f'game{project.index(instruction)}.qsp')
-			qsp.write_error_log(f'[106] Key «build» not found. Choose export name {qsp_module.output_qsp}.')
+			qsp.write_error_log(f'[104] Key «module» not found. Choose export name {qsp_module.output_qsp}.')
 
 		# Build TXT2GAM-file
 		# preprocessor work if not Hard-off mode
@@ -261,7 +261,7 @@ class BuildQSP():
 			module_path = os.path.abspath(instruction['module'])
 		else:
 			module_path = os.path.abspath(f'game{project.index(instruction)}.qsp')
-			qsp.write_error_log(f'[106] Key «build» not found. Choose export name {module_path}.')
+			qsp.write_error_log(f'[105] Key «module» not found. Choose export name {module_path}.')
 
 		params = '"' +self.modes['qgc_path']+ '"'
 		params += f' -m a -r -p "{plugin_path}" -o "{module_path}" -qp4st'
@@ -280,13 +280,13 @@ class BuildQSP():
 
 	def run_qsp_files(self) -> None:
 		if not os.path.isfile(self.player):
-			qsp.write_error_log(f'[107] Path at player is wrong. Prove path «{self.player}».')
+			qsp.write_error_log(f'[106] Path at player is wrong. Prove path «{self.player}».')
 			return None
 		
 		start_file = self.get_start_module()
 
 		if not os.path.isfile(start_file):
-			qsp.write_error_log(f'[108] Start-file is wrong. Don\'t start the player.')
+			qsp.write_error_log(f'[107] Start-file is wrong. Don\'t start the player.')
 		else:
 			proc = subprocess.Popen([self.player, start_file])
 			# This instruction kill the builder after 100 ms.
@@ -326,7 +326,7 @@ class BuildQSP():
 		with open(project_file_path, 'w', encoding='utf-8') as file:
 			file.write(project_json)
 			
-		qsp.write_error_log(f'[100] File «{project_file_path}» was created.')
+		qsp.write_error_log(f'[108] File «{project_file_path}» was created.')
 
 	def print_mode(self) -> None:
 		""" Print builder's work mode. """
