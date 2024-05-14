@@ -169,7 +169,7 @@ _t = {
 		"project":
 		[
 			{
-				"build": "..\\[output_game]\\game_start.qsp",
+				"module": "..\\[output_game]\\game_start.qsp",
 				"folders":
 				[
 					{"path": "."}

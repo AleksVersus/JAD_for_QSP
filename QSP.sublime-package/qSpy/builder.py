@@ -358,7 +358,7 @@ class BuildQSP():
 			"project":
 			[
 				{
-					"build": game_name,
+					"module": game_name,
 					"files":
 					[
 						{"path": point_file}
