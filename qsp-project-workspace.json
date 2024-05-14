@@ -1,14 +1,5 @@
 {
     "locations": {
-        "[disdocs]\\crash.qsps": [
-            [
-                "s",
-                [
-                    29,
-                    30
-                ]
-            ]
-        ],
         "[examples]\\example_project\\game0.txt": [
             [
                 "[start]",
@@ -1869,6 +1860,15 @@
                 [
                     2,
                     14
+                ]
+            ]
+        ],
+        "[disdocs]\\crash.qsps": [
+            [
+                "s",
+                [
+                    29,
+                    30
                 ]
             ]
         ]

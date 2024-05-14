@@ -2,7 +2,7 @@
 	"project":
 	[
 		{
-			"build":".\\tests.qsp",
+			"module":".\\tests.qsp",
 			"folders":[{"path":"."}]
 		}
 	],
