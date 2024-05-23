@@ -199,6 +199,9 @@ class BuildQSP():
 		for instruction in project:
 			if self.converter == 'qgc' and self.root['preprocessor'] == 'Hard-off':
 				self.qgc_build(instruction, pp_markers, project)
+			elif self.converter == 'qgc':
+				self.converter = 'qsps_to_qsp'
+				self.qsps_build(instruction, pp_markers, project)
 			else:
 				self.qsps_build(instruction, pp_markers, project)
 
@@ -238,6 +241,7 @@ class BuildQSP():
 		folder_to_conv = os.path.split(self.modes['qgc_path'])[0]
 		root_folder_qgc = os.path.split(folder_to_conv)[0]
 		plugin_path = os.path.join(root_folder_qgc, 'plugins', 'a_txt2gam.dll')
+		# cc_path = os.path.join(root_folder_qgc, 'plugins', 'a_remove_comments.dll')
 		start_qsploc_file = None
 		if 'files' in instruction:
 			for file in instruction['files']:
@@ -269,7 +273,7 @@ class BuildQSP():
 		if start_qsploc_file is not None: params += f' -im "{start_qsploc_file}"'		
 
 		# Build TXT2GAM-file
-		proc = subprocess.run(params, stdout=subprocess.DEVNULL)
+		proc = subprocess.run(params, stdout=subprocess.PIPE, shell=True)
 		if proc.returncode != 0:
 			msg = f'Error of QGC #{proc.returncode}. '
 			msg += 'If this Error will be repeat, change "converter" to "qsps_to_qsp".'
