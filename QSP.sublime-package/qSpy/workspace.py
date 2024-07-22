@@ -87,7 +87,7 @@ class QspWorkspace:
 		"""
 		with open(ws_path, "r", encoding="utf-8") as ws_file:
 			qsp_ws = json.load(ws_file)
-		if len(self.loc_names)>0:
+		if len(self.loc_names) > 0:
 			self.__init__()
 			print('Error: QSP WORKSPACE already initialised!!!')
 		for place, qsp_locs in qsp_ws['locations'].items(): # qsp_ws['locations'] - dict[rel_path: qsp_locs]
@@ -118,7 +118,6 @@ class QspWorkspace:
 		try:
 			to_del_paths, to_del_hashs = [], []
 			if len(to_del)>0:
-				print('unpack this', )
 				to_del_paths, to_del_hashs = zip(*to_del)
 		except ValueError as e:
 			print(to_del, str(e))

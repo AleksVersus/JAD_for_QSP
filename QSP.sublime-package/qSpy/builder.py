@@ -1,4 +1,5 @@
-import os 
+import os
+import shutil 
 import subprocess
 import json
 
@@ -30,6 +31,7 @@ class BuildQSP():
 
 		# self.start_time = time.time()
 
+		self.assets = None
 		# Scanned files proves location
 		self.scan_the_files = False		# Marker of scanning files
 		self.scan_files_locname = None	# location name
@@ -102,6 +104,9 @@ class BuildQSP():
 		if not 'preprocessor' in self.root:
 			self.root['preprocessor'] = 'Off'
 
+		if ('assets' in self.root):
+			self.assets = self.root['assets']
+
 		# Location's of scaned files name init.
 		if ('scans' in self.root) and ('start' in self.root):
 			# mode is switchon, if folders or files adding
@@ -125,6 +130,9 @@ class BuildQSP():
 		self.print_mode()
 
 		if self.modes['build']:
+			if self.assets is not None:
+				self.copy_assets()
+
 			if self.scan_the_files:
 				# Generate location with files-list.
 				self.create_scans_loc()
@@ -145,7 +153,34 @@ class BuildQSP():
 			# Start-file is not defined, list of build-files is not exist, but run point_file.
 			self.start_module_path = self.modes['point_file']
 		return self.start_module_path
-			
+		
+	def copy_assets(self) -> None:
+		""" Copy assets from folder and files to output folder """
+		for resource in self.assets:
+			self.copy_res(resource)
+		
+
+	def copy_res(self, resource):
+		if not 'output' in resource:
+			return
+		output = os.path.abspath(resource['output'])
+		if not os.path.isdir(output):
+			qsp.safe_mk_fold(output)
+		if 'folders' in resource:
+			for folder in resource['folders']:
+				old_fold = os.path.abspath(folder['path'])
+				fname = os.path.split(old_fold)[1]
+				new_fold = os.path.join(output, fname)
+				if os.path.isdir(new_fold):
+					shutil.rmtree(new_fold)
+				shutil.copytree(old_fold, new_fold)
+		if 'files' in resource:
+			for file in resource['files']:
+				old_file = os.path.abspath(file['path'])
+				fname = os.path.split(old_file)[1]
+				new_file = os.path.join(output, fname)					
+				shutil.copy2(old_file, new_file)
+	
 	
 	def create_scans_loc(self) -> None:
 		""" Prepare and creation location-function of scanned files """
