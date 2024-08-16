@@ -48,7 +48,7 @@ variables: # назначаем переменные для удобства
       msecscount|
       rgb|
       countobj|
-      r(a)?nd
+      ra?nd
     )
   functions_string: |- # variable.function
     (?ix:
@@ -67,13 +67,13 @@ variables: # назначаем переменные для удобства
   ap: "'"
   opener: '{{braces_open}}{{quote}}{{ap}}'
   closer: '{{braces_close}}{{quote}}{{ap}}'
-  left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\w|\d)'
-  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\{|(\$?|-?)\w+?|-?\d+?|\@)'
+  left_operand: '({{quote}}|{{ap}}|\)|\}|\$|\%|\w|\d)'
+  right_operand: '({{quote}}[^{{quote}}]*|{{ap}}[^{{ap}}]*|\([^\)]*?|\[[^\]]*?|\{|((\$|\%)?|-?)\w+?|-?\d+?|\@)'
   nr: (\n\r|\r|\r\n|\n)
-  operacion_two_signs: (<=|>=|\+=|-=|\*=|\/=|<>)
+  operacion_two_signs: ([<>\+\-\*\/]=|<>)
   operacion_one_sign: (\+|-|<|>|=|\/|\*|!)
   operacion_word: (?i:and|or|mod)
-  users_variables: (\$?[A-Za-zА-Яа-я_][\w\.]*)
+  users_variables: ((\$|\%)?[A-Za-zА-Яа-я_][\w\.]*)
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -345,7 +345,7 @@ contexts: # теперь необходимо определить "контек
       scope: keyword.operator.word.qsp
 
   numeric:
-    - match: \b\d+([A-Za-zа-яА-Я\$\._]+\d*)+\b # неправильные переменные, начинающиеся с цифр
+    - match: \b\d+([A-Za-zа-яА-Я\$\%\._]+\d*)+\b # неправильные переменные, начинающиеся с цифр
       scope: invalid.illegal.qsp avs_wrong_numeric
     - match: \b[0-9]+\b
       scope: constant.numeric avs_numeric
