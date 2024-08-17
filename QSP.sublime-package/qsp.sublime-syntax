@@ -380,6 +380,8 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs_illegal_textvariables
     - match: (\$)(?=\b({{system_vars_string}}|{{system_vars}})\b)
       scope: variable.language.qsp punctuation.definition.variable avs_sysvar
+    - match: (\%)(?=\b({{system_vars}})\b)
+      scope: variable.language.qsp punctuation.definition.variable avs_sysvar
     - match: \b({{system_vars_num}}|{{system_vars_string}}|{{system_vars}})\b
       scope: variable.language.qsp avs_sysvar
     - match: (\$)(?={{system_vars_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
@@ -389,6 +391,8 @@ contexts: # теперь необходимо определить "контек
     - match: (?<!\$)(\b{{functions_string}}\b) # подсвечивает все функции текстового типа без $
       scope: invalid.illegal.function.qsp avs_illegal_function
     - match: (\$)(?=({{functions_string}}\b|{{functions_both_type}}\b))
+      scope: support.function.qsp punctuation.definition.function avs.function
+    - match: (\%)(?={{functions_both_type}}\b)
       scope: support.function.qsp punctuation.definition.function avs.function
     - match: \b({{functions_num}}|{{functions_string}}|{{functions_both_type}})\b
       scope: support.function.qsp avs_function
