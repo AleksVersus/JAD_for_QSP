@@ -30,7 +30,7 @@ variables: # назначаем переменные для удобства
       play|close|all|
       jump|dynamic|goto|gt|xgoto|xgt|gosub|gs|menu|exit|
       showobjs|showstat|showacts|showinput|refint|
-      copyarr|killvar|killall|
+      copyarr|sortarr|killvar|killall|
       view|msg|
       settimer|wait|
       exec
