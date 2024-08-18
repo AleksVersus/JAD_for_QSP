@@ -80,6 +80,7 @@ contexts: # теперь необходимо определить "контек
     - match: "" # совпадения не ищутся
       push: # всё вытесняется подсветкой
         - include: preprocessor
+        - include: qspdocs
         - match: ".*" # любое множество символов подсвечивается как комментарий
           scope: meta.diff meta.gametext.qsp # TODO: заменить meta.diff на comment.block, когда сделаю сниппеты в плагинах
       with_prototype:
@@ -579,6 +580,12 @@ contexts: # теперь необходимо определить "контек
       captures:
         1: meta.preprocessor.qsp diff.deleted.qsp avs-preprocessor
         #2: markup.bold preprocessor.avs
+
+  qspdocs:
+    - match: (?:^\!@\s)([#$%](\d+|r))(\s+\-\s+)(.*$)
+      scope: meta.diff meta.gametext.qsp
+      captures:
+        1: entity.other.attribute-name.documentation.qsp
 
   # # # ---------- фигурные скобки --------------- # # #
   figurebrack:
