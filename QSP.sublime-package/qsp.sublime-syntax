@@ -582,6 +582,10 @@ contexts: # теперь необходимо определить "контек
         #2: markup.bold preprocessor.avs
 
   qspdocs:
+    - match: (?:^\!@\s)([#$%](\d+|r) ... [#$%](\d+|r))(\s+\-\s+)(.*$)
+      scope: meta.diff meta.gametext.qsp
+      captures:
+        1: entity.other.attribute-name.documentation.qsp
     - match: (?:^\!@\s)([#$%](\d+|r))(\s+\-\s+)(.*$)
       scope: meta.diff meta.gametext.qsp
       captures:
