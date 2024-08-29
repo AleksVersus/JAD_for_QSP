@@ -158,6 +158,11 @@ class QspNewGameCommand(sublime_plugin.WindowCommand):
 		self.window.focus_view(new_view)
 		self.window.run_command('qsp_new_game_head')
 
+class QspReplicStructCommand(sublime_plugin.WindowCommand):
+	""" Generate folder with md-files as links structure """
+	def run(self):
+		...
+
 class QspLocalVarsHighlightCommand(sublime_plugin.TextCommand):
 	""" Find and high light local variables command """
 
