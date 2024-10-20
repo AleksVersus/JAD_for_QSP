@@ -100,7 +100,7 @@ contexts: # теперь необходимо определить "контек
               scope: invalid.illegal.qsp meta.end_location.wrong.qsp
 
   locations:
-    - include: figurebrack
+    - include: figure_brace
     - include: actions
     - include: conditions
     - include: loop
@@ -441,7 +441,7 @@ contexts: # теперь необходимо определить "контек
         - include: subex
 
   subex:
-    - include: figurebrack
+    - include: figure_brace
     - include: sugarfunc
     - match: (\n\r|\r|\r\n|\n)
       scope: invalid.illegal.qsp avs_wrongenter
@@ -592,14 +592,14 @@ contexts: # теперь необходимо определить "контек
         1: entity.other.attribute-name.documentation.qsp
 
   # # # ---------- фигурные скобки --------------- # # #
-  figurebrack:
+  figure_brace:
     - match: '\{'
       scope: punctuation.section.block.begin.qsp avs_brace_begin
       push:
         - meta_content_scope: meta.block
         
         - include: htmlsupport
-        - include: figurebrack
+        - include: figure_brace
         - include: actions
         - include: conditions
         - include: loop
