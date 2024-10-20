@@ -17,6 +17,27 @@ if 1: ! comment
 	else: 4 & ! djjdjjd
 		gosub '12'
 end
+
+if 1: ! comment
+	elseif a = 2: '2'
+	elseif a = 3: '3'
+	else: 4 & ! djjdjjd
+end
+
+if 1: ! comment
+	elseif a = 2: '2'
+	elseif a = 3: '3'
+	else: ! djjdjjd
+		gosub '12'
+end
+
+if 1: ! comment
+	elseif a = 2: '2'
+	elseif a = 3: '3'
+	else: ! djjdjjd
+end
+
+
 if 1: x = 2 elseif x = 3: x = 4 else: 456
 --- conditions2 ---------------------------------
 
