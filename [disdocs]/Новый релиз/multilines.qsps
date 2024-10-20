@@ -1,10 +1,26 @@
 QSP-Game описание локации
 
 # actions
-act "Action Name":
-	! комментарий
+act "Action Name": ! комментарий
 	*pl 'string'
 end
+
+end <- неверно закрытый end
 --- actions ---------------------------------
 
 \rgkergergerjgjergjkre
+
+# conditions
+if 1: ! comment
+	elseif a = 2: '2'
+	elseif a = 3: '3'
+	else: '5'
+end
+--- conditions2 ---------------------------------
+
+# loops
+loop local i=0 while i<10 step i+=1: ! comment
+	!@ Тело цикла
+end
+
+--- loops ---------------------------------

@@ -171,11 +171,12 @@ contexts: # теперь необходимо определить "контек
 
   # действия
   multiline_actions:
-    - match: '(?<=\{)(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
+    - match: '(?<=\{)(\s*?)(?i:(act))(?=\s*?.*?\:\s*?(!.*?)?$)'
       scope: meta.begin_action.qsp
       captures:
         2: keyword.control.action.begin.qsp markup.italic.qsp
       push:
+        - include: comment_after_colon
         - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\}\n\r]*)
           scope: meta.end-action.qsp
           captures:
@@ -185,10 +186,11 @@ contexts: # теперь необходимо определить "контек
         - include: wrong_close_in_brace
         - include: wrongclose
         - include: location_body
-    - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?(!.*?)?$)'
       captures:
         2: keyword.control.action.begin.qsp markup.italic.qsp
       push:
+        - include: comment_after_colon
         - match: ^(\s*?)(?i:(\bend\s+?act\b|\bend\b))([^\&\n\r]*)
           scope: meta.end-action.qsp
           captures:
@@ -201,11 +203,12 @@ contexts: # теперь необходимо определить "контек
 
   # циклы
   loop:
-    - match: '(?<=\{)(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
+    - match: '(?<=\{)(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?(!.*)?$)'
       scope: meta.begin_cycle.qsp
       captures:
         2: keyword.control.cycle.begin.qsp markup.italic.qsp
       push:
+        - include: comment_after_colon
         - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\}\n\r]*)
           captures:
             2: keyword.control.cycle.end.qsp markup.italic.qsp
@@ -214,11 +217,12 @@ contexts: # теперь необходимо определить "контек
         - include: wrong_close_in_brace
         - include: wrongclose
         - include: location_body
-    - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?(!.*)?$)'
       scope: meta.begin_cycle.qsp
       captures:
         2: keyword.control.cycle.begin.qsp markup.italic.qsp
       push:
+        - include: comment_after_colon
         - match: ^(\s*?)(?i:(\bend\s+?loop\b|\bend\b))([^\&\n\r]*)
           captures:
             2: keyword.control.cycle.end.qsp markup.italic.qsp
@@ -232,10 +236,11 @@ contexts: # теперь необходимо определить "контек
 
   # конструкции условий
   conditions:
-    - match: '(?<=\{)(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
+    - match: '(?<=\{)(\s*?)(?i:(if))(?=\s*?.*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.begin.qsp markup.italic.qsp
       push:
+        - include: comment_after_colon
         - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\}\n\r]*)
           captures:
             2: keyword.control.conditional.end.qsp markup.italic.qsp
@@ -245,10 +250,11 @@ contexts: # теперь необходимо определить "контек
         - include: wrongclose
         - include: elseifelse
         - include: location_body
-    - match: '^(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
+    - match: '^(\s*?)(?i:(if))(?=\s*?.*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.begin.qsp markup.italic.qsp
       push:
+        - include: comment_after_colon
         - match: ^(\s*?)(?i:(\bend\s+?if\b|\bend\b))([^\&\n\r]*)
           captures:
             2: keyword.control.conditional.end.qsp markup.italic.qsp
@@ -511,6 +517,20 @@ contexts: # теперь необходимо определить "контек
         - include: brackin
         - include: speccomments
     - match: ((^\s*?)|(\&\s*?))(!)
+      captures:
+        3: support.function.builtin.qsp
+        4: punctuation.definition.comment.qsp
+      push:
+        - meta_scope: comment.qsp
+        - match: (\n\r|\r|\r\n|\n)
+          scope: comment.qsp
+          pop: true
+        - include: cominquotes
+        - include: brackin
+        - include: speccomments
+
+  comment_after_colon:
+    - match: (?<=:)((\s*?)|(\&\s*?))(!)
       captures:
         3: support.function.builtin.qsp
         4: punctuation.definition.comment.qsp
