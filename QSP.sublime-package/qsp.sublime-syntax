@@ -287,7 +287,7 @@ contexts: # теперь необходимо определить "контек
       pop: true
 
   multiline_actions_else:
-    - match: ^\s*?(?i:(\belse\b))(\s*?)([^\:\s]+)(\:).*$
+    - match: ^\s*?(?i:(\belse\b))(\s*?)([^\:]+)(\:).*$
       scope: invalid.illegal.qsp meta.wrong_else_conditional.qsp
     - match: '^(\s*?)(?i:(\belse\b))(?=\s*?\:\s*?(!.*)?$)'
       captures:
