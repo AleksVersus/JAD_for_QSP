@@ -187,7 +187,7 @@ contexts: # теперь необходимо определить "контек
             2: keyword.control.action.end.qsp markup.italic.qsp
             3: comment.line.qsp markup.italic.qsp
           pop: true
-        - include: wrongcloseinscope
+        - include: wrong_close_in_brace
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
@@ -201,7 +201,7 @@ contexts: # теперь необходимо определить "контек
             3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
-        - include: wrongcloseinscope
+        - include: wrong_close_in_brace
         - include: locations
 
   # циклы
@@ -216,7 +216,7 @@ contexts: # теперь необходимо определить "контек
             2: keyword.control.cycle.end.qsp markup.italic.qsp
             3: comment.line.qsp markup.italic.qsp
           pop: true
-        - include: wrongcloseinscope
+        - include: wrong_close_in_brace
         - include: wrongclose
         - include: locations
     - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
@@ -230,7 +230,7 @@ contexts: # теперь необходимо определить "контек
             3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
-        - include: wrongcloseinscope
+        - include: wrong_close_in_brace
         - include: locations
     - match: '(?i:(\bloop\b))(?!.*(?i:(\bwhile\b)))'
       scope: invalid.illegal.qsp
@@ -246,7 +246,7 @@ contexts: # теперь необходимо определить "контек
             2: keyword.control.conditional.end.qsp markup.italic.qsp
             3: comment.line.qsp markup.italic.qsp
           pop: true
-        - include: wrongcloseinscope
+        - include: wrong_close_in_brace
         - include: wrongclose
         - include: elseifelse
         - include: locations
@@ -260,7 +260,7 @@ contexts: # теперь необходимо определить "контек
             3: comment.line.qsp markup.italic.qsp
           pop: true
         - include: wrongclose
-        - include: wrongcloseinscope
+        - include: wrong_close_in_brace
         - include: elseifelse
         - include: locations
 
@@ -269,7 +269,7 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp
       pop: true
 
-  wrongcloseinscope:
+  wrong_close_in_brace:
     - match: \}(.*)({{nr}}$|$)
       scope: invalid.illegal.qsp avs.error avs.wrongelse1
       pop: true
