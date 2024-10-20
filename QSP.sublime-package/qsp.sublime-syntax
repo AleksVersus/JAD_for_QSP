@@ -57,7 +57,7 @@ variables: # назначаем переменные для удобства
       mid|(u|l)case|trim|replace|str|strfind|
       input|
       qspver|
-      curacts|
+      curacts|curobjs
       getobj
     )
   functions_both_type: (?i:iif|dyneval|func|max|min|arritem) # variable.function
