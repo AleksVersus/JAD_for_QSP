@@ -25,6 +25,7 @@ if 1: ! comment
 	elseif a = 2: '2' & ! comment
 	elseif a = 3: '3'
 	else: 4 & ! djjdjjd
+		kkkdkdkd
 end
 
 if 1: ! comment
@@ -47,6 +48,8 @@ if 1: ! comment
 	elseif a = 2: ! next line none
 	elseif a = 3: '3'
 	else: ! djjdjjd
+	else: 4 & !dkdkkd
+		djdjdjdjd
 end
 
 

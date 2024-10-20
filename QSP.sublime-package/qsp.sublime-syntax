@@ -74,7 +74,7 @@ variables: # назначаем переменные для удобства
   operacion_one_sign: (\+|-|<|>|=|\/|\*|!)
   operacion_word: (?i:and|or|mod)
   users_variables: ((\$|\%)?[A-Za-zА-Яа-я_][\w\.]*)
-  elseif_else_final: (?i:\bend\s+if\b|\bend\b|\belse\b|\belse\s*if\b|\bif\b)
+  elseif_else_final: (?i:\bend\s+if\b|\bend\b|\belse\b|\belse\s*if\b|\bif\b|(^\s*\-.*?$))
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
@@ -287,11 +287,14 @@ contexts: # теперь необходимо определить "контек
       pop: true
 
   multiline_actions_else:
+    - match: ^\s*?(?i:(\belse\b))(\s*?)([^\:\s]+)(\:).*$
+      scope: invalid.illegal.qsp meta.wrong_else_conditional.qsp
     - match: '^(\s*?)(?i:(\belse\b))(?=\s*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp 
       push:
         - include: comment_after_colon
+        - include: illegal_multiline_else
         - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
           pop: true
         - include: wrong_close_in_brace
@@ -302,6 +305,7 @@ contexts: # теперь необходимо определить "контек
         2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp 
       push:
         - include: comment_after_colon
+        - include: illegal_multiline_else
         - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
           pop: true
         - include: wrong_close_in_brace
@@ -312,10 +316,21 @@ contexts: # теперь необходимо определить "контек
         2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp 
         3: punctuation.definition.keyword
       push:
+        - include: illegal_multiline_else
         - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
           pop: true
         - match: "^.*"
           scope: comment.qsp
+        - include: wrong_close_in_brace
+        - include: wrongclose
+        - include: location_body
+    - match: '^(\s*?)(?i:(\belse\b))(?=\s*$)'
+      captures:
+        2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp
+      push:
+        - include: illegal_multiline_else
+        - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
+          pop: true
         - include: wrong_close_in_brace
         - include: wrongclose
         - include: location_body
@@ -324,6 +339,7 @@ contexts: # теперь необходимо определить "контек
         2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp
         3: punctuation.definition.keyword
       push:
+        - include: illegal_multiline_else
         - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
           pop: true
         - match: "^.*"
@@ -331,6 +347,10 @@ contexts: # теперь необходимо определить "контек
         - include: wrong_close_in_brace
         - include: wrongclose
         - include: location_body
+
+  illegal_multiline_else:
+    - match: (?:^\s*)(?i:\belse\b)
+      scope: invalid.illegal.qsp meta.excess_manilines_else.qsp
 
   multiline_actions_elseif:
     - match: '^(\s*?)(?i:(\belseif\b))(?=\s+\S.*?\:\s*(!.*)?$)'
@@ -369,25 +389,6 @@ contexts: # теперь необходимо определить "контек
         - match: "^.*"
           scope: comment.qsp
         - include: location_body
-    
-
-  elseifelse:
-    - match: ^(?i:\s*?\b(else)\b(\:?)\s*?)$ # правильный else
-      captures:
-        1: keyword.control.conditional.resume.qsp markup.italic.qsp
-        2: punctuation.definition.keyword
-    - match: ^\s*?(?i:(\belse\b))([^\:]*)(\:?)\s*?([^\n\r]*)$
-      captures:
-        1: keyword.control.conditional.resume.qsp markup.italic.qsp
-        2: invalid.illegal.qsp
-        3: keyword.control.conditional.resume.qsp markup.italic.qsp
-        4: invalid.illegal.qsp
-    - match: ^(?i:(?:\s*?)\belseif\b(?=\s+\S.*?\:\s*?{{nr}}))
-      scope: keyword.control.conditional.resume-begin.qsp markup.italic.qsp
-    - match: ^(?:\s*?)(?i:(\belseif\b))(\s+\S.*?\:\s*?[^\n\r]*)$
-      captures:
-        1: keyword.control.conditional.resume-begin.qsp markup.italic.qsp
-        2: invalid.illegal.qsp
 
   # set и local
   kw_declarations:
