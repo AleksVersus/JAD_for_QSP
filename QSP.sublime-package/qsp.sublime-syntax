@@ -599,31 +599,7 @@ contexts: # теперь необходимо определить "контек
         - meta_content_scope: meta.block
         
         - include: htmlsupport
-        - include: figure_brace
-        - include: actions
-        - include: conditions
-        - include: loop
-        - include: kw_declarations
-        - include: sugarfunc
-        - match: (?i:(\bend\b)) # подсветка лишнего end'а
-          scope: invalid.illegal.qsp
-        - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
-          scope: invalid.illegal.qsp
-        - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
-          scope: invalid.illegal.qsp
-        - include: preprocessor
-        - include: comments
-        - include: location_call
-        - include: jump_to_label
-        - include: labels
-        - include: operators
-        - include: operacion
-        - include: system_variables
-        - include: functions
-        - include: numeric
-        - include: strings
-        - include: separator_continuation
-        - include: users_variables
+        - include: locations
         - match: '\}'
           scope: punctuation.section.block.end.qsp avs_brace_end
           pop: true
