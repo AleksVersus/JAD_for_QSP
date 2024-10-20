@@ -106,12 +106,7 @@ contexts: # теперь необходимо определить "контек
     - include: loop
     - include: kw_declarations
     - include: sugarfunc
-    - match: (?i:(\bend\b)) # подсветка лишнего end'а
-      scope: invalid.illegal.qsp meta.excess_end.qsp
-    - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
-      scope: invalid.illegal.qsp meta.excess_else.qsp
-    - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
-      scope: invalid.illegal.qsp meta.excess_elseif.qsp
+    - include: wrong_end_else_elseif
     - include: preprocessor
     - include: comments
     - include: location_call
@@ -263,6 +258,14 @@ contexts: # теперь необходимо определить "контек
         - include: wrong_close_in_brace
         - include: elseifelse
         - include: locations
+
+  wrong_end_else_elseif:
+    - match: (?i:(\bend\b)) # подсветка лишнего end'а
+      scope: invalid.illegal.qsp meta.excess_end.qsp
+    - match: ^(?:\s*?)(?i:(\belse\b)) # лишний else
+      scope: invalid.illegal.qsp meta.excess_else.qsp
+    - match: (?i:(\belseif\b)) # elseif работает только в многострочной форме (исправить, если изменится в 5.8.0)
+      scope: invalid.illegal.qsp meta.excess_elseif.qsp
 
   wrongclose:
     - match: ^\s*?(-)(.*)({{nr}}$|$)

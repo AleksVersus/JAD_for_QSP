@@ -1,0 +1,10 @@
+QSP-Game описание локации
+
+# actions
+act "Action Name":
+	! комментарий
+	*pl 'string'
+end
+--- actions ---------------------------------
+
+\rgkergergerjgjergjkre
