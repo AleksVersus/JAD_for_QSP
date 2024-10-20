@@ -95,13 +95,13 @@ contexts: # теперь необходимо определить "контек
               captures:
                 1: punctuation.definition.keyword markup.bold.qsp keyword.control meta.end_location.qsp
                 2: markup.heading # TODO: насколько верно такое определение от заголовков разделов, так как по сути это комментарий
-            - include: locations
+            - include: location_body
             - match: ^(\s*?)(-)(.*?)$
               scope: invalid.illegal.qsp meta.end_location.wrong.qsp
 
-  locations:
+  location_body:
     - include: figure_brace
-    - include: actions
+    - include: multiline_actions
     - include: conditions
     - include: loop
     - include: kw_declarations
@@ -170,7 +170,7 @@ contexts: # теперь необходимо определить "контек
         2: variable.function.qsp markup.italic.qsp
 
   # действия
-  actions:
+  multiline_actions:
     - match: '(?<=\{)(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       scope: meta.begin_action.qsp
       captures:
@@ -184,7 +184,7 @@ contexts: # теперь необходимо определить "контек
           pop: true
         - include: wrong_close_in_brace
         - include: wrongclose
-        - include: locations
+        - include: location_body
     - match: '^(\s*?)(?i:(act))(?=\s*?.*?\:\s*?$)'
       captures:
         2: keyword.control.action.begin.qsp markup.italic.qsp
@@ -197,7 +197,7 @@ contexts: # теперь необходимо определить "контек
           pop: true
         - include: wrongclose
         - include: wrong_close_in_brace
-        - include: locations
+        - include: location_body
 
   # циклы
   loop:
@@ -213,7 +213,7 @@ contexts: # теперь необходимо определить "контек
           pop: true
         - include: wrong_close_in_brace
         - include: wrongclose
-        - include: locations
+        - include: location_body
     - match: '^(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?$)'
       scope: meta.begin_cycle.qsp
       captures:
@@ -226,7 +226,7 @@ contexts: # теперь необходимо определить "контек
           pop: true
         - include: wrongclose
         - include: wrong_close_in_brace
-        - include: locations
+        - include: location_body
     - match: '(?i:(\bloop\b))(?!.*(?i:(\bwhile\b)))'
       scope: invalid.illegal.qsp
 
@@ -244,7 +244,7 @@ contexts: # теперь необходимо определить "контек
         - include: wrong_close_in_brace
         - include: wrongclose
         - include: elseifelse
-        - include: locations
+        - include: location_body
     - match: '^(\s*?)(?i:(if))(?=\s*?.*?\:\s*?$)'
       captures:
         2: keyword.control.conditional.begin.qsp markup.italic.qsp
@@ -257,7 +257,7 @@ contexts: # теперь необходимо определить "контек
         - include: wrongclose
         - include: wrong_close_in_brace
         - include: elseifelse
-        - include: locations
+        - include: location_body
 
   wrong_end_else_elseif:
     - match: (?i:(\bend\b)) # подсветка лишнего end'а
@@ -602,7 +602,7 @@ contexts: # теперь необходимо определить "контек
         - meta_content_scope: meta.block
         
         - include: htmlsupport
-        - include: locations
+        - include: location_body
         - match: '\}'
           scope: punctuation.section.block.end.qsp avs_brace_end
           pop: true
