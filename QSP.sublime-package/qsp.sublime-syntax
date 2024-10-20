@@ -294,14 +294,18 @@ contexts: # теперь необходимо определить "контек
         - include: comment_after_colon
         - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
           pop: true
+        - include: wrong_close_in_brace
+        - include: wrongclose
         - include: location_body
     - match: '(?<=\{)(\s*?)(?i:(\belse\b))(?=\s*?.*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp 
       push:
+        - include: comment_after_colon
         - match: (?=^\s*{{elseif_else_final}}([^\&\n\r]*))
           pop: true
-        - include: comment_after_colon
+        - include: wrong_close_in_brace
+        - include: wrongclose
         - include: location_body
     - match: '(?<=\{)(\s*?)(?i:(\belse\b))\s*(:?)(?=\s*([^!\s].*)?$)'
       captures:
@@ -312,6 +316,8 @@ contexts: # теперь необходимо определить "контек
           pop: true
         - match: "^.*"
           scope: comment.qsp
+        - include: wrong_close_in_brace
+        - include: wrongclose
         - include: location_body
     - match: '^(\s*?)(?i:(\belse\b))\s*(:?)(?=\s*([^!\s].*)?$)'
       captures:
@@ -322,6 +328,8 @@ contexts: # теперь необходимо определить "контек
           pop: true
         - match: "^.*"
           scope: comment.qsp
+        - include: wrong_close_in_brace
+        - include: wrongclose
         - include: location_body
 
   multiline_actions_elseif:
