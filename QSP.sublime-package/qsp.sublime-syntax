@@ -103,6 +103,7 @@ contexts: # теперь необходимо определить "контек
     - include: figure_brace
     - include: multiline_actions
     - include: multiline_conditions
+    - include: singleline_condition
     - include: multiline_loop
     - include: kw_declarations
     - include: sugarfunc
@@ -236,7 +237,7 @@ contexts: # теперь необходимо определить "контек
 
   # конструкции условий
   multiline_conditions:
-    - match: '(?<=\{)(\s*?)(?i:(if))(?=\s*?.*?\:\s*?(!.*)?$)'
+    - match: '(?<=\{)(\s*?)(?i:(\bif\b))(?=\s*?.*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.begin.qsp markup.italic.qsp
       push:
@@ -246,11 +247,11 @@ contexts: # теперь необходимо определить "контек
             2: keyword.control.conditional.end.qsp markup.italic.qsp
             3: comment.line.qsp markup.italic.qsp
           pop: true
+        - include: multilines_else
         - include: wrong_close_in_brace
         - include: wrongclose
-        - include: elseifelse
         - include: location_body
-    - match: '^(\s*?)(?i:(if))(?=\s*?.*?\:\s*?(!.*)?$)'
+    - match: '^(\s*?)(?i:(\bif\b))(?=\s*?.*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.begin.qsp markup.italic.qsp
       push:
@@ -259,6 +260,30 @@ contexts: # теперь необходимо определить "контек
           captures:
             2: keyword.control.conditional.end.qsp markup.italic.qsp
             3: comment.line.qsp markup.italic.qsp
+          pop: true
+        - include: multilines_else
+        - include: wrongclose
+        - include: wrong_close_in_brace
+        - include: location_body
+
+  singleline_condition:
+    - match: '(?<=\{)(\s*?)(?i:(\bif\b))(?=\s*?.*?\:\s*([^!\s].*)$)'
+      captures:
+        2: keyword.control.conditional.begin.qsp markup.italic.qsp
+      push:
+        - match: $
+          scope: keyword.control.conditional.end.qsp
+          pop: true
+        - include: wrong_close_in_brace
+        - include: wrongclose
+        - include: elseifelse
+        - include: location_body
+    - match: '^(\s*?)(?i:(\bif\b))(?=\s*?.*?\:\s*([^!\s].*)$)'
+      captures:
+        2: keyword.control.conditional.begin.qsp markup.italic.qsp
+      push:
+        - match: $
+          scope: keyword.control.conditional.end.qsp
           pop: true
         - include: wrongclose
         - include: wrong_close_in_brace
@@ -282,6 +307,25 @@ contexts: # теперь необходимо определить "контек
     - match: \}(.*)({{nr}}$|$)
       scope: invalid.illegal.qsp avs.error avs.wrongelse1
       pop: true
+
+  multilines_else:
+    - match: '(?<=\{)(\s*?)(?i:(\belse\b))(?=\s*:?\s*([^!\s].*)?$)'
+      captures:
+        2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp   
+    - match: '^(\s*?)(?i:(\belse\b))(?=\s*:?\s*([^!\s].*)?$)'
+      captures:
+        2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp
+      push:
+        - meta_content_scope: else.ignored.qsp comment.qsp
+        - match: (?=^\s*(\bend\s+if\b|\bend\b)([^\&\n\r]*))
+          pop: true
+    - match: '(?<=\{)(\s*?)(?i:(\belse\b))(?=\s*:\s*?(!.*)?$)'
+      captures:
+        2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp   
+    - match: '^(\s*?)(?i:(\belse\b))(?=\s*:\s*?(!.*)?$)'
+      captures:
+        2: keyword.control.conditional.else.qsp markup.italic.qsp meta.else_body.qsp
+    
 
   elseifelse:
     - match: ^(?i:\s*?\b(else)\b(\:?)\s*?)$ # правильный else

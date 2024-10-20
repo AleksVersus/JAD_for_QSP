@@ -1763,15 +1763,6 @@
                 ]
             ]
         ],
-        "[disdocs]\\\u041d\u043e\u0432\u044b\u0439 \u0440\u0435\u043b\u0438\u0437\\multilines.qsps": [
-            [
-                "actions",
-                [
-                    29,
-                    36
-                ]
-            ]
-        ],
         "QSP.sublime-package\\syntax_test_qsp.qsps": [
             [
                 "start",
@@ -1883,6 +1874,22 @@
                 [
                     33120,
                     33126
+                ]
+            ]
+        ],
+        "[disdocs]\\\u041d\u043e\u0432\u044b\u0439 \u0440\u0435\u043b\u0438\u0437\\multilines.qsps": [
+            [
+                "actions",
+                [
+                    29,
+                    36
+                ]
+            ],
+            [
+                "conditions",
+                [
+                    190,
+                    200
                 ]
             ]
         ]

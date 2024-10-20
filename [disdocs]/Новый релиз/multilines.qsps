@@ -14,13 +14,14 @@ end <- неверно закрытый end
 if 1: ! comment
 	elseif a = 2: '2'
 	elseif a = 3: '3'
-	else: '5'
+	else: 4 & ! djjdjjd
+		gosub '12'
 end
+if 1: x = 2 elseif x = 3: x = 4 else: 456
 --- conditions2 ---------------------------------
 
 # loops
 loop local i=0 while i<10 step i+=1: ! comment
 	!@ Тело цикла
 end
-
 --- loops ---------------------------------
