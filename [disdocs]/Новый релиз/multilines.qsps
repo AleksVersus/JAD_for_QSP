@@ -12,27 +12,37 @@ end <- неверно закрытый end
 
 # conditions
 if 1: ! comment
-	elseif a = 2: '2'
+	elseif a = 2: '2' & ! comment
+		goto '4'
 	elseif a = 3: '3'
 	else: 4 & ! djjdjjd
 		gosub '12'
 end
 
 if 1: ! comment
-	elseif a = 2: '2'
+	elseif a = 2: '2' & ! comment
 	elseif a = 3: '3'
 	else: 4 & ! djjdjjd
 end
 
 if 1: ! comment
-	elseif a = 2: '2'
+	elseif a = 2: ! next line active
+		gosub '13'
 	elseif a = 3: '3'
 	else: ! djjdjjd
 		gosub '12'
 end
 
 if 1: ! comment
-	elseif a = 2: '2'
+	elseif a = 2:
+		gosub '14'
+	elseif a = 3: '3'
+	else:
+		gosub '12'
+end
+
+if 1: ! comment
+	elseif a = 2: ! next line none
 	elseif a = 3: '3'
 	else: ! djjdjjd
 end
