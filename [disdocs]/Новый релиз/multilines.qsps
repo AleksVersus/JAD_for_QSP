@@ -5,7 +5,10 @@ act "Action Name": ! комментарий
 	*pl 'string'
 end
 
-end <- неверно закрытый end
+end & ! неверно закрытый end
+
+elseif & ! elseif вне условия
+else & ! else вне условия
 --- actions ---------------------------------
 
 \rgkergergerjgjergjkre
@@ -18,7 +21,6 @@ if 1: ! comment
 	else: 4 & ! djjdjjd
 		gosub '12'
 end
-
 if 1: ! comment
 	elseif a = 2: '2' & ! comment
 	elseif a = 3: '3'
@@ -46,6 +48,7 @@ if 1: ! comment
 	elseif a = 3: '3'
 	else: ! djjdjjd
 end
+
 
 
 if 1: x = 2 elseif x = 3: x = 4 else: 456
