@@ -102,8 +102,8 @@ contexts: # теперь необходимо определить "контек
   location_body:
     - include: figure_brace
     - include: multiline_actions
-    - include: conditions
-    - include: loop
+    - include: multiline_conditions
+    - include: multiline_loop
     - include: kw_declarations
     - include: sugarfunc
     - include: wrong_end_else_elseif
@@ -202,7 +202,7 @@ contexts: # теперь необходимо определить "контек
         - include: location_body
 
   # циклы
-  loop:
+  multiline_loop:
     - match: '(?<=\{)(\s*?)(?i:(\bloop\b))(?=.*?(?i:(\bwhile\b))\s\S.*?(?i:(\bstep\b))?\s*?.*?\:\s*?(!.*)?$)'
       scope: meta.begin_cycle.qsp
       captures:
@@ -235,7 +235,7 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp
 
   # конструкции условий
-  conditions:
+  multiline_conditions:
     - match: '(?<=\{)(\s*?)(?i:(if))(?=\s*?.*?\:\s*?(!.*)?$)'
       captures:
         2: keyword.control.conditional.begin.qsp markup.italic.qsp
