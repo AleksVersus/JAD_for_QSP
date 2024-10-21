@@ -16,6 +16,13 @@
             "details": "$CURLOC"
         },
         {
+            "trigger": "curobjs",
+            "contents": "curobjs",
+            "kind": "Function",
+            "annotation": "Текущие предметы",
+            "details": "$CUROBJS"
+        },
+        {
             "trigger": "desc",
             "contents": "desc",
             "kind": "Function",
