@@ -1763,22 +1763,6 @@
                 ]
             ]
         ],
-        "[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": [
-            [
-                "singlelines_conditionals",
-                [
-                    34,
-                    58
-                ]
-            ],
-            [
-                "wrong_singlelines_conditionals",
-                [
-                    199,
-                    229
-                ]
-            ]
-        ],
         "QSP.sublime-package\\syntax_test_qsp.qsps": [
             [
                 "start",
@@ -1913,6 +1897,22 @@
                 [
                     2060,
                     2065
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": [
+            [
+                "singlelines_conditionals",
+                [
+                    34,
+                    58
+                ]
+            ],
+            [
+                "wrong_singlelines_conditionals",
+                [
+                    199,
+                    229
                 ]
             ]
         ]

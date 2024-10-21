@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "QSP Sublime-Package"
-#define MyAppVersion "0.15"
+#define MyAppVersion "0.16"
 #define MyAppPublisher "Aleks Versus'GAM'RUS"
 #define MyAppURL "https://github.com/AleksVersus/JAD_for_QSP"
 
