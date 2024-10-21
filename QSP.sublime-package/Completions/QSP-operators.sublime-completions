@@ -275,6 +275,13 @@
             "details": "LOCAL var1, var2, ... = [value1], [value2], ..."
         },
         {
+            "trigger": "scanstr",
+            "contents": "scanstr '${1:\\$массив}', ${2:\\'строка для разбора'}, ${3:\\'регулярка'}, ${4:0}${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Извлечение подстрок в массив",
+            "details": "SCANSTR [$массив_приёмник],[$строка_текста],[$регулярка],[#группа]"
+        },
+        {
             "trigger": "settimer",
             "contents": "settimer ${1:500}",
             "kind": ["keyword", "o", "Operator"],
@@ -308,6 +315,13 @@
             "kind": ["keyword", "o", "Operator"],
             "annotation": "Отображение окна доп. описания",
             "details": "SHOWSTAT [0|1]"
+        },
+        {
+            "trigger": "sortarr",
+            "contents": "sortarr '${1:\\$сортируемый_массив}',${2:0}${0}",
+            "kind": ["keyword", "o", "Operator"],
+            "annotation": "Сортировка массива",
+            "details": "SORTARR [$массив],[#направление_сортировки]"
         },
         {
             "trigger": "unselect",
