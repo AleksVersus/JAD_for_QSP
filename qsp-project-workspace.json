@@ -1745,15 +1745,6 @@
                 ]
             ]
         ],
-        "[disdocs]\\crash.qsps": [
-            [
-                "s",
-                [
-                    29,
-                    30
-                ]
-            ]
-        ],
         "[disdocs]\\syntax_tests\\multilines.qsps": [
             [
                 "actions",
@@ -1763,42 +1754,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": [
+        "[examples]\\example_syntax\\comments\\single_line_comment.qsps": [
             [
-                "outer_keywords",
+                "singleline_comments",
                 [
-                    35,
-                    49
-                ]
-            ],
-            [
-                "cond1",
-                [
-                    193,
-                    198
-                ]
-            ],
-            [
-                "cond2",
-                [
-                    2060,
-                    2065
-                ]
-            ]
-        ],
-        "[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": [
-            [
-                "singlelines_conditionals",
-                [
-                    34,
-                    58
-                ]
-            ],
-            [
-                "wrong_singlelines_conditionals",
-                [
-                    199,
-                    229
+                    86,
+                    105
                 ]
             ]
         ],
@@ -1913,6 +1874,72 @@
                 [
                     32460,
                     32466
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": [
+            [
+                "outer_keywords",
+                [
+                    35,
+                    49
+                ]
+            ],
+            [
+                "cond1",
+                [
+                    193,
+                    198
+                ]
+            ],
+            [
+                "cond2",
+                [
+                    2359,
+                    2364
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": [
+            [
+                "singlelines_conditionals",
+                [
+                    34,
+                    58
+                ]
+            ],
+            [
+                "wrong_singlelines_conditionals",
+                [
+                    199,
+                    229
+                ]
+            ]
+        ],
+        "[disdocs]\\crash.qsps": [
+            [
+                "s",
+                [
+                    29,
+                    30
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\comments\\singleline_comments.qsps": [
+            [
+                "singleline_comments",
+                [
+                    86,
+                    105
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\comments\\multiline_comments.qsps": [
+            [
+                "multiline_comments",
+                [
+                    38,
+                    56
                 ]
             ]
         ],
@@ -2099,6 +2126,9 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0441\u0438\u043b\u0430.qsps": "391806186f958e18bb6e0e0e48cd3b41",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u0431\u043e\u043b\u044c\u0448\u0430\u044f. \u0432\u0430\u0440\u0438\u0430\u043d\u0442 1.qsps": "bf8d8f8e500fd6d6ec8951b96e60c1fe",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": "2e445a4510dd88197a388cf26ec61b2b",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": "13a4a95c70d618dc0df062d1e1903ba3"
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": "bfa61a899ae21bf34701724cd52d471f",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\comments\\multiline_comments.qsps": "92a7ee78f41fefc522dc14d866e66288",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\comments\\wrong_comments.qsps": "d9059513dac97047c28c3dd94b1f358a",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\comments\\singleline_comments.qsps": "9a15e42897cc1314e0c142eafd7cd3aa"
     }
 }
