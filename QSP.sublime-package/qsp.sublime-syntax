@@ -641,42 +641,42 @@ contexts: # теперь необходимо определить "контек
           scope: punctuation.definition.comment.end.qsp brace_comment_end.qsp
           pop: true
         - include: brace_comments
-        - include: quoteinbrack
-        - include: apinbrack
+        - include: quote_apostroph_comments
+        # - include: apinbrack
 
-  quoteinbrack: # данная конструкция отвечает за поддержку апострофов и кавычек в комменте
-    - match: '{{quote}}'
+  # quoteinbrack: # данная конструкция отвечает за поддержку апострофов и кавычек в комменте
+  #   - match: '{{quote}}'
+  #     scope: comment.qsp
+  #     push:
+  #       - match: '{{quote}}'
+  #         scope: comment.qsp
+  #         pop: true
+  #   - match: '{{quote}}'
+  #     scope: invalid.illegal.qsp
+
+  # apinbrack:
+  #   - match: '{{ap}}'
+  #     scope: comment.qsp
+  #     push:
+  #       - match: '{{ap}}'
+  #         scope: comment.qsp
+  #         pop: true
+  #   - match: '{{ap}}'
+  #     scope: invalid.illegal.qsp
+
+  quote_apostroph_comments:
+    - match: '{{quote}}' # [^\{\'\"]*?\" open quotes comment
       scope: comment.qsp
       push:
+        - meta_scope: comment.qsp
         - match: '{{quote}}'
           scope: comment.qsp
           pop: true
-    - match: '{{quote}}'
-      scope: invalid.illegal.qsp
-
-  apinbrack:
-    - match: '{{ap}}'
+    - match: '{{ap}}' # [^\{\'\"]*?\' open apostrophes comment
       scope: comment.qsp
       push:
+        - meta_scope: comment.qsp
         - match: '{{ap}}'
-          scope: comment.qsp
-          pop: true
-    - match: '{{ap}}'
-      scope: invalid.illegal.qsp
-
-  quote_apostroph_comments:
-    - match: '[^{{opener}}]*?\"' # [^\{\'\"]*?\" open quotes comment
-      scope: comment.qsp
-      push:
-        - meta_scope: comment.qsp
-        - match: \"
-          scope: comment.qsp
-          pop: true
-    - match: "[^{{opener}}]*?\'" # [^\{\'\"]*?\' open apostrophes comment
-      scope: comment.qsp
-      push:
-        - meta_scope: comment.qsp
-        - match: \'
           scope: comment.qsp
           pop: true
 
