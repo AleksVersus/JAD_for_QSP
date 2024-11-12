@@ -602,7 +602,7 @@ contexts: # теперь необходимо определить "контек
         - match: (\n\r|\r|\r\n|\n|$)
           scope: comment.qsp
           pop: true
-        - include: cominquotes
+        - include: quote_apostroph_comments
         - include: brace_comments
         - include: speccomments
     - match: ((^\s*?)|(\&)\s*?)(!)
@@ -611,10 +611,10 @@ contexts: # теперь необходимо определить "контек
         4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
-        - match: (\n\r|\r|\r\n|\n)
+        - match: (\n\r|\r|\r\n|\n|$)
           scope: comment.qsp
           pop: true
-        - include: cominquotes
+        - include: quote_apostroph_comments
         - include: brace_comments
         - include: speccomments
 
@@ -628,7 +628,7 @@ contexts: # теперь необходимо определить "контек
         - match: (\n\r|\r|\r\n|\n|$)
           scope: punctuation.definition.comment.end.qsp main_comment_end.qsp
           pop: true
-        - include: cominquotes
+        - include: quote_apostroph_comments
         - include: brace_comments
         - include: speccomments
 
@@ -664,21 +664,21 @@ contexts: # теперь необходимо определить "контек
     - match: '{{ap}}'
       scope: invalid.illegal.qsp
 
-  cominquotes:
-    - match: '[^{{opener}}]*?\"'
+  quote_apostroph_comments:
+    - match: '[^{{opener}}]*?\"' # [^\{\'\"]*?\" open quotes comment
       scope: comment.qsp
       push:
         - meta_scope: comment.qsp
-        - match: ^.*?{{quote}}.*?{{quote}}.*?$
+        # - match: ^.*?{{quote}}.*?{{quote}}.*?$
           scope: comment.qsp
         - match: \"
           scope: comment.qsp
           pop: true
-    - match: "[^{{opener}}]*?\'"
+    - match: "[^{{opener}}]*?\'" # [^\{\'\"]*?\' open apostrophes comment
       scope: comment.qsp
       push:
         - meta_scope: comment.qsp
-        - match: ^.*?{{ap}}.*?{{ap}}.*?$
+        # - match: ^.*?{{ap}}.*?{{ap}}.*?$
           scope: comment.qsp
         - match: \'
           scope: comment.qsp
