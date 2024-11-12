@@ -593,19 +593,19 @@ contexts: # теперь необходимо определить "контек
 
   # # # ------------------------ Подсветка комментариев ------------------------  # # #
   comments: # комментарии. Как однострочные, так и многострочные поддерживаются отсюда
-    - match: (?<=\{)((\s*?)|(\&\s*?))(!)
+    - match: (?<=\{)((\s*?)|(\&)\s*?)(!)
       captures:
         3: support.function.builtin.qsp
         4: punctuation.definition.comment.qsp
       push:
         - meta_scope: comment.qsp
-        - match: (\n\r|\r|\r\n|\n)
+        - match: (\n\r|\r|\r\n|\n|$)
           scope: comment.qsp
           pop: true
         - include: cominquotes
         - include: brace_comments
         - include: speccomments
-    - match: ((^\s*?)|(\&\s*?))(!)
+    - match: ((^\s*?)|(\&)\s*?)(!)
       captures:
         3: support.function.builtin.qsp
         4: punctuation.definition.comment.qsp
@@ -619,13 +619,13 @@ contexts: # теперь необходимо определить "контек
         - include: speccomments
 
   comment_after_colon: # комментарии после двоеточия
-    - match: (?<=:)((\s*?)|(\&\s*?))(!)
+    - match: (?<=:)((\s*?)|(\&)\s*?)(!)
       captures:
         3: support.function.builtin.qsp
         4: punctuation.definition.comment.begin.qsp main_comment_start.qsp
       push:
         - meta_scope: comment.qsp
-        - match: (\n\r|\r|\r\n|\n)
+        - match: (\n\r|\r|\r\n|\n|$)
           scope: punctuation.definition.comment.end.qsp main_comment_end.qsp
           pop: true
         - include: cominquotes
