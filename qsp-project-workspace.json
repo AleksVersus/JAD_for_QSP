@@ -1763,6 +1763,45 @@
                 ]
             ]
         ],
+        "[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": [
+            [
+                "outer_keywords",
+                [
+                    35,
+                    49
+                ]
+            ],
+            [
+                "cond1",
+                [
+                    193,
+                    198
+                ]
+            ],
+            [
+                "cond2",
+                [
+                    2060,
+                    2065
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": [
+            [
+                "singlelines_conditionals",
+                [
+                    34,
+                    58
+                ]
+            ],
+            [
+                "wrong_singlelines_conditionals",
+                [
+                    199,
+                    229
+                ]
+            ]
+        ],
         "QSP.sublime-package\\syntax_test_qsp.qsps": [
             [
                 "start",
@@ -1877,42 +1916,12 @@
                 ]
             ]
         ],
-        "[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": [
+        "[examples]\\example_syntax\\comments\\wrong_comments.qsps": [
             [
-                "outer_keywords",
+                "wrong-working comment",
                 [
-                    35,
-                    49
-                ]
-            ],
-            [
-                "cond1",
-                [
-                    193,
-                    198
-                ]
-            ],
-            [
-                "cond2",
-                [
-                    2060,
-                    2065
-                ]
-            ]
-        ],
-        "[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": [
-            [
-                "singlelines_conditionals",
-                [
-                    34,
-                    58
-                ]
-            ],
-            [
-                "wrong_singlelines_conditionals",
-                [
-                    199,
-                    229
+                    3,
+                    24
                 ]
             ]
         ]
@@ -1933,7 +1942,7 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\prove regexp in Object.qsps": "11b89df82ff8b72454c1e4f74f188770",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u0443\u0431\u0440\u0430\u0442\u044c \u0432 \u0438\u043d\u0432\u0435\u043d\u0442\u0430\u0440\u044c.qsps": "0d3b283a8309f3f4101b5cc5929a4da5",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\delete object by id.qsps": "bcd75e1a634ef36019425c5a20fe15eb",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\QSP.sublime-package\\syntax_test_qsp.qsps": "86ca039286eeccfd7484ea2c9cb57392",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\QSP.sublime-package\\syntax_test_qsp.qsps": "bb2155f801055ef6731fae33308896f6",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\replace in obj regexp on string.qsps": "d8d4b8814781f4a232146bbdcc3e62ca",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\clear all parents.qsps": "92d02671fa10fef1b055bce29aa94b0e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440\u044b\\\u0433\u0435\u043d\u0435\u0440\u0430\u0442\u043e\u0440 \u0443\u043d\u0438\u043a\u0430\u043b\u044c\u043d\u044b\u0445 \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0439.qsps": "b801cc205d7abc35e98e8cba142242f7",
@@ -2088,6 +2097,8 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0432\u043e\u0441\u043f\u0440\u043e\u0438\u0437\u0432\u0435\u0434\u0435\u043d\u0438\u0435 \u0432\u0440\u0435\u043c\u0435\u043d\u0438\\\u0434\u0435\u043d\u044c \u043d\u0435\u0434\u0435\u043b\u0438.qsps": "40de55df1710066c63970a1678355402",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\\u043f\u0440\u0435\u0434\u043c\u0435\u0442\u044b\\\u0441\u0442\u0430\u043d\u0434\u0430\u0440\u0442\u043d\u044b\u0435 \u043c\u0435\u043d\u044e \u043f\u0440\u0435\u0434\u043c\u0435\u0442\u043e\u0432\\\u043f\u043e\u043a\u0430\u0437\u0430\u0442\u044c \u0441\u0432\u043e\u0439\u0441\u0442\u0432\u0430.qsps": "d53315a0cf28453ade059f590e5a2d96",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\counter and parameters\\\u0433\u0435\u0440\u043e\u0439. \u0441\u0438\u043b\u0430.qsps": "391806186f958e18bb6e0e0e48cd3b41",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u0431\u043e\u043b\u044c\u0448\u0430\u044f. \u0432\u0430\u0440\u0438\u0430\u043d\u0442 1.qsps": "bf8d8f8e500fd6d6ec8951b96e60c1fe"
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\\u0434\u043d\u0435\u0432\u043d\u0438\u043a\\\u0438\u043d\u0442\u0435\u0440\u043f\u0440\u0435\u0442\u0430\u0442\u043e\u0440. \u0442\u0430\u0431\u043b\u0438\u0446\u0430 - \u0431\u043e\u043b\u044c\u0448\u0430\u044f. \u0432\u0430\u0440\u0438\u0430\u043d\u0442 1.qsps": "bf8d8f8e500fd6d6ec8951b96e60c1fe",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\conditionals\\singlelines_conditionals.qsps": "2e445a4510dd88197a388cf26ec61b2b",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\conditionals\\multilines_conditional.qsps": "13a4a95c70d618dc0df062d1e1903ba3"
     }
 }

@@ -1,0 +1,11 @@
+
+# wrong-working comment
+! "
+	{}
+	''
+	"""
+"
+
+let $string = "string"
+--- wrong-working comment ---------------------------------
+

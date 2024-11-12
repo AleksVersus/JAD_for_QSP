@@ -618,15 +618,15 @@ contexts: # теперь необходимо определить "контек
         - include: brace_comments
         - include: speccomments
 
-  comment_after_colon:
+  comment_after_colon: # комментарии после двоеточия
     - match: (?<=:)((\s*?)|(\&\s*?))(!)
       captures:
         3: support.function.builtin.qsp
-        4: punctuation.definition.comment.qsp
+        4: punctuation.definition.comment.begin.qsp main_comment_start.qsp
       push:
         - meta_scope: comment.qsp
         - match: (\n\r|\r|\r\n|\n)
-          scope: comment.qsp
+          scope: punctuation.definition.comment.end.qsp main_comment_end.qsp
           pop: true
         - include: cominquotes
         - include: brace_comments
@@ -634,10 +634,11 @@ contexts: # теперь необходимо определить "контек
 
   brace_comments: # данная конструкция отвечает за поддержку вложенных скобок в комменте
     - match: '\{'
-      scope: comment.qsp
+      scope: punctuation.definition.comment.begin.qsp brace_comment_start.qsp
       push:
+        - meta_scope: comment.qsp
         - match: '\}'
-          scope: comment.qsp
+          scope: punctuation.definition.comment.end.qsp brace_comment_end.qsp
           pop: true
         - include: brace_comments
         - include: quoteinbrack
