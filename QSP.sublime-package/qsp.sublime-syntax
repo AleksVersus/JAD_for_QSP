@@ -605,6 +605,7 @@ contexts: # теперь необходимо определить "контек
         - include: quote_apostroph_comments
         - include: brace_comments
         - include: special_comments
+        - include: illegal_closed_brace
     - match: ((^\s*?)|(\&)\s*?)(!)
       captures:
         3: support.function.builtin.qsp
@@ -617,6 +618,7 @@ contexts: # теперь необходимо определить "контек
         - include: quote_apostroph_comments
         - include: brace_comments
         - include: special_comments
+        - include: illegal_closed_brace
 
   comment_after_colon: # комментарии после двоеточия
     - match: (?<=:)((\s*?)|(\&)\s*?)(!)
@@ -631,6 +633,7 @@ contexts: # теперь необходимо определить "контек
         - include: quote_apostroph_comments
         - include: brace_comments
         - include: special_comments
+        - include: illegal_closed_brace
 
   brace_comments: # данная конструкция отвечает за поддержку вложенных скобок в комменте
     - match: '\{'
@@ -643,6 +646,10 @@ contexts: # теперь необходимо определить "контек
         - include: brace_comments
         - include: quote_apostroph_comments
         # - include: apinbrack
+
+  illegal_closed_brace:
+    - match: '\}'
+      scope: invalid.illegal.qsp open_brace_dont_exist
 
   # quoteinbrack: # данная конструкция отвечает за поддержку апострофов и кавычек в комменте
   #   - match: '{{quote}}'
