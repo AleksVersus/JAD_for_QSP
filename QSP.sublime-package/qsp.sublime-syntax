@@ -720,17 +720,24 @@ contexts: # теперь необходимо определить "контек
           scope: punctuation.section.block.end.qsp avs_brace_end
           pop: true
 
-  htmlsupport:
-    - match: (?i:<qhtml>)
-      scope: message.error avs.html
+  htmlsupport: # Very Big THanks to deathaxe
+    - match: (?i)(<)(qhtml)(>)
+      scope: meta.tag.html.qsp
+      captures:
+        1: punctuation.definition.tag.begin.html.qsp
+        2: entity.name.tag.html.qsp
+        3: punctuation.definition.tag.end.html.qsp
       push:
         - clear_scopes: true
-        - meta_scope: markup.raw avs.htmlsupport text.html
-        - include: Packages/HTML/HTML.sublime-syntax
-      with_prototype:
-        - match: (?i:</qhtml>)
-          scope: message.error avs.html
+        - meta_scope: markup.raw text.html.embedded.qsp
+        - match: (?i)(</)(qhtml)(>)
+          scope: meta.tag.html.qsp
+          captures:
+            1: punctuation.definition.tag.begin.html.qsp
+            2: entity.name.tag.html.qsp
+            3: punctuation.definition.tag.end.html.qsp
           pop: true
+        - include: Packages/HTML/HTML (Plain).sublime-syntax
 
   separator_continuation:
     - match: \s_(?=$)

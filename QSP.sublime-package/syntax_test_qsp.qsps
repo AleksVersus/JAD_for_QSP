@@ -157,15 +157,15 @@ local i,t=6,7,8 & local r=8
 ! неверный local
 local
 local 7=9
-local i=6,d=6
+local i=6, d=6
 local i,7=5,8
-local i,$b=4,"56"
-set b56=9
+local i, $b = 4, "56"
+set b56 = 9
 -
 
 # [0.1_game_info]
 local a, b, c
-"<html><center><h1><font color=#dddd00>ВОЛШЕБСТВО И СТАЛЬ. v 1.2</font></h1></center><center><font color=#000000><table width=70% bgcolor=#ffeedd border=2 cellspacing=5 cellpadding=20><tr><td>
+"<qhtml><center><h1><font color=#dddd00>ВОЛШЕБСТВО И СТАЛЬ. v 1.2</font></h1></center><center><font color=#000000><table width=70% bgcolor=#ffeedd border=2 cellspacing=5 cellpadding=20><tr><td>
 <div align=justify>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Игра построена на движке <font color=#ff8800>MAGICON.FB v 0.2</font>.
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Движок подключается в качестве модуля drive.qsp
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;В качестве модулей так же подключаются базы bases.qsp , вводные данные intro.qsp и прочие необходимые библиотеки.
@@ -174,7 +174,7 @@ local a, b, c
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Для работы всех прочих модулей и самих игровых скриптов необходимо подключение стандартных библиотек easy.libs</div>
 
 
-<center><a href='exec: goto ""[start]""'>Назад</a></center></td></tr></table></font></center></html>"
+<center><a href='exec: goto ""[start]""'>Назад</a></center></td></tr></table></font></center></qhtml>"
 --- [0.1_game_info] ---------------------------------
 
 # newerland
