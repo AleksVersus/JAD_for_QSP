@@ -1,0 +1,77 @@
+QSP-Game описание локации
+
+# sysvars_string
+$backimage = 'path to file'	& !@ valid
+backimage = 'path'	& !@ invalid var
+%backimage = 'path to file'	& !@ invalid prefix
+
+$fname = 'Consolas'	& !@ valid
+fname = 'courier new'	& !@ invalid var
+%fname = 'Consolas'	& !@ invalid prefix
+
+$onactsel = 'onActSel'	& !@ valid
+onactsel = 'onActSel'	& !@ invalid var
+%onactsel = 'onActSel'	& !@ invalid prefix
+
+$ongload = 'onGameLoad'	& !@ valid
+ongload = 'onGameLoad'	& !@ invalid var
+%ongload = 'onGameLoad'	& !@ invalid prefix
+
+$ongsave = 'onGameSave'	& !@ valid
+ongsave = 'onGameSave'	& !@ invalid var
+%ongsave = 'onGameSave'	& !@ invalid prefix
+
+$onnewloc = 'onNewLoc'	& !@ valid
+onnewloc = 'onNewLoc'	& !@ invalid var
+%onnewloc = 'onNewLoc'	& !@ invalid prefix
+
+$onobjadd = 'onObjAdd'	& !@ valid
+onobjadd = 'onObjAdd'	& !@ invalid var
+%onobjadd = 'onObjAdd'	& !@ invalid prefix
+
+$onobjdel = 'onObjDel'	& !@ valid
+onobjdel = 'onObjDel'	& !@ invalid var
+%onobjdel = 'onObjDel'	& !@ invalid prefix
+
+$onobjsel = 'onObjSel'	& !@ valid
+onobjsel = 'onObjSel'	& !@ invalid var
+%onobjsel = 'onObjSel'	& !@ invalid prefix
+
+$usercom = 'userCommand'	& !@ valid
+usercom = 'userCommand'	& !@ invalid var
+%usercom = 'userCommand'	& !@ invalid prefix
+--- sysvars_string ---------------------------------
+
+# sysvar_number
+bcolor = rgb(red,green,blue)	& !@ valid
+$bcolor & %bcolor	& !@ invalid prefix
+
+fcolor = rgb(red,green,blue)	& !@ valid
+$fcolor & %fcolor	& !@ invalid prefix
+
+lcolor = rgb(red,green,blue)	& !@ valid
+$lcolor & %lcolor	& !@ invalid prefix
+
+debug = 1	& !@ valid
+$debug & %debug	& !@ invalid prefix
+
+disablescroll = 1	& !@ valid
+$disablescroll & %disablescroll	& !@ invalid prefix
+
+disablesubex & ! не поддерживается
+
+fsize = 14	& !@ valid
+$fsize & %fsize	& !@ invalid prefix
+
+nosave = 1	& !@ valid
+$nosave & %nosave	& !@ invalid prefix
+
+usehtml = 1	& !@ valid
+$usehtml & %usehtml	& !@ invalid prefix
+--- sysvar_number ---------------------------------
+
+
+# altypevars
+args[0] & $args[1] & %args[2]
+result & $result & %result
+--- altypevars ---------------------------------

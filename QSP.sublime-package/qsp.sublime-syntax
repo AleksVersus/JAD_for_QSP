@@ -27,7 +27,7 @@ variables: # назначаем переменные для удобства
       cls|
       cla|delact|
       cmdclr|cmdclear|
-      play|close all|close|
+      play|close\sall|close|
       jump|dynamic|goto|gt|xgoto|xgt|gosub|gs|menu|exit|
       showobjs|showstat|showacts|showinput|refint|
       copyarr|sortarr|setvar|unpackarr|killvar|killall|scanstr|
@@ -474,21 +474,40 @@ contexts: # теперь необходимо определить "контек
       scope: invalid.illegal.qsp avs_wrong_star_controls
 
   system_variables:
-    - match: (?<!\$)(\b{{system_vars_string}}\b) # подсвечивает все системные переменные текстового типа без символа $
+      # подсвечивает все системные переменные текстового типа без символа $ как ошибку
+    - match: (?<!\$)(\b{{system_vars_string}}\b)
       scope: invalid.illegal.qsp avs_illegal_textvariables
-    - match: ({{system_vars}}|{{system_vars_string}})(?=(\s+{{right_operand}}|\s*\({{right_operand}}))
+    - match: (%)(\b{{system_vars_string}}\b)
+      scope: invalid.illegal.qsp avs_illegal_textvariables
+
+    - match: |-
+        (?x:
+          ({{system_vars}}|{{system_vars_string}})
+          (?=(\s+{{right_operand}}|\s*\({{right_operand}}))
+        )
       scope: invalid.illegal.qsp
-    - match: ({{system_vars}}|{{system_vars_string}})(?=\$({{system_vars}}|{{system_vars_string}}))
+
+    - match: |-
+        (?x:
+          ({{system_vars}}|{{system_vars_string}})
+          (?=\$({{system_vars}}|{{system_vars_string}}))
+        )
       scope: invalid.illegal.qsp avs_illegal_textvariables
+
     - match: (?<=[\w\.\$]\$)({{system_vars}}|{{system_vars_string}})
       scope: invalid.illegal.qsp avs_illegal_textvariables
+
     - match: (\$)(?=\b({{system_vars_string}}|{{system_vars}})\b)
       scope: variable.language.qsp punctuation.definition.variable avs_sysvar
+
     - match: (\%)(?=\b({{system_vars}})\b)
       scope: variable.language.qsp punctuation.definition.variable avs_sysvar
+
     - match: \b({{system_vars_num}}|{{system_vars_string}}|{{system_vars}})\b
       scope: variable.language.qsp avs_sysvar
-    - match: (\$)(?={{system_vars_num}}\b) # подсвечивает символ доллара перед названием числовых переменных
+
+      # подсвечивает символ доллара перед названием числовых переменных
+    - match: (\$|%)(?={{system_vars_num}}\b)
       scope: invalid.illegal.qsp avs_illegal_$
 
   functions:
