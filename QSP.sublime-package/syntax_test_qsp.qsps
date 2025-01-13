@@ -24,7 +24,6 @@
 	$new_curloc
 	new_curloc fffff & !@ Подсветка ошибки неизвестное действие
 	showact 1
-	curloc
 	$result
 	$result$fname
 	$fname
@@ -44,7 +43,6 @@
 	кавычек нечётное число, комментарий ломает весь остальной синтаксис. Точно
 	так же это работает и в Quest Generator " Многострочное действие:
 	act "Многострочное действие":
-		pl $rnd
 		! Запись ' символа $ перед названием функции, которая возвращает только
 		число, так же подсвечивается ошибкой. Как вы можете видеть, данный комментарий
 		тоже многострочный. Здесь уже между крайними апострофами можно размещать только
@@ -77,7 +75,7 @@ $bcolor = $rgb(43,56,56)	& "то же самое во вложенном <<$bcol
 ! правильные текстовые системные переменные и текстовые функции
 $counter = $input("Введите название локации-счётчика") & result = val($args[0]) & $result=$str(args[1])
 ! перед названием текстовых системных переменных и текстовых функций обязательно должен ставиться знак доллара
-fname=123 & str(456)
+fname=123
 ! правильные названия числовых системных переменных и функций
 nosave=1 & val("456")
 ! запись звёздочки перед оператором
@@ -568,13 +566,6 @@ nosave|disablescroll|disablesubex|debug|usehtml|bcolor|fcolor|lcolor|fsize
 $counter|$ongload|$ongsave|$onnewloc|$onactsel|$onobjsel|$onobjadd|$onobjdel|$usercom|$fname|$backimage
 ! системные переменные, которые можно употреблять как числовые и текстовые
 $args|args|result|$result
-! числовые функции
-obj|isplay|len|rgb|msecscount|no|and|mod|countobj|instr|isnum|val|loc|or|rnd|rand|arrsize|arrpos|arrcomp|strcomp|strpos
-!текстовые функции
-$input|$user_text|$usrtxt|$desc|$maintxt|$stattxt|$qspver|$curloc|$selobj|$selact|$curacts|$mid|$ucase|$lcase|$trim|$replace|$getobj|$str|$strfind
-! функции, возвращающие как текстовые, так и числовые значения
-iif|dyneval|func|max|min
-$iif|$dyneval|$func|$max|$min
 
 set a, d = 234, 678
 local a=234

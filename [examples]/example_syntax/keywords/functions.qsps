@@ -1,0 +1,162 @@
+QSP-Game Тест подсветки функций
+
+! valid & invalid
+! invalid - is invalid in ST, and valid in QSP
+# string_functions
+! Функции, возвращающие только текстовые значения нельзя записывать, как числовые или кортежные
+$curacts & curacts & %curacts
+
+$curloc & curloc & %curloc
+
+$curobjs & curobjs & %curobjs
+
+$desc & desc & %desc
+
+$getobj(12) & getobj(12) & %getobj(12)
+
+$input('Enter the text!')
+input('Enter the text!')
+%input('Enter the text!')
+
+$lcase('low case THIS TEXT')
+lcase('low case THIS TEXT')
+%lcase('low case THIS TEXT')
+
+$maintxt & maintxt & %maintxt
+
+$mid('cut THIS TEXT', 5, 4)
+mid('cut THIS TEXT', 5, 4)
+%mid('cut THIS TEXT', 5, 4)
+
+$qspver & qspver & %qspver
+
+$replace($string, $old, $new, 1)
+replace($string, $old, $new, 1)
+%replace($string, $old, $new, 1)
+
+$selact & selact & %selact
+
+$selobj & selobj & %selobj
+
+$stattxt & stattxt & %stattxt
+
+$str(123) & str(123) & %str(123)
+
+$strfind($string, $regexp, 0)
+strfind($string, $regexp, 0)
+%strfind($string, $regexp, 0)
+
+$trim('   TRIM this TEXT    ')
+trim('   TRIM this TEXT    ')
+%trim('   TRIM this TEXT    ')
+
+$ucase('upper case THIS TEXT')
+ucase('upper case THIS TEXT')
+%ucase('upper case THIS TEXT')
+
+$user_text & user_text & %user_text
+$usrtxt & usrtxt & %usrtxt
+
+$arrtype($array_name, 0)
+arrtype($array_name, 0)
+%arrtype($array_name, 0)
+--- string_functions ---------------------------------
+
+
+# mixtype_functions
+! функции, возвращающие значения любых типов
+$dyneval('$result = "string"')
+%dyneval('%result = ["tuple", 1]')
+dyneval('result = 123')
+
+$func('foo', 'str')
+%func('foo', 'tpl')
+func('foo', 'num')
+
+$iif(x mod 2 = 0, 'even', 'not even')
+iif(x mod 2 = 0, 1, 0)
+%iif(x, [1, 2], [2, 3])
+
+$max('aa', 'ab', 'abz')			& $max('$a')
+max(12, 34, 56)					& max('a')
+%max([1, 2], [], [999, 1, 23])	& %max('%a')
+
+$min('aa', 'ab', 'abz')			& $min('$a')
+min(12, 34, 56)					& min('a')
+%min([1, 2], [], [999, 1, 23])	& %min('%a')
+
+arritem('array_name', 5)
+%arritem('%array_name', 45)
+$arritem('$array_name', 99)
+--- mixtype_functions ---------------------------------
+
+# numeric_functions
+! перед функциями, возвращающими только числовые значения нельзя ставить префикс типа
+arrcomp($array_name,$regexp,0)
+$arrcomp($array_name,$regexp,0)
+%arrcomp($array_name,$regexp,0)
+
+arrpos($array_name,value,0)
+$arrpos($array_name,value,0)
+%arrpos($array_name,value,0)
+
+arrsize($array_name)
+$arrsize($array_name)
+%arrsize($array_name)
+
+countobj & $countobj & %countobj
+
+instr($string,$substr,0)
+$instr($string,$substr,0)
+%instr($string,$substr,0)
+
+isnum($string)
+$isnum($string)
+%isnum($string)
+
+isplay('путь к файлу')
+$isplay('путь к файлу')
+%isplay('путь к файлу')
+
+len($string)
+$len($string)
+%len($string)
+
+msecscount & $msecscount & %msecscount
+
+rand(0,1) & $rand(0,1) & %rand(0,1)
+
+rgb(red,green,blue)
+$rgb(red,green,blue)
+%rgb(red,green,blue)
+
+rnd & $rnd & %rnd
+
+strcomp($string,$regexp)
+$strcomp($string,$regexp)
+%strcomp($string,$regexp)
+
+strpos($string,$regexp,1)
+$strpos($string,$regexp,1)
+%strpos($string,$regexp,1)
+
+val($string) & $val($string) & %val($string)
+--- numeric_functions ---------------------------------
+
+# tuple_functions
+! функции, возвращающие кортеж допускают только префикс типа % перед названием
+%arrpack('$array_name',0,arrsize('$array_name'))
+arrpack('$array_name',0,arrsize('$array_name'))
+$arrpack('$array_name',0,arrsize('$array_name'))
+--- tuple_functions ---------------------------------
+
+
+# foo
+!example of loaction-function
+if 0:
+	elseif $args[0] = 'tpl': %result = ["tuple", 1]
+	elseif $args[0] = 'str': $result = "string"
+	elseif $args[0] = 'num': result = 123
+end
+--- foo ---------------------------------
+

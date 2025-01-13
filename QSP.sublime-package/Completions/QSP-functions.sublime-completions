@@ -108,10 +108,10 @@
         },
         {
             "trigger": "replace",
-            "contents": "replace(${1:\\$string},${2:\\$old},${3:\\$new})${0}",
+            "contents": "replace(${1:\\$string},${2:\\$old},${3:\\$new},${4:0})${0}",
             "kind": "Function",
             "annotation": "Замена в строке",
-            "details": "$REPLACE([$строка],[$старое],[$новое])"
+            "details": "$REPLACE([$строка],[$старое],[$новое],[#число замен])"
         },
         {
             "trigger": "selact",
@@ -188,7 +188,28 @@
             "contents": "arrpos(${1:\\$array_name},${2:value},${3:0})${0}",
             "kind": "Function",
             "annotation": "Поиск значения по массиву",
-            "details": "ARRCOMP([$имя_массива],[$шаблон],[#начало])"
+            "details": "ARRPOS([$имя_массива],[$шаблон],[#начало])"
+        },
+        {
+            "trigger": "arritem",
+            "contents": "arritem(${1:\\$array_name}, ${2:0})${0}",
+            "kind": "Function",
+            "annotation": "Значение из ячейки массива",
+            "details": "ARRITEM([$имя_массива], [индекс_элемента])"
+        },
+        {
+            "trigger": "arrtype",
+            "contents": "arrtype(${1:\\$array_name}, ${2:0})${0}",
+            "kind": "Function",
+            "annotation": "Тип значения в ячейке массива",
+            "details": "ARRTYPE([$имя_массива], [индекс_элемента])"
+        },
+        {
+            "trigger": "arrpack",
+            "contents": "arrpack(${1:\\$array_name},${2:0},${3:arrsize(${1:\\$array_name})})${0}",
+            "kind": "Function",
+            "annotation": "Часть массива в кортеж",
+            "details": "ARRPACK([$имя_массива], [#начало], [#количество])"
         },
         {
             "trigger": "arrsize",
@@ -244,7 +265,7 @@
             "contents": "rand(${1:0},${2:1})${0}",
             "kind": "Function",
             "annotation": "Случайное число из интервала",
-            "details": "RAND([#выражение 1],[#выражение 2])"
+            "details": "RAND([#выражение 1],[#выражение 2], [#мода])"
         },
         {
             "trigger": "rgb",
