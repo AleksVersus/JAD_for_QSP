@@ -1,5 +1,5 @@
 QSP-Game Тест подсветки операторов
 
-# operators
-*pl ''
---- operators ---------------------------------
+# main_and_stat_operators
+pl 'text' & *pl 'text'
+--- main_and_stat_operators ---------------------------------
