@@ -96,7 +96,7 @@ contexts: # теперь необходимо определить "контек
         3: entity.name.location.qsp meta.start_location.qsp
       push:
         - meta_scope: meta.location.qsp
-        - match: ^\1(-)(.*?)$
+        - match: ^\1(--)(.*?)$
           pop: true
           captures:
             1: punctuation.definition.keyword markup.bold.qsp keyword.control meta.end_location.qsp
@@ -697,26 +697,6 @@ contexts: # теперь необходимо определить "контек
     - match: '\}'
       scope: invalid.illegal.qsp open_brace_dont_exist
 
-  # quoteinbrack: # данная конструкция отвечает за поддержку апострофов и кавычек в комменте
-  #   - match: '{{quote}}'
-  #     scope: comment.qsp
-  #     push:
-  #       - match: '{{quote}}'
-  #         scope: comment.qsp
-  #         pop: true
-  #   - match: '{{quote}}'
-  #     scope: invalid.illegal.qsp
-
-  # apinbrack:
-  #   - match: '{{ap}}'
-  #     scope: comment.qsp
-  #     push:
-  #       - match: '{{ap}}'
-  #         scope: comment.qsp
-  #         pop: true
-  #   - match: '{{ap}}'
-  #     scope: invalid.illegal.qsp
-
   quote_apostroph_comments:
     - match: '{{quote}}' # [^\{\'\"]*?\" open quotes comment
       scope: comment.qsp
@@ -759,7 +739,6 @@ contexts: # теперь необходимо определить "контек
       scope: punctuation.section.block.begin.qsp avs_brace_begin
       push:
         - meta_content_scope: meta.block
-        
         - include: htmlsupport
         - include: location_body
         - match: '\}'
