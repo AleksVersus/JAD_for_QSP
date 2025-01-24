@@ -1,0 +1,28 @@
+{
+	"nodes":[
+		{"id":"c2209b6773d535f8","x":-480,"y":-320,"width":690,"height":320,"color":"3","type":"group","label":"proves"},
+		{"id":"9743219b42c668d8","type":"text","text":"syntax is QSP?","x":-460,"y":-300,"width":250,"height":60,"color":"4"},
+		{"id":"df6d401ca50ae48f","type":"text","text":"current_qsps, project_folder","x":-460,"y":-190,"width":250,"height":60},
+		{"id":"e20383d21467fa1a","type":"text","text":"current_qsps or project_folder is None?","x":-460,"y":-80,"width":250,"height":60},
+		{"id":"ea4b70ff66e1eef8","type":"text","text":"exit","x":-60,"y":-190,"width":250,"height":60,"color":"1"},
+		{"id":"af4ac643480b62f0","x":-460,"y":20,"width":250,"height":60,"type":"text","text":"qspws.refresh_locs"},
+		{"id":"1bda2587ef7a4fb8","x":-460,"y":120,"width":250,"height":60,"type":"text","text":"file changed?"},
+		{"id":"d0fb2681793e67b3","x":-600,"y":240,"width":250,"height":60,"type":"text","text":"qspws.refresh_files"},
+		{"id":"65308cd23e89f2f2","x":-310,"y":240,"width":250,"height":60,"type":"text","text":"qspws.refresh_hash"},
+		{"id":"1669a3259d069791","x":-310,"y":460,"width":250,"height":60,"type":"text","text":"qspws.save_to_file"},
+		{"id":"1a7f79cde1fce656","type":"text","text":"Встроенный метод сублайма, который мы заменяем","x":-500,"y":-420,"width":800,"height":50}
+	],
+	"edges":[
+		{"id":"3151029a789783b2","fromNode":"9743219b42c668d8","fromSide":"right","toNode":"ea4b70ff66e1eef8","toSide":"left","label":"no"},
+		{"id":"d9b24ff9070a21c0","fromNode":"9743219b42c668d8","fromSide":"bottom","toNode":"df6d401ca50ae48f","toSide":"top"},
+		{"id":"6a82a74076294a30","fromNode":"df6d401ca50ae48f","fromSide":"bottom","toNode":"e20383d21467fa1a","toSide":"top"},
+		{"id":"27603684a8e29b7a","fromNode":"e20383d21467fa1a","fromSide":"right","toNode":"ea4b70ff66e1eef8","toSide":"left","label":"yes"},
+		{"id":"71ac2cb504e42bde","fromNode":"e20383d21467fa1a","fromSide":"bottom","toNode":"af4ac643480b62f0","toSide":"top"},
+		{"id":"3f7c9b798f3f6ab2","fromNode":"af4ac643480b62f0","fromSide":"bottom","toNode":"1bda2587ef7a4fb8","toSide":"top"},
+		{"id":"8e6030e039942592","fromNode":"1bda2587ef7a4fb8","fromSide":"bottom","toNode":"d0fb2681793e67b3","toSide":"top","label":"yes"},
+		{"id":"e149b30a5fb31804","fromNode":"1bda2587ef7a4fb8","fromSide":"bottom","toNode":"65308cd23e89f2f2","toSide":"top","label":"no"},
+		{"id":"1e31ecdce8c9d530","fromNode":"1669a3259d069791","fromSide":"right","toNode":"ea4b70ff66e1eef8","toSide":"bottom"},
+		{"id":"4261de58145698c9","fromNode":"65308cd23e89f2f2","fromSide":"bottom","toNode":"1669a3259d069791","toSide":"top"},
+		{"id":"6249e11d3cdb837e","fromNode":"d0fb2681793e67b3","fromSide":"bottom","toNode":"1669a3259d069791","toSide":"top"}
+	]
+}

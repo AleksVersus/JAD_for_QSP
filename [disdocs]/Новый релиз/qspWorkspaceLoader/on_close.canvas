@@ -1,0 +1,18 @@
+{
+	"nodes":[
+		{"id":"3af4162a76dcf406","type":"text","text":"Встроенный метод сублайма, который мы заменяем","x":-440,"y":-380,"width":800,"height":50},
+		{"id":"371310fa60236384","type":"text","text":"syntax is QSP?","x":-440,"y":-300,"width":250,"height":60,"color":"4"},
+		{"id":"42c06a7a3c610a94","type":"text","text":"current_qsps, project_folder","x":-440,"y":-160,"width":250,"height":60},
+		{"id":"542537962d9cfece","type":"text","text":"current_qsps or project_folder is None?","x":-440,"y":-40,"width":250,"height":60},
+		{"id":"99350eab0b9dca23","x":-440,"y":140,"width":250,"height":60,"type":"text","text":"qspws.save_to_file()"},
+		{"id":"77955dd14dbfc176","type":"text","text":"exit","x":-40,"y":-160,"width":250,"height":60,"color":"1"}
+	],
+	"edges":[
+		{"id":"4ea2d7540c7eab93","fromNode":"371310fa60236384","fromSide":"right","toNode":"77955dd14dbfc176","toSide":"left","label":"no"},
+		{"id":"8558f674c82eba08","fromNode":"371310fa60236384","fromSide":"bottom","toNode":"42c06a7a3c610a94","toSide":"top"},
+		{"id":"d1642225a0020659","fromNode":"42c06a7a3c610a94","fromSide":"bottom","toNode":"542537962d9cfece","toSide":"top"},
+		{"id":"41ee56e72e043b05","fromNode":"542537962d9cfece","fromSide":"right","toNode":"77955dd14dbfc176","toSide":"left","label":"yes"},
+		{"id":"f2fc4db0b6b60122","fromNode":"542537962d9cfece","fromSide":"bottom","toNode":"99350eab0b9dca23","toSide":"top"},
+		{"id":"8ff628eec813d850","fromNode":"99350eab0b9dca23","fromSide":"right","toNode":"77955dd14dbfc176","toSide":"bottom"}
+	]
+}

@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"be105fcc759876a9","type":"text","text":"Встроенный метод сублайма, который мы заменяем","x":-420,"y":-360,"width":800,"height":50},
+		{"id":"fd20077cf980a17d","type":"text","text":"qspws = [[_get_qsp_ws.canvas|_get_qsp_ws]](project_folder, QSP_WORKSPACES)","x":-535,"y":120,"width":480,"height":60},
+		{"id":"8e23e0d6f4e4a96c","type":"text","text":"qspws.refresh_locs\nqspws.refresh_vars\nqspws.refresh_files","x":-420,"y":240,"width":250,"height":100},
+		{"id":"7218c9c79909e5b8","type":"text","text":"syntax is QSP?","x":-420,"y":-280,"width":250,"height":60,"color":"4"},
+		{"id":"3b66df1acf41073c","type":"text","text":"current_qsps, project_folder","x":-420,"y":-140,"width":250,"height":60},
+		{"id":"3bb320b263cecef1","type":"text","text":"current_qsps or project_folder is None?","x":-420,"y":-20,"width":250,"height":60},
+		{"id":"a9cc7b4b49626221","type":"text","text":"exit","x":-20,"y":-140,"width":250,"height":60,"color":"1"}
+	],
+	"edges":[
+		{"id":"4ba182babe2305a3","fromNode":"7218c9c79909e5b8","fromSide":"right","toNode":"a9cc7b4b49626221","toSide":"left","label":"no"},
+		{"id":"7f4dbda310afaf4d","fromNode":"7218c9c79909e5b8","fromSide":"bottom","toNode":"3b66df1acf41073c","toSide":"top"},
+		{"id":"31adca9ca5899bc7","fromNode":"3bb320b263cecef1","fromSide":"right","toNode":"a9cc7b4b49626221","toSide":"left","label":"yes"},
+		{"id":"3703aa1fa8dba7a2","fromNode":"3b66df1acf41073c","fromSide":"bottom","toNode":"3bb320b263cecef1","toSide":"top"},
+		{"id":"085efa9b1eaca26d","fromNode":"3bb320b263cecef1","fromSide":"bottom","toNode":"fd20077cf980a17d","toSide":"top"},
+		{"id":"5ba3e7da88d497d1","fromNode":"fd20077cf980a17d","fromSide":"bottom","toNode":"8e23e0d6f4e4a96c","toSide":"top"},
+		{"id":"e2ffd24f8f39eb07","fromNode":"8e23e0d6f4e4a96c","fromSide":"right","toNode":"a9cc7b4b49626221","toSide":"bottom"}
+	]
+}

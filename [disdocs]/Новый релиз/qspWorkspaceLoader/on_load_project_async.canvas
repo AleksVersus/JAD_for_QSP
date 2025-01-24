@@ -1,0 +1,9 @@
+{
+	"nodes":[
+		{"id":"e861c541da96c41e","x":-360,"y":-320,"width":250,"height":60,"type":"text","text":"qspws = [[_extract_qsp_ws.canvas|_extract_qsp_ws]]"},
+		{"id":"ef2e1f594012274f","x":-360,"y":-220,"width":250,"height":60,"type":"text","text":"refresh files"}
+	],
+	"edges":[
+		{"id":"e36d8388071ae4c5","fromNode":"e861c541da96c41e","fromSide":"bottom","toNode":"ef2e1f594012274f","toSide":"top"}
+	]
+}

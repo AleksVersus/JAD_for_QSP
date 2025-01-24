@@ -1047,15 +1047,6 @@
                 ]
             ]
         ],
-        "[disdocs]\\crash.qsps": [
-            [
-                "s",
-                [
-                    29,
-                    30
-                ]
-            ]
-        ],
         "[examples]\\example_project\\drive\\интерпретаторы\\динамические тексты\\безусловные переходы в динамических текстах.qsps": [
             [
                 "int.dyn.goto",
@@ -2036,6 +2027,24 @@
         "[examples]\\example_project\\main\\сюжет\\выбор пола.qsps": [
             [
                 "[1.0_game_start]",
+                [
+                    2,
+                    18
+                ]
+            ]
+        ],
+        "[disdocs]\\crash.qsps": [
+            [
+                "s",
+                [
+                    29,
+                    30
+                ]
+            ]
+        ],
+        "[examples]\\example_syntax\\operation\\math.qsps": [
+            [
+                "math_operacion_2",
                 [
                     2,
                     18

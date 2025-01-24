@@ -1,0 +1,20 @@
+{
+	"nodes":[
+		{"id":"95212580d794cba0","x":-380,"y":-260,"width":250,"height":100,"color":"4","type":"text","text":"get_cur_pf()\nполучаем текущую рабочую папку"},
+		{"id":"b0958846ea33b6e8","x":-335,"y":-120,"width":160,"height":60,"type":"text","text":"получена"},
+		{"id":"73446fe60cdcaeb9","x":-630,"y":-20,"width":250,"height":60,"color":"1","type":"text","text":"выход"},
+		{"id":"edbac7a296ad43d5","x":-160,"y":-20,"width":250,"height":60,"type":"text","text":"Файл рабочй области существует?"},
+		{"id":"a67f14662fd34347","x":-160,"y":100,"width":250,"height":100,"type":"text","text":"создаём пустую рабочую область в QSP_WORKSPACES"},
+		{"id":"2fcaf7097d0cc695","x":-160,"y":240,"width":250,"height":100,"type":"text","text":"Извлекаем данные из файла в рабочую область"},
+		{"id":"a3ab0c89626ab8f6","x":-630,"y":120,"width":250,"height":60,"color":"1","type":"text","text":"Возвращаем рабочую область выход"}
+	],
+	"edges":[
+		{"id":"fdb5ccd292b9c291","fromNode":"95212580d794cba0","fromSide":"bottom","toNode":"b0958846ea33b6e8","toSide":"top"},
+		{"id":"785a36bd7aee8801","fromNode":"b0958846ea33b6e8","fromSide":"left","toNode":"73446fe60cdcaeb9","toSide":"top","label":"нет"},
+		{"id":"38e22d1871d42645","fromNode":"b0958846ea33b6e8","fromSide":"right","toNode":"edbac7a296ad43d5","toSide":"top","label":"да"},
+		{"id":"b7360a3844320068","fromNode":"edbac7a296ad43d5","fromSide":"left","toNode":"73446fe60cdcaeb9","toSide":"right","label":"Нет"},
+		{"id":"a969d7f5d795cb1e","fromNode":"edbac7a296ad43d5","fromSide":"bottom","toNode":"a67f14662fd34347","toSide":"top","label":"Да"},
+		{"id":"b5e81f7a2402df35","fromNode":"a67f14662fd34347","fromSide":"bottom","toNode":"2fcaf7097d0cc695","toSide":"top"},
+		{"id":"9e0eca79c02cc268","fromNode":"2fcaf7097d0cc695","fromSide":"left","toNode":"a3ab0c89626ab8f6","toSide":"right"}
+	]
+}

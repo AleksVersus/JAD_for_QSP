@@ -394,31 +394,32 @@ class QspWorkspaceHandlers(sublime_plugin.EventListener):
 
 	def on_load_async(self, view:sublime.View) -> None:
 		""" When file is loading, refresh vars and locs in ws. Only for QSP-files """
-		if self._view_syntax_prove(view):
-			return None
+		if self._view_syntax_prove(view): return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
 		if None in (current_qsps, project_folder): return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
+		
 		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
 		qsp_ws.refresh_vars(view)
 		if len(qsp_ws.files_paths) == 0:
 			qsp_ws.refresh_files()
 
 	def on_close(self, view:sublime.View) -> None:
-		""" only save ws, not refresh. Because closed is not saving """
-		if self._view_syntax_prove(view):
-			return None
+		""" only save ws, not refresh. Because closing is not saving """
+		if self._view_syntax_prove(view): return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
 		if None in (current_qsps, project_folder): return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
+
 		qsp_ws.save_to_file(project_folder)
 
 	def on_post_save_async(self, view:sublime.View) -> None:
-		if self._view_syntax_prove(view):
-			return None
+		""" When file is saving, refresh files or md5 """
+		if self._view_syntax_prove(view): return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
 		if None in (current_qsps, project_folder): return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
+
 		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
 		if QSP_MARKERS['files_is_changed']:
 			qsp_ws.refresh_files()
