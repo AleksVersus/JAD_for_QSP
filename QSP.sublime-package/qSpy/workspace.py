@@ -208,7 +208,7 @@ class QspWorkspace:
 		if not 'locations' in qsp_ws or not qsp_ws['locations']:
 			return None # Если воркспейс не содержит локаций, то и сохранять его не нужно
 		with open(os.path.join(project_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
-			json.dump(qsp_ws, ws_file, indent=4)
+			json.dump(qsp_ws, ws_file, indent=4, ensure_ascii=False)
 
 	def get_locs(self) -> list: #list of tuples!
 		""" Return List of qsp-locations from ws. See .get_all_qsplocs """
