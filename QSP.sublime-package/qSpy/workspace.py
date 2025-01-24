@@ -178,11 +178,11 @@ class QspWorkspace:
 			del self.files_hashs[i]
 
 	def refresh_qsplocs(self, view:sublime.View, current_qsps:str, project_folder:str) -> None:
-		"""	Return list of QSP-locations created on this view """
-		if not current_qsps is None:
-			qsps_relpath = self.reling_path(project_folder, current_qsps)
-		else:
+		"""	Refresh list of QSP-locations created on this view """
+		if current_qsps is None:
 			qsps_relpath = ''
+		else:
+			qsps_relpath = self.reling_path(project_folder, current_qsps)
 		self.del_all_locs_by_place(qsps_relpath)
 		for s in view.symbol_regions():
 			if s.name.startswith('Локация: '):

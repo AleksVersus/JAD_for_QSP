@@ -363,8 +363,12 @@ class QspAutocomplete(sublime_plugin.EventListener):
 		else:
 			return []
 
-class QspWorkspaceLoader(sublime_plugin.EventListener):
+class QspWorkspaceHandlers(sublime_plugin.EventListener):
 	""" Manage a qsp-workspace in ram and in files """
+
+	def _view_syntax_prove(self, view:sublime.View) -> bool:
+		vs = view.syntax()
+		return True if vs is None or vs.name != 'QSP' else False
 
 	def _get_qsp_ws(self, project_folder:str, all_workspaces:dict) -> QspWorkspace:
 		""" Create qsp workspace or return already exists """
@@ -389,10 +393,11 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		return None
 
 	def on_load_async(self, view:sublime.View) -> None:
-		if view.syntax() is None or view.syntax().name != 'QSP':
+		""" When file is loading, refresh vars and locs in ws. Only for QSP-files """
+		if self._view_syntax_prove(view):
 			return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
-		if current_qsps is None or project_folder is None: return None
+		if None in (current_qsps, project_folder): return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
 		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
 		qsp_ws.refresh_vars(view)
@@ -401,18 +406,18 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 
 	def on_close(self, view:sublime.View) -> None:
 		""" only save ws, not refresh. Because closed is not saving """
-		if view.syntax() is None or view.syntax().name != 'QSP':
+		if self._view_syntax_prove(view):
 			return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
-		if current_qsps is None or project_folder is None: return None
+		if None in (current_qsps, project_folder): return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
 		qsp_ws.save_to_file(project_folder)
 
 	def on_post_save_async(self, view:sublime.View) -> None:
-		if view.syntax() is None or view.syntax().name != 'QSP':
+		if self._view_syntax_prove(view):
 			return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
-		if current_qsps is None or project_folder is None: return None
+		if None in (current_qsps, project_folder): return None
 		qsp_ws = self._get_qsp_ws(project_folder, QSP_WORKSPACES)
 		qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
 		if QSP_MARKERS['files_is_changed']:
@@ -423,7 +428,7 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 		qsp_ws.save_to_file(project_folder)
 
 	# on start work, try to extract workspace from file:
-	def on_init(self, views):
+	def on_init(self, views:list) -> None:
 		self._extract_qsp_ws()
 
 	def on_load_project_async(self, window:sublime.Window) -> None:
@@ -433,10 +438,6 @@ class QspWorkspaceLoader(sublime_plugin.EventListener):
 	def on_window_command(self, window:sublime.Window, command_name:str, args:dict) -> None:
 		if command_name in ('rename_path', 'delete_file'):
 			QSP_MARKERS['files_is_changed'] = True
-
-	# def on_close(self, view):
-	# 	window = sublime.active_window()
-	# 	print(window.folders())
 
 # variables
 QSP_WORKSPACES = {} # all qsp workspaces add to this dict, if you open project
