@@ -68,11 +68,6 @@
 								"command": "qsp_show_dupl_locs"
 							}
 						]
-					},
-					{
-						"id": "qsp_tools_developer_test",
-						"caption": "Dev Test",
-						"command": "qsp_developer_test"
 					}
 				]
 			}
