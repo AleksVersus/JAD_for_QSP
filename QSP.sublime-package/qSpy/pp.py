@@ -1,17 +1,15 @@
 import re
 
 # возвращает вхождение регэкспа или пустую строку
-def strfind(regex, string):
+def strfind(regex: str, string: str) -> str:
+	"""Return the match or an empty string."""
 	instr = re.search(regex, string)
-	if instr == None:
-		return ""
-	else:
-		return instr.group(0)
+	return instr.group(0) if instr is not None else ""
 
 # функция, извлекающая директиву в скобках
-def get_direct(string, direct):
-	result = string.replace(direct, '', 1).strip()[1:-1]
-	return result
+def get_direct(string, direct) -> str:
+	"""	Extract the directive in parentheses. """
+	return string.replace(direct, '', 1).strip()[1:-1]
 
 # функция, добавляющая метку и значение
 def add_variable(vares, direct):

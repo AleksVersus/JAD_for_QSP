@@ -3,7 +3,8 @@ __all__ = [
 	'QSP_START_TEMPLATE',
 	'QSP_PROJECT_JSON',
 	'QSP_SUBLIME_PROJECT',
-	'QSP_MSG']
+	'QSP_MSG',
+	'QSP_ERROR_MSG']
 
 from types import MappingProxyType
 
@@ -58,12 +59,14 @@ _t = {
 	"refint": "REFINT — принудительное обновление интерфейса.",
 	"scanstr": "SCANSTR [$массив_приёмник],[$строка_текста],[$регулярка],[#группа] — извлечение подстрок в массив.",
 	"settimer": "SETTIMER [#выражение] — задаёт интервал обращения к локации-счётчику в миллисекундах.",
+	"setvar": "SETVAR [$имя_массива], [значение], [индекс] — помещает значение в указанную ячейку массива.",
 	"showacts": "SHOWACTS [#выражение] — управляет отображением окна действий.",
 	"showstat": "SHOWSTAT [#выражение] — управляет отображением окна дополнительного описания.",
 	"showobjs": "SHOWOBJS [#выражение] — управляет отображением окна предметов.",
 	"showinput": "SHOWINPUT [#выражение] — управляет отображением строки ввода (командной строки).",	
 	"sortarr": "SORTARR [$массив],[#направление_сортировки] — сортировка массива.",
 	"unselect": "UNSELECT — снимает выделение с предмета.",
+	"unpackarr": "UNPACKARR [$имя_массива], [%кортеж], [#начало], [#количество] — распаковывает кортеж в указанный массив.",
 	"unsel": "UNSEL — снимает выделение с предмета.",
 	"view": "VIEW [$путь к графическому файлу] — выводит на экран указанное изображение.",
 	"wait": "WAIT [#миллисекунды] — приостанавливает выполнение кода программы.",
@@ -99,6 +102,7 @@ _t = {
 	"arrsize": "ARRSIZE([$выражение]) - возвращает число элементов в указанном массиве",
 	"arrpos": "ARRPOS([$имя массива],[значение],[#начальный индекс]) - поиск в массиве элемента с заданным значением",
 	"arritem": "ARRITEM([$имя массива],[индекс]) - возвращает значение указанной ячейки указанного массива.",
+	"$arrtype": "$ARRTYPE([$имя массива],[индекс]) - возвращает тип значения в указанной ячейке массива.",
 	"instr": "INSTR([$текст],[$искомый текст],[#начальная позиция]) - поиск вхождения текста",
 	"isnum": "ISNUM([$выражение]) - проверяет, является ли указанная строка числом",
 	"$trim": "$TRIM([$выражение]) - удаляет из текста прилегающие пробелы и символы табуляции",
@@ -126,6 +130,7 @@ _t = {
 	"$usrtxt": "$USRTXT - возвращает текст в строке ввода",
 	"$maintxt": "$MAINTXT - возвращает текст в основном окне описания",
 	"$stattxt": "$STATTXT - возвращает текст в дополнительном окне описания",
+	r"%arrpack": f"%ARRPACK([$имя_массива], [#начало], [#сколько]) — упаковывает значения массива в кортеж.",
 	# init vars
 	"set": "SET [название переменной]=[выражение] — установка значения переменной.",
 	"local": "LOCAL [название переменной]=[выражение] — назначение локальной переменной.",
@@ -160,11 +165,11 @@ QSP_CMD_TIPS = MappingProxyType(_t)
 
 QSP_START_TEMPLATE = (
 	'QSP-Game Start game from this location\n\n',
-	'# [start]\n',
+	'# game.start\n',
 	'*pl "Quick project start location. Edit this file, and appending new."\n',
 	'*pl "Стартовая локация быстрого проекта. ',
 	'Отредактируйте этот файл и добавьте новые."\n',
-	'--- [start] ---\n')
+	'--- game.start ---\n')
 
 # No changable dict for qsp-project.json simple file
 
@@ -172,15 +177,15 @@ _t = {
 		"project":
 		[
 			{
-				"module": "..\\[output_game]\\game_start.qsp",
+				"module": "..\\_output_game\\game_start.qsp",
 				"folders":
 				[
 					{"path": "."}
 				]
 			}
 		],
-		"start": "..\\[output_game]\\game_start.qsp",
-		"player": "C:\\Program Files\\QSP\\qsp580\\qspgui.exe"}
+		"start": "..\\_output_game\\game_start.qsp",
+		"player": "C:\\Program Files\\QSP Classic 5.9.2\\bin\\qspgui.exe"}
 
 QSP_PROJECT_JSON = MappingProxyType(_t)
 
@@ -206,3 +211,37 @@ class _Qsp_Message:
 		return self._loc
 
 QSP_MSG = _Qsp_Message()
+
+# Message's Texts
+class _Qsp_Errors_Message:
+
+	def __init__(self):
+		# messages for QSP.py
+		self._need_save = "[0] Save file before building!"
+		self._wrong_extension_qsp = "[1] Wrong extension of file. Need 'qsp'. Can not convert."
+		self._wrong_extension_qsps = "[2] Wrong extension of file. Need 'qsps'. Can not convert."
+		self._wrong_extension_splitter = "[3] QSP-Splitter: Wrong extension of file. Can not convert."
+		# messages for workspace.py
+		self._ws_init = '[4] QSP WORKSPACE already initialised!!!'
+
+	@property
+	def NEED_SAVE_FILE(self):
+		return self._need_save
+
+	@property
+	def WRONG_EXTENSION_QSP(self):
+		return self._wrong_extension_qsp
+	
+	@property
+	def WRONG_EXTENSION_QSPS(self):
+		return self._wrong_extension_qsps
+	
+	@property
+	def WRONG_EXTENSION_SPLITTER(self):
+		return self._wrong_extension_splitter
+	
+	@property
+	def WS_ALREADY_INIT(self):
+		return self._ws_init
+
+QSP_ERROR_MSG = _Qsp_Errors_Message()

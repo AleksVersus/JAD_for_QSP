@@ -1,6 +1,8 @@
 import sys
 import os
 
+# standart funcs for
+
 def safe_mk_fold(new_path:str) -> None:
 	""" Safe make dir with making all chain of dir """
 	if not os.path.isdir(new_path):
@@ -12,10 +14,9 @@ def write_error_log(error_text:str) -> None:
 
 def get_files_list(folder:str, filters:list=None) -> list:
 	""" Create list of files in folder and includes folders. """
-	if filters is None: filters = [".qsps",'.qsp-txt','.txt-qsp']
+	if filters is None: filters = ['.qsps', '.qsp-txt', '.txt-qsp']
 	build_files = []
-	tree = os.walk(folder)
-	for abs_path, _, files in tree:
+	for abs_path, _, files in os.walk(folder):
 		for file in files:
 			sp = os.path.splitext(file)
 			if not filters or (sp[1] in filters):
@@ -80,6 +81,27 @@ def clear_locname(loc_name:str) -> str:
 		.replace('?', r'\?')
 		.replace('|', r'\|')
 		.replace('/', r'\/'))
+
+def is_path_in_project_folders(path:str, project_folders:list) -> bool:
+	"""
+		Prove that path is existed in project_folders.
+	"""
+	all_pathes = project_folders[:]
+	all_pathes.append(path)
+	if None in all_pathes: return False
+	for folder in project_folders:		
+		try:
+			if os.path.commonpath([path, folder]) == folder:
+				return True
+		except ValueError as e: # если файлы лежат на разных дисках. TODO: убрать вывод в консоль
+			write_error_log(f'[203] Different pathes of folder and file. Error "{str(e)}". path: {path}. folder: {folder}.')
+			continue
+	return False
+
+def log(string:str,) -> None:
+	log_file_path = 'D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\qsp-workspace-log.log'
+	with open(log_file_path, 'a', encoding='utf-8') as fp:
+		fp.write(string + '\n')
 
 if __name__=="__main__":
 	...

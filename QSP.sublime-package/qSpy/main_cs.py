@@ -17,7 +17,6 @@ class FinderSplitter():
 	"""
 	def __init__(self, folder_path="."):
 		self.folder_path = os.path.abspath(folder_path)
-		self.search_n_split()
 
 	def search_n_split(self):
 		path_list = [os.path.join(self.folder_path, path) for path in os.listdir(self.folder_path)]
@@ -41,7 +40,8 @@ class FinderSplitter():
 
 def main():
 	folder_path = "."
-	FinderSplitter(folder_path=folder_path)
+	splitter = FinderSplitter(folder_path=folder_path)
+	splitter.search_n_split()
 
 if __name__ == "__main__":
 	main()

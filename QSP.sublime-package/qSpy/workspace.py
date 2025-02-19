@@ -2,231 +2,284 @@ import sublime			# type: ignore
 
 import os
 import json
+from typing import (Union, List, Tuple)
 import hashlib
 
 from .qsps_to_qsp import NewQspsFile
 from . import function as qsp
+from . import const as const
 
 class QspWorkspace:
 	def __init__(self, all_workspaces:dict) -> None:
 		self.all_ws = all_workspaces # dict of all workspaces
 		# microbase of locations
-		self.loc_names = [] # names of location [str]
-		self.loc_regions = [] # regions of locs initiate list[start, end]
-		self.loc_places = [] # file path, where is qsp_locs [str]
-		self.loc_hashs = [] # all datas in tuple
-		# microbase of files_path
-		self.files_paths = [] # all files in project (rel or abs pathes)
-		self.files_hashs = []
+		self.locs = {
+			'names': [],	# names of location [str]
+			'regions': [],	# regions of locs initiate tuple[start, end]
+			'places': [],	# file path, where is qsp_locs [str]
+			'hashes': []	# all datas in tuple
+		}
+		# microbase of qsps-file's pathes
+		self.qsps_files = {
+			'pathes': [],	# all files in project (abs pathes)
+			'hashes': []	# md5
+		}
 		# microbase of variables
-		self.local_vars = []  # list[sublime.Region]
-		self.global_vars = []  # list[sublime.Region]
+		self.local_vars = []	# list[sublime.Region]
+		self.global_vars = []	# list[sublime.Region]
 		self.global_vars_names = set()  # set[variables names]
+		# modes
+		self.save_temp_files = True
+		self.markers = {
+			'on_pre_close_project': False
+		}
 
-	def add_loc(self, name:str, region:tuple, place:str):
-		""" Add qsp_location to workspace """
-		if not (name, region[0], region[1], place) in self.loc_hashs:
-			self.loc_names.append(name)
-			self.loc_regions.append(region)
-			self.loc_places.append(place)
-			self.loc_hashs.append((name, region[0], region[1], place))
+	def _log(self, string:str) -> None:
+		if self.save_temp_files:
+			qsp.log(string, self.save_temp_files)
+
+# --------------------------------- qsp-locations mb functions ---------------------------------
+
+	def add_loc(self, name:str, region:tuple, place:str) -> None:
+		""" Add new qsp-location to workspace """
+		if not (name, region, place) in self.locs['hashes']:
+			# one index for all fields
+			self.locs['names'].append(name)
+			self.locs['regions'].append(region)
+			self.locs['places'].append(place)
+			self.locs['hashes'].append((name, region, place))
+
+	def replace_locs(self, old_path:str, new_path:str) -> None:
+		""" Change place of qsp-locations. """
+		while old_path in self.locs['places']:
+			i = self.locs['places'].index(old_path)
+			self.locs['places'][i] = new_path
+			self.loc_hash_update(i)
 
 	def del_loc_by_index(self, i:int) -> None:
-		if i < 0 or i > len(self.loc_names)-1:
-			return None
-		del self.loc_places[i]
-		del self.loc_names[i]
-		del self.loc_regions[i]
-		del self.loc_hashs[i]
+		""" Delete the qsp-location from workspace by index"""
+		if i < 0 or i > len(self.locs['names'])-1: return None
+		del self.locs['names'][i]
+		del self.locs['regions'][i]
+		del self.locs['places'][i]
+		del self.locs['hashes'][i]
+
+	def del_all_locs_by_place(self, loc_place:Union[str, int]) -> None:
+		""" del all locations by place. loc_place - path at file with qsp_location """
+		while loc_place in self.locs['places']:
+			i = self.locs['places'].index(loc_place)
+			self.del_loc_by_index(i)
 
 	def loc_hash_update(self, i:int) -> None:
-		self.loc_hashs[i] = (
-			self.loc_names[i],
-			self.loc_regions[i][0],
-			self.loc_regions[i][1],
-			self.loc_places[i])
+		""" Обновляем хэш локации """
+		self.locs['hashes'][i] = (
+			self.locs['names'][i],
+			self.locs['regions'][i],
+			self.locs['places'][i]
+		)
 
-	def get_dupl_locs(self):
-		""" получаем локации с одинаковыми названиями """
-		_cr_loc = lambda x: [self.loc_names[x], self.loc_regions[x], self.loc_places[x]]
-		qsp_locs = []
-		for i, loc_name in enumerate(self.loc_names):
-			u = i + 1
-			l = _cr_loc(i)
-			while u < len(self.loc_names) and loc_name in self.loc_names[u:]:
-				u = self.loc_names.index(loc_name, u)
-				if not l is None:
-					qsp_locs.append(l)
-					l = None
-				qsp_locs.append(_cr_loc(u))
-				u += 1
+	def get_locs(self) -> list:
+		return self.locs['hashes'].copy()
+	
+	def get_locs_names(self) -> list:
+		"""	Extract all qsp-location's names. """
+		return self.locs['names'].copy()
+
+	def refresh_qsplocs(self, view:sublime.View, current_qsps:str) -> None:
+		"""	Refresh list of QSP-locations created on this view """
+		qsps_path = (view.id() if current_qsps is None else current_qsps) # abs_path
+		self.del_all_locs_by_place(qsps_path)
+		for s in view.symbol_regions():
+			if s.name.startswith('Локация: '): # TODO: привязка к тому, что символ начинается с Локация не очень удобна!
+				self.add_loc(s.name[9:], (s.region.begin(), s.region.end()), qsps_path)
+
+	def clear_old_qsplocs(self, views:List[sublime.View]) -> None:
+		""" Delete locations from WS, if this views don't exist. """
+		view_ids = [v.id() for v in views]
+		for place in self.locs['places']:
+			if isinstance(place, int) and not place in view_ids:
+				self.del_all_locs_by_place(place)
+
+	def locs_dupl(self) -> list: # list[tuples(name, region, place)] *[1]
+		""" Get qsp-locations with duplicate names. """
+		qsp_locs = [] # list[tuples(name, region, place)]
+		exclude_hashes = []
+		for i, loc_hash in enumerate(self.locs['hashes']):
+			loc_name, _, _ = loc_hash
+			if (not loc_hash in exclude_hashes) and (loc_name in self.locs['names'][i+1:]):
+				qsp_locs.append(loc_hash)
+				exclude_hashes.append(loc_hash)
+				u = i + 1
+				while u < len(self.locs['hashes']) and loc_name in self.locs['names'][u:]:
+					u = self.locs['names'].index(loc_name, u)
+					qsp_locs.append(self.locs['hashes'][u]) # add duplicate to out list
+					exclude_hashes.append(self.locs['hashes'][u])
+					u += 1 # search next location
 		return qsp_locs
 
-	def add_qsps(self, file_path:str, file_hash:str) -> int:
-		self.files_paths.append(file_path)
-		self.files_hashs.append(file_hash)
-		return len(self.files_paths)-1
+# --------------------------------- qsp-locations mb functions ---------------------------------
 
-	def del_loc_by_place(self, loc_place:str) -> None:
-		""" del location by place """
-		if loc_place in self.loc_places:
-			i = self.loc_places.index(loc_place)
-			self.del_loc_by_index(i)
+# ----------------------------------- qsps-files mb functions -----------------------------------
 
-	def del_all_locs_by_place(self, loc_place:str) -> None:
-		""" del all locations by place """
-		while loc_place in self.loc_places:
-			i = self.loc_places.index(loc_place)
-			self.del_loc_by_index(i)
-
-	def extract_from_file(self, ws_path:str) -> None:
+	def get_qsps_files(self) -> list: # list of tuples!
 		"""
-			Extract data from file in ws. ws_path - is full path to ws-file.
-			WARNING!!! All proves of project folder and exist of
-			ws-file must be done prev call this function
+			Return list of qsps-files from WS:
+			list[tuples(path_of_file:str, hash_of_file:str)]
 		"""
-		with open(ws_path, "r", encoding="utf-8") as ws_file:
-			qsp_ws = json.load(ws_file)
-		if len(self.loc_names) > 0:
-			self.__init__()
-			print('Error: QSP WORKSPACE already initialised!!!')
-		for place, qsp_locs in qsp_ws['locations'].items(): # qsp_ws['locations'] - dict[rel_path: qsp_locs]
-			# qsp_locs - list[qsp_loc], qsp_loc - list[name, list[start_point, end_point]]
-			for name, region in qsp_locs:
-				self.add_loc(name, region, place)
-		# print(ws_path, 'files_paths' in qsp_ws)
-		for path, md5 in qsp_ws['files_paths'].items():
-			self.files_paths.append(path)
-			self.files_hashs.append(md5)
+		# all pathes in list of pathes are abs. Dont need use absing func.
+		return list(zip(self.qsps_files['pathes'], self.qsps_files['hashes']))
 
-	def refresh_files(self) -> None:
+	def add_qsps_file(self, qsps_file_path:str, qsps_file_hash:str) -> int:
+		""" Add qsps-file to WS """
+		self.qsps_files['pathes'].append(qsps_file_path)
+		self.qsps_files['hashes'].append(qsps_file_hash)
+
+	def del_qsps_file(self, path:str) -> None:
+		if path in self.qsps_files['pathes']:
+			i = self.qsps_files['pathes'].index(path)
+			del self.qsps_files['pathes'][i]
+			del self.qsps_files['hashes'][i]
+
+	def replace_qsps_file(self, old_path:str, new_path:str) -> None:
+		""" When replace the phisically file, or rename it,
+		this func replace old file by new in WS. """
+		if old_path in self.qsps_files['pathes']:
+			i = self.qsps_files['pathes'].index(old_path)
+			self.qsps_files['pathes'][i] = new_path
+
+	def refresh_qsps_files(self, window_folders:list) -> None:
 		""" refresh files mb in ws """
-		project_folder = QspWorkspace.get_cur_pf()
-		if project_folder is None:	return None
-		folders = sublime.active_window().folders()
-		old = set(self.get_files(project_folder)) # abs-paths + hashs
-		files = []
-		for f in folders:
-			pf_ = self.absing_path(project_folder, f)
-			files.extend(qsp.get_files_list(pf_))
+		old = set(self.get_qsps_files()) # set[tuple(abs-path, hash)]
+		files_pathes = []
+		for f in window_folders:
+			files_pathes.extend(qsp.get_files_list(f))
 		new = set()
-		for f in files:
-			pf_ = self.absing_path(project_folder, f)
-			new.add((pf_, self.get_hash(pf_))) # abs-paths + hashs
+		for f in files_pathes:
+			new.add((f, self.get_hash(f))) # set[tuple(abs-path, hash)]
 		to_del = list(old - new)
 		to_add = list(new - old)
-		try:
-			to_del_paths, to_del_hashs = [], []
-			if len(to_del)>0:
-				to_del_paths, to_del_hashs = zip(*to_del)
-		except ValueError as e:
-			print(to_del, str(e))
-			sublime.message_dialog('Error RAISE in this moment!!!')
-			raise e
+		to_del_paths, to_del_hashs = [], []
+		if len(to_del)>0:
+			to_del_paths, to_del_hashs = zip(*to_del) # tuples
 		to_del_hashs = list(to_del_hashs)
 		to_del_paths = list(to_del_paths)
 		# replace on new paths
-		for new_path, md5 in to_add[:]:
+		for new_path, md5 in to_add[:]: # to_add = list[tuples(file_path, file_hash)]
 			if md5 in to_del_hashs:
 				i = to_del_hashs.index(md5)
-				f = to_del_paths[i]
-				old_path = self.reling_path(project_folder, f)
-				self.replace_qsps(old_path, new_path)
-				to_del.pop(i)
-				to_del_hashs.pop(i)
-				try:
-					to_del_paths.pop(i)
-				except AttributeError as e:
-					print(to_del_paths)
-					sublime.message_dialog('Error RAISE in this moment!!!')
-					raise e
+				old_path = to_del_paths[i]
+				self.replace_qsps_file(old_path, new_path)
+				self.replace_locs(old_path, new_path)
+				del to_del[i]
+				del to_del_hashs[i]
+				del to_del_paths[i]
 			else:
-				path = self.reling_path(project_folder, new_path)
 				for loc_name, loc_region in NewQspsFile(new_path).get_qsplocs():
-					self.add_loc(loc_name, loc_region, path)
-				self.add_qsps(new_path, self.get_hash(new_path))
+					# str, tuple(start, end)
+					self.add_loc(loc_name, loc_region, new_path)
+				self.add_qsps_file(new_path, md5)
 
 		# replace old files
 		for old_path, md5 in to_del:
-			path = self.reling_path(project_folder, old_path)
-			self.del_all_locs_by_place(path)
-			self.del_qsps(path)
+			self.del_all_locs_by_place(old_path)
+			self.del_qsps_file(old_path)
 
-	def refresh_md5(self, path:str, project_folder:str) -> None:
+	def refresh_md5(self, qsps_file_path:str) -> None:
 		""" Refreshing md5 of file by path """
-		relpath = self.reling_path(project_folder, path)
-		if relpath in self.files_paths:
-			i = self.files_paths.index(relpath)
-			self.files_hashs[i] = self.get_hash(path)
+		if qsps_file_path in self.qsps_files['pathes']:
+			i = self.qsps_files['pathes'].index(qsps_file_path)
+			self.qsps_files['hashes'][i] = self.get_hash(qsps_file_path)
 
-	def replace_qsps(self, old_path:str, new_path:str) -> None:
-		if old_path in self.files_paths:
-			i = self.files_paths.index(old_path)
-			self.files_paths[i] = new_path
-		while True:
-			if old_path in self.loc_places:
-				i = self.loc_places.index(old_path)
-				self.loc_places[i] = new_path
-				self.loc_hash_update(i)
-			else:
-				break
+	def qsps_file_is_exist(self, qsps_file_path:str) -> bool:
+		""" Prove qsps-file is exist in WS """
+		return qsps_file_path in self.qsps_files['pathes']
 
-	def del_qsps(self, path:str) -> None:
-		if path in self.files_paths:
-			i = self.files_paths.index(path)
-			del self.files_paths[i]
-			del self.files_hashs[i]
+	def qsps_files_number(self) -> int:
+		"""
+			Return number of qsps-files in WS.
+		"""
+		return len(self.qsps_files['pathes'])
 
-	def refresh_qsplocs(self, view:sublime.View, current_qsps:str, project_folder:str) -> None:
-		"""	Refresh list of QSP-locations created on this view """
-		if current_qsps is None:
-			qsps_relpath = ''
-		else:
-			qsps_relpath = self.reling_path(project_folder, current_qsps)
-		self.del_all_locs_by_place(qsps_relpath)
-		for s in view.symbol_regions():
-			if s.name.startswith('Локация: '):
-				self.add_loc(s.name[9:], [s.region.begin(), s.region.end()], qsps_relpath)
+# ----------------------------------- qsps-files mb functions -----------------------------------
+
+# ---------------------------------------- WS functions ----------------------------------------
+
+	def extract_from_file(self, ws_file_path:str) -> None:
+		"""
+			Extract data from file to WS. ws_file_path - is abspath to ws-json file.
+			WARNING!!! All proves of project folder and exist of
+			ws-file must be done prev call this function!
+		"""
+		with open(ws_file_path, "r", encoding="utf-8") as fp:
+			ws_json = json.load(fp) # get json struct ws from file
+
+		if len(self.locs['hashes']) > 0:
+			self.__init__()
+			qsp.write_error_log(const.QSP_ERROR_MSG.WS_ALREADY_INIT)
+
+		for place, qsp_locs in ws_json['locations'].items():
+			# ws_json['locations'] = dict[abs_path: qsp_locs]
+			# TODO: на данном этапе разработки все пути в файле абсолютные, однако абсолютные пути
+			# TODO: должны оставаться только у файлов, хранящихся на других дисках!!!
+			# qsp_locs = list[qsp_loc];
+			# qsp_loc = list[name, list[start_point, end_point]]
+			for name, region in qsp_locs:
+				self.add_loc(name, tuple(region), place)
+
+		for path, md5 in ws_json['files_paths'].items():
+			self.qsps_files['pathes'].append(path)
+			self.qsps_files['hashes'].append(md5)
 
 	def get_json_struct(self) -> dict:
 		qsp_ws_out = { 'locations': {}, 'files_paths': {} }
-		qsp_locs = qsp_ws_out['locations']
-		qsp_files = qsp_ws_out['files_paths']
-		for i, path in enumerate(self.loc_places):
-			if path == '': continue
-			if not path in qsp_locs: qsp_locs[path] = []
-			qsp_locs[path].append([self.loc_names[i], self.loc_regions[i]])
-		for i, path in enumerate(self.files_paths):
-			qsp_files[path] = self.files_hashs[i]
+		qsp_locs_out = qsp_ws_out['locations']
+		qsp_files_out = qsp_ws_out['files_paths']
+		for qsp_loc in self.locs['hashes']:
+			qsps_file_path = qsp_loc[2]
+			if isinstance(qsps_file_path, int): continue
+			if not qsps_file_path in qsp_locs_out: qsp_locs_out[qsps_file_path] = []
+			qsp_locs_out[qsps_file_path].append([qsp_loc[0], qsp_loc[1]])
+		for i, qsps_file_path in enumerate(self.qsps_files['pathes']):
+			# TODO: здесь часть путей должна преобразовываться в относительные
+			# перед возвращением в виде json-структуры.
+			qsp_files_out[qsps_file_path] = self.qsps_files['hashes'][i]
 		return qsp_ws_out
 
-	def save_to_file(self, project_folder=None) -> None:
-		project_folder = self.get_cur_pf(project_folder)
-		if project_folder is None:
-			return None
-		qsp_ws = self.get_json_struct()
-		if not 'locations' in qsp_ws or not qsp_ws['locations']:
-			return None # Если воркспейс не содержит локаций, то и сохранять его не нужно
-		with open(os.path.join(project_folder, 'qsp-project-workspace.json'), "w", encoding="utf-8") as ws_file:
-			json.dump(qsp_ws, ws_file, indent=4, ensure_ascii=False)
-
-	def get_locs(self) -> list: #list of tuples!
-		""" Return List of qsp-locations from ws. See .get_all_qsplocs """
-		return zip(self.loc_names, self.loc_regions, self.loc_places)
-
-	def get_files(self, project_folder:str=None) -> list: # list of tuples!
-		""" Return list if qsps-files from ws:
-			list[
-				tuple(path_of_file:str, hash_of_file:str)
-			]
+	def save_to_file(self, project_folder:str=None) -> None:
 		"""
-		if not project_folder is None:
-			l = lambda f: self.absing_path(project_folder, f)
-			files_paths = list(map(l, self.files_paths))
-		else:
-			files_paths = self.files_paths
-		return zip(files_paths, self.files_hashs)
+			Save WS in json-file. project_folder must be exist!
+		"""
+		if project_folder is None: return None
+		json_ws = self.get_json_struct()
+		if not 'locations' in json_ws or not json_ws['locations']: return None
+		ws_json_path = os.path.join(project_folder, 'qsp-project-workspace.json')
+		with open(ws_json_path, "w", encoding="utf-8") as ws_fp:
+			json.dump(json_ws, ws_fp, indent=4, ensure_ascii=False)
 
+	def refresh_from_views(self, windows_views:List[sublime.View], window_folders:List[str]) -> None:
+		"""
+			Refresh untitled views and opened files in WS.
+		"""
+		_conditional_is_true = (lambda x, y:
+			x is None or qsp.is_path_in_project_folders(x, y))
+		for view in windows_views:
+			if QspWorkspace.view_syntax_is_wrong(view): continue
+			current_qsps = view.file_name()
+			if _conditional_is_true(current_qsps, window_folders):
+				self.refresh_qsplocs(view, current_qsps)
+				self.refresh_vars(view)
+		self.clear_old_qsplocs(windows_views) # clear locs from untitled views
+
+	def close_project(self) -> None:
+		self.markers['on_pre_close_project'] = True
+
+	def project_is_closing(self) -> bool:
+		return self.markers['on_pre_close_project']
+
+# ---------------------------------------- WS functions ----------------------------------------
+
+
+# ---------------------------------- variables mb function in WS ----------------------------------
 	def refresh_vars(self, view:sublime.View) -> None:
 		def _find_overlap_main(start_find):
 			maximal = view.size()+1
@@ -293,7 +346,7 @@ class QspWorkspace:
 				else:
 					end_region = end_line
 					break
-				break
+				# break
 			vars_regions.append(sublime.Region(start_region, end_region))
 			# print(view.substr(sublime.Region(start_region, end_region)))
 		if len(vars_regions) == 0: return None
@@ -343,6 +396,8 @@ class QspWorkspace:
 	def get_global_vars(self) -> list:
 		return self.global_vars
 
+# ---------------------------------- variables mb function in WS ----------------------------------
+
 	@staticmethod
 	def get_hash(file_path:str) -> str:
 		md5_hash = hashlib.new('md5')
@@ -355,48 +410,24 @@ class QspWorkspace:
 		return md5_hash.hexdigest()
 
 	@staticmethod
-	def get_cur_pf(project_folder:str=None): # -> str or None
-		""" Get path of current project folder if exist """
-		if not project_folder is None:
-			return project_folder
+	def project_folder(view:sublime.View) -> Union[str, None]:
+		""" Get project folder from view. """
+		folders = view.window().folders()
+		return (folders[0] if folders else None)
+
+	@staticmethod
+	def current_project_folder() -> Union[str, None]:
+		""" Get path of current project folder if exist. """
 		folders = sublime.active_window().folders()
 		return (folders[0] if folders else None)
 
 	@staticmethod
-	def get_main_pathes(view:sublime.View):
-		""" Get current qsps-file path and project_folder path """
+	def get_main_pathes(view:sublime.View) -> Tuple[Union[str, None], Union[str, None]]:
+		""" Get current qsps-file path and project_folder path. """
 		current_qsps = view.file_name()
-		project_folder = QspWorkspace.get_cur_pf()
+		folders = view.window().folders()
+		project_folder = (folders[0] if folders else None)
 		return current_qsps, project_folder # path:str|None, path:str|None
-
-	@staticmethod
-	def get_all_qsplocs(view:sublime.View, all_workspaces:dict=None, only=None) -> list:
-		"""
-			Extract all qsp-locations from ws and view.
-			Return →
-			list[tuple(
-				loc_name:str,
-				loc_region:list[begin:int, end:int],
-				loc_place:path_to_qsps_file:str
-			)]
-		"""
-		if all_workspaces is None: all_workspaces = {}
-		all_qsplocs = []
-		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
-		if project_folder in all_workspaces:
-			# if ws exist in dict of wss
-			qsp_ws = all_workspaces[project_folder]
-			qsp_ws.refresh_qsplocs(view, current_qsps, project_folder)
-			all_qsplocs = (qsp_ws.loc_names if only == 'names' else qsp_ws.get_locs())
-		else:
-			# if ws dont exist in dict of wss
-			for s in view.symbol_regions():
-				if s.name.startswith('Локация: '):
-					if only == 'names':
-						all_qsplocs.append(s.name[9:])
-					else:
-						all_qsplocs.append((s.name[9:], [s.region.begin(), s.region.end()], ''))
-		return all_qsplocs
 
 	@staticmethod
 	def get_qsplbls(view:sublime.View, exclude_inputting:sublime.Region=None) -> list: # View, Region -> list
@@ -413,7 +444,7 @@ class QspWorkspace:
 	@staticmethod
 	def absing_path(project_folder:str, other_path:str) -> str: # -> abs other path
 		"""
-			get project_folder - abs path, other_path: rel o abs path
+			get project_folder - abs path, other_path: rel or abs path
 			return abs path of otherpath
 		"""
 		if os.path.abspath(os.path.join(project_folder, other_path)) == project_folder:
@@ -429,3 +460,9 @@ class QspWorkspace:
 			return os.path.relpath(other_path, project_folder)
 		else:
 			return other_path
+
+	@staticmethod
+	def view_syntax_is_wrong(view:sublime.View) -> bool:
+		""" Prove QSP syntax! """
+		vs = view.syntax()
+		return (True if (vs is None or vs.name != 'QSP') else False)

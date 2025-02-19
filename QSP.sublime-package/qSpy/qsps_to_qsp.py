@@ -150,7 +150,7 @@ class NewQspsFile():
 			re_name = clear_locname(location.name)
 			match = re.search(r'^\#\s*('+re_name+')$', self.file_body, flags=re.MULTILINE)
 			if not match is None:
-				qsp_locs.append([location.name, [match.start(1), match.end(1)]])
+				qsp_locs.append([location.name, (match.start(1), match.end(1))])
 		return qsp_locs
 
 	def print_locations_names(self):
