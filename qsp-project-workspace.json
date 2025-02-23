@@ -1,14 +1,5 @@
 {
     "locations": {
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": [
-            [
-                "[start]",
-                [
-                    232,
-                    239
-                ]
-            ]
-        ],
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\interface.sys\\logging.qsps": [
             [
                 "log.add",
@@ -945,22 +936,6 @@
                 ]
             ]
         ],
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\обязательные локации\\[help].qsps": [
-            [
-                "[help]",
-                [
-                    499,
-                    505
-                ]
-            ],
-            [
-                " ",
-                [
-                    2442,
-                    2443
-                ]
-            ]
-        ],
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\доп.меню\\доп.меню.qsps": [
             [
                 "menu.rainbowsword.color.change",
@@ -1507,106 +1482,6 @@
                 ]
             ]
         ],
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\QSP.sublime-package\\syntax_test_qsp.qsps": [
-            [
-                "[ошибки]",
-                [
-                    865,
-                    873
-                ]
-            ],
-            [
-                "фигурные скобки действия условия",
-                [
-                    2419,
-                    2451
-                ]
-            ],
-            [
-                "[0.1_game_info]",
-                [
-                    3181,
-                    3196
-                ]
-            ],
-            [
-                "newerland",
-                [
-                    4266,
-                    4275
-                ]
-            ],
-            [
-                "привет",
-                [
-                    4370,
-                    4376
-                ]
-            ],
-            [
-                "[м:0]_общий_вид_локации_места",
-                [
-                    4411,
-                    4440
-                ]
-            ],
-            [
-                "[м:1]_дом",
-                [
-                    6629,
-                    6638
-                ]
-            ],
-            [
-                "[м:2]_улица",
-                [
-                    13037,
-                    13048
-                ]
-            ],
-            [
-                "место;стандартная_кухня",
-                [
-                    14131,
-                    14154
-                ]
-            ],
-            [
-                "[chest]",
-                [
-                    15149,
-                    15156
-                ]
-            ],
-            [
-                "ошибка конца локации",
-                [
-                    27044,
-                    27064
-                ]
-            ],
-            [
-                "[death]",
-                [
-                    27154,
-                    27161
-                ]
-            ],
-            [
-                "[sugar-func]",
-                [
-                    28400,
-                    28412
-                ]
-            ],
-            [
-                "[help]",
-                [
-                    28656,
-                    28662
-                ]
-            ]
-        ],
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\диалоги\\b.d.t.qsps": [
             [
                 "b.d.t",
@@ -2048,6 +1923,124 @@
                     224
                 ]
             ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\QSP.sublime-package\\syntax_test_qsp.qsps": [
+            [
+                "[ошибки]",
+                [
+                    865,
+                    873
+                ]
+            ],
+            [
+                "фигурные скобки действия условия",
+                [
+                    2419,
+                    2451
+                ]
+            ],
+            [
+                "[0.1_game_info]",
+                [
+                    3181,
+                    3196
+                ]
+            ],
+            [
+                "newerland",
+                [
+                    4266,
+                    4275
+                ]
+            ],
+            [
+                "привет",
+                [
+                    4370,
+                    4376
+                ]
+            ],
+            [
+                "[м:0]_общий_вид_локации_места",
+                [
+                    4411,
+                    4440
+                ]
+            ],
+            [
+                "[м:1]_дом",
+                [
+                    6629,
+                    6638
+                ]
+            ],
+            [
+                "[м:2]_улица",
+                [
+                    13037,
+                    13048
+                ]
+            ],
+            [
+                "место;стандартная_кухня",
+                [
+                    14131,
+                    14154
+                ]
+            ],
+            [
+                "[chest]",
+                [
+                    15149,
+                    15156
+                ]
+            ],
+            [
+                "ошибка конца локации",
+                [
+                    27044,
+                    27064
+                ]
+            ],
+            [
+                "[death]",
+                [
+                    27154,
+                    27161
+                ]
+            ],
+            [
+                "[sugar-func]",
+                [
+                    28400,
+                    28412
+                ]
+            ],
+            [
+                "[help]",
+                [
+                    28656,
+                    28662
+                ]
+            ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": [
+            [
+                "[start]",
+                [
+                    232,
+                    239
+                ]
+            ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\обязательные локации\\[help].qsps": [
+            [
+                "[help]",
+                [
+                    499,
+                    505
+                ]
+            ]
         ]
     },
     "files_paths": {
@@ -2142,7 +2135,7 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\sys\\onnewloc.qsps": "0c9283937dd59a8ce5ee7a0ac4f14835",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\операции с массивами\\array.prnt.few.qsps": "b23d1eb836db124bee822f028f3f5459",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\дневник\\интерпретатор.qsps": "c6834b3f5cf64651edd29ea23153f42b",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\обязательные локации\\[help].qsps": "44c6d28ca475bd2bb67aeaa8f60c3d75",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\обязательные локации\\[help].qsps": "55dc959a2ab3658b09fa5918287d1782",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\доп.меню\\доп.меню.qsps": "c695e0e3134291b724f8ca7f05024bb3",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\goto.sys\\open door by key.qsps": "9aeee03201ec987a69198da3e9661e0e",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\обязательные локации\\[chest].qsps": "335b40a677951b7866685ecbb0b89419",

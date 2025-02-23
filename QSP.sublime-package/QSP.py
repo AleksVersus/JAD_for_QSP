@@ -5,6 +5,7 @@ import os
 import re
 import json
 from typing import (Union, List, Tuple)
+# import time
 
 # Importing my modules from qSpy package.
 from .qSpy.builder import BuildQSP
@@ -16,7 +17,6 @@ from .qSpy.workspace import QspWorkspace
 from .qSpy import function as qsp
 # Import constants
 from .qSpy import const
-# import time
 
 
 class QspBuildCommand(sublime_plugin.WindowCommand):
@@ -55,7 +55,8 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 				print_error=False,
 				project_file=project_file)
 			if project_folder is not None:
-				with open(os.path.join(project_folder, project_file), 'r', encoding='utf-8') as fp:
+				project_file_path = os.path.join(project_folder, project_file)
+				with open(project_file_path, 'r', encoding='utf-8') as fp:
 					root = json.load(fp)
 				for instruction in root['project']:
 					if 'build' in instruction:
@@ -66,7 +67,7 @@ class QspBuildCommand(sublime_plugin.WindowCommand):
 					del root['save_txt2gam']
 				with open(os.path.join(project_folder, 'qsp-project.json'), 'w', encoding='utf-8') as fp:
 					json.dump(root, fp, indent=4, ensure_ascii=False)
-				os.remove(os.path.join(project_folder, project_file))
+				os.remove(project_file_path)
 		# old_time = time.time()
 		# Initialise of Builder:
 		builder = BuildQSP(args)
