@@ -41,7 +41,7 @@ class QspToQsps():
 		if header != 'QSPGAME':
 			print(f'Old qsp format is not support. Use Quest Generator for converting game in new format.')
 		else:
-			qsp_lines = self.split_into_lines(self.qsp_source_text)
+			qsp_lines = self.qsp_source_text.split('\n')
 			self.password = self.decode_string(qsp_lines[2])
 			self.location_count = self.decode_int(qsp_lines[3])
 			i = 4
@@ -125,24 +125,6 @@ class QspToQsps():
 	def escape_qsp_string(self, qsp_string:str) -> str:
 		""" Escape-sequence for qsp-string. """
 		return qsp_string.replace("'", "''")
-
-	def split_into_lines(self, qsp_source_text:str) -> list:
-		""" Split qsp-source on lines. """
-		offset = 0
-		lines = []
-		while (offset < len(qsp_source_text)):
-			end = self.index_of(qsp_source_text, '\n', start=offset)
-			if end < 0:
-				end = len(qsp_source_text)
-			lines.append(qsp_source_text[offset:end])
-			offset = end + 1
-		return lines
-
-		if substring in string:
-	def index_of(self, string:str, substring:str, start:int=0) -> int:
-			return string.index(substring, start)
-		else:
-			return -1
 
 	def decode_qsp_line(self, qsp_line:str) -> str:
 		exit_line = ""
