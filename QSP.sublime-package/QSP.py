@@ -82,8 +82,8 @@ class QspToQspsCommand(sublime_plugin.WindowCommand):
 		argv = self.window.extract_variables()
 		file = argv['file']
 		if argv['file_extension'] == 'qsp':
-			qsp_to_qsps = QspToQsps(args = {'game-file': file})
-			qsp_to_qsps.convert()
+			qsp_to_qsps = QspToQsps()
+			qsp_to_qsps.convert_file(file)
 		else:
 			qsp.write_error_log(const.QSP_ERROR_MSG.WRONG_EXTENSION_QSP)
 
@@ -518,6 +518,7 @@ class QspWorkspaceHandlers(sublime_plugin.EventListener):
 			Event of pre close the view.
 			Runed before closing the window, if you close window!
 		"""
+		# TODO: почему-то выполняется после закрывания окна!
 		if QspWorkspace.view_syntax_is_wrong(view): return None
 		current_qsps, project_folder = QspWorkspace.get_main_pathes(view)
 		if project_folder is None: return None
