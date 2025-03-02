@@ -1,5 +1,5 @@
 (*
-	В данном описании вместо конкретных значенй используются регулярные выражения.
+	В данном описании вместо конкретных значений используются регулярные выражения.
 	Это нужно для упрощения описания отдельных моментов, например наборов символов.
 	Учитывайте данное обстоятельство при чтении описания.
 
@@ -7,42 +7,45 @@
 
 (* Упрощёный синтаксис для BASE *)
 
-БлокКода = {СтрокаКода, {Пробел}, (ПереносСтроки | КонецТекста)};
-СтрокаКода = Директива, {{ГраницаСлова}, РазделительДиректив, {ГраницаСлова}, Директива};
-Директива = Оператор, [Выражение, {РазделительВыражений, {Пробел}, Выражение}],
-			[ОтделительВложения, ВложенныйБлокКода] |
-			Комментарий;
-ВложенныйБлокКода = ОднострочныйБлокКода | МногострочныйБлокКода;
-ОднострочныйБлокКода = СтрокаКода, {Пробел}, ПереносСтроки;
-МногострочныйБлокКода = [Комментарий], ПереносСтроки,
-						[БлокКода], КонецМногострочногоБлокаКода, {ПроизвольныйТекст},
-						{{ГраницаСлова}, РазделительДиректив, {ГраницаСлова}, Директива},
-						ПереносСтроки;
-Комментарий = ОператорКомментария, ПроизвольныйТекст, (ПереносСтроки | КонецТекста)
-Выражение = Значение {Операция, Значение}
-Значение = Функция, ["(", [Выражение, {РазделительВыражений, {Пробел}, Выражение}], ")"] |
-			"(", Выражение, ")" |
-			Переменная | Число | СтрокаТекста
+CodeBlock = {CodeLine, {SpaceSign}, (NextLineSign | CodeEndSign)};
+CodeLine = Directive, {{WordEdge}, DirectiveDelimiter, {WordEdge}, Directive};
+Directive = Operator, [Expression, {ExpressionDelimiter, {SpaceSign}, Expression}],
+			[EmbeddingDelimiter, EmbeddedCode] |
+			Comment;
+EmbeddedCode = OneLineCode | ManyLinesCode;
+OneLineCode = CodeLine, {SpaceSign}, NextLineSign;
+ManyLinesCode = [Comment], NextLineSign,
+				[CodeBlock], ManyLinesCodeEnd, {AnyText},
+				{{WordEdge}, DirectiveDelimiter, {WordEdge}, Directive},
+				NextLineSign;
+Comment = CommentOperator, AnyText, (NextLineSign | CodeEndSign);
+Expression = Value {Operation, Value};
+Value = Function, ["(", [Expression, {ExpressionDelimiter, {SpaceSign}, Expression}], ")"] |
+			"(", Expression, ")" |
+			Variable | Number | TextString;
 
 (* Операторы *)
 
-Оператор = "\*PL" | "\*P" | НеявныйОператор | "ACT" | "LOOP" | "IF";
-ОператорКомментария = "!";
-КонецМногострочногоБлокаКода = "END";
+Operator = "\*PL" | "\*P" | ImplicitOperator | "ACT" | "LOOP" | "IF";
+CommentOperator = "!";
+ManyLinesCodeEnd = "END";
 
 (* Ограничители/Разделители *)
 
-ГраницаСлова = Пробел | "\b";
-Пробел = "\s" | "\t";
-ПереносСтроки = "\n" | "\r" | "\r\n";
-РазделительДиректив = "\&";
-РазделительВыражений = ",";
-ОтделительВложения = ":";
-КонецТекста = ? Окончание файла ?;
+WordEdge = SpaceSign | "\b";
+SpaceSign = "\s" | "\t";
+NextLineSign = "\n" | "\r" | "\r\n";
+DirectiveDelimiter = "\&";
+ExpressionDelimiter = ",";
+EmbeddingDelimiter = ":";
+CodeEndSign = ? End of File ?;
 
 (* Выражения и прочее *)
 
-ПроизвольныйТекст = {"[\s\S]+"};
-Переменная = "[^\W\d]\w*"
-Число = "\d+"
-СтрокаТекста = "'[\s\S]*'" | '"[\s\S]*"'
+AnyText = {"[\s\S]+"};
+Variable = "[^\W\d]\w*";
+Number = "\d+";
+TextString = "'[\s\S]*'" | '"[\s\S]*"';
+Operation = "\+" | "\-" | "\/" | "\*" | "or" | "and" | "mod" | ">=" | "<=" | ">" | "<" | "=";
+ImplicitOperator = "(?=TextString)";
+Function = "\$?func" | "\$?dyneval" | (* TODO: Добавить остальные функции *)
