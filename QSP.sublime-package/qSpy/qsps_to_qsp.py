@@ -1,6 +1,5 @@
 # Converter qsps-files (only UTF-8) into game files `.qsp`.
 # stand `file_path` and run script for getting QSP-format file.
-# Sorry my bad English.
 
 import os
 import re
@@ -13,6 +12,9 @@ from .function import get_files_list
 from .function import write_error_log
 # import time
 
+# constants:
+QSP_CODREMOV = 5 # const of cyphering
+
 class NewQspLocation():
 	"""
 		qsp-locations from qsps-file
@@ -20,14 +22,29 @@ class NewQspLocation():
 	def __init__(self, name:str, code:list=None) -> None:
 		""" Initialise QSP-location """
 		self.name:str = name							# location name
+		self.name_region:tuple = ()	# tuple[start, end] # location name in regions
 		self.code:list = ([] if code == None else code)	# location code
+		self.base_code:list = []	# base code
 
 		self.decode_name:str = None	# decode in QSP-format location name
+		self.decode_desc:str = None	# decode in QSP-format location description
+		self.decode_actions:list = []	# decode in QSP-format location actions
 		self.decode_code:str = None	# decode in QSP-format location name
+
+		# actions format
+		# {
+		# 	'image': '',
+		# 	'name': '',
+		#	'code': ''
+		# }
 
 	def change_name(self, name:str) -> None:
 		""" Set location name, n decode it to QSP-format """
 		self.name = name
+
+	def change_region(self, region:tuple) -> None:
+		""" Set location name region """
+		self.name_region = region
 
 	def add_code_string(self, code_string:str) -> None:
 		self.code.append(code_string)
@@ -38,119 +55,326 @@ class NewQspLocation():
 
 	def decode(self) -> None:
 		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
-		self.decode_code = NewQspsFile.decode_location(self.code)
+		self.extract_base()
+
+	def get_qsp(self) -> list:
+		""" Get QSP-format location """
+		...
+
+	def extract_base(self) -> None:
+		""" Extract base from location code """
+		mode = {
+			'open-base': False,
+			'open-string': '',
+		}
+		base_lines = []
+		for i, qsps_line in enumerate(self.code[:]):
+			if mode['open-base']:
+				self.code[i] = None # remove from other code
+				if mode['open-string'] == '' and re.search(r'^\! END BASE$', qsps_line):	
+					mode['open-base'] = False
+					break
+				base_lines.append(qsps_line)
+				NewQspsFile.parse_string(qsps_line, mode)
+				continue
+			if mode['open-string'] == '' and re.search(r'^\! BASE$', qsps_line):
+				mode['open-base'] = True
+				self.code[i] = None
+			else:
+				NewQspsFile.parse_string(qsps_line, mode)
+
+		if base_lines: self.base_code = base_lines
+		self.code = [line for line in self.code if line is not None]
+
+	def split_base(self) -> None:
+		""" Split base code to description and actions """
+		def _string_to_desc(line:str, mode:dict, opened:str) -> None:
+			nonlocal base_description
+			need = ('"', "'") # ожидаем кавчки
+			valid = (" ", "\t") # допустимые символы
+			new_line = '\n' if opened in ('open-pl', 'open-implicit') else ''
+			for i, char in enumerate(line):
+				if not mode[opened]:
+					# пока не открыт набор в описание
+					if char in need:
+						# нашли ожидаемый символ, открываем набор
+						mode['open-string'] = char
+						mode[opened] = True
+					elif not char in valid:
+						# найден недопустимый символ
+						break
+				elif mode[opened]:
+					if char != mode['open-string']:
+						base_description += char
+					elif (i < len(line)-1 and line[i+1] == mode['open-string']):
+						continue
+					elif (i > 0 and line[i-1] == mode['open-string']):
+						# символ кавычки экранирован,значит его тоже можно в описание
+						base_description += char
+					else: # char = open-string и соседние символы другие
+						# закрываем набранное
+						base_description += new_line
+						mode[opened] = False
+						mode['open-string'] = ''
+						break
+
+		def _string_to_act(line:str, mode:dict, base_act_buffer:dict) -> None:
+			need = ('"', "'") # ожидаем кавчки
+			valid = (" ", "\t") # допустимые символы
+			stage = 'need name'
+			for i, char in enumerate(line[3:]):
+				if mode['action-name']:
+					# название найдено, набираем
+					if char != mode['open-string']:
+						base_act_buffer['name'] += char
+					elif (i < len(line)-1 and line[i+1] == mode['open-string']):
+						continue
+					elif (i > 0 and line[i-1] == mode['open-string']):
+						# символ кавычки экранирован,значит его тоже можно в описание
+						base_act_buffer['name'] += char
+					else: # char = open-string и соседние символы другие
+						# закрываем набранное
+						mode['action-name'] = False
+						mode['open-string'] = ''
+						stage = 'need prev image'
+						need = (",", ':')
+						valid = (" ", "\t")
+				elif mode['action-image']:
+					# изображение найдено, набираем
+					if char != mode['open-string']:
+						base_act_buffer['image'] += char
+					elif (i < len(line)-1 and line[i+1] == mode['open-string']):
+						continue
+					elif (i > 0 and line[i-1] == mode['open-string']):
+						# символ кавычки экранирован,значит его тоже можно в описание
+						base_act_buffer['image'] += char
+					else: # char = open-string и соседние символы другие
+						# закрываем набранное
+						mode['action-image'] = False
+						mode['open-string'] = ''
+						stage = 'need code'
+						need = (':')
+						valid = (" ", "\t")
+				elif stage == 'need name':
+					# поиск названия действия
+					if char in need:
+						# найдено вхождение строки
+						mode['open-string'] = char
+						mode['action-name'] = True
+					elif not char in valid:
+						# недопустимый символ, игнорируем действие
+						break
+				elif stage == 'need prev image':
+					# ищем запятую перед вторым аргументом
+					if char == ",":
+						stage = "need image"
+						need = ("'", '"')
+						valid = (" ", "\t")
+						continue
+					elif char == ":":
+						# набор названия и изображения кончился, набираем код
+						mode['action-code'] = True
+						break
+					elif not char in valid:
+						# действие кривое, прерываем
+						base_act_buffer = _empty_buffer()
+						break
+				elif stage == 'need image':
+					if char in need:
+						mode['action-image'] = True
+						mode['open-string'] = char
+					elif not char in valid:
+						break
+				elif stage == 'need code':
+					if char == ':':
+						mode['action-code'] = True
+						break
+					elif not char in valid:
+						mode['action-code'] = False
+						base_act_buffer = _empty_buffer()
+						break		
+
+		def _all_modes_off(mode:dict) -> None:
+			return (mode['open-string'] == ''
+				and not mode['open-pl']
+				and not mode['open-p']
+				and not mode['open-implicit']
+				and not mode['action-name']
+				and not mode['action-image']
+				and not mode['action-code'])
+
+		def _empty_buffer() -> dict:
+			return {
+				'name': '',
+				'image': '',
+				'code': ''
+			}
 		
+		mode = {
+			'open-string': '',
+			'open-pl': False,
+			'open-p': False,
+			'open-implicit': False,
+			'action-name': False,
+			'action-image': False,
+			'action-code': False,
+		}
+		base_description = ''
+		base_act_buffer = _empty_buffer()
+		base_actions = []
+
+		for line in self.base_code:
+			if _all_modes_off(mode):
+				if re.match(r'^("|\')', line):
+					_string_to_desc(line, mode, 'open-implicit')
+				elif re.match(r'^\*PL\b', line):
+					# строка с командой вывода текста
+					_string_to_desc(line[3:], mode, 'open-pl')					
+				elif re.match(r'^\*P\b', line):
+					_string_to_desc(line[2:], mode, 'open-p')
+				elif  re.match(r'^ACT\b', line):
+					_string_to_act(line[3:], mode, base_act_buffer)
+				else:
+					NewQspsFile.parse_string(line, mode)
+			elif mode['open-pl']:
+				_string_to_desc(line, mode, 'open-pl')
+			elif mode['open-p']:
+				_string_to_desc(line, mode, 'open-p')
+			elif mode['open-implicit']:
+				_string_to_desc(line, mode, 'open-p')
+			elif mode['action-code']:
+				if mode['open-string'] == '' and re.match(r'^END\b', line):
+					# найдено окончание кода, закрываем
+					mode['action-code'] = False
+					base_actions.append(base_act_buffer)
+					base_act_buffer = _empty_buffer()
+				else:
+					base_act_buffer['code'] += line
+					NewQspsFile.parse_string(line, mode)
+			elif mode['action-image'] or mode['action-name']:
+				# переносы строк в названиях и изображениях базовых действий недопустимы
+				mode['action-name'] = False
+				mode['action-image'] = False
+				base_act_buffer = _empty_buffer()
+				NewQspsFile.parse_string(line, mode)
+			elif mode['open-string']:
+				NewQspsFile.parse_string(line, mode)
 
 class NewQspsFile():
 	"""	qsps-file, separated in locations """
-	def __init__(self, input_file:str=None, output_file:str=None, file_strings:list=None) -> None:
+	def __init__(self) -> None:
 		"""	initialise """
 		# main fields:
 		self.locations_count = 0		# location count for set at file
 		self.locations = []				# list[NewQspLocation]
 		self.locations_id = {}			# dict[locname:locnumber]
-		self.QSP_CODREMOV = 5			# const of cyphering
 		self.src_strings = []			# all strings of file
+		self.file_body = ''				# all text of file
 		self.converted_strings = None	# output converted strings
 
 		# files fields
-		self.input_file = input_file	# abspath of qsps-file
-		self.output_folder = None		# output folder name
-		self.file_name = None			# qsps file-name or QSP-file name
+		self.input_file = ''	# abspath of qsps-file
+		self.output_folder = ''	# output folder name
+		self.file_name = ''		# file name without extension
+		self.output_file = ''	# output gamefile path
 
-		# self.start_time = start_time
-
-		if input_file is not None:
-			# convert of exists file
-			self.input_file = os.path.abspath(input_file)
-			self.output_folder, file_full_name = os.path.split(self.input_file)
-			self.file_name = os.path.splitext(file_full_name)[0]
-			
-			if os.path.isfile(self.input_file):
-				with open(self.input_file, 'r', encoding='utf-8') as fp:
-					self.src_strings = fp.readlines()
-				with open(self.input_file, 'r', encoding='utf-8') as fp:
-					self.file_body = fp.read()
-			else:
-				print(f'File «{self.input_file}» is not exist')
-		else:
-			# covert of data
+	def set_input_file(self, input_file:str) -> None:
+		""" Set input file and pathes of outputs """
+		self.input_file = os.path.abspath(input_file)
+		self.output_folder, file_full_name = os.path.split(self.input_file)
+		self.file_name = os.path.splitext(file_full_name)[0]
+		self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
+		
+	def set_file_source(self, file_strings:list=None, file_body:str=None) -> None:
+		""" Set source strings of file """
+		if file_body:
+			# priority for file_body
+			self.src_strings = file_body.splitlines(keepends=True)
+			self.file_body = file_body
+		elif file_strings:
 			self.src_strings = file_strings
 			self.file_body = ''.join(self.src_strings)
 
-		# print(f'NewQsps.init fields {time.time() - start_time}, {time.time() - self.start_time}')
-		self.split_to_locations()
-		# print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
+	def convert_file(self, input_file:str) -> None:
+		""" Convert qsps-file to qsp-file """
+		if os.path.isfile(input_file):
+			self.read_from_file(input_file)
+			self.split_to_locations()
+			self.to_qsp()
+		
+	def read_from_file(self, input_file:str=None) -> None:
+		""" Read qsps-file and set source strings """
+		if input_file and os.path.isfile(input_file):
+			self.set_input_file(input_file)
+		if self.input_file:
+			with open(self.input_file, 'r', encoding='utf-8') as fp:
+				self.src_strings = fp.readlines()
+			with open(self.input_file, 'r', encoding='utf-8') as fp:
+				self.file_body = fp.read()
 
-		if output_file is not None:
-			self.output_file = os.path.abspath(output_file)
-		elif not None in (self.output_folder, self.file_name):
-			self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
+	def split_to_locations(self) -> None:
+		""" Split source strings to locations """
+		mode = {
+			'location-name': '',
+			'open-string': ''}
 
-		self.qsploc_end = NewQspsFile.decode_qsps_line(str(0))
+		for qsps_line in self.src_strings:
+			if mode['location-name'] == '': # open string work only in open location
+				match = re.search(r'^\#\s*(.+)$', qsps_line)
+				if match:
+					# open location
+					locname = match.group(1).replace('\r', '')
+					location = NewQspLocation(locname)
+					re_name = clear_locname(locname)
+					region_match = re.search(r'^\#\s*('+re_name+')$',
+						self.file_body,
+						flags=re.MULTILINE)
+					if region_match:
+						location.change_region((region_match.start(1), region_match.end(1)))
+					self.append_location(location)
+					mode['location-name'] = locname
+			elif mode['open-string'] == '':
+				match = re.search(r'^\-\-(.*)$', qsps_line)
+				if match:
+					# close location
+					mode['location-name'] = ''
+				else:
+					self.parse_string(qsps_line, mode)
+					location.add_code_string(qsps_line)
+			else:
+				self.parse_string(qsps_line, mode)
+				location.add_code_string(qsps_line)
 
 	def append_location(self, location:NewQspLocation) -> None:
-		""" Add location in NewQsps """
+		""" Add location in NewQspsFile """
 		self.locations.append(location)
 		self.locations_id[location.name] = self.locations_count
 		self.locations_count += 1
 
-	def split_to_locations(self) -> None:
-		"""  """
-		# start_time = time.time()
-
-		new_strings = []
-		mode = {
-			'location-name': '',
-			'open-string': ''}
-		location_code = ''
-
-		for string in self.src_strings:
-			if mode['location-name'] == '':
-				match = re.search(r'^\#\s*(.+)$', string)
-				if match is not None:
-					# open location
-					locname = match.group(1).replace('\r', '')
-					location = NewQspLocation(locname)
-					self.append_location(location)
-					# location_code = ''
-					mode['location-name'] = locname
-			elif mode['open-string'] == '':
-				match = re.search(r'^\-(.*)$', string)
-				if match is not None:
-					# close location
-					# location.change_code(location_code.replace('\n','\n\r').split('\r')[1:-1])
-					mode['location-name'] = ''
-				else:
-					self.parse_string(string, mode)
-					location.add_code_string(string)
-			else:
-				self.parse_string(string, mode)
-				location.add_code_string(string)
-		# print(f'NewQsps.split locations {time.time() - start_time}, {time.time() - self.start_time}')
-
-	def parse_string(self, string:str, mode:dict) -> None:
-		for char in string:
-			if mode['open-string'] == '':
-				# string not open
-				if char in ('"', '\'', '{'):
-					mode['open-string'] = char
-			else:
-				if char in ('"', '\'') and mode['open-string'][-1] == char:
-					mode['open-string'] = mode['open-string'][:-1]
-				elif char == '}' and mode['open-string'][-1] == '{':
-					mode['open-string'] = mode['open-string'][:-1]
-				elif char == '{':
-					mode['open-string'] += char
+	def to_qsp(self) -> None:
+		""" Convert NewQspsFile to QSP-format """
+		if self.converted_strings:
+			print('[301] Already converted.')
+			raise Exception('[301] Already converted.')
+		# header of qsp-file
+		self.converted_strings.append('QSPGAME\n')
+		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
+		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
+		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\n')
+		# decode locations
+		_decode_location = lambda l: l.decode()
+		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
+			for location in self.locations:
+				executor.submit(_decode_location, location)
+		for location in self.locations:
+			self.converted_strings.extend(location.get_qsp())
+		# print(f'qsps.converted: {time.time() - start_time}')
 
 	def get_qsplocs(self) -> list:
 		""" Return qsp-location for adding to ws """
-		qsp_locs = []
+		qsp_locs = [] # list[list[str, tuple[int, int]]]
 		for location in self.locations:
-			re_name = clear_locname(location.name)
-			match = re.search(r'^\#\s*('+re_name+')$', self.file_body, flags=re.MULTILINE)
-			if not match is None:
-				qsp_locs.append([location.name, (match.start(1), match.end(1))])
+			qsp_locs.append([location.name, location.name_region])
 		return qsp_locs
 
 	def print_locations_names(self):
@@ -170,42 +394,37 @@ class NewQspsFile():
 			print(location_code)
 
 	@staticmethod
-	def decode_qsps_line(qsps_line:str='', qsp_codremov:int=5) -> str:
+	def parse_string(qsps_line:str, mode:dict) -> None:
+		""" Parse opened string for location code """
+		for char in qsps_line:
+			if mode['open-string'] == '':
+				# string not open
+				if char in ('"', '\'', '{'):
+					mode['open-string'] = char
+			else:
+				if char in ('"', '\'') and mode['open-string'][-1] == char:
+					mode['open-string'] = mode['open-string'][:-1]
+				elif char == '}' and mode['open-string'][-1] == '{':
+					mode['open-string'] = mode['open-string'][:-1]
+				elif char == '{':
+					mode['open-string'] += char
+
+	@staticmethod
+	def decode_qsps_line(qsps_line:str='') -> str:
 		""" Decode qsps_line to qsp_coded_line """
-		exit_line = ''
+		exit_line, qcd = '', QSP_CODREMOV
 		for point in qsps_line:
-			exit_line += (chr(-qsp_codremov) if ord(point) == qsp_codremov else chr(ord(point) - qsp_codremov))
+			exit_line += (chr(-qcd) if ord(point) == qcd else chr(ord(point) + qcd))
 		return exit_line
 
 	@staticmethod
-	def decode_location(code:list, qsp_codremov:int=5) -> str:
+	def decode_location(code:list) -> str:
 		if len(code)>0:
 			last_line = code.pop()[:-1]
 			exit_line = ''.join(code).replace('\n', '\r\n')
 			return NewQspsFile.decode_qsps_line(exit_line)+NewQspsFile.decode_qsps_line(last_line)
 		else:
 			return ''
-
-	def convert(self):
-		# start_time = time.time()
-		if self.converted_strings is not None:
-			print('[301] Already converted.')
-			raise Exception('[301] Already converted.')
-			return None
-		self.converted_strings = []
-		self.converted_strings.append('QSPGAME\n')
-		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
-		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
-		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\n')
-		_decode_location = lambda l: l.decode()
-		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
-			for location in self.locations:
-				executor.submit(_decode_location, location)
-		for location in self.locations:
-			self.converted_strings.append(location.decode_name + '\n\n')
-			self.converted_strings.append(location.decode_code + '\n')
-			self.converted_strings.append(self.qsploc_end + '\n')
-		# print(f'qsps.converted: {time.time() - start_time}')
 	
 	def save_qsps(self, input_file:str=None) -> None:
 		if self.input_file is None and input_file is None:
