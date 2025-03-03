@@ -58,18 +58,18 @@ class NewQspLocation():
 		self.decode_code = NewQspsFile.decode_qsps_line(self.code)
 		for action in self.base_actions:
 			decode_action = ''
-			decode_action += NewQspsFile.decode_qsps_line(action['image']) + '\r\n'
-			decode_action += NewQspsFile.decode_qsps_line(action['name']) + '\r\n'
-			decode_action += NewQspsFile.decode_qsps_line(action['code'][:-1]) + '\r\n'
+			decode_action += NewQspsFile.decode_qsps_line(action['image']) + '\n'
+			decode_action += NewQspsFile.decode_qsps_line(action['name']) + '\n'
+			decode_action += NewQspsFile.decode_qsps_line(action['code'][:-1]) + '\n'
 			self.decode_actions.append(decode_action)
 
 	def get_qsp(self) -> str:
 		""" Get QSP-format location """
 		qsp = []
-		qsp.append(self.decode_name + '\r\n')
-		qsp.append(self.decode_desc + '\r\n')
-		qsp.append(self.decode_code + '\r\n')
-		qsp.append(NewQspsFile.decode_qsps_line(str(len(self.decode_actions))) + '\r\n')
+		qsp.append(self.decode_name + '\n')
+		qsp.append(self.decode_desc + '\n')
+		qsp.append(self.decode_code + '\n')
+		qsp.append(NewQspsFile.decode_qsps_line(str(len(self.decode_actions))) + '\n')
 		qsp.extend(self.decode_actions)
 		return qsp
 
@@ -376,10 +376,10 @@ class NewQspsFile():
 			print('[301] Already converted.')
 			raise Exception('[301] Already converted.')
 		# header of qsp-file
-		self.converted_strings.append('QSPGAME\r\n')
-		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\r\n')
-		self.converted_strings.append(self.decode_qsps_line('No')+'\r\n')
-		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\r\n')
+		self.converted_strings.append('QSPGAME\n')
+		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
+		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
+		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\n')
 		# decode locations
 		_decode_location = lambda l: l.decode()
 		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
@@ -440,7 +440,7 @@ class NewQspsFile():
 	def decode_location(code:list) -> str:
 		if len(code)>0:
 			last_line = code.pop()[:-1]
-			exit_line = ''.join(code).replace('\n', '\r\n')
+			exit_line = ''.join(code).replace('\n', '\n')
 			return NewQspsFile.decode_qsps_line(exit_line)+NewQspsFile.decode_qsps_line(last_line)
 		else:
 			return ''

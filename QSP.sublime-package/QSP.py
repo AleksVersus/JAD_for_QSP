@@ -102,7 +102,7 @@ class QspSplitterCommand(sublime_plugin.WindowCommand):
 		Start command of split QSP-Game or qsps-file
 		at some qsps-files.
 	"""
-	def run(self):
+	def run(self) -> None:
 		argv = self.window.extract_variables()
 		if argv['file_extension'] in ('qsps', 'qsp-txt', 'txt-qsp'):
 			QspSplitter(args = {'qsps-file': argv['file']}).split_file()

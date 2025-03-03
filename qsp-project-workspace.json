@@ -333,15 +333,6 @@
                 ]
             ]
         ],
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[disdocs]\\crash.qsps": [
-            [
-                "s",
-                [
-                    29,
-                    30
-                ]
-            ]
-        ],
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\вспомогательные функции\\get.obj.DU.qsps": [
             [
                 "get.obj.DU",
@@ -2039,6 +2030,15 @@
                 [
                     499,
                     505
+                ]
+            ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[disdocs]\\crash.qsps": [
+            [
+                "s",
+                [
+                    29,
+                    30
                 ]
             ]
         ]

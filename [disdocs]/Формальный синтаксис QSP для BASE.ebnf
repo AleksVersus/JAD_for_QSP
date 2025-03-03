@@ -1,28 +1,43 @@
+(* Упрощёный синтаксис для BASE *)
+(* TODO: переделать *)
+
 (*
 	В данном описании вместо конкретных значений используются регулярные выражения.
 	Это нужно для упрощения описания отдельных моментов, например наборов символов.
 	Учитывайте данное обстоятельство при чтении описания.
 
+	В блоке BASE формата qsps (txt2gam) не допускаются пробелы перед именами ключевых
+	операторов *PL, *P, ACT на верхнем уровне (BasePrint, BaseActions). Допускаются
+	пробелы перед операторами во вложенных блоках кода, а так же между любыми сущностями.
+
+	Сущности должны быть отделены друг от друга по границе слова, т.е. допустимо:
+	*PL"string one"&*NL"string two"&!comment
 *)
 
-(* Упрощёный синтаксис для BASE *)
+BaseCodeBlock = {BaseCodeLine, (NextLineSign | CodeEndSign)};
+BaseCodeLine = BaseDirective, {DirectiveDelimiter, IgnoredText} | IgnoredText;
+BaseDirective = BasePrint | BaseAction;
 
-CodeBlock = {CodeLine, {SpaceSign}, (NextLineSign | CodeEndSign)};
-CodeLine = Directive, {{WordEdge}, DirectiveDelimiter, {WordEdge}, Directive};
-Directive = Operator, [Expression, {ExpressionDelimiter, {SpaceSign}, Expression}],
-			[EmbeddingDelimiter, EmbeddedCode] |
-			Comment;
-EmbeddedCode = OneLineCode | ManyLinesCode;
-OneLineCode = CodeLine, {SpaceSign}, NextLineSign;
+(* Base Directives *)
+BasePrint = ["\*P" | "\*PL"], BaseOprtArgument;
+BaseAction = "ACT", BaseOprtArgument, [ExpressionDelimiter, BaseOprtArgument],
+			EmbeddingDelimiter, ManyLinesCode;
 ManyLinesCode = [Comment], NextLineSign,
-				[CodeBlock], ManyLinesCodeEnd, {AnyText},
-				{{WordEdge}, DirectiveDelimiter, {WordEdge}, Directive},
-				NextLineSign;
+				[CodeBlock], BaseManyLinesCodeEnd, {IgnoredText}, NextLineSign;
+EmbeddedCode = OneLineCode | ManyLinesCode;
+OneLineCode = CodeLine, NextLineSign;
+
 Comment = CommentOperator, AnyText, (NextLineSign | CodeEndSign);
 Expression = Value {Operation, Value};
-Value = Function, ["(", [Expression, {ExpressionDelimiter, {SpaceSign}, Expression}], ")"] |
+Value = Function, ["(", [Expression, {ExpressionDelimiter, Expression}], ")"] |
 			"(", Expression, ")" |
 			Variable | Number | TextString;
+Directive = Operator, [Expression, {ExpressionDelimiter, Expression}],
+			[EmbeddingDelimiter, EmbeddedCode] |
+			Variable {ExpressionDelimiter, Variable}, AsignmentOperator,
+			Expression, {ExpressionDelimiter, Expression} |
+			Comment;
+
 
 (* Операторы *)
 
@@ -45,7 +60,8 @@ CodeEndSign = ? End of File ?;
 AnyText = {"[\s\S]+"};
 Variable = "[^\W\d]\w*";
 Number = "\d+";
-TextString = "'[\s\S]*'" | '"[\s\S]*"';
+
+AsignmentOperator = "=";
 Operation = "\+" | "\-" | "\/" | "\*" | "or" | "and" | "mod" | ">=" | "<=" | ">" | "<" | "=";
 ImplicitOperator = "(?=TextString)";
-Function = "\$?func" | "\$?dyneval" | (* TODO: Добавить остальные функции *)
+
