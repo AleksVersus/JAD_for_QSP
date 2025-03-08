@@ -62,8 +62,6 @@ class NewQspLocation():
 	def decode(self) -> None:
 		""" Decode parts of location. """
 		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
-		self.extract_base()
-		self.split_base()
 		self.decode_desc = NewQspsFile.decode_qsps_line(self.base_description)
 		self.decode_code = NewQspsFile.decode_qsps_line((''.join(self.code))[:-1])
 		for action in self.base_actions:
@@ -368,6 +366,9 @@ class NewQspsFile():
 			elif mode['open-string'] == '' and LOCATION_END.search(qsps_line):
 				# close location
 				mode['location-name'] = ''
+				if location:
+					location.extract_base()
+					location.split_base()
 			else:
 				self.parse_string(qsps_line, mode)
 				location.add_code_string(qsps_line)
@@ -404,22 +405,6 @@ class NewQspsFile():
 			qsp_locs.append([location.name, location.name_region])
 		return qsp_locs
 
-	def print_locations_names(self):
-		print('Locations number: '+str(len(self.locations)))
-		for location in self.locations:
-			print(location.name)
-
-	def print_location(self, name=0):
-		if type(name) == int:
-			location_name = self.locations[name].name
-			location_code = self.locations[name].code
-		elif type(name) == str:
-			location_name = self.locations[self.locations_id[name]].name
-			location_code = self.locations[self.locations_id[name]].code
-		if location_name is not None:
-			print("'"+location_name+"'")
-			print(location_code)
-
 	@staticmethod
 	def parse_string(qsps_line:str, mode:dict) -> None:
 		""" Parse opened string for location code """
@@ -439,21 +424,13 @@ class NewQspsFile():
 	@staticmethod
 	def decode_qsps_line(qsps_line:str='') -> str:
 		""" Decode qsps_line to qsp_coded_line """
-		exit_line, qsp_codremov = '', QSP_CODREMOV
+		exit_line, qdr = '', QSP_CODREMOV
 		for point in qsps_line:
-			exit_line += (chr(-qsp_codremov) if ord(point) == qsp_codremov else chr(ord(point) - qsp_codremov))
+			exit_line += (chr(-qdr) if ord(point) == qdr else chr(ord(point) - qdr))
 		return exit_line
-	
-	def save_qsps(self, input_file:str=None) -> None:
-		if self.input_file is None and input_file is None:
-			print('[302] Not input path.')
-			raise Exception('[302] Not input path.')
-		if input_file is None:
-			input_file = self.input_file
-		with open(input_file, 'w', encoding='utf-8') as file:
-			file.writelines(self.src_strings)
 
 	def save_qsp(self, output_file:str=None) -> None:
+		# TODO: необходимо убрать этот метод, заменив все вхождения на save_to_file
 		if self.output_file is None and output_file is None:
 			print('[303] Not output path.')
 			raise Exception('[303] Not output path.')
