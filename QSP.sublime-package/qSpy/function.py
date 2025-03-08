@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 
 # standart funcs for
 
@@ -81,6 +82,19 @@ def clear_locname(loc_name:str) -> str:
 		.replace('?', r'\?')
 		.replace('|', r'\|')
 		.replace('/', r'\/'))
+
+def del_first_pref(lines:list) -> list:
+	"""
+		Delete first preformatted symbols from start of lines
+	"""
+	common = ''
+	for chars in zip(*lines):
+		if len(set(chars)) == 1 and chars[0] in (' ', '\t'):
+			common += chars[0]
+		else:
+			break
+	if not common: return lines
+	return [line[len(common):] for line in lines]
 
 def is_path_in_project_folders(path:str, project_folders:list) -> bool:
 	"""
