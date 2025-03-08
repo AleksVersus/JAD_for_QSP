@@ -39,10 +39,12 @@ class NewQspLocation():
 			# 	'name': '',
 			#	'code': []
 			# }
-		self.decode_name:str = ''	# decode in QSP-format location name
-		self.decode_desc:str = ''	# decode in QSP-format location description
-		self.decode_actions:list = [] # list of decode in QSP-format location actions
-		self.decode_code:str = ''	# decode in QSP-format location code		
+		self.encode_name:str = ''	# decode in QSP-format location name
+		self.encode_desc:str = ''	# decode in QSP-format location description
+		self.encode_actions:list = [] # list of decode in QSP-format location actions
+		self.encode_code:str = ''	# decode in QSP-format location code
+
+		self.char_cache = {}		
 
 	def change_name(self, new_name:str) -> None:
 		""" Set location name """
@@ -52,34 +54,37 @@ class NewQspLocation():
 		""" Set location name region """
 		self.name_region = new_region
 
-	def add_code_string(self, code_string:str) -> None:
-		self.code.append(code_string)
-
 	def change_code(self, new_code:list) -> None:
 		""" Set location code. """
 		self.code = new_code
 
-	def decode(self) -> None:
-		""" Decode parts of location. """
-		self.decode_name = NewQspsFile.decode_qsps_line(self.name)
-		self.decode_desc = NewQspsFile.decode_qsps_line(self.base_description)
-		self.decode_code = NewQspsFile.decode_qsps_line((''.join(self.code))[:-1])
-		for action in self.base_actions:
-			decode_action = ''
-			decode_action += NewQspsFile.decode_qsps_line(action['image']) + '\n'
-			decode_action += NewQspsFile.decode_qsps_line(action['name']) + '\n'
-			action_code = ''.join(del_first_pref(action['code']))
-			decode_action += NewQspsFile.decode_qsps_line(action_code[:-1]) + '\n'
-			self.decode_actions.append(decode_action)
+	def change_cache(self, new_cache:dict) -> None:
+		self.char_cache = new_cache
 
-	def get_qsp(self) -> str:
+	def add_code_line(self, code_line:str) -> None:
+		self.code.append(code_line)
+
+	def encode(self) -> None:
+		""" Decode parts of location. """
+		self.encode_name = NewQspsFile.encode_qsps_line(self.name, self.char_cache)
+		self.encode_desc = NewQspsFile.encode_qsps_line(self.base_description, self.char_cache)
+		self.encode_code = NewQspsFile.encode_qsps_line((''.join(self.code))[:-1], self.char_cache)
+		for action in self.base_actions:
+			encode_action = ''
+			encode_action += NewQspsFile.encode_qsps_line(action['image'], self.char_cache) + '\n'
+			encode_action += NewQspsFile.encode_qsps_line(action['name'], self.char_cache) + '\n'
+			action_code = ''.join(del_first_pref(action['code']))
+			encode_action += NewQspsFile.encode_qsps_line(action_code[:-1], self.char_cache) + '\n'
+			self.encode_actions.append(encode_action)
+
+	def get_qsp(self) -> list:
 		""" Get QSP-format location """
 		qsp = []
-		qsp.append(self.decode_name + '\n')
-		qsp.append(self.decode_desc + '\n')
-		qsp.append(self.decode_code + '\n')
-		qsp.append(NewQspsFile.decode_qsps_line(str(len(self.decode_actions))) + '\n')
-		qsp.extend(self.decode_actions)
+		qsp.append(self.encode_name + '\n')
+		qsp.append(self.encode_desc + '\n')
+		qsp.append(self.encode_code + '\n')
+		qsp.append(NewQspsFile.encode_qsps_line(str(len(self.encode_actions)), self.char_cache) + '\n')
+		qsp.extend(self.encode_actions)
 		return qsp
 
 	def extract_base(self) -> None:
@@ -295,6 +300,9 @@ class NewQspsFile():
 		self.file_name = ''		# file name without extension
 		self.output_file = ''	# output gamefile path
 
+		# cache fields
+		self.char_cache = {}
+
 	def set_input_file(self, input_file:str) -> None:
 		""" Set input file and pathes of outputs """
 		self.input_file = os.path.abspath(input_file)
@@ -326,7 +334,7 @@ class NewQspsFile():
 			self.set_input_file(input_file)
 		if self.input_file:
 			offset = 0
-			with open(self.input_file, 'r', encoding='utf-8') as fp:
+			with open(self.input_file, 'r', encoding='utf-8-sig') as fp:
 				for line in fp:
 					self.src_strings.append(line)
 					self.line_offsets.append(offset)
@@ -354,6 +362,7 @@ class NewQspsFile():
 					# open location
 					locname = match.group(1).replace('\r', '')
 					location = NewQspLocation(locname)
+					location.change_cache(self.char_cache)
 					region_start = match.start(1) + self.line_offsets[i]
 					region_end = region_start + len(match.group(1).strip())
 					location.change_region((region_start, region_end))
@@ -369,7 +378,7 @@ class NewQspsFile():
 					location.split_base()
 			else:
 				self.parse_string(qsps_line, mode)
-				location.add_code_string(qsps_line)
+				location.add_code_line(qsps_line)
 
 	def append_location(self, location:NewQspLocation) -> None:
 		""" Add location in NewQspsFile """
@@ -383,10 +392,10 @@ class NewQspsFile():
 		# header of qsp-file
 		self.converted_strings.append('QSPGAME\n')
 		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
-		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
-		self.converted_strings.append(self.decode_qsps_line(str(len(self.locations)))+'\n')
+		self.converted_strings.append(self.encode_qsps_line('No', self.char_cache)+'\n')
+		self.converted_strings.append(self.encode_qsps_line(str(len(self.locations)), self.char_cache)+'\n')
 		# decode locations
-		_decode_location = lambda l: l.decode()
+		_decode_location = lambda l: l.encode()
 		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
 			for location in self.locations:
 				executor.submit(_decode_location, location)
@@ -418,12 +427,24 @@ class NewQspsFile():
 					mode['open-string'] += char
 
 	@staticmethod
-	def decode_qsps_line(qsps_line:str='') -> str:
+	def encode_char(point:str) -> str:
+		""" Encode char. """
+		return chr(-QSP_CODREMOV) if ord(point) == QSP_CODREMOV else chr(ord(point) - QSP_CODREMOV)
+
+	@staticmethod
+	def encode_qsps_line(qsps_line:str='', cache:dict=None) -> str:
 		""" Decode qsps_line to qsp_coded_line """
-		exit_line, qdr = '', QSP_CODREMOV
-		for point in qsps_line:
-			exit_line += (chr(-qdr) if ord(point) == qdr else chr(ord(point) - qdr))
-		return exit_line
+		exit_line = []
+		_encode_char = NewQspsFile.encode_char
+		if cache is not None:
+			for point in qsps_line:
+				if point not in cache:
+					cache[point] = _encode_char(point)
+				exit_line.append(cache[point])
+		else:
+			for point in qsps_line:
+				exit_line.append(_encode_char(point))
+		return ''.join(exit_line)
 
 	def save_qsp(self, output_file:str=None) -> None:
 		# TODO: необходимо убрать этот метод, заменив все вхождения на save_to_file
@@ -434,6 +455,18 @@ class NewQspsFile():
 			output_file = self.output_file
 		with open(output_file, 'w', encoding='utf-16le') as file:
 			file.writelines(self.converted_strings)
+
+def test_dnaray():
+	import time
+	times_list = []
+	for i in range(25):
+		old_time = time.time()
+		qsps = NewQspsFile()
+		qsps.convert_file('D:\\dna.txt')
+		new_time = time.time()
+		times_list.append(old_time - new_time)
+		print(new_time - old_time)
+	print('mid: ', sum(times_list)/len(times_list))
 
 def main():
 	qsps = NewQspsFile()
