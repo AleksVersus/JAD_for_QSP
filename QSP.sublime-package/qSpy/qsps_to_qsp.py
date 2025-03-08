@@ -70,12 +70,15 @@ class NewQspLocation():
 		self.encode_desc = NewQspsFile.encode_qsps_line(self.base_description, self.char_cache)
 		self.encode_code = NewQspsFile.encode_qsps_line((''.join(self.code))[:-1], self.char_cache)
 		for action in self.base_actions:
-			encode_action = ''
-			encode_action += NewQspsFile.encode_qsps_line(action['image'], self.char_cache) + '\n'
-			encode_action += NewQspsFile.encode_qsps_line(action['name'], self.char_cache) + '\n'
+			encode_action_lines = []
+			encode_action_lines.append(NewQspsFile.encode_qsps_line(action['image'], self.char_cache))
+			encode_action_lines.append('\n')
+			encode_action_lines.append(NewQspsFile.encode_qsps_line(action['name'], self.char_cache))
+			encode_action_lines.append('\n')
 			action_code = ''.join(del_first_pref(action['code']))
-			encode_action += NewQspsFile.encode_qsps_line(action_code[:-1], self.char_cache) + '\n'
-			self.encode_actions.append(encode_action)
+			encode_action_lines.append(NewQspsFile.encode_qsps_line(action_code[:-1], self.char_cache))
+			encode_action_lines.append('\n')
+			self.encode_actions.append(''.join(encode_action_lines))
 
 	def get_qsp(self) -> list:
 		""" Get QSP-format location """
@@ -118,6 +121,7 @@ class NewQspLocation():
 			need = ('"', "'") # ожидаем кавчки
 			valid = (" ", "\t") # допустимые символы
 			new_line = '\n' if opened in ('open-pl', 'open-implicit') else ''
+			base_description_chars = []
 			for i, char in enumerate(line):
 				if not mode[opened]:
 					# пока не открыт набор в описание
@@ -130,18 +134,19 @@ class NewQspLocation():
 						break
 				elif mode[opened]:
 					if char != mode['open-string']:
-						self.base_description += char
+						base_description_chars.append(char)
 					elif (i < len(line)-1 and line[i+1] == mode['open-string']):
 						continue
 					elif (i > 0 and line[i-1] == mode['open-string']):
 						# символ кавычки экранирован,значит его тоже можно в описание
-						self.base_description += char
+						base_description_chars.append(char)
 					else: # char = open-string и соседние символы другие
 						# закрываем набранное
-						self.base_description += new_line
+						base_description_chars.append(new_line)
 						mode[opened] = False
 						mode['open-string'] = ''
 						break
+			self.base_description += ''.join(base_description_chars)
 
 		def _string_to_act(line:str, mode:dict, base_act_buffer:dict) -> None:
 			need = ('"', "'") # ожидаем кавчки
@@ -469,8 +474,12 @@ def test_dnaray():
 	print('mid: ', sum(times_list)/len(times_list))
 
 def main():
+	import time
+	old_time = time.time()
 	qsps = NewQspsFile()
 	qsps.convert_file('D:\\game.qsps')
+	new_time = time.time()
+	print(new_time - old_time)
 
 if __name__ == "__main__":
 	main()
