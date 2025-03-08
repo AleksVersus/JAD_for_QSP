@@ -443,15 +443,6 @@ class NewQspsFile():
 		for point in qsps_line:
 			exit_line += (chr(-qsp_codremov) if ord(point) == qsp_codremov else chr(ord(point) - qsp_codremov))
 		return exit_line
-
-	@staticmethod
-	def decode_location(code:list) -> str:
-		if len(code)>0:
-			last_line = code.pop()[:-1]
-			exit_line = ''.join(code).replace('\n', '\n')
-			return NewQspsFile.decode_qsps_line(exit_line)+NewQspsFile.decode_qsps_line(last_line)
-		else:
-			return ''
 	
 	def save_qsps(self, input_file:str=None) -> None:
 		if self.input_file is None and input_file is None:
