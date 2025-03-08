@@ -365,14 +365,9 @@ class NewQspsFile():
 					mode['location-name'] = locname
 				else:
 					self.parse_string(qsps_line, mode)
-			elif mode['open-string'] == '':
-				match = LOCATION_END.search(qsps_line)
-				if match:
-					# close location
-					mode['location-name'] = ''
-				else:
-					self.parse_string(qsps_line, mode)
-					location.add_code_string(qsps_line)
+			elif mode['open-string'] == '' and LOCATION_END.search(qsps_line):
+				# close location
+				mode['location-name'] = ''
 			else:
 				self.parse_string(qsps_line, mode)
 				location.add_code_string(qsps_line)
