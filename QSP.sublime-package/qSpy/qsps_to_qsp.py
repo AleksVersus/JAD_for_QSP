@@ -5,11 +5,21 @@ import os
 import re
 import concurrent.futures
 
-from function import clear_locname
+from function import (del_first_pref)
 # import time
 
 # constants:
 QSP_CODREMOV = 5 # const of cyphering
+# regexps:
+LOCATION_START = re.compile(r'^\#\s*(.+)$')
+LOCATION_END = re.compile(r'^\-\-(.*)$')
+BASE_OPEN = re.compile(r'^\! BASE$')
+BASE_CLOSE = re.compile(r'^\! END BASE$')
+PRINT_STRING = re.compile(r'^\*P\b')
+PRINT_LINE = re.compile(r'^\*PL\b')
+ACTION_START = re.compile(r'^ACT\b')
+ACTION_END = re.compile(r'^END\b')
+IMPLICIT_OPERATOR = re.compile(r'^("|\')')
 
 class NewQspLocation():
 	"""
@@ -27,7 +37,7 @@ class NewQspLocation():
 			# {
 			# 	'image': '',
 			# 	'name': '',
-			#	'code': ''
+			#	'code': []
 			# }
 		self.decode_name:str = ''	# decode in QSP-format location name
 		self.decode_desc:str = ''	# decode in QSP-format location description
@@ -55,12 +65,13 @@ class NewQspLocation():
 		self.extract_base()
 		self.split_base()
 		self.decode_desc = NewQspsFile.decode_qsps_line(self.base_description)
-		self.decode_code = NewQspsFile.decode_qsps_line(self.code)
+		self.decode_code = NewQspsFile.decode_qsps_line((''.join(self.code))[:-1])
 		for action in self.base_actions:
 			decode_action = ''
 			decode_action += NewQspsFile.decode_qsps_line(action['image']) + '\n'
 			decode_action += NewQspsFile.decode_qsps_line(action['name']) + '\n'
-			decode_action += NewQspsFile.decode_qsps_line(action['code'][:-1]) + '\n'
+			action_code = ''.join(del_first_pref(action['code']))
+			decode_action += NewQspsFile.decode_qsps_line(action_code[:-1]) + '\n'
 			self.decode_actions.append(decode_action)
 
 	def get_qsp(self) -> str:
@@ -83,13 +94,13 @@ class NewQspLocation():
 		for i, qsps_line in enumerate(self.code[:]):
 			if mode['open-base']:
 				self.code[i] = None # remove from other code
-				if mode['open-string'] == '' and re.search(r'^\! END BASE$', qsps_line):	
+				if mode['open-string'] == '' and BASE_CLOSE.search(qsps_line):	
 					mode['open-base'] = False
 					break
 				base_lines.append(qsps_line)
 				NewQspsFile.parse_string(qsps_line, mode)
 				continue
-			if mode['open-string'] == '' and re.search(r'^\! BASE$', qsps_line):
+			if mode['open-string'] == '' and BASE_OPEN.search(qsps_line):
 				mode['open-base'] = True
 				self.code[i] = None
 			else:
@@ -133,7 +144,7 @@ class NewQspLocation():
 			need = ('"', "'") # ожидаем кавчки
 			valid = (" ", "\t") # допустимые символы
 			stage = 'need name'
-			for i, char in enumerate(line[3:]):
+			for i, char in enumerate(line):
 				if mode['action-name']:
 					# название найдено, набираем
 					if char != mode['open-string']:
@@ -195,6 +206,7 @@ class NewQspLocation():
 						mode['action-image'] = True
 						mode['open-string'] = char
 					elif not char in valid:
+						base_act_buffer = _empty_buffer()
 						break
 				elif stage == 'need code':
 					if char == ':':
@@ -203,7 +215,7 @@ class NewQspLocation():
 					elif not char in valid:
 						mode['action-code'] = False
 						base_act_buffer = _empty_buffer()
-						break		
+						break
 
 		def _all_modes_off(mode:dict) -> None:
 			return (mode['open-string'] == ''
@@ -218,7 +230,7 @@ class NewQspLocation():
 			return {
 				'name': '',
 				'image': '',
-				'code': ''
+				'code': []
 			}
 		
 		mode = {
@@ -234,14 +246,14 @@ class NewQspLocation():
 
 		for line in self.base_code:
 			if _all_modes_off(mode):
-				if re.match(r'^("|\')', line):
+				if IMPLICIT_OPERATOR.match(line):
 					_string_to_desc(line, mode, 'open-implicit')
-				elif re.match(r'^\*PL\b', line):
+				elif PRINT_LINE.match(line):
 					# строка с командой вывода текста
 					_string_to_desc(line[3:], mode, 'open-pl')					
-				elif re.match(r'^\*P\b', line):
+				elif PRINT_STRING.match(line):
 					_string_to_desc(line[2:], mode, 'open-p')
-				elif  re.match(r'^ACT\b', line):
+				elif  ACTION_START.match(line):
 					_string_to_act(line[3:], mode, base_act_buffer)
 				else:
 					NewQspsFile.parse_string(line, mode)
@@ -250,15 +262,15 @@ class NewQspLocation():
 			elif mode['open-p']:
 				_string_to_desc(line, mode, 'open-p')
 			elif mode['open-implicit']:
-				_string_to_desc(line, mode, 'open-p')
+				_string_to_desc(line, mode, 'open-implicit')
 			elif mode['action-code']:
-				if mode['open-string'] == '' and re.match(r'^END\b', line):
+				if mode['open-string'] == '' and ACTION_END.match(line):
 					# найдено окончание кода, закрываем
 					mode['action-code'] = False
-					self.base_actions.append(base_act_buffer)
+					self.base_actions.append(base_act_buffer.copy())
 					base_act_buffer = _empty_buffer()
 				else:
-					base_act_buffer['code'] += line
+					base_act_buffer['code'].append(line)
 					NewQspsFile.parse_string(line, mode)
 			elif mode['action-image'] or mode['action-name']:
 				# переносы строк в названиях и изображениях базовых действий недопустимы
@@ -278,7 +290,7 @@ class NewQspsFile():
 		self.locations = []				# list[NewQspLocation]
 		self.locations_id = {}			# dict[locname:locnumber]
 		self.src_strings = []			# all strings of file
-		self.file_body = ''				# all text of file
+		self.line_offsets = []
 		self.converted_strings:list = []	# output converted strings
 
 		# files fields
@@ -294,15 +306,15 @@ class NewQspsFile():
 		self.file_name = os.path.splitext(file_full_name)[0]
 		self.output_file = os.path.join(self.output_folder, self.file_name+".qsp")
 		
-	def set_file_source(self, file_strings:list=None, file_body:str=None) -> None:
+	def set_file_source(self, file_strings:list=None) -> None:
 		""" Set source strings of file """
-		if file_body:
-			# priority for file_body
-			self.src_strings = file_body.splitlines(keepends=True)
-			self.file_body = file_body
-		elif file_strings:
-			self.src_strings = file_strings
-			self.file_body = ''.join(self.src_strings)
+		if file_strings:
+			self.src_strings = file_strings[:]
+			self.line_offsets = []
+			offset = 0
+			for line in self.src_strings:
+				self.line_offsets.append(offset)
+				offset += len(line)
 
 	def convert_file(self, input_file:str) -> None:
 		""" Convert qsps-file to qsp-file """
@@ -317,10 +329,12 @@ class NewQspsFile():
 		if input_file and os.path.isfile(input_file):
 			self.set_input_file(input_file)
 		if self.input_file:
+			offset = 0
 			with open(self.input_file, 'r', encoding='utf-8') as fp:
-				self.src_strings = fp.readlines()
-			with open(self.input_file, 'r', encoding='utf-8') as fp:
-				self.file_body = fp.read()
+				for line in fp:
+					self.src_strings.append(line)
+					self.line_offsets.append(offset)
+					offset += len(line)
 		else:
 			print(f'[801] File {self.input_file} is not exist.')
 
@@ -328,7 +342,7 @@ class NewQspsFile():
 		""" Save qsps-text to file. """
 		if not output_file:
 			output_file = self.output_file
-		with open(output_file, 'w', encoding='utf-8') as file:
+		with open(output_file, 'w', encoding='utf-16le') as file:
 			file.writelines(self.converted_strings)
 
 	def split_to_locations(self) -> None:
@@ -336,24 +350,23 @@ class NewQspsFile():
 		mode = {
 			'location-name': '',
 			'open-string': ''}
-
-		for qsps_line in self.src_strings:
+		location = None
+		for i, qsps_line in enumerate(self.src_strings):
 			if mode['location-name'] == '': # open string work only in open location
-				match = re.search(r'^\#\s*(.+)$', qsps_line)
+				match = LOCATION_START.search(qsps_line)
 				if match:
 					# open location
 					locname = match.group(1).replace('\r', '')
 					location = NewQspLocation(locname)
-					re_name = clear_locname(locname)
-					region_match = re.search(r'^\#\s*('+re_name+')$',
-						self.file_body,
-						flags=re.MULTILINE)
-					if region_match:
-						location.change_region((region_match.start(1), region_match.end(1)))
+					region_start = match.start(1) + self.line_offsets[i]
+					region_end = region_start + len(match.group(1).strip())
+					location.change_region((region_start, region_end))
 					self.append_location(location)
 					mode['location-name'] = locname
+				else:
+					self.parse_string(qsps_line, mode)
 			elif mode['open-string'] == '':
-				match = re.search(r'^\-\-(.*)$', qsps_line)
+				match = LOCATION_END.search(qsps_line)
 				if match:
 					# close location
 					mode['location-name'] = ''
@@ -431,9 +444,9 @@ class NewQspsFile():
 	@staticmethod
 	def decode_qsps_line(qsps_line:str='') -> str:
 		""" Decode qsps_line to qsp_coded_line """
-		exit_line, qcd = '', QSP_CODREMOV
+		exit_line, qsp_codremov = '', QSP_CODREMOV
 		for point in qsps_line:
-			exit_line += (chr(-qcd) if ord(point) == qcd else chr(ord(point) + qcd))
+			exit_line += (chr(-qsp_codremov) if ord(point) == qsp_codremov else chr(ord(point) - qsp_codremov))
 		return exit_line
 
 	@staticmethod
@@ -467,5 +480,5 @@ def main():
 	qsps = NewQspsFile()
 	qsps.convert_file('D:\\game.qsps')
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
 	main()
