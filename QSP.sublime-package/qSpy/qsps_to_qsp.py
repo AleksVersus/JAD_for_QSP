@@ -44,20 +44,20 @@ class NewQspLocation():
 		self.decode_actions:list = [] # list of decode in QSP-format location actions
 		self.decode_code:str = ''	# decode in QSP-format location code		
 
-	def change_name(self, name:str) -> None:
+	def change_name(self, new_name:str) -> None:
 		""" Set location name """
-		self.name = name
+		self.name = new_name
 
-	def change_region(self, region:tuple) -> None:
+	def change_region(self, new_region:tuple) -> None:
 		""" Set location name region """
-		self.name_region = region
+		self.name_region = new_region
 
 	def add_code_string(self, code_string:str) -> None:
 		self.code.append(code_string)
 
-	def change_code(self, code:list) -> None:
+	def change_code(self, new_code:list) -> None:
 		""" Set location code. """
-		self.code = code
+		self.code = new_code
 
 	def decode(self) -> None:
 		""" Decode parts of location. """
@@ -284,9 +284,7 @@ class NewQspsFile():
 	def __init__(self) -> None:
 		"""	initialise """
 		# main fields:
-		self.locations_count = 0		# location count for set at file
 		self.locations = []				# list[NewQspLocation]
-		self.locations_id = {}			# dict[locname:locnumber]
 		self.src_strings = []			# all strings of file
 		self.line_offsets = []
 		self.converted_strings:list = []	# output converted strings
@@ -376,8 +374,6 @@ class NewQspsFile():
 	def append_location(self, location:NewQspLocation) -> None:
 		""" Add location in NewQspsFile """
 		self.locations.append(location)
-		self.locations_id[location.name] = self.locations_count
-		self.locations_count += 1
 
 	def to_qsp(self) -> None:
 		""" Convert NewQspsFile to QSP-format """
@@ -388,7 +384,7 @@ class NewQspsFile():
 		self.converted_strings.append('QSPGAME\n')
 		self.converted_strings.append('qsps_to_qsp SublimeText QSP Package\n')
 		self.converted_strings.append(self.decode_qsps_line('No')+'\n')
-		self.converted_strings.append(self.decode_qsps_line(str(self.locations_count))+'\n')
+		self.converted_strings.append(self.decode_qsps_line(str(len(self.locations)))+'\n')
 		# decode locations
 		_decode_location = lambda l: l.decode()
 		with concurrent.futures.ThreadPoolExecutor(max_workers=32) as executor:
