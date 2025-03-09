@@ -99,10 +99,15 @@ class QspToQsps():
 		if not self.locations:
 			return 'QSP-Game is not formed. Prove QSP-file.'
 		else:
+			_cl = QspToQsps.convert_location
 			self.qsps_text = f"QSP-Game {self.file_name}\nЧисло локаций: {self.location_count}\n"
 			self.qsps_text += f"Пароль на исходном файле: {self.password}\n"
-			self.qsps_text += '\n\n'.join([QspToQsps.convert_location(loc) for loc in self.locations])
+			self.qsps_text += '\n\n'.join([''.join(_cl(l)) for l in self.locations])
 			return self.qsps_text+'\n\n'
+		
+	def get_locations(self) -> list:
+		""" Get loactions list """
+		return self.locations
 		
 	def get_location(self, index:int) -> dict:
 		""" Get location by index. """
@@ -121,18 +126,19 @@ class QspToQsps():
 		return location['actions'] or location['description']
 
 	@staticmethod
-	def convert_location(location:dict) -> str:
-		""" Convert location to qsps-format. """
-		qsps_text = f"# {location['name']}\n"
+	def convert_location(location:dict) -> list:
+		""" Convert location to qsps-format. Return qsps-lines. """
+		qsps_lines = []
+		qsps_lines.append(f"# {location['name']}\n")
 		if QspToQsps.base_is_exist(location):
-			qsps_text += "! BASE\n"
-			qsps_text += f"{QspToQsps.convert_description(location['description'])}"
-			qsps_text += f"{QspToQsps.convert_actions(location['actions'])}"
-			qsps_text += "! END BASE\n"
+			qsps_lines.append("! BASE\n")
+			qsps_lines.append(f"{QspToQsps.convert_description(location['description'])}")
+			qsps_lines.append(f"{QspToQsps.convert_actions(location['actions'])}")
+			qsps_lines.append("! END BASE\n")
 		loc_code = location['code'].replace('\r\n','\n')
-		qsps_text += f"{loc_code}\n"
-		qsps_text += f"-- {location['name']} " + ("-" * 33)
-		return qsps_text
+		qsps_lines.append(f"{loc_code}\n")
+		qsps_lines.append(f"-- {location['name']} " + ("-" * 33))
+		return qsps_lines
 
 	@staticmethod
 	def convert_description(description:str) -> str:
@@ -140,13 +146,13 @@ class QspToQsps():
 		if not description:
 			return ''
 		else:
-			lines = description.split('\r\n')
-			last_line = lines.pop()
-			qsps_text = "*p '"
-			for line in lines:
-				qsps_text += f"{QspToQsps.escape_qsp_string(line)}\n"
-			qsps_text += f"{QspToQsps.escape_qsp_string(last_line)}'\n"
-			return qsps_text
+			_eqs = QspToQsps.escape_qsp_string
+			desc_lines = description.split('\r\n')
+			last_line = desc_lines.pop()
+			qsps_lines = ["*p '"]
+			qsps_lines.extend([(f"{_eqs(l)}\n") for l in desc_lines])
+			qsps_lines.append(f"{_eqs(last_line)}'\n")
+			return ''.join(qsps_lines)
 
 	@staticmethod
 	def convert_actions(actions:list) -> str:
@@ -187,18 +193,25 @@ class QspToQsps():
 	@staticmethod
 	def decode_qsp_line(qsp_line:str) -> str:
 		""" Decode qsp-line. """
-		exit_line, qcd = "", QSP_CODREMOV
+		exit_lines = []
+		_decode_char = lambda t, v: (chr(v) if ord(t) == -v else chr(ord(t) + v))
 		for char in qsp_line:
-			exit_line += (chr(qcd) if ord(char) == -qcd else chr(ord(char) + qcd))
-		return exit_line
+			exit_lines.append(_decode_char(char, QSP_CODREMOV))
+		return ''.join(exit_lines)
 
 		
 def main():
-	qsp_to_qsps = QspToQsps('Киберия.qsp')
-	qsp_to_qsps.convert_file()
+	import time
+	old_time = time.time()
+
+	qsp_to_qsps = QspToQsps()
+	qsp_to_qsps.convert_file('..\\..\\[examples]\\examples_qsp_to_qsps\\driveex.qsp')
+
+	new_time = time.time()
+	print(new_time - old_time)
 
 if __name__ == "__main__":
 	# 
-	# main()
+	main()
 	# if you need choose converter for decode gamepass:
 	print(QspToQsps.decode_string(f'2230/4.31'))
