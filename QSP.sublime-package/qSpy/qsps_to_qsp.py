@@ -289,6 +289,32 @@ class NewQspLocation():
 			elif mode['open-string']:
 				NewQspsFile.parse_string(line, mode)
 
+	def get_sources(self) -> list:
+		""" Return qsps-lines of location code, description and actions """
+		_eqs = NewQspLocation.escape_qsp_string
+		qsps_lines = []
+		qsps_lines.append(f"# {self.name}\n")
+		if self.base_description or self.base_actions:
+			qsps_lines.append("! BASE\n")
+			if self.base_description:
+				qsps_lines.append(f"*P '{_eqs(self.base_description)}'\n")
+			if self.base_actions:
+				for action in self.base_actions:
+					open_act = f"ACT '{_eqs(action['name'])}'"
+					open_act += (f", '{_eqs(action['image'])}':" if action['image'] else ':')
+					qsps_lines.append(open_act)
+					qsps_lines.extend(['\n'+line for line in action['code']] if action['code'] else [])
+					qsps_lines.append('END\n')
+			qsps_lines.append("! END BASE\n")
+		qsps_lines.extend(self.code)
+		qsps_lines.append(f"-- {self.name} " + ("-" * 33))
+		return qsps_lines
+	
+	@staticmethod
+	def escape_qsp_string(qsp_string:str) -> str:
+		""" Escape-sequence for qsp-string. """
+		return qsp_string.replace("'", "''")
+
 class NewQspsFile():
 	"""	qsps-file, separated in locations """
 	def __init__(self) -> None:
@@ -353,6 +379,10 @@ class NewQspsFile():
 			output_file = self.output_file
 		with open(output_file, 'w', encoding='utf-16le') as file:
 			file.writelines(self.converted_strings)
+
+	def get_qsp(self) -> list:
+		""" Return converted QSP-strings """
+		return self.converted_strings
 
 	def split_to_locations(self) -> None:
 		""" Split source strings to locations """
@@ -451,15 +481,9 @@ class NewQspsFile():
 				exit_line.append(_encode_char(point))
 		return ''.join(exit_line)
 
-	def save_qsp(self, output_file:str=None) -> None:
-		# TODO: необходимо убрать этот метод, заменив все вхождения на save_to_file
-		if self.output_file is None and output_file is None:
-			print('[303] Not output path.')
-			raise Exception('[303] Not output path.')
-		if output_file is None:
-			output_file = self.output_file
-		with open(output_file, 'w', encoding='utf-16le') as file:
-			file.writelines(self.converted_strings)
+	def get_locations(self) -> list:
+		""" Return list of locaions """
+		return self.locations
 
 def test_dnaray():
 	import time
@@ -478,6 +502,8 @@ def main():
 	old_time = time.time()
 	qsps = NewQspsFile()
 	qsps.convert_file('D:\\game.qsps')
+	l = qsps.get_locations()[0]
+	print(''.join(l.get_sources()))
 	new_time = time.time()
 	print(new_time - old_time)
 
