@@ -92,8 +92,8 @@ class QspsToQspCommand(sublime_plugin.WindowCommand):
 	def run(self) -> None:
 		argv = self.window.extract_variables()
 		if argv['file_extension'] in ('qsps', 'qsp-txt', 'txt-qsp'):
-			qsps_file = NewQspsFile(input_file = argv['file'])
-			qsps_file.convert()
+			qsps_file = NewQspsFile()
+			qsps_file.convert_file(argv['file'])
 		else:
 			qsp.write_error_log(const.QSP_ERROR_MSG.WRONG_EXTENSION_QSPS)
 

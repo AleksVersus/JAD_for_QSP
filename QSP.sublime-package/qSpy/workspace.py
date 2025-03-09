@@ -174,7 +174,10 @@ class QspWorkspace:
 				del to_del_hashs[i]
 				del to_del_paths[i]
 			else:
-				for loc_name, loc_region in NewQspsFile(new_path).get_qsplocs():
+				qsps_file = NewQspsFile()
+				qsps_file.read_from_file(new_path)
+				qsps_files.split_to_locations()
+				for loc_name, loc_region in qsps_files.get_qsplocs():
 					# str, tuple(start, end)
 					self.add_loc(loc_name, loc_region, new_path)
 				self.add_qsps_file(new_path, md5)

@@ -46,7 +46,7 @@ Ij
 qsps_to_qsp = NewQspsFile()
 ```
 
-### .conver_file()
+### .convert_file()
 
 Конвертирует указанный файл в файл QSP.
 
@@ -338,4 +338,18 @@ region = (232, 239) # локация с именем "[start]"
 	'open-string': '', # содержит символы открытия строки по порядку кавычки, апострофы, фигурные скобки
 	
 }
+```
+
+## Конвертирование без исходного файла
+
+Такое конвертирование может использоваться, когда список строк формируется где-то вне модуля. Например, мы считали qsps-файл, обработали его препроцессором, теперь нам нужно конвертировать его и сохранить:
+
+```python
+# qsps_src_lines = [...]
+# output_path = '...'
+qsps_to_qsp = NewQspsFile()
+qsps_to_qsp.set_file_source(qsps_src_lines)
+qsps_to_qsp.split_to_locations()
+qsps_to_qsp.to_qsp()
+qsps_to_qsp.save_to_file(output_path)
 ```

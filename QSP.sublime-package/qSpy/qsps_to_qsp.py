@@ -123,16 +123,7 @@ class NewQspLocation():
 			new_line = '\n' if opened in ('open-pl', 'open-implicit') else ''
 			base_description_chars = []
 			for i, char in enumerate(line):
-				if not mode[opened]:
-					# пока не открыт набор в описание
-					if char in need:
-						# нашли ожидаемый символ, открываем набор
-						mode['open-string'] = char
-						mode[opened] = True
-					elif not char in valid:
-						# найден недопустимый символ
-						break
-				elif mode[opened]:
+				if mode[opened]:
 					if char != mode['open-string']:
 						base_description_chars.append(char)
 					elif (i < len(line)-1 and line[i+1] == mode['open-string']):
@@ -145,6 +136,15 @@ class NewQspLocation():
 						base_description_chars.append(new_line)
 						mode[opened] = False
 						mode['open-string'] = ''
+						break
+				else:
+					# пока не открыт набор в описание
+					if char in need:
+						# нашли ожидаемый символ, открываем набор
+						mode['open-string'] = char
+						mode[opened] = True
+					elif not char in valid:
+						# найден недопустимый символ
 						break
 			self.base_description += ''.join(base_description_chars)
 

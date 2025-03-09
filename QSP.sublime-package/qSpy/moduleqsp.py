@@ -116,11 +116,13 @@ class ModuleQSP():
 	def convert(self, save_temp_file:bool) -> None:
 		# start_time = time.time()
 		if self.converter == 'qsps_to_qsp':
-			qsps_file = NewQspsFile(None, self.output_qsp, self.qsps_code)
+			qsps_file = NewQspsFile()
+			qsps_file.set_file_source(self.qsps_code)
 			# print(f'Module.newqsps {time.time() - start_time}, {time.time() - self.start_time}')
-			qsps_file.convert()
+			qsps_file.split_to_locations()
+			qsps_file.to_qsp()
 			# print(f'Module.convert {time.time() - start_time}, {time.time() - self.start_time}')
-			qsps_file.save_qsp(self.output_qsp)
+			qsps_file.save_to_file(self.output_qsp)
 			# print(f'Module.save_qsp {time.time() - start_time}, {time.time() - self.start_time}')
 			if save_temp_file: self.save_temp_file()
 			# print(f'Module.temp {time.time() - start_time}, {time.time() - self.start_time}')

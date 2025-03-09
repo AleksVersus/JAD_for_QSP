@@ -2015,15 +2015,6 @@
                 ]
             ]
         ],
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": [
-            [
-                "[start]",
-                [
-                    232,
-                    239
-                ]
-            ]
-        ],
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\обязательные локации\\[help].qsps": [
             [
                 "[help]",
@@ -2039,6 +2030,15 @@
                 [
                     29,
                     30
+                ]
+            ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\[start].qsps": [
+            [
+                "[start]",
+                [
+                    232,
+                    239
                 ]
             ]
         ]
