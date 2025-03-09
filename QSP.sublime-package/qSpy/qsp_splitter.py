@@ -3,8 +3,8 @@ import os
 import re
 import codecs
 
-from .qsp_to_qsps import QspToQsps
-from .qsps_to_qsp import NewQspsFile
+from qsp_to_qsps import QspToQsps
+from qsps_to_qsp import NewQspsFile
 
 class QspSplitter():
 	"""
@@ -45,7 +45,7 @@ class QspSplitter():
 		""" Set pathes of files by mode """
 		input_file = os.path.abspath(input_file)
 		self.root_folder_path, full_file_name = os.path.split(input_file)
-		self.file_name, self.file_ext = os.path.splitext(full_file_name)[0]
+		self.file_name, self.file_ext = os.path.splitext(full_file_name)
 		self.output_folder = os.path.join(self.root_folder_path, self.file_name)
 		self.qsp_project_file = os.path.join(self.root_folder_path, self.file_name+".qproj")
 		if self.mode == 'game':
@@ -71,103 +71,11 @@ class QspSplitter():
 		else:
 			print(f'[401] QspSplitter: mode is not setted.')
 
-	def replace_bad_symbols(self, file_name):
-		# заменяем запрещённые символы на символы подчёркивания
-		file_name=re.sub(r'(&lt;|&gt;|&quot;)','_',file_name)
-		file_name=re.sub(r'<','_',file_name)
-		file_name=re.sub(r'>','_',file_name)
-		file_name=re.sub(r'\*','_',file_name)
-		file_name=re.sub(r'\\','_',file_name)
-		file_name=re.sub(r'\/','_',file_name)
-		file_name=re.sub(r'\:','_',file_name)
-		file_name=re.sub(r'\?','_',file_name)
-		file_name=re.sub(r'\|','_',file_name)
-		file_name=re.sub(r'\"','_',file_name)
-		return file_name
-
-	def splitter(self, game_adr="game.txt",proj_adr="game.qproj",export_fold="export_game"):
-		folder_path=""
-		location_dict={} # список/словарь файлов/локаций
-		location_array={} # словарь, содержащий и названия локаций и их полный текст
-		if os.path.isfile(game_adr):
-			# декодируем файл, убираем BOM
-			byte = min(32, os.path.getsize(game_adr))
-			raw = open(game_adr,'rb').read(byte)
-			encoding='utf-8'
-			bt=b''
-			if raw.startswith(codecs.BOM_UTF8):
-				encoding='utf-8'
-				bt=codecs.BOM_UTF8
-			elif raw.startswith(codecs.BOM_UTF16):
-				encoding='utf-16'
-				bt=codecs.BOM_UTF16
-			if bt!=b'':
-				with open(game_adr,'r',encoding=encoding) as file:
-					text_game=file.read()
-				with open(game_adr,'w',encoding='utf-8') as file:
-					file.write(text_game)
-			else:
-				with open(game_adr,'r',encoding=encoding) as file:
-					file.seek(0)
-					text_game=file.read()
-				with open(game_adr,'w',encoding='utf-8') as file:
-					file.write(text_game)
-
-			# данная часть получает словарь типа: имя_локации:размещение в папках
-			if os.path.isfile(proj_adr):
-				...
-					#for i in location_dict:
-					#	print(location_dict[i]) # тест полученных имён локаций.
-
-			# эта часть дробит большой файл на фрагменты, каждый фрагмент помещая в словарь типа название_локации:содержимое
-			with open(game_adr,"r",encoding="utf-8") as game_file:
-				game_list=game_file.readlines()
-				location_name=""
-				for i in game_list:
-					location_open=re.match(r'#\s*?.+?$',i)
-					location_close=re.match(r'---\s*?.+?$',i)
-					if location_open!=None:
-						# мы нашли начало локации, получаем её имя
-						location_name=location_open.group(0)
-						location_name=re.sub(r'^#\s*','',location_name)
-						location_array[location_name]=i
-					elif location_close!=None:
-						# мы нашли конец локации, правда ли это конец
-						location_array[location_name]+=i 
-						ln=location_close.group(0)
-						ln=re.sub(r'^---\s+','',ln)
-						ln=re.sub(r'\s-+$','',ln)
-						if ln==location_name:
-							location_name=""
-					elif location_name!="":
-						location_array[location_name]+=i
-
-			# после того, как были составлены словарь путей и словарь локаций сохраняем файлы
-			count=1
-			if not os.path.isdir(export_fold):
-				os.mkdir(export_fold)
-			for location_name in location_array:
-				if location_name in location_dict:
-					# если в списке путей есть указанная локация, берём путь оттуда
-					path=location_dict[location_name]
-				else:
-					# в противном случае сохраняем локацию в текущей папке
-					path = self.replace_bad_symbols(location_name)+".qsps"
-				folder=os.path.split(path)[0]
-				if not os.path.isdir(os.path.join(export_fold, folder)):
-					# если дирректория не существует, создаём
-					os.mkdir(os.path.join(export_fold, folder))
-				if os.path.isfile(os.path.join(export_fold, path)):
-					name, ext = os.path.splitext(path)
-					path=f"{name}_{count}{ext}"
-				# print(f"[160] {path}")
-				with open(os.path.join(export_fold, path),"w",encoding="utf-8") as file:
-					# теперь сохраняем файлы
-					file.write(location_array[location_name])
-			# удаляем исходный файл. delete qsps
-			# os.remove(game_adr)
-		else:
-			print('Error. File "game.txt" is not found!')
+	@staticmethod
+	def replace_bad_symbols(file_name:str) -> str:
+		""" Replace invalid symbols in file name. """
+		regex = re.compile(r'(&lt;|&gt;|&quot;|[<>*"\\\/:\?|\'])')
+		return regex.sub('_', file_name)
 
 	def read_qproj(self) -> None:
 		""" Read qproj file and fill dict by folders for locations """
@@ -224,15 +132,43 @@ class QspSplitter():
 
 	def split_qsps(self) -> None:
 		""" Split qsps-file and write locations as files """
-		if self.mode != 'game' or not os.path.isfile(self.qsps_file):
+		if self.mode != 'txt' or not os.path.isfile(self.qsps_file):
 			return None
 		q = NewQspsFile()
 		q.read_from_file(self.qsps_file)
 		q.split_to_locations()
+		count = {}
+		for location in q.get_locations():
+			output_lines = []
+			loc_name = location.name
+			output_lines.append(f'QSP-Game {loc_name}\n\n')
+			if loc_name in self.qproj_data:
+				fold, file = self.qproj_data[loc_name]
+			else:
+				fold, file = self.output_folder, self.file_name
+			output_path = os.path.join(fold, file + '.qsps')
+			if not output_path in count: count[output_path] = 0
+			if os.path.isfile(output_path):
+				count[output_path] += 1
+				output_path = os.path.join(fold, f'{file}_{count[output_path]}.qsps')
+			os.makedirs(fold, exist_ok=True)
+			output_lines.extend(location.get_sources())
+			with open(output_path, 'w', encoding='utf-8') as fp:
+				fp.writelines(output_lines)
 
 def main():
-	args = {'qsps-file':'..\\flat_earth\\lastbugs.qsps'}
-	QspSplitter(args=args).split_file()
+	import time
+	old_time = time.time()
+
+	QspSplitter().split_file('..\\..\\[examples]\\examples_splitter\\driveex.qsp')
+
+	new_time = time.time()
+	print(new_time - old_time)
+
+	QspSplitter().split_file('..\\..\\[examples]\\examples_splitter\\basesex.qsps', mode='txt')
+
+	old_time = time.time()
+	print(old_time - new_time)
 
 if __name__=="__main__":
 	# local start of script
