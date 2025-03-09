@@ -6,8 +6,7 @@ import re
 
 def safe_mk_fold(new_path:str) -> None:
 	""" Safe make dir with making all chain of dir """
-	if not os.path.isdir(new_path):
-		os.makedirs(new_path)
+	os.makedirs(new_path, exist_ok=True)
 
 def write_error_log(error_text:str) -> None:
 	""" Write message in console. """
