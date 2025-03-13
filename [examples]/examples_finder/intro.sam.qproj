@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QGen-project version="4.0.0 beta 1">
+  <Structure>
+    <Location name="!intro!"/>
+    <Folder name="примерные параметры героя">
+      <Location name="hero.intro"/>
+      <Location name="hero.sex"/>
+      <Location name="hero.property"/>
+      <Location name="hero.bodypart"/>
+      <Location name="hero.uron"/>
+      <Location name="hero.count"/>
+    </Folder>
+  </Structure>
+</QGen-project>

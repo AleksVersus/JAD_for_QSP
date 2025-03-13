@@ -11,8 +11,7 @@ from typing import (Union, List, Tuple)
 from .qSpy.builder import BuildQSP
 from .qSpy.qsp_to_qsps import QspToQsps
 from .qSpy.qsps_to_qsp import NewQspsFile
-from .qSpy.qsp_splitter import QspSplitter
-from .qSpy.main_cs import FinderSplitter
+from .qSpy.qsp_splitter import (QspSplitter, FinderSplitter)
 from .qSpy.workspace import QspWorkspace
 from .qSpy import function as qsp
 # Import constants
@@ -105,9 +104,9 @@ class QspSplitterCommand(sublime_plugin.WindowCommand):
 	def run(self) -> None:
 		argv = self.window.extract_variables()
 		if argv['file_extension'] in ('qsps', 'qsp-txt', 'txt-qsp'):
-			QspSplitter(args = {'qsps-file': argv['file']}).split_file()
+			QspSplitter().split_file(argv['file'], mode='txt')
 		elif argv['file_extension'] == 'qsp':
-			QspSplitter(args = {'game-file': argv['file']}).split_file()
+			QspSplitter().split_file(argv['file'], mode='game')
 		else:
 			qsp.write_error_log(const.QSP_ERROR_MSG.WRONG_EXTENSION_SPLITTER)
 
@@ -115,8 +114,7 @@ class QspSplitProjectCommand(sublime_plugin.WindowCommand):
 	""" Start command of convert and split QSP-pproject """
 	def run(self) -> None:
 		argv = self.window.extract_variables()
-		splitter = FinderSplitter(folder_path = argv['file_path'])
-		splitter.search_n_split()
+		FinderSplitter().search_n_split(folder_path = argv['file_path'])
 
 class QspNewProjectCommand(sublime_plugin.WindowCommand):
 	""" Create New Standart QSP-project """

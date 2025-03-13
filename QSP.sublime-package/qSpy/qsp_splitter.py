@@ -119,7 +119,7 @@ class QspSplitter():
 			if loc_name in self.qproj_data:
 				fold, file = self.qproj_data[loc_name]
 			else:
-				fold, file = self.output_folder, self.file_name
+				fold, file = self.output_folder, loc_name
 			output_path = os.path.join(fold, file + '.qsps')
 			if not output_path in count: count[output_path] = 0
 			if os.path.isfile(output_path):
@@ -145,7 +145,7 @@ class QspSplitter():
 			if loc_name in self.qproj_data:
 				fold, file = self.qproj_data[loc_name]
 			else:
-				fold, file = self.output_folder, self.file_name
+				fold, file = self.output_folder, loc_name
 			output_path = os.path.join(fold, file + '.qsps')
 			if not output_path in count: count[output_path] = 0
 			if os.path.isfile(output_path):
@@ -155,6 +155,38 @@ class QspSplitter():
 			output_lines.extend(location.get_sources())
 			with open(output_path, 'w', encoding='utf-8') as fp:
 				fp.writelines(output_lines)
+
+class FinderSplitter():
+	"""
+		Search and convert n split QSP-files, and/or split qsps-files.
+	"""
+	def __init__(self):
+		self.folder_path = ''
+		self.mode = 'both' # 'game', 'txt' or 'both' mode
+
+	def search_n_split(self, folder_path:str, mode='both'):
+		self.folder_path = os.path.abspath(folder_path)
+		self.mode = mode
+		qsp_files_list = []
+		qsps_files_list = []
+		for fold_or_file in os.listdir(self.folder_path):
+			path = os.path.join(self.folder_path, fold_or_file)
+			if os.path.isfile(path):
+				_, file_ext = os.path.splitext(fold_or_file)
+				if file_ext in ('.qsp'):
+					qsp_files_list.append(path)
+				elif file_ext in ('.qsps', '.qsp-txt', '.txt-qsp'):
+					qsps_files_list.append(path)
+		if self.mode in ('game', 'both') and qsp_files_list:
+			for file in qsp_files_list:
+				QspSplitter().split_file(file, mode='game')
+		if self.mode in ('txt', 'both') and qsps_files_list:
+			for file in qsps_files_list:
+				QspSplitter().split_file(file, mode='txt')
+	
+	def change_mode(self, new_mode:str) -> None:
+		""" Change mode of find and split  """
+		self.mode = new_mode
 
 def main():
 	import time
@@ -170,6 +202,15 @@ def main():
 	old_time = time.time()
 	print(old_time - new_time)
 
+def find_n_split():
+	import time
+	old_time = time.time()
+
+	FinderSplitter().search_n_split('..\\..\\[examples]\\examples_finder', mode='game')
+
+	new_time = time.time()
+	print(new_time - old_time)
+
 if __name__=="__main__":
 	# local start of script
-	main()
+	find_n_split()
