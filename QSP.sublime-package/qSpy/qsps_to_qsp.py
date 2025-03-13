@@ -5,7 +5,7 @@ import os
 import re
 import concurrent.futures
 
-from function import (del_first_pref)
+from .function import (del_first_pref)
 # import time
 
 # constants:

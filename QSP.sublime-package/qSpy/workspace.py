@@ -176,8 +176,8 @@ class QspWorkspace:
 			else:
 				qsps_file = NewQspsFile()
 				qsps_file.read_from_file(new_path)
-				qsps_files.split_to_locations()
-				for loc_name, loc_region in qsps_files.get_qsplocs():
+				qsps_file.split_to_locations()
+				for loc_name, loc_region in qsps_file.get_qsplocs():
 					# str, tuple(start, end)
 					self.add_loc(loc_name, loc_region, new_path)
 				self.add_qsps_file(new_path, md5)

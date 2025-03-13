@@ -1,5 +1,6 @@
 import os
 import subprocess
+from typing import (List)
 
 from . import function as qsp
 from .qsps_to_qsp import NewQspsFile
@@ -8,18 +9,18 @@ from .pp import pp_this_lines
 
 class ModuleQSP():
 
-	def __init__(self):
+	def __init__(self) -> None:
 
-		self.src_qsps_file = []		# list[SrcQspsFile]
+		self.src_qsps_file:List[SrcQspsFile] = []
 
-		self.output_qsp = None		# path of output QSP-file (module)
-		self.output_txt = None		# path of temp file in txt2gam format
+		self.output_qsp:str = None		# path of output QSP-file (module)
+		self.output_txt:str = None		# path of temp file in txt2gam format
 
 		# self.code_system = 'utf-8'
-		self.converter = 'qsps_to_qsp' # converter qsps -> QSP
-		self.converter_param = ''	# string of parameters for converting
+		self.converter:str = 'qsps_to_qsp' # converter qsps -> QSP
+		self.converter_param:str = ''	# string of parameters for converting
 
-		self.qsps_code = []			# all strings of module code
+		self.qsps_code:List[str] = []	# all strings of module code
 		# self.start_time = start_time
 	
 	def set_converter(self, converter:str='qsps_to_qsp', args:str='') -> None:
@@ -92,16 +93,16 @@ class ModuleQSP():
 
 	def read(self) -> str:
 		""" Get outer text of module """
-		text = ""
+		text:List[str] = []
 		for src in self.src_qsps_file:
-			text += src.read() + '\r\n'
-		return text
+			text.extend(src.get_strings())
+			text.append('\r\n')
+		return ''.join(text)
 
 	def save_temp_file(self):
 		# если папка не создана, нужно её создать
 		path_folder = os.path.split(self.output_txt)[0]
-		if not os.path.exists(path_folder):
-			os.makedirs(path_folder)
+		os.makedirs(path_folder, exist_ok=True)
 		text = self.read()
 		code_system = self.choose_code_system()
 		# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
@@ -109,7 +110,7 @@ class ModuleQSP():
 		with open(self.output_txt, 'w', encoding=code_system) as file:
 			file.write(text)
 
-	def extract_qsps(self):
+	def extract_qsps(self) -> None:
 		for src in self.src_qsps_file:
 			self.qsps_code.extend(src.get_strings())
 

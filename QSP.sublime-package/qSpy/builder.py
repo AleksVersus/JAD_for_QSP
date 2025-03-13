@@ -126,7 +126,7 @@ class BuildQSP():
 			# Start-file defined. Get from define.
 			self.start_module_path = os.path.abspath(self.root['start'])
 
-	def build_and_run(self):
+	def build_and_run(self) -> None:
 		self.print_mode()
 
 		if self.modes['build']:

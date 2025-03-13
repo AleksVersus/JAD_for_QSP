@@ -3,8 +3,8 @@ import os
 import re
 import codecs
 
-from qsp_to_qsps import QspToQsps
-from qsps_to_qsp import NewQspsFile
+from .qsp_to_qsps import QspToQsps
+from .qsps_to_qsp import NewQspsFile
 
 class QspSplitter():
 	"""
