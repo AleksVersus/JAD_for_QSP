@@ -214,28 +214,15 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 				else:
 					result += string
 					break
+			elif scope_type is not None:
+				if args["quote"] == correspondence_table.get(scope_type, None):
+					args["openquote"] = False
+					args["quote"] = ""
+				result += prev_text + scope_regexp_obj.group(0)
+				string = post_text
 			else:
-				if scope_type == "apostrophe" and args["quote"] == "apostrophes":
-					args["openquote"] = False
-					args["quote"] = ""
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
-				elif scope_type == "quote" and args["quote"] == "quotes":
-					args["openquote"] = False
-					args["quote"] = ""
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
-				elif scope_type == "brace-close" and args["quote"] == "brackets":
-					args["openquote"]=False
-					args["quote"] = ""
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
-				elif scope_type != None:
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
-				else:
-					result += string
-					break
+				result += string
+				break
 
 	if result != "":
 		if re.match(r'^\s*?$', result) != None and args["openquote"] == False:
