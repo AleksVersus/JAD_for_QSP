@@ -4,14 +4,13 @@ from typing import (List)
 
 from . import function as qsp
 from .qsps_to_qsp import NewQspsFile
-from .pp import pp_this_lines
 # import time
 
 class ModuleQSP():
 
 	def __init__(self) -> None:
 
-		self.src_qsps_file:List[SrcQspsFile] = []
+		self.src_qsps_file:List[NewQspsFile] = []
 
 		self.output_qsp:str = None		# path of output QSP-file (module)
 		self.output_txt:str = None		# path of temp file in txt2gam format
@@ -29,9 +28,11 @@ class ModuleQSP():
 		self.converter_param = args
 
 	def extend_by_file(self, file_path:str) -> None: # file_path:abs_path of file
-		""" Add SrcQspsFile by file-path """
+		""" Add NewQspsFile by file-path """
 		if os.path.isfile(file_path):
-			self.src_qsps_file.append(SrcQspsFile(file_path))
+			src = NewQspsFile()
+			src.read_from_file(file_path)
+			self.src_qsps_file.append(src)
 		else:
 			qsp.write_error_log(f'[203] File don\'t exist. Prove path {file_path}.')
 
@@ -44,9 +45,11 @@ class ModuleQSP():
 			file_path = os.path.abspath(el) # TODO: if el is abspath - del absing path of el
 			self.extend_by_file(file_path)
 
-	def extend_by_src(self, src_strings:list) -> None:
-		""" Add SrcQspsFile by qsps-src-code strings """
-		self.src_qsps_file.append(SrcQspsFile(file_path=None, src_strings=src_strings))
+	def extend_by_src(self, qsps_lines:List[str]) -> None:
+		""" Add NewQspsFile by qsps-src-code strings """
+		src = NewQspsFile()
+		src.set_file_source(qsps_lines)
+		self.src_qsps_file.append(src)
 
 	def set_exit_files(self, game_path:str) -> None:
 		"""
@@ -57,6 +60,8 @@ class ModuleQSP():
 		self.output_txt = os.path.splitext(self.output_qsp)[0]+".txt"
 
 	def choose_code_system(self) -> str:
+		""" utf-8 for built-in converter, utf-16-le for txt2gam """
+		# TODO: txt2gam поддерживает utf-8. Можно убрать выбор кодировки.
 		return ('utf-8' if self.converter == 'qsps_to_qsp' else 'utf-16-le')
 
 
@@ -75,35 +80,36 @@ class ModuleQSP():
 				# text_file = src.read() + '\r\n' # файл не отправляется на препроцессинг
 				...
 			elif pponoff == 'Off':
-				first_string = src.get_string(0)
-				second_string = src.get_string(1)
+				first_string = src.get_qsps_line(0)
+				second_string = src.get_qsps_line(1)
 				if "!@pp:on\n" in (first_string, second_string):
 					arguments = {"include": True, "pp": True, "savecomm": False}
 					# файл отправляется на препроцессинг
 					src.preprocess(arguments, pp_markers)
 				# text_file = src.read() + "\r\n"
 			elif pponoff == 'On':
-				first_string = src.get_string(0)
-				second_string = src.get_string(1)
+				first_string = src.get_qsps_line(0)
+				second_string = src.get_qsps_line(1)
 				if not "!@pp:off\n" in (first_string, second_string):
 					arguments = {"include":True, "pp":True, "savecomm":False}
 					src.preprocess(arguments, pp_markers)
 				# text_file = src.read() + '\r\n'
 			# text += src.read() + '\r\n'
 
-	def read(self) -> str:
+	def src_to_text(self) -> str:
 		""" Get outer text of module """
 		text:List[str] = []
 		for src in self.src_qsps_file:
-			text.extend(src.get_strings())
-			text.append('\r\n')
+			text.extend(src.get_source())
+			text.append('\n')
 		return ''.join(text)
 
-	def save_temp_file(self):
+	def save_temp_file(self) -> None:
+		""" Save temp file of module before converting by txt2gam, or for checkout. """
 		# если папка не создана, нужно её создать
 		path_folder = os.path.split(self.output_txt)[0]
 		os.makedirs(path_folder, exist_ok=True)
-		text = self.read()
+		text = self.src_to_text()
 		code_system = self.choose_code_system()
 		# необходимо записывать файл в кодировке utf-16le, txt2gam версии 0.1.1 понимает её
 		text = text.encode(code_system, 'ignore').decode(code_system,'ignore')
@@ -113,7 +119,7 @@ class ModuleQSP():
 	def extract_qsps(self) -> None:
 		""" From qsps-files extract sources lines and add to module source """
 		for src in self.src_qsps_file:
-			self.qsps_code.extend(src.get_strings())
+			self.qsps_code.extend(src.get_source())
 
 	def convert(self, save_temp_file:bool) -> None:
 		""" Convert sources and save module to file """
@@ -135,29 +141,3 @@ class ModuleQSP():
 			subprocess.run(_run, stdout=subprocess.PIPE)
 			if not save_temp_file:
 				os.remove(self.output_txt)
-
-class SrcQspsFile():
-
-	def __init__(self, file_path:str, src_strings:list=None) -> None:
-
-		self.file_path = file_path
-		self.src_strings = src_strings
-
-		if file_path is not None:
-			with open(file_path, 'r', encoding='utf-8') as fp:
-				self.src_strings = fp.readlines()
-
-	def read(self) -> str:
-		""" Return of src in text-format """
-		return ''.join(self.src_strings)
-
-	def get_string(self, number:int) -> str:
-		""" return string of src """
-		return self.src_strings[number]
-
-	def get_strings(self) -> list:
-		return self.src_strings
-
-	def preprocess(self, args:dict, pp_variables:dict) -> None:
-		""" Препроцессинг файла. Пока что используется внешний файл	"""
-		self.src_strings = pp_this_lines(self.src_strings, args, pp_variables)
