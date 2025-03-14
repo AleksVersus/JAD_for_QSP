@@ -170,23 +170,19 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 		# 1. режим добавления строк включен;
 		# 2. препроцессор включен;
 		# 3. сохранение спецкомментариев отключено
+		correspondence_table:dict = {
+			# scope_type: quote-type
+			'apostrophe': 'apostrophes',
+			'quote': 'quotes',
+			'brace-open': 'brackets'
+		}
 		result = ""
 		while len(string) > 0:
 			scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
 			if args["openquote"] == False:
-				if scope_type == "apostrophe":
+				if scope_type in ('apostrophe', 'quote', 'brace-open'):
 					args["openquote"] = True
-					args["quote"] = "apostrophes"
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
-				elif scope_type == 'quote':
-					args["openquote"] = True
-					args["quote"] = "quotes"
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
-				elif scope_type == "brace-open":
-					args["openquote"] = True
-					args["quote"] = "brackets"
+					args["quote"] = correspondence_table[scope_type]
 					result += prev_text + scope_regexp_obj.group(0)
 					string = post_text
 				elif scope_type == "brace-close":
