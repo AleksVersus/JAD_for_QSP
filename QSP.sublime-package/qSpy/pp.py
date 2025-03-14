@@ -21,6 +21,7 @@ _OPEN_BRACE = re.compile(r'\{')
 _CLOSE_BRACE = re.compile(r'\}')
 
 _OPERANDS = re.compile(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>')
+_LINE_END_AMPERSAND = re.compile(r'\s*?\&\s*?$')
 
 # функция, извлекающая директиву в скобках
 def extract_directive(string:str, directive:Literal['var', 'if']) -> str:
@@ -179,7 +180,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 		result = ""
 		while len(string) > 0:
 			scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
-			if args["openquote"] == False:
+			if not args["openquote"]:
 				if scope_type in ('apostrophe', 'quote', 'brace-open'):
 					args["openquote"] = True
 					args["quote"] = correspondence_table[scope_type]
@@ -193,10 +194,9 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 					# необходимо удалить его из строки
 					if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
 						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
-						result += prev_text
-						result = re.sub(r'\s*?\&\s*?$', '', result) + '\n'
+						result += _LINE_END_AMPERSAND.sub('', prev_text) + '\n'
 						if re.match(r'^\s*?$',result) != None:
-							result = ""
+							return None
 						break
 					else:
 						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
@@ -206,8 +206,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 					# если это удаляющий комментарий
 					if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
 						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
-						result="" # строка удаляется из списка
-						break
+						return None # строка удаляется из списка
 					else:
 						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
 						result += prev_text + scope_regexp_obj.group(0)
