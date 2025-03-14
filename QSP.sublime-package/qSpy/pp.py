@@ -1,67 +1,86 @@
 import re
+from typing import (List, Literal, Tuple, Dict, Match, Optional)
 
-# возвращает вхождение регэкспа или пустую строку
-def strfind(regex: str, string: str) -> str:
-	"""Return the match or an empty string."""
-	instr = re.search(regex, string)
-	return instr.group(0) if instr is not None else ""
+# regular expressions constants
+_DUMMY_MATCH = re.compile(r'^\s*$').match('')
+
+PP_DIRECTIVE_START = re.compile(r'^!@pp:')
+PP_ON_DIRECTIVE = re.compile(r'^on\n$')
+PP_OFF_DIRECTIVE = re.compile(r'^off\n$')
+PP_ONSAVECOMM_DIR = re.compile(r'^savecomm\n$')
+PP_OFFSAVECOMM_DIR = re.compile(r'^nosavecomm\n$')
+PP_ONCONDITION_DIR = re.compile(r'^if\(.*?\)')
+PP_OFFCONDITION_DIR = re.compile(r'^endif\n$')
+PP_VARIABLE_DIR = re.compile(r'^var\(.*?\)')
+
+SIMPLE_SPECCOM = re.compile(r'!@(?!\<)')
+HARDER_SPECCOM = re.compile(r'!@<')
+DOUBLE_QUOTES = re.compile(r'"')
+SINGLE_QUOTES = re.compile(r"'")
+OPEN_BRACE = re.compile(r'\{')
+CLOSE_BRACE = re.compile(r'\}')
+
+_OPERANDS = re.compile(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>')
 
 # функция, извлекающая директиву в скобках
-def get_direct(string, direct) -> str:
+def get_direct(string:str, directive:Literal['var', 'if']) -> str:
 	"""	Extract the directive in parentheses. """
-	return string.replace(direct, '', 1).strip()[1:-1]
+	return string.replace(directive, '', 1).strip()[1:-1]
 
 # функция, добавляющая метку и значение
-def add_variable(vares, direct):
+def add_variable(variables:dict, directive:str) -> None:
+	""" Add variable and value to variables dictionary. """
 	temp = [False, False]
-	# vares - ссылка на словарь
-	if "=" in direct:
+	if "=" in directive:
 		# делим по знаку равенства
-		direct_list = direct.split("=")
-		temp[0] = vares[direct_list[0]] if direct_list[0] in vares else direct_list[0]
-		temp[1] = vares[direct_list[1]] if direct_list[1] in vares else direct_list[1]
-		if direct_list[0] in vares and type(vares[direct_list[0]]) == bool:
+		direct_list = directive.split("=")
+		temp[0] = (variables[direct_list[0]] if direct_list[0] in variables else direct_list[0])
+		temp[1] = (variables[direct_list[1]] if direct_list[1] in variables else direct_list[1])
+		if direct_list[0] in variables and type(variables[direct_list[0]]) == bool:
 			...
 		else:
-			vares[direct_list[0]] = temp[1]
-		if direct_list[1] in vares and type(vares[direct_list[1]]) == bool:
+			variables[direct_list[0]] = temp[1]
+		if direct_list[1] in variables and type(variables[direct_list[1]]) == bool:
 			...
 		else:
-			vares[direct_list[1]] = temp[1]
+			variables[direct_list[1]] = temp[1]
 	else:
-		vares[direct] = True
+		variables[directive] = True
 
 # функция распарсивает строку условия на элементы
-def parse_condition(vares, direct):
-	operand_list = re.split(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>', direct)
-	for i in operand_list:
+def parse_condition(variables:dict, directive:str) -> None:
+	""" Condition Parsing at operands """
+	operand_list:List[str] = _OPERANDS.split(directive)
+	for operand in operand_list:
 		if len(operand_list) > 1:
-			i = i.strip()
-			if i != "" and (not i in vares):
-				vares[i] = i
-		elif not i in vares:
-			vares[i] = False
+			operand = operand.strip()
+			if operand != "" and (not operand in variables):
+				variables[operand] = operand
+		elif not operand in variables:
+			variables[operand] = False
+	return operand_list
 
 # функция, которая проверяет, выполняется ли условие
-def met_condition(vares, direct):
+def met_condition(variables:dict, directive:str) -> bool:
+	""" Check if the condition is met. """
 	result = dict()
-	parse_condition(vares, direct)
+	operands:List[str] = parse_condition(variables, directive)
 	# следующий цикл формирует условие с действительными значениями вместо элементов
-	for var in vares:
-		trim_var = re.search(r'\b'+var+r'\b', direct)
-		if (var in direct) and (trim_var != None):
-			if type(vares[var]) == str:
-				direct = direct.replace(var, "'" + str(vares[var]) + "'")
+	for var in operands:
+		if (var in directive) and re.search(r'\b'+var+r'\b', directive):
+			if type(variables[var]) == str:
+				directive = directive.replace(var, f"'{variables[var]}'")
 			else:
-				direct = direct.replace(var, str(vares[var]))
-	direct = direct.replace("''", "'")
-	direct = direct.replace('""', '"')
-	direct = "out=(True if " + direct + " else False)"
-	exec(direct, result)
+				directive = directive.replace(var, str(variables[var]))
+	directive = directive.replace("''", "'")
+	directive = directive.replace('""', '"')
+	directive = f"out=(True if {directive} else False)"
+	exec(directive, result)
 	return result['out']
 
 # функция, которая правильно открывает блок условия
-def open_condition(command, condition, args):
+def open_condition(command:str, condition:bool, args:dict) -> None:
+	""" Open condition for loop use. """
 	i_list = re.split(r'\s+', command.strip())
 	prev_args = args['if']
 	for i in i_list:
@@ -93,24 +112,27 @@ def open_condition(command, condition, args):
 
 # функция, которая правильно закрывает условие
 def close_condition(args):
+	""" Right closing of condition """
 	prev_args = args["if"]
 	args["include"] = prev_args["include"]
 	args["pp"] = prev_args["pp"]
 	args["savecomm"] = prev_args["savecomm"]
 
-
-def replace_args(arguments, args):
-	""" функция переназначающая локальные для текущего файла режимы из глобальных """
+# функция переназначающая локальные для текущего файла режимы из глобальных
+def replace_args(arguments:dict, args:dict) -> None:
+	""" Resetting of local-modes from global-modes """
 	if "include" in args:
 		arguments["include"] = args["include"]
 	if "pp" in args:
 		arguments["pp"] = args["pp"]
 	if "savecomm" in args:
 		arguments["savecomm"] = args["savecomm"]
+	
 
-def find_speccom_scope(string_line:str):
+def find_speccom_scope(string_line:str) -> Tuple[Optional[str], str, Match[str], str]:
+	""" Find in string scopes of special comments """
 	maximal = len(string_line)+1
-	mini_data_base = {
+	mini_data_base:Dict[str, list] = {
 		"scope-name": [
 			'simple-speccom',
 			'strong-speccom',
@@ -121,32 +143,31 @@ def find_speccom_scope(string_line:str):
 		],
 		"scope-regexp":
 		[
-			re.search(r'!@(?!\<)', string_line),
-			re.search(r'!@<', string_line),
-			re.search(r'"', string_line),
-			re.search(r"'", string_line),
-			re.search(r'\{', string_line),
-			re.search(r'\}', string_line)
+			SIMPLE_SPECCOM.search(string_line),
+			HARDER_SPECCOM.search(string_line),
+			DOUBLE_QUOTES.search(string_line),
+			SINGLE_QUOTES.search(string_line),
+			OPEN_BRACE.search(string_line),
+			CLOSE_BRACE.search(string_line)
 		],
 		"scope-instring":
 		[]
 	}
 	for i, _ in enumerate(mini_data_base['scope-name']):
-		match_in = mini_data_base['scope-regexp'][i]
-		mini_data_base['scope-instring'].append(
-			string_line.index(match_in.group(0)) if match_in is not None else maximal)
-	minimal = min(mini_data_base['scope-instring'])
+		match_in:Match[str] = mini_data_base['scope-regexp'][i]
+		mini_data_base['scope-instring'].append(match_in.start(0) if match_in else maximal)
+	minimal:int = min(mini_data_base['scope-instring'])
 	if minimal != maximal:
-		i = mini_data_base['scope-instring'].index(minimal)
-		scope_type = mini_data_base['scope-name'][i]
-		scope_regexp_obj = mini_data_base['scope-regexp'][i]
-		scope = scope_regexp_obj.group(0)
-		q = string_line.index(scope)
-		prev_line = string_line[0:q]
-		post_line = string_line[q+len(scope):]
+		i:int = mini_data_base['scope-instring'].index(minimal)
+		scope_type:str = mini_data_base['scope-name'][i]
+		scope_regexp_obj:Match[str] = mini_data_base['scope-regexp'][i]
+		scope:str = scope_regexp_obj.group(0)
+		q:int = scope_regexp_obj.start(0)
+		prev_line:str = string_line[0:q]
+		post_line:str = string_line[q+len(scope):]
 		return scope_type, prev_line, scope_regexp_obj, post_line
 	else:
-		return None, '', re.match(r'^\s*$', ''), string_line
+		return None, '', _DUMMY_MATCH, string_line
 
 
 def pp_string(text_lines, string, args):
@@ -242,11 +263,12 @@ def pp_this_file(file_path:str, args:dict, variables:dict = None) -> str:
 	result_lines = pp_this_lines(file_lines, args, variables)
 	return ''.join(result_lines)
 
-def pp_this_lines(file_lines:list, args:dict, variables:dict = None) -> list:
+def pp_this_lines(file_lines:List[str], args:dict, variables:dict = None) -> List[str]:
+	""" List of lines Preprocessing. Return list of lines after preprocesing. """
 	# стандартные значения, если не указаны:
 	if variables is None: variables = { "Initial": True, "True": True, "False": False }
-	result_text = [] # результат обработки: список строк
-	arguments = {
+	result_text:List[str] = [] # результат обработки: список строк
+	arguments:dict = {
 		# словарь режимов (текущих аргументов):
 		"include": True, # пока включен этот режим, строки добавляются в результат
 		"pp": True, # пока включен этот режим, строки обрабатываются парсером
@@ -259,37 +281,33 @@ def pp_this_lines(file_lines:list, args:dict, variables:dict = None) -> list:
 	replace_args(arguments, args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
 	# перебираем строки в файле
 	for line in file_lines:
-		command = re.match(r'^!@pp:', line) # проверяем является ли строка командой
-		if command == None:
-			# если это не команда, обрабатываем строку
-			pp_string(result_text, line, arguments)
-		else:
+		if PP_DIRECTIVE_START.match(line): # проверяем является ли строка командой
 			# если это команда, распарсим её
-			comm_list = re.split(r':', line)
+			comm_list = line.split(':')
 			if arguments["pp"]:
 				# только при включенном препроцессоре выполняются все команды
 				# проверяем, что за команда
-				if strfind(r'^on\n$', comm_list[1]) != "":
+				if PP_ON_DIRECTIVE.match(comm_list[1]):
 					# на данном этапе данная команда уже не актуальна
 					pp_string(result_text, line, arguments)
-				elif strfind(r'^off\n$', comm_list[1]) != "":
+				elif PP_OFF_DIRECTIVE.match(comm_list[1]):
 					# на данном этапе данная команда уже не актуальна
 					pp_string(result_text, line, arguments)
-				elif strfind(r'^savecomm\n$', comm_list[1]) != "":
+				elif PP_ONSAVECOMM_DIR.match(comm_list[1]):
 					# данная команда включает режим сохранения спецкомментариев
 					arguments["savecomm"] = True
-				elif strfind(r'^nosavecomm\n$', comm_list[1]) != "":
+				elif PP_OFFSAVECOMM_DIR.match(comm_list[1]):
 					# данная команда выключает режим сохранения спецкомментариев
 					arguments["savecomm"] = False
-				elif strfind(r'^endif\n$', comm_list[1]) != "":
+				elif PP_OFFCONDITION_DIR.match(comm_list[1]):
 					# закрываем условие
 					close_condition(arguments)
-				elif strfind(r'^var\(.*?\)', comm_list[1]) != "":
+				elif PP_VARIABLE_DIR.match(comm_list[1]):
 					# если мы имеем дело с присвоением значения переменной
 					direct = get_direct(comm_list[1], 'var') # получаем содержимое скобок
 					add_variable(variables, direct) # добавляем метку в словарь
-				elif strfind(r'^if\(.*?\)', comm_list[1]) != "":
-					# если мы имеем дело с проверкой условия
+				elif PP_ONCONDITION_DIR.match(comm_list[1]):
+					# если мы имеем дело с проверкой условия !@pp:if(var = 45):off
 					direct = get_direct(comm_list[1], 'if') # получаем содержимое скобок
 					condition = met_condition(variables, direct) # проверяем условие
 					open_condition(comm_list[2], condition, arguments)
@@ -298,11 +316,14 @@ def pp_this_lines(file_lines:list, args:dict, variables:dict = None) -> list:
 					pass
 			else:
 				# при отключенном препроцессоре выполняется только команда endif
-				if strfind(r'^endif\n$', comm_list[1]) != "":
+				if PP_OFFCONDITION_DIR.match(comm_list[1]):
 					# закрываем условие.
 					close_condition(arguments)
 				else:
 					result_text.append(line)
+		else:
+			# если это не команда, обрабатываем строку
+			pp_string(result_text, line, arguments)
 	if arguments["openif"] == True:
 		close_condition(arguments)
 	return result_text
