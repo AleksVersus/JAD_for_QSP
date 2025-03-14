@@ -177,6 +177,8 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 			'quote': 'quotes',
 			'brace-open': 'brackets'
 		}
+		_double_quotes = (lambda x:
+			x.count('"') % 2 == 0 and x.count("'") % 2 == 0 and x.count('{') <= x.count('}'))
 		result = ""
 		while len(string) > 0:
 			scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
@@ -190,9 +192,8 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 					result += prev_text + scope_regexp_obj.group(0)
 					string = post_text
 				elif scope_type == "simple-speccom":
-					# если это не удаляющий комментарий, но специальный
-					# необходимо удалить его из строки
-					if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
+					# не удаляющий комментарий, но специальный, необходимо удалить его из строки
+					if _double_quotes(post_text):
 						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
 						result += _LINE_END_AMPERSAND.sub('', prev_text) + '\n'
 						if re.match(r'^\s*?$',result) != None:
@@ -204,7 +205,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 						string = post_text
 				elif scope_type == "strong-speccom":
 					# если это удаляющий комментарий
-					if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
+					if _double_quotes(post_text):
 						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
 						return None # строка удаляется из списка
 					else:
