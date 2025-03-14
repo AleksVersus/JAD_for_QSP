@@ -158,86 +158,90 @@ def find_speccom_scope(string_line:str) -> Tuple[Optional[str], str, Match[str],
 		return None, '', _DUMMY_MATCH, string_line
 
 
-def pp_string(text_lines, string, args):
+def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 	""" обработка строки. Поиск спецкомментариев """
-	result = string
-	if args["include"] == True:
-		# обработка
-		if args["pp"] == True and args["savecomm"] == False:
-			result = ""
-			while len(string) > 0:
-				scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
-				if args["openquote"] == False:
-					if scope_type == "apostrophe":
-						args["openquote"] = True
-						args["quote"] = "apostrophes"
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type == 'quote':
-						args["openquote"] = True
-						args["quote"] = "quotes"
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type == "brace-open":
-						args["openquote"] = True
-						args["quote"] = "brackets"
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type == "brace-close":
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type == "simple-speccom":
-						# если это не удаляющий комментарий, но специальный
-						# необходимо удалить его из строки
-						if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
-							# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
-							result += prev_text
-							result = re.sub(r'\s*?\&\s*?$', '', result) + '\n'
-							if re.match(r'^\s*?$',result) != None:
-								result = ""
-							break
-						else:
-							# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
-							result += prev_text + scope_regexp_obj.group(0)
-							string = post_text
-					elif scope_type == "strong-speccom":
-						# если это удаляющий комментарий
-						if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
-							# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
-							result="" # строка удаляется из списка
-							break
-						else:
-							# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
-							result += prev_text + scope_regexp_obj.group(0)
-							string = post_text
-					else:
-						result += string
-						break
-				else:
-					if scope_type == "apostrophe" and args["quote"] == "apostrophes":
-						args["openquote"] = False
-						args["quote"] = ""
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type == "quote" and args["quote"] == "quotes":
-						args["openquote"] = False
-						args["quote"] = ""
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type == "brace-close" and args["quote"] == "brackets":
-						args["openquote"]=False
-						args["quote"] = ""
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					elif scope_type != None:
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
-					else:
-						result += string
-						break
-	elif args["include"] == False:
-		# строки исключаются
+	if not args["include"]:
+		# Режим добавления строк к результирующему списку отключен,
+		# это значит, что строку можно игнорировать.
+		return None
+	result = string # по умолчанию строка целиком засылается в список
+	if args["include"] and args['pp'] and not args['savecomm']:
+		# обработка нужна только если выполняются три условия:
+		# 1. режим добавления строк включен;
+		# 2. препроцессор включен;
+		# 3. сохранение спецкомментариев отключено
 		result = ""
+		while len(string) > 0:
+			scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
+			if args["openquote"] == False:
+				if scope_type == "apostrophe":
+					args["openquote"] = True
+					args["quote"] = "apostrophes"
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type == 'quote':
+					args["openquote"] = True
+					args["quote"] = "quotes"
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type == "brace-open":
+					args["openquote"] = True
+					args["quote"] = "brackets"
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type == "brace-close":
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type == "simple-speccom":
+					# если это не удаляющий комментарий, но специальный
+					# необходимо удалить его из строки
+					if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
+						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
+						result += prev_text
+						result = re.sub(r'\s*?\&\s*?$', '', result) + '\n'
+						if re.match(r'^\s*?$',result) != None:
+							result = ""
+						break
+					else:
+						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+				elif scope_type == "strong-speccom":
+					# если это удаляющий комментарий
+					if post_text.count('"') % 2 == 0 and post_text.count("'") % 2 == 0 and (not post_text.count('{') > post_text.count('}')):
+						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
+						result="" # строка удаляется из списка
+						break
+					else:
+						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
+						result += prev_text + scope_regexp_obj.group(0)
+						string = post_text
+				else:
+					result += string
+					break
+			else:
+				if scope_type == "apostrophe" and args["quote"] == "apostrophes":
+					args["openquote"] = False
+					args["quote"] = ""
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type == "quote" and args["quote"] == "quotes":
+					args["openquote"] = False
+					args["quote"] = ""
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type == "brace-close" and args["quote"] == "brackets":
+					args["openquote"]=False
+					args["quote"] = ""
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				elif scope_type != None:
+					result += prev_text + scope_regexp_obj.group(0)
+					string = post_text
+				else:
+					result += string
+					break
+
 	if result != "":
 		if re.match(r'^\s*?$', result) != None and args["openquote"] == False:
 			result = ""
