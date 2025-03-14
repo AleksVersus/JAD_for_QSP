@@ -4,26 +4,26 @@ from typing import (List, Literal, Tuple, Dict, Match, Optional)
 # regular expressions constants
 _DUMMY_MATCH = re.compile(r'^\s*$').match('')
 
-PP_DIRECTIVE_START = re.compile(r'^!@pp:')
-PP_ON_DIRECTIVE = re.compile(r'^on\n$')
-PP_OFF_DIRECTIVE = re.compile(r'^off\n$')
-PP_ONSAVECOMM_DIR = re.compile(r'^savecomm\n$')
-PP_OFFSAVECOMM_DIR = re.compile(r'^nosavecomm\n$')
-PP_ONCONDITION_DIR = re.compile(r'^if\(.*?\)')
-PP_OFFCONDITION_DIR = re.compile(r'^endif\n$')
-PP_VARIABLE_DIR = re.compile(r'^var\(.*?\)')
+_PP_DIRECTIVE_START = re.compile(r'^!@pp:')
+_PP_ON_DIRECTIVE = re.compile(r'^on\n$')
+_PP_OFF_DIRECTIVE = re.compile(r'^off\n$')
+_PP_ONSAVECOMM_DIR = re.compile(r'^savecomm\n$')
+_PP_OFFSAVECOMM_DIR = re.compile(r'^nosavecomm\n$')
+_PP_ONCONDITION_DIR = re.compile(r'^if\(.*?\)')
+_PP_OFFCONDITION_DIR = re.compile(r'^endif\n$')
+_PP_VARIABLE_DIR = re.compile(r'^var\(.*?\)')
 
-SIMPLE_SPECCOM = re.compile(r'!@(?!\<)')
-HARDER_SPECCOM = re.compile(r'!@<')
-DOUBLE_QUOTES = re.compile(r'"')
-SINGLE_QUOTES = re.compile(r"'")
-OPEN_BRACE = re.compile(r'\{')
-CLOSE_BRACE = re.compile(r'\}')
+_SIMPLE_SPECCOM = re.compile(r'!@(?!\<)')
+_HARDER_SPECCOM = re.compile(r'!@<')
+_DOUBLE_QUOTES = re.compile(r'"')
+_SINGLE_QUOTES = re.compile(r"'")
+_OPEN_BRACE = re.compile(r'\{')
+_CLOSE_BRACE = re.compile(r'\}')
 
 _OPERANDS = re.compile(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>')
 
 # функция, извлекающая директиву в скобках
-def get_direct(string:str, directive:Literal['var', 'if']) -> str:
+def extract_directive(string:str, directive:Literal['var', 'if']) -> str:
 	"""	Extract the directive in parentheses. """
 	return string.replace(directive, '', 1).strip()[1:-1]
 
@@ -143,12 +143,12 @@ def find_speccom_scope(string_line:str) -> Tuple[Optional[str], str, Match[str],
 		],
 		"scope-regexp":
 		[
-			SIMPLE_SPECCOM.search(string_line),
-			HARDER_SPECCOM.search(string_line),
-			DOUBLE_QUOTES.search(string_line),
-			SINGLE_QUOTES.search(string_line),
-			OPEN_BRACE.search(string_line),
-			CLOSE_BRACE.search(string_line)
+			_SIMPLE_SPECCOM.search(string_line),
+			_HARDER_SPECCOM.search(string_line),
+			_DOUBLE_QUOTES.search(string_line),
+			_SINGLE_QUOTES.search(string_line),
+			_OPEN_BRACE.search(string_line),
+			_CLOSE_BRACE.search(string_line)
 		],
 		"scope-instring":
 		[]
@@ -278,45 +278,45 @@ def pp_this_lines(file_lines:List[str], args:dict, variables:dict = None) -> Lis
 		"quote": "", # тип открытых кавычек
 		"if": { "include": True, "pp": True, "savecomm": False } # список инструкций до выполнения блока условий
 	}
-	replace_args(arguments, args) # если переданы какие-то глобальные аргументы, подменяем текущие на глобальные
+	replace_args(arguments, args) # если переданы глобальные аргументы, подменяем текущие на глобальные
 	# перебираем строки в файле
 	for line in file_lines:
-		if PP_DIRECTIVE_START.match(line): # проверяем является ли строка командой
+		if _PP_DIRECTIVE_START.match(line): # проверяем является ли строка командой
 			# если это команда, распарсим её
 			comm_list = line.split(':')
 			if arguments["pp"]:
 				# только при включенном препроцессоре выполняются все команды
 				# проверяем, что за команда
-				if PP_ON_DIRECTIVE.match(comm_list[1]):
+				if _PP_ON_DIRECTIVE.match(comm_list[1]):
 					# на данном этапе данная команда уже не актуальна
 					pp_string(result_text, line, arguments)
-				elif PP_OFF_DIRECTIVE.match(comm_list[1]):
+				elif _PP_OFF_DIRECTIVE.match(comm_list[1]):
 					# на данном этапе данная команда уже не актуальна
 					pp_string(result_text, line, arguments)
-				elif PP_ONSAVECOMM_DIR.match(comm_list[1]):
+				elif _PP_ONSAVECOMM_DIR.match(comm_list[1]):
 					# данная команда включает режим сохранения спецкомментариев
 					arguments["savecomm"] = True
-				elif PP_OFFSAVECOMM_DIR.match(comm_list[1]):
+				elif _PP_OFFSAVECOMM_DIR.match(comm_list[1]):
 					# данная команда выключает режим сохранения спецкомментариев
 					arguments["savecomm"] = False
-				elif PP_OFFCONDITION_DIR.match(comm_list[1]):
+				elif _PP_OFFCONDITION_DIR.match(comm_list[1]):
 					# закрываем условие
 					close_condition(arguments)
-				elif PP_VARIABLE_DIR.match(comm_list[1]):
+				elif _PP_VARIABLE_DIR.match(comm_list[1]):
 					# если мы имеем дело с присвоением значения переменной
-					direct = get_direct(comm_list[1], 'var') # получаем содержимое скобок
-					add_variable(variables, direct) # добавляем метку в словарь
-				elif PP_ONCONDITION_DIR.match(comm_list[1]):
+					directive = extract_directive(comm_list[1], 'var') # получаем содержимое скобок
+					add_variable(variables, directive) # добавляем метку в словарь
+				elif _PP_ONCONDITION_DIR.match(comm_list[1]):
 					# если мы имеем дело с проверкой условия !@pp:if(var = 45):off
-					direct = get_direct(comm_list[1], 'if') # получаем содержимое скобок
-					condition = met_condition(variables, direct) # проверяем условие
+					directive = extract_directive(comm_list[1], 'if') # получаем содержимое скобок
+					condition = met_condition(variables, directive) # проверяем условие
 					open_condition(comm_list[2], condition, arguments)
 				else:
 					# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
 					pass
 			else:
 				# при отключенном препроцессоре выполняется только команда endif
-				if PP_OFFCONDITION_DIR.match(comm_list[1]):
+				if _PP_OFFCONDITION_DIR.match(comm_list[1]):
 					# закрываем условие.
 					close_condition(arguments)
 				else:
