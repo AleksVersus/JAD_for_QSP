@@ -68,7 +68,7 @@ class NewQspLocation():
 		""" Decode parts of location. """
 		self.encode_name = NewQspsFile.encode_qsps_line(self.name, self.char_cache)
 		self.encode_desc = NewQspsFile.encode_qsps_line(self.base_description, self.char_cache)
-		self.encode_code = NewQspsFile.encode_qsps_line((''.join(self.code))[:-1], self.char_cache)
+		self.encode_code = NewQspsFile.encode_qsps_line((''.join(self.code))[:-1].replace('\n', '\r\n'), self.char_cache)
 		for action in self.base_actions:
 			encode_action_lines = []
 			encode_action_lines.append(NewQspsFile.encode_qsps_line(action['image'], self.char_cache))
@@ -76,7 +76,7 @@ class NewQspLocation():
 			encode_action_lines.append(NewQspsFile.encode_qsps_line(action['name'], self.char_cache))
 			encode_action_lines.append('\n')
 			action_code = ''.join(del_first_pref(action['code']))
-			encode_action_lines.append(NewQspsFile.encode_qsps_line(action_code[:-1], self.char_cache))
+			encode_action_lines.append(NewQspsFile.encode_qsps_line(action_code[:-1].replace('\n', '\r\n'), self.char_cache))
 			encode_action_lines.append('\n')
 			self.encode_actions.append(''.join(encode_action_lines))
 
@@ -502,8 +502,6 @@ def main():
 	old_time = time.time()
 	qsps = NewQspsFile()
 	qsps.convert_file('D:\\game.qsps')
-	l = qsps.get_locations()[0]
-	print(''.join(l.get_sources()))
 	new_time = time.time()
 	print(new_time - old_time)
 

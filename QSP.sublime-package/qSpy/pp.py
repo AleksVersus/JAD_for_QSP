@@ -235,7 +235,7 @@ def pp_string(text_lines, string, args):
 		text_lines.append(result)
 
 # основная функция
-def pp_this_file(file_path, args, variables = None):
+def pp_this_file(file_path:str, args:dict, variables:dict = None) -> str:
 	""" эта функция будет обрабатывать файл и возвращать результат после препроцессинга """
 	with open(file_path, 'r', encoding='utf-8') as pp_file:
 		file_lines = pp_file.readlines() # получаем список всех строк файла
