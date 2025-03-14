@@ -111,10 +111,12 @@ class ModuleQSP():
 			file.write(text)
 
 	def extract_qsps(self) -> None:
+		""" From qsps-files extract sources lines and add to module source """
 		for src in self.src_qsps_file:
 			self.qsps_code.extend(src.get_strings())
 
 	def convert(self, save_temp_file:bool) -> None:
+		""" Convert sources and save module to file """
 		# start_time = time.time()
 		if self.converter == 'qsps_to_qsp':
 			qsps_file = NewQspsFile()

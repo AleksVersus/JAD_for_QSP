@@ -6,6 +6,7 @@ import re
 import concurrent.futures
 
 from .function import (del_first_pref)
+from .pp import pp_this_lines
 # import time
 
 # constants:
@@ -351,6 +352,14 @@ class NewQspsFile():
 				self.line_offsets.append(offset)
 				offset += len(line)
 
+	def get_source(self) -> list:
+		""" Return sources qsps-lines """
+		return self.src_strings
+
+	def get_qsps_line(self, qsps_line_number:int) -> str:
+		""" Return one line from source qsps-line """
+		return self.src_strings[qsps_line_number]
+
 	def convert_file(self, input_file:str) -> None:
 		""" Convert qsps-file to qsp-file """
 		if os.path.isfile(input_file):
@@ -383,6 +392,11 @@ class NewQspsFile():
 	def get_qsp(self) -> list:
 		""" Return converted QSP-strings """
 		return self.converted_strings
+	
+	def preprocess(self, args:dict, pp_variables:dict) -> None:
+		""" Preprocessor of qsps-sources. Run only before splitting! """
+		if self.locations: return None
+		self.src_strings = pp_this_lines(self.src_strings, args, pp_variables)
 
 	def split_to_locations(self) -> None:
 		""" Split source strings to locations """
