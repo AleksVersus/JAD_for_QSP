@@ -81,37 +81,25 @@ def met_condition(variables:dict, directive:str) -> bool:
 # функция, которая правильно открывает блок условия
 def open_condition(command:str, condition:bool, args:dict) -> None:
 	""" Open condition for loop use. """
-	i_list = re.split(r'\s+', command.strip())
-	prev_args = args['if']
-	for i in i_list:
-		if i == "exclude" and condition == True:
+	instructions:List[str] = re.split(r'\s+', command.strip())
+	prev_args:dict = args['if']
+	for i in instructions:
+		if i == "exclude":
 			prev_args["include"] = args["include"]
-			args["include"] = False
-		elif i == "exclude" and condition == False:
+			args["include"] = not condition
+		elif i == "include":
 			prev_args["include"] = args["include"]
-			args["include"] = True
-		elif i == "include" and condition == False:
-			prev_args["include"] = args["include"]
-			args["include"] = False
-		elif i == "include" and condition == True:
-			prev_args["include"] = args["include"]
-			args["include"] = True
-		elif i == "nopp" and condition == True:
+			args["include"] = condition
+		elif i == "nopp":
 			prev_args["pp"] = args["pp"]
-			args["pp"] = False
-		elif i == "nopp" and condition == False:
-			prev_args["pp"] = args["pp"]
-			args["pp"] = True
-		elif i == "savecomm" and condition == True:
+			args["pp"] = not condition
+		elif i == "savecomm":
 			prev_args["savecomm"] = args["savecomm"]
-			args["savecomm"] = True
-		elif i == "savecomm" and condition == False:
-			prev_args["savecomm"] = args["savecomm"]
-			args["savecomm"] = False
+			args["savecomm"] = condition
 	args["openif"] = True
 
 # функция, которая правильно закрывает условие
-def close_condition(args):
+def close_condition(args:dict) -> None:
 	""" Right closing of condition """
 	prev_args = args["if"]
 	args["include"] = prev_args["include"]
