@@ -1,5 +1,5 @@
 import re
-from typing import (List, Literal, Tuple, Dict, Match, Optional)
+from typing import (List, Literal, Tuple, Dict, Match, Optional, Callable)
 
 # regular expressions constants
 _DUMMY_MATCH = re.compile(r'^\s*$').match('')
@@ -181,49 +181,47 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 		# TODO: ошибочна, так как простое " ' " ' ломает её. Количество кавычек чётное, но кавычка
 		# TODO: должна быть открыта, и спецкомментарий удалять нельзя. Возможно, стоит пересмотреть
 		# TODO: положение функции parse_string, перенести её в модуль function, и затем импортировать сюда.
-		_double_quotes = (lambda x:
+		_double_quotes:Callable[[str], bool] = (lambda x:
 			x.count('"') % 2 == 0 and x.count("'") % 2 == 0 and x.count('{') <= x.count('}'))
 		
-		def _head_tail_fill(result:str, split_str:tuple) -> Tuple[str, str]:
+		def _head_tail_fill(result_list:List[str],
+					  split_str:Tuple[Optional[str], str, Match[str], str]) -> Tuple[str, str]:
 			_, prev_text, scope_regexp_obj, post_text = split_str
-			result += prev_text + scope_regexp_obj.group(0)
-			return result, post_text
+			result_list.append(prev_text + scope_regexp_obj.group(0))
+			return post_text
 
-		result = ""
+		result_list:List[str] = []
 		while len(string) > 0:
 			split_str = scope_type, prev_text, _, post_text = find_speccom_scope(string)
 			if not args["openquote"]:
 				if scope_type in ('apostrophe', 'quote', 'brace-open'):
 					args["openquote"] = True
 					args["quote"] = correspondence_table[scope_type]
-					result, string = _head_tail_fill(result, split_str)
+					string = _head_tail_fill(result_list, split_str)
 				elif scope_type == "brace-close":
-					result, string = _head_tail_fill(result, split_str)
+					string = _head_tail_fill(result_list, split_str)
 				elif scope_type in ("simple-speccom", 'strong-speccom'): # спецкомментарий
 					if not _double_quotes(post_text):
-						result, string = _head_tail_fill(result, split_str)
+						string = _head_tail_fill(result_list, split_str)
 					elif scope_type == 'simple-speccom': # число кавычек чётное
-						result += _LINE_END_AMPERSAND.sub('', prev_text) + '\n'
-						if re.match(r'^\s*?$',result) != None:
-							return None
+						result_list.append(_LINE_END_AMPERSAND.sub('', prev_text) + '\n')
 						break
 					else:
 						return None
 				else:
-					result += string
+					result_list.append(string)
 					break
 			elif scope_type is not None:
 				if args["quote"] == correspondence_table.get(scope_type, None):
 					args["openquote"] = False
 					args["quote"] = ""
-				result, string = _head_tail_fill(result, split_str)
+				string = _head_tail_fill(result_list, split_str)
 			else:
-				result += string
+				result_list.append(string)
 				break
-
-	if result != "":
-		if re.match(r'^\s*?$', result) != None and args["openquote"] == False:
-			result = ""
+		result = ''.join(result_list)
+	
+	if args["openquote"] or result.split(): # если открыты кавычки, или это не пустая строка
 		text_lines.append(result)
 
 # основная функция
