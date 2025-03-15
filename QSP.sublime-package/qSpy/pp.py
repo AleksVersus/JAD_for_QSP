@@ -297,6 +297,30 @@ def pp_this_lines(file_lines:List[str], args:dict, variables:dict = None) -> Lis
 		close_condition(arguments)
 	return result_text
 
+def _autotest():
+	""" Autotest will works if all files are exists. """
+	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
+	source_file_path = "../../[examples]/example_preprocessor/pptest.qsps"
+	autotest_file_path = "../../[examples]/example_preprocessor/for_autotest.qsps"
+	with open(source_file_path, 'r', encoding='utf-8') as pp_file:
+		input_lines = pp_file.readlines()
+	output_lines = pp_this_lines(input_lines, args)
+	with open(autotest_file_path, 'r', encoding='utf-8') as pp_file:
+		autotest_lines = pp_file.readlines()
+	s = len(output_lines)
+	a = len(autotest_lines)
+	for i in range(max(a, s)):
+		if i > s-1:
+			print('Missing lines: ', autotest_lines[i:])
+			return None
+		elif i > a-1:
+			print('Extra lines:', output_lines[i:])
+			return None
+		elif output_lines[i] != autotest_lines[i]:
+			print('Lines don\'t match', [output_lines[i], autotest_lines[i]])
+			return None
+	print('Autotest is ok!')
+
 # main
 def main():
 	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
@@ -307,4 +331,4 @@ def main():
 		fp.write(output_text)
 
 if __name__ == '__main__':
-    main()
+    _autotest()
