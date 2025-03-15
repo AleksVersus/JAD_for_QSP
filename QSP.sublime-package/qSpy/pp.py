@@ -177,6 +177,10 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 			'quote': 'quotes',
 			'brace-open': 'brackets'
 		}
+		# TODO: Данная функция просто проверяет количество кавычек, но эта реализация автоматически
+		# TODO: ошибочна, так как простое " ' " ' ломает её. Количество кавычек чётное, но кавычка
+		# TODO: должна быть открыта, и спецкомментарий удалять нельзя. Возможно, стоит пересмотреть
+		# TODO: положение функции parse_string, перенести её в модуль function, и затем импортировать сюда.
 		_double_quotes = (lambda x:
 			x.count('"') % 2 == 0 and x.count("'") % 2 == 0 and x.count('{') <= x.count('}'))
 		
@@ -187,7 +191,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 
 		result = ""
 		while len(string) > 0:
-			split_str = scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
+			split_str = scope_type, prev_text, _, post_text = find_speccom_scope(string)
 			if not args["openquote"]:
 				if scope_type in ('apostrophe', 'quote', 'brace-open'):
 					args["openquote"] = True
@@ -195,25 +199,16 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 					result, string = _head_tail_fill(result, split_str)
 				elif scope_type == "brace-close":
 					result, string = _head_tail_fill(result, split_str)
-				elif scope_type == "simple-speccom":
-					# не удаляющий комментарий, но специальный, необходимо удалить его из строки
-					if _double_quotes(post_text):
-						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
+				elif scope_type in ("simple-speccom", 'strong-speccom'): # спецкомментарий
+					if not _double_quotes(post_text):
+						result, string = _head_tail_fill(result, split_str)
+					elif scope_type == 'simple-speccom': # число кавычек чётное
 						result += _LINE_END_AMPERSAND.sub('', prev_text) + '\n'
 						if re.match(r'^\s*?$',result) != None:
 							return None
 						break
 					else:
-						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
-						result, string = _head_tail_fill(result, split_str)
-				elif scope_type == "strong-speccom":
-					# если это удаляющий комментарий
-					if _double_quotes(post_text):
-						# только если мы имеем дело с чётным числом кавычек, можно убирать спецкомментарий
-						return None # строка удаляется из списка
-					else:
-						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
-						result, string = _head_tail_fill(result, split_str)
+						return None
 				else:
 					result += string
 					break
