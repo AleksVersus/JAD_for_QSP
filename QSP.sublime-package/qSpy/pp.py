@@ -179,18 +179,22 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 		}
 		_double_quotes = (lambda x:
 			x.count('"') % 2 == 0 and x.count("'") % 2 == 0 and x.count('{') <= x.count('}'))
+		
+		def _head_tail_fill(result:str, split_str:tuple) -> Tuple[str, str]:
+			_, prev_text, scope_regexp_obj, post_text = split_str
+			result += prev_text + scope_regexp_obj.group(0)
+			return result, post_text
+
 		result = ""
 		while len(string) > 0:
-			scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
+			split_str = scope_type, prev_text, scope_regexp_obj, post_text = find_speccom_scope(string)
 			if not args["openquote"]:
 				if scope_type in ('apostrophe', 'quote', 'brace-open'):
 					args["openquote"] = True
 					args["quote"] = correspondence_table[scope_type]
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
+					result, string = _head_tail_fill(result, split_str)
 				elif scope_type == "brace-close":
-					result += prev_text + scope_regexp_obj.group(0)
-					string = post_text
+					result, string = _head_tail_fill(result, split_str)
 				elif scope_type == "simple-speccom":
 					# не удаляющий комментарий, но специальный, необходимо удалить его из строки
 					if _double_quotes(post_text):
@@ -201,8 +205,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 						break
 					else:
 						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
+						result, string = _head_tail_fill(result, split_str)
 				elif scope_type == "strong-speccom":
 					# если это удаляющий комментарий
 					if _double_quotes(post_text):
@@ -210,8 +213,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 						return None # строка удаляется из списка
 					else:
 						# если в спецкомментарии присутствуют открытые кавычки, оставляем такой спецкомментарий
-						result += prev_text + scope_regexp_obj.group(0)
-						string = post_text
+						result, string = _head_tail_fill(result, split_str)
 				else:
 					result += string
 					break
@@ -219,8 +221,7 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 				if args["quote"] == correspondence_table.get(scope_type, None):
 					args["openquote"] = False
 					args["quote"] = ""
-				result += prev_text + scope_regexp_obj.group(0)
-				string = post_text
+				result, string = _head_tail_fill(result, split_str)
 			else:
 				result += string
 				break
