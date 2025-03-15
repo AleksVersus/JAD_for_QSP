@@ -67,34 +67,21 @@ class ModuleQSP():
 
 	def preprocess_qsps(self, pponoff:str, pp_markers:dict) -> None:
 		""" 
-			На данном этапе у нас есть объекты класса SrcQspsFile, которые включают в себя список
+			На данном этапе у нас есть объекты класса NewQspsFile, которые включают в себя список
 			строк для каждого файла, т.е. цикл чтения уже завершён. Теперь мы можем обработать эти
 			виртуальные файлы, прогнав их через препроцессор.
 
 			pponoff — управление препроцессором main
 			pp_markers — переменные и метки
 		"""
-		# text = "" # выходной текст
+		if pponoff == 'Hard-off':
+			return None
+		_met_condition = (lambda f, s:
+			(f == 'Off' and  "!@pp:on\n" in s) or (f == 'On' and not "!@pp:off\n" in s))
 		for src in self.src_qsps_file:
-			if pponoff == 'Hard-off':
-				# text_file = src.read() + '\r\n' # файл не отправляется на препроцессинг
-				...
-			elif pponoff == 'Off':
-				first_string = src.get_qsps_line(0)
-				second_string = src.get_qsps_line(1)
-				if "!@pp:on\n" in (first_string, second_string):
-					arguments = {"include": True, "pp": True, "savecomm": False}
-					# файл отправляется на препроцессинг
-					src.preprocess(arguments, pp_markers)
-				# text_file = src.read() + "\r\n"
-			elif pponoff == 'On':
-				first_string = src.get_qsps_line(0)
-				second_string = src.get_qsps_line(1)
-				if not "!@pp:off\n" in (first_string, second_string):
-					arguments = {"include":True, "pp":True, "savecomm": False}
-					src.preprocess(arguments, pp_markers)
-				# text_file = src.read() + '\r\n'
-			# text += src.read() + '\r\n'
+			if _met_condition(pponoff, (src.get_qsps_line(0), src.get_qsps_line(1))):
+				arguments = {"include":True, "pp":True, "savecomm": False}
+				src.preprocess(arguments, pp_markers)
 
 	def src_to_text(self) -> str:
 		""" Get outer text of module """
