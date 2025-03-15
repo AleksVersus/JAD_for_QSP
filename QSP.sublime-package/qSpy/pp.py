@@ -20,7 +20,7 @@ _SINGLE_QUOTES = re.compile(r"'")
 _OPEN_BRACE = re.compile(r'\{')
 _CLOSE_BRACE = re.compile(r'\}')
 
-_OPERANDS = re.compile(r'!|=|\(|\)|\bor\b|\band\b|\bnot\b|<|>')
+_OPERANDS = re.compile(r'!=|==|\(|\)|\bor\b|\band\b|\bnot\b|<=|>=|<|>')
 _LINE_END_AMPERSAND = re.compile(r'\s*?\&\s*?$')
 
 # функция, извлекающая директиву в скобках
@@ -300,8 +300,8 @@ def pp_this_lines(file_lines:List[str], args:dict, variables:dict = None) -> Lis
 # main
 def main():
 	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
-	source_file_path = "../../[disdocs]/example_project/[pp-test]/pptest.qsps"
-	output_file_path = "../../[disdocs]/example_game/pp-test/pptest.qsps"
+	source_file_path = "../../[examples]/example_preprocessor/pptest.qsps"
+	output_file_path = "../../[examples]/example_preprocessor/output.qsps"
 	output_text = pp_this_file(source_file_path, args)
 	with open(output_file_path, 'w', encoding='utf-8') as fp:
 		fp.write(output_text)
