@@ -91,7 +91,7 @@ class ModuleQSP():
 				first_string = src.get_qsps_line(0)
 				second_string = src.get_qsps_line(1)
 				if not "!@pp:off\n" in (first_string, second_string):
-					arguments = {"include":True, "pp":True, "savecomm":False}
+					arguments = {"include":True, "pp":True, "savecomm": False}
 					src.preprocess(arguments, pp_markers)
 				# text_file = src.read() + '\r\n'
 			# text += src.read() + '\r\n'

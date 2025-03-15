@@ -224,9 +224,8 @@ def pp_string(text_lines:List[str], string:str, args:dict) -> None:
 	if args["openquote"] or result.split(): # если открыты кавычки, или это не пустая строка
 		text_lines.append(result)
 
-# основная функция
 def pp_this_file(file_path:str, args:dict, variables:dict = None) -> str:
-	""" эта функция будет обрабатывать файл и возвращать результат после препроцессинга """
+	""" Preprocessing of input file and Returns output text. """
 	with open(file_path, 'r', encoding='utf-8') as pp_file:
 		file_lines = pp_file.readlines() # получаем список всех строк файла
 	result_lines = pp_this_lines(file_lines, args, variables)
@@ -248,63 +247,52 @@ def pp_this_lines(file_lines:List[str], args:dict, variables:dict = None) -> Lis
 		"if": { "include": True, "pp": True, "savecomm": False } # список инструкций до выполнения блока условий
 	}
 	replace_args(arguments, args) # если переданы глобальные аргументы, подменяем текущие на глобальные
-	# перебираем строки в файле
 	for line in file_lines:
 		if _PP_DIRECTIVE_START.match(line): # проверяем является ли строка командой
-			# если это команда, распарсим её
-			comm_list = line.split(':')
-			if arguments["pp"]:
-				# только при включенном препроцессоре выполняются все команды
+			comm_list = line.split(':')# распарсим команду
+			if arguments["pp"]: # только при включенном препроцессоре выполняются все команды.
 				# проверяем, что за команда
-				if _PP_ON_DIRECTIVE.match(comm_list[1]):
-					# на данном этапе данная команда уже не актуальна
+				if _PP_ON_DIRECTIVE.match(comm_list[1]) or _PP_OFF_DIRECTIVE.match(comm_list[1]):
+					# !@pp:on или !@pp:off
 					pp_string(result_text, line, arguments)
-				elif _PP_OFF_DIRECTIVE.match(comm_list[1]):
-					# на данном этапе данная команда уже не актуальна
-					pp_string(result_text, line, arguments)
-				elif _PP_ONSAVECOMM_DIR.match(comm_list[1]):
-					# данная команда включает режим сохранения спецкомментариев
+				elif _PP_ONSAVECOMM_DIR.match(comm_list[1]): # !@pp:savecomm
 					arguments["savecomm"] = True
-				elif _PP_OFFSAVECOMM_DIR.match(comm_list[1]):
-					# данная команда выключает режим сохранения спецкомментариев
+				elif _PP_OFFSAVECOMM_DIR.match(comm_list[1]): # !@pp:nosavecomm
 					arguments["savecomm"] = False
-				elif _PP_OFFCONDITION_DIR.match(comm_list[1]):
-					# закрываем условие
+				elif _PP_OFFCONDITION_DIR.match(comm_list[1]): # !@pp:endif
 					close_condition(arguments)
-				elif _PP_VARIABLE_DIR.match(comm_list[1]):
-					# если мы имеем дело с присвоением значения переменной
-					directive = extract_directive(comm_list[1], 'var') # получаем содержимое скобок
-					add_variable(variables, directive) # добавляем метку в словарь
-				elif _PP_ONCONDITION_DIR.match(comm_list[1]):
-					# если мы имеем дело с проверкой условия !@pp:if(var = 45):off
+				elif _PP_VARIABLE_DIR.match(comm_list[1]): # !@pp:var(layer=123)
+					directive = extract_directive(comm_list[1], 'var')
+					add_variable(variables, directive)
+				elif _PP_ONCONDITION_DIR.match(comm_list[1]): # !@pp:if(layer==45):off
 					directive = extract_directive(comm_list[1], 'if') # получаем содержимое скобок
 					condition = met_condition(variables, directive) # проверяем условие
 					open_condition(comm_list[2], condition, arguments)
-				else:
-					# если идёт запись !@pp: отдельной строкой без команды, данная просто не включается в выходной файл
+				else: # запись !@pp: отдельной строкой без команды не включается в выходной файл
 					pass
+			elif _PP_OFFCONDITION_DIR.match(comm_list[1]):
+				close_condition(arguments)
 			else:
-				# при отключенном препроцессоре выполняется только команда endif
-				if _PP_OFFCONDITION_DIR.match(comm_list[1]):
-					# закрываем условие.
-					close_condition(arguments)
-				else:
-					result_text.append(line)
-		else:
-			# если это не команда, обрабатываем строку
+				result_text.append(line)
+		else: # если это не команда, обрабатываем строку
 			pp_string(result_text, line, arguments)
-	if arguments["openif"] == True:
+	if arguments["openif"]:
 		close_condition(arguments)
 	return result_text
 
 def _autotest():
 	""" Autotest will works if all files are exists. """
+	import time
 	args={"include":True, "pp":True, "savecomm":False} # глобальные значения
 	source_file_path = "../../[examples]/example_preprocessor/pptest.qsps"
 	autotest_file_path = "../../[examples]/example_preprocessor/for_autotest.qsps"
 	with open(source_file_path, 'r', encoding='utf-8') as pp_file:
 		input_lines = pp_file.readlines()
-	output_lines = pp_this_lines(input_lines, args)
+	if True:
+		old_time = time.time()
+		output_lines = pp_this_lines(input_lines, args)
+		new_time = time.time()
+	print(f'Time of preprocessing: {new_time - old_time}')
 	with open(autotest_file_path, 'r', encoding='utf-8') as pp_file:
 		autotest_lines = pp_file.readlines()
 	s = len(output_lines)
