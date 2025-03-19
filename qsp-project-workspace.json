@@ -351,15 +351,6 @@
                 ]
             ]
         ],
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[pp-test]\\pptest.qsps": [
-            [
-                "[pp.start]",
-                [
-                    421,
-                    431
-                ]
-            ]
-        ],
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\func\\вспомогательные функции.qsps": [
             [
                 "get.word.padez",
@@ -3199,6 +3190,24 @@
                     25
                 ]
             ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_preprocessor\\pptest.qsps": [
+            [
+                "[pp.start] [8]",
+                [
+                    456,
+                    470
+                ]
+            ]
+        ],
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_preprocessor\\for_autotest.qsps": [
+            [
+                "[pp.start] [8]",
+                [
+                    412,
+                    426
+                ]
+            ]
         ]
     },
     "files_paths": {
@@ -3236,7 +3245,6 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[disdocs]\\crash.qsps": "cd623dcf1ec81c16882b5a11162984c8",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\bases\\вспомогательные функции\\get.obj.DU.qsps": "85639d9e21e856e043487cbbf8c81aeb",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[lib]\\easy.math\\операции с шестнадцатеричными числами\\dec-col.qsps": "724646d944ca39572771746b4de30850",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\[pp-test]\\pptest.qsps": "f9d31d2019b8a323c60accbc3534bb7a",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\func\\вспомогательные функции.qsps": "bfe9f21fb897e96feaa4aa5db4fa2557",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\main\\сюжет\\начало истории_02.qsps": "a5b5dfa22366312ab621c74d611d2418",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\дневник\\задание добавить стадию.qsps": "cabcf3e5de3d0499d44724434792f651",
@@ -3383,6 +3391,8 @@
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_postprocessor\\launcher.qsps": "e8ff2d14d7605eddd8b386511312d0e7",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_project\\drive\\objects.sys\\предметы\\надевание предмета.qsps": "732ae8195a3901414b63255af7a82572",
         "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_syntax\\comments\\wrong_comments.qsps": "1226e67ab42444e78336c7a95f63bd8d",
-        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\examples_splitter\\basesex.qsps": "4399ce872eaec74f8d469202638a4f47"
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\examples_splitter\\basesex.qsps": "4399ce872eaec74f8d469202638a4f47",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_preprocessor\\pptest.qsps": "0b97e6120a12c790d0e4b282b4f736ac",
+        "D:\\my\\GameDev\\QuestSoftPlayer\\projects\\JAD\\[examples]\\example_preprocessor\\for_autotest.qsps": "775c9128e76b986a22d177069168eb5e"
     }
 }

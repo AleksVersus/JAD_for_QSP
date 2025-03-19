@@ -5,8 +5,12 @@ import os
 import re
 import concurrent.futures
 
-from .function import (del_first_pref)
-from .pp import pp_this_lines
+if __name__ == "__main__":
+	from function import (del_first_pref)
+	from pp import pp_this_lines
+else:
+	from .function import (del_first_pref)
+	from .pp import pp_this_lines
 # import time
 
 # constants:

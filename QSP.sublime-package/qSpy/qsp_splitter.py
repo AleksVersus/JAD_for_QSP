@@ -1,10 +1,13 @@
 # Sorry my Bad English.
 import os
 import re
-import codecs
 
-from .qsp_to_qsps import QspToQsps
-from .qsps_to_qsp import NewQspsFile
+if __name__=="__main__":
+	from qsp_to_qsps import QspToQsps
+	from qsps_to_qsp import NewQspsFile
+else:
+	from .qsp_to_qsps import QspToQsps
+	from .qsps_to_qsp import NewQspsFile
 
 class QspSplitter():
 	"""
@@ -188,6 +191,8 @@ class FinderSplitter():
 		""" Change mode of find and split  """
 		self.mode = new_mode
 
+
+# functions for testing
 def main():
 	import time
 	old_time = time.time()
