@@ -24,9 +24,9 @@ def get_files_list(folder:str, filters:list=None) -> list:
 		write_error_log(f'[200] Folder is empty. Prove path «{folder}».')
 	return build_files
 
-def compare_paths(path1:str, path2:str):
+def compare_paths(path1:str, path2:str) -> tuple:
 	"""	Compare two paths and return tail relative to shared folder. """
-	start = os.path.commonprefix([path1, path2])
+	start = os.path.commonpath([path1, path2])
 	path1 = os.path.relpath(path1, start)
 	path2 = os.path.relpath(path2, start)
 	return path1, path2
