@@ -10,7 +10,7 @@ file_extensions: # расширения файлов
   - qsps
   - qsp-txt
   - txt-qsp
-first_line_match: (^(?i:qsp-game)$|^(?i:qsp-game\s+.*)$)
+first_line_match: ^(?i:qsp-game)(\s+.*)?$
 scope: source.qsp
 version: 2
 # TODO: если возможно попытаться вынести часть подсветки в qsp_locations и расширить с помощью текущей подсветки, или наоборот
@@ -86,7 +86,7 @@ contexts: # теперь необходимо определить "контек
     - include: preprocessor
     - include: qspdocs
     - include: location_def
-    - match: ".*" # любое множество символов подсвечивается как комментарий
+    - match: '.*' # любое множество символов подсвечивается как комментарий
       scope: meta.diff meta.gametext.qsp # TODO: заменить meta.diff на comment.block, когда сделаю сниппеты в плагинах
 
   location_def:
