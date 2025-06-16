@@ -83,6 +83,13 @@ variables: # назначаем переменные для удобства
 
 contexts: # теперь необходимо определить "контексты" подсветки
   main: # обязательный контекст main, с него стартует распознавание синтаксиса
+    # Следующая конструкция обеспечивает нам подсветку заголовка файла
+    #  только если он идёт первой строкой. Как это работает - не понимаю
+    - include: qspgame_header
+    - match: ''
+      set: diff
+   
+  diff:
     - include: preprocessor
     - include: qspdocs
     - include: location_def
@@ -716,6 +723,12 @@ contexts: # теперь необходимо определить "контек
   special_comments:
     - match: (?<=\!)@.*?(?={{nr}})
       scope: comment.qsp markup.italic.qsp avs-speccomments
+
+  qspgame_header:
+    - match: (?<![\s\S])(?i:(qsp-game))(\s+.*)?$
+      captures:
+        1: markup.heading.1.qsp punctuation.definition.heading.begin.qsp
+        2: markup.heading.1.qsp 
 
   preprocessor:
     - match: ^(\!@pp\:.*?)$
